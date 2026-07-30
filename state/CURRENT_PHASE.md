@@ -1,10 +1,11 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 0 — Kỹ năng máy tính và môi trường học tập
-- **Current Status:** Hoàn thành Onboarding & Diagnostic Test. Bắt đầu Buổi 1: Khởi tạo WSL2, cài đặt Git, VS Code và cấu hình Repository `D:\Devops`.
-- **Current Week:** Tuần 1 (Thời lượng: 28-35h/tuần)
-- **Target Outputs:**
-  1. Cài đặt thành công WSL2 (Ubuntu 22.04 / 24.04 LTS).
-  2. Tạo SSH Key và kết nối thành công với tài khoản GitHub.
-  3. Viết `README.md` đầu tiên bằng Markdown trong repository `D:\Devops`.
-  4. Thực hiện commit & push đầu tiên lên GitHub.
+- **Current Phase:** PHASE 0 — Kỹ năng máy tính và môi trường học tập (HOÀN THÀNH)
+- **Next Phase:** PHASE 1 — Linux nền tảng và quản trị hệ thống (BẮT ĐẦU BUỔI SỐ 2)
+- **Current Week:** Tuần 1
+- **Completed Outputs:**
+  1. Cài đặt & khởi chạy thành công WSL2 (Ubuntu 24.04 LTS).
+  2. Nắm vững cách Linux mount ổ đĩa Windows tại `/mnt/d/Devops`.
+  3. Hiểu sự khác biệt giữa hệ thống file Case-Sensitive (ext4) và Case-Insensitive (NTFS).
+  4. Sinh SSH Key Ed25519 và kết nối thành công với GitHub.
+  5. Tạo kho Git local, thực hiện commit đầu tiên và push thành công lên GitHub `Minhlike/devops-learning`.
