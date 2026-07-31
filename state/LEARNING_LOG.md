@@ -6,8 +6,11 @@
 
 ## [2026-07-31] Session 1: WSL2 Setup, Linux CLI Basics & First Git Push
 - Xử lý lỗi hỏng đĩa ảo WSL cũ bằng cách chuyển sang `Ubuntu-24.04` thành công.
-- Thực hành thao tác Terminal Linux cơ bản: `cd`, `pwd`, `ls -la`, `cat`, `echo`, `rm`.
-- Thực hiện bài tập Failure Injection: Phân biệt cơ chế Case-Sensitivity trên ext4 (Linux) và NTFS (Windows).
-- Sinh SSH Key Ed25519, cấu hình và kiểm tra kết nối với GitHub.
-- Tạo repository local `D:\Devops`, thực hiện commit đầu tiên và push thành công lên GitHub `Minhlike/devops-learning`.
-- Phát hiện và tự sửa lỗi typo đặt tên remote bằng lệnh `git remote -v` và `git remote rename`.
+- Thực hành thao tác Terminal Linux cơ bản, sinh SSH key Ed25519, commit & push thành công kho Git `Minhlike/devops-learning`.
+
+## [2026-07-31] Session 2: Linux Filesystem Hierarchy & Advanced CLI Commands
+- Trả lời đúng 100% phần Ôn tập Recall (dấu `.`, `..`, case-sensitivity ext4/NTFS, Staging Area).
+- Khám phá các thư mục gốc `/etc`, `/var/log`, `/proc`. Sử dụng Pipe `|` lọc dữ liệu CPU (`grep`) và RAM (`head`).
+- Hoàn thành bài Lab 2.2: Dựng cấu trúc thư mục ứng dụng 3-tier sản xuất (`mkdir -p`, `touch`, `cp`, `mv`, `rm -rf`).
+- Tự phát hiện và dọn dẹp thư mục thừa `db` theo nguyên tắc Code Review cấu hình.
+- Commit và push thành công bài lab `lab-02-structure` lên GitHub `Minhlike/devops-learning`.

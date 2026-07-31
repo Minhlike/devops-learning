@@ -1,11 +1,11 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 0 — Kỹ năng máy tính và môi trường học tập (HOÀN THÀNH)
-- **Next Phase:** PHASE 1 — Linux nền tảng và quản trị hệ thống (BẮT ĐẦU BUỔI SỐ 2)
+- **Current Phase:** PHASE 1 — Linux nền tảng và quản trị hệ thống
+- **Current Status:** Hoàn thành Buổi 2 (Filesystem Hierarchy & Thao tác File CLI). Chuẩn bị Buổi 3 (User, Group & Phân quyền Linux).
 - **Current Week:** Tuần 1
 - **Completed Outputs:**
-  1. Cài đặt & khởi chạy thành công WSL2 (Ubuntu 24.04 LTS).
-  2. Nắm vững cách Linux mount ổ đĩa Windows tại `/mnt/d/Devops`.
-  3. Hiểu sự khác biệt giữa hệ thống file Case-Sensitive (ext4) và Case-Insensitive (NTFS).
-  4. Sinh SSH Key Ed25519 và kết nối thành công với GitHub.
-  5. Tạo kho Git local, thực hiện commit đầu tiên và push thành công lên GitHub `Minhlike/devops-learning`.
+  1. Nắm vững vai trò các thư mục gốc: `/`, `/home`, `/etc`, `/var`, `/tmp`, `/proc`.
+  2. Đọc thông tin cấu hình phần cứng CPU/RAM từ thư mục ảo `/proc`.
+  3. Sử dụng thành thạo Pipe `|` kết hợp với `grep` và `head`.
+  4. Thực hành thiết kế cấu trúc thư mục dự án 3-tier bằng `mkdir -p`, `touch`, `cp`, `mv`, `rm -rf`.
+  5. Commit và push thành công bài lab `lab-02-structure` lên GitHub `Minhlike/devops-learning`.

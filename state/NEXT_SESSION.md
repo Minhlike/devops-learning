@@ -1,8 +1,9 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 2 — PHASE 1: Cấu trúc Cây Hệ thống File Linux (Filesystem Hierarchy) & Thao tác File Nâng cao.
+- **Buổi học tiếp theo:** BUỔI 3 — PHASE 1: User, Group, sudo & Phân quyền trên Linux (Linux File Permissions).
 - **Mục tiêu:**
-  1. Nắm vững bản chất các thư mục gốc: `/`, `/home`, `/etc`, `/var`, `/tmp`, `/usr`, `/opt`, `/proc`.
-  2. Phân biệt Đường dẫn tuyệt đối (Absolute Path) và Đường dẫn tương đối (Relative Path).
-  3. Luyện tập thuần thục các lệnh thao tác file/folder: `mkdir -p`, `touch`, `cp -r`, `mv`, `rm -rf`, `find`.
-  4. Thực hiện bài Lab tạo cấu trúc thư mục ứng dụng chuẩn production và commit lên GitHub.
+  1. Nắm vững cấu trúc phân quyền Linux: Owner (u), Group (g), Others (o).
+  2. Hiểu rõ ý nghĩa 3 quyền cơ bản: Read (`r` = 4), Write (`w` = 2), Execute (`x` = 1).
+  3. Thành thạo lệnh `chmod` (dạng số octal `755`, `600`, `644` và dạng ký tự `chmod +x`).
+  4. Nắm vững lệnh `chown` đổi người sở hữu và quyền `sudo` quản trị hệ thống.
+  5. Giải quyết sự cố kinh điển trong DevOps: "Permission Denied" và sửa quyền SSH Key (`chmod 600`).
