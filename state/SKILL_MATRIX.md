@@ -8,7 +8,8 @@
 | Linux Terminal | Basic Navigation & Commands | Làm được độc lập | 2026-07-31 | Dùng thạo `cd`, `pwd`, `ls -la`, `cat`, `echo`, `rm` |
 | Linux Terminal | Filesystem Hierarchy (`/etc`, `/var`, `/proc`)| Làm được độc lập | 2026-07-31 | Lab 2.1: Đọc `/proc/cpuinfo`, `/proc/meminfo`, `/var/log`, `/etc` |
 | Linux Terminal | File Management (`mkdir -p`, `cp`, `mv`, `rm -rf`) | Làm được độc lập | 2026-07-31 | Lab 2.2: Dựng cấu trúc thư mục production 3-tier, sửa dư thừa, backup |
-| Linux Terminal | Pipe `|`, `grep`, `head` | Làm được độc lập | 2026-07-31 | Lab 2.1: Lọc dữ liệu CPU/RAM bằng Pipe `|` |
+| Linux Terminal | File Permissions (`chmod`, octal 755, 644, 600) | Troubleshoot được | 2026-08-01 | Lab 3.2 & 3.3: Sửa lỗi Permission Denied (`chmod +x`) & SSH Key (`chmod 600`) |
+| Linux System Admin| User, Group, `sudo`, `chown` | Làm được độc lập | 2026-08-01 | Nắm bản chất root, sudo và đổi owner |
 | Version Control| Git Config & SSH Key | Làm được độc lập | 2026-07-31 | Sinh SSH key Ed25519, add GitHub, test `ssh -T` thành công |
-| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-07-31 | Commit & push thành công bài lab `lab-02-structure` lên GitHub |
+| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-01 | Commit & push thành công các bài lab lên GitHub |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |

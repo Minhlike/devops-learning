@@ -1,9 +1,9 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 3 — PHASE 1: User, Group, sudo & Phân quyền trên Linux (Linux File Permissions).
+- **Buổi học tiếp theo:** BUỔI 4 — PHASE 1: Quản lý Tiến trình (Process) và Dịch vụ (Service) trên Linux.
 - **Mục tiêu:**
-  1. Nắm vững cấu trúc phân quyền Linux: Owner (u), Group (g), Others (o).
-  2. Hiểu rõ ý nghĩa 3 quyền cơ bản: Read (`r` = 4), Write (`w` = 2), Execute (`x` = 1).
-  3. Thành thạo lệnh `chmod` (dạng số octal `755`, `600`, `644` và dạng ký tự `chmod +x`).
-  4. Nắm vững lệnh `chown` đổi người sở hữu và quyền `sudo` quản trị hệ thống.
-  5. Giải quyết sự cố kinh điển trong DevOps: "Permission Denied" và sửa quyền SSH Key (`chmod 600`).
+  1. Hiểu rõ khái niệm PID (Process ID), Foreground và Background process.
+  2. Sử dụng các công cụ giám sát tài nguyên tài nguyên hệ thống: `ps aux`, `top`, `htop`.
+  3. Gửi Signal tiêu diệt process bằng lệnh `kill -9`.
+  4. Quản lý Service ứng dụng với `systemd` và `systemctl` (`start`, `stop`, `restart`, `status`, `enable`).
+  5. Đọc log dịch vụ bằng `journalctl` và xử lý sự cố Service không khởi động được.
