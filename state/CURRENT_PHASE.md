@@ -1,13 +1,12 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 1 — Linux nền tảng và quản trị hệ thống
-- **Current Status:** Hoàn thành Buổi 3 (User, Group, sudo & Linux File Permissions). Chuẩn bị Buổi 4 (Linux Process & Service Management: systemd, ps, top, htop, kill, journalctl).
+- **Current Status:** Hoàn thành Buổi 4 (Process & Service Management). Chuẩn bị Buổi 5 (Resource Management, Package & System Logs: CPU, RAM, Swap, Disk, Load Average, cron, logrotate).
 - **Current Week:** Tuần 1
 - **Completed Outputs:**
-  1. Nắm vững phân quyền User (u), Group (g), Others (o) và trọng số Read (4), Write (2), Execute (1).
-  2. Thành thạo các bộ số phân quyền bát phân Octal: `755`, `644`, `600`.
-  3. Phân biệt được sự khác biệt giữa quyền trên đĩa Linux native (ext4) và đĩa Windows mount (`/mnt/d/`).
-  4. Thực hành xử lý lỗi `-bash: ./test.sh: Permission denied` bằng `chmod +x` và `chmod 755`.
-  5. Xử lý thành công bài lab Failure Injection: Khắc phục sự cố lộ quyền SSH Private Key bằng `chmod 600`.
-  6. Nắm vững khái niệm `root`, `sudo` và đổi quyền sở hữu bằng `chown`.
-  7. Commit và push bài lab `lab-03-permissons` lên GitHub `Minhlike/devops-learning`.
+  1. Sử dụng thành thạo `ps aux`, `grep` để tìm PID và tiêu diệt tiến trình bị treo bằng `kill -9`.
+  2. Cài đặt và vận hành Nginx Web Server bằng `apt` và `systemctl`.
+  3. Kiểm tra phản hồi HTTP bằng `curl -I http://localhost`.
+  4. Sử dụng `journalctl -u nginx` và `nginx -t` để chẩn đoán nguyên nhân sự cố cấu hình bị sai cú pháp.
+  5. Nắm vững kỹ thuật khôi phục file cấu hình hệ thống bằng `apt purge` và `apt install`.
+  6. Viết script `check_service.sh` kiểm tra trạng thái dịch vụ và push bài lab `lab-04-services` lên GitHub.

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Cheat Sheet Linux & DevOps Cốt Lõi</title>
+<style>
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.4;
+    font-size: 11.5pt;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    text-align: center;
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 20pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .header p {
+    margin: 4px 0 0 0;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+  h2 {
+    color: #1e40af;
+    background: #eff6ff;
+    padding: 6px 10px;
+    border-left: 4px solid #2563eb;
+    font-size: 12.5pt;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: 10.5pt;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+  }
+  pre, code {
+    font-family: 'Consolas', 'Courier New', monospace;
+  }
+  pre {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 10px 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 10pt;
+    margin: 6px 0 12px 0;
+    line-height: 1.4;
+  }
+  .code-inline {
+    background: #f1f5f9;
+    color: #0369a1;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  .comment {
+    color: #94a3b8;
+  }
+  .cmd {
+    color: #f43f5e;
+    font-weight: bold;
+  }
+  .opt {
+    color: #fbbf24;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 9pt;
+    color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>BỘ CHEAT SHEET LINUX & DEVOPS CỐT LÕI</h1>
+  <p>Dành riêng cho Học viên DevOps Personal Tutor | D:\Devops Project</p>
+</div>
+
+<h2>1. CẤU TRÚC NGỮ PHÁP CÚ PHÁP LINUX (COMMAND LINE ANATOMY)</h2>
+<p><b>Công thức chung:</b> <span class="code-inline">Command [-Options/Flags] [Arguments]</span></p>
+<ul>
+  <li><b>Command (Động từ):</b> File chương trình thực thi (Binary tại <span class="code-inline">/bin</span>, <span class="code-inline">/usr/bin</span>).</li>
+  <li><b><span class="code-inline">-</span> (Cờ ngắn 1 ký tự):</b> Ví dụ <span class="code-inline">-l</span>, <span class="code-inline">-a</span>, <span class="code-inline">-r</span>, <span class="code-inline">-f</span>. Có thể gộp: <span class="code-inline">ls -la</span>, <span class="code-inline">rm -rf</span>.</li>
+  <li><b><span class="code-inline">--</span> (Cờ dài đầy đủ):</b> Ví dụ <span class="code-inline">--help</span>, <span class="code-inline">--version</span>, <span class="code-inline">--no-pager</span>.</li>
+  <li><b><span class="code-inline">&gt;</span> (Ghi đè):</b> Chuyển stdout ghi đè file. | <b><span class="code-inline">&gt;&gt;</span> (Ghi nối tiếp):</b> Chuyển stdout ghi thêm vào cuối file.</li>
+  <li><b><span class="code-inline">|</span> (Pipe):</b> Đấu nối stdout của lệnh trái làm stdin cho lệnh phải.</li>
+</ul>
+
+<h2>2. CÂY HỆ THỐNG FILE LINUX (FILESYSTEM HIERARCHY)</h2>
+<table>
+  <tr><th>Thư mục</th><th>Khái niệm &amp; Vai trò cốt lõi</th></tr>
+  <tr><td><span class="code-inline">/</span></td><td><b>Root Directory:</b> Thư mục gốc tối cao của hệ thống Linux. All files start here.</td></tr>
+  <tr><td><span class="code-inline">/home</span></td><td>Thư mục cá nhân của người dùng (ví dụ <span class="code-inline">/home/minh123</span>).</td></tr>
+  <tr><td><span class="code-inline">/etc</span></td><td>Nơi chứa toàn bộ <b>FILE CẤU HÌNH</b> của HĐH và phần mềm (Nginx, SSH...).</td></tr>
+  <tr><td><span class="code-inline">/var</span></td><td>Nơi chứa <b>DỮ LIỆU BIẾN ĐỔI</b> (Log hệ thống <span class="code-inline">/var/log</span>, cache, database).</td></tr>
+  <tr><td><span class="code-inline">/proc</span></td><td>Thư mục ảo chứa thông tin phần cứng CPU/RAM &amp; Process chạy trực tiếp từ RAM.</td></tr>
+  <tr><td><span class="code-inline">/tmp</span></td><td>Thư mục chứa file tạm thời (tự động xóa sạch khi reboot).</td></tr>
+  <tr><td><span class="code-inline">/mnt/d</span></td><td>Nơi WSL2 mount ổ đĩa D: của Windows vào hệ thống Linux.</td></tr>
+</table>
+
+<h2>3. THAO TÁC FILE &amp; THƯ MỤC CƠ BẢN</h2>
+<pre>
+pwd                                  <span class="comment"># In đường dẫn thư mục hiện tại</span>
+cd /đường/dẫn                        <span class="comment"># Di chuyển thư mục (cd .. lùi 1 cấp, cd ~ về home)</span>
+ls -la                               <span class="comment"># In chi tiết tất cả file/folder kể cả file ẩn .</span>
+mkdir -p folder1/folder2             <span class="comment"># Tạo chuỗi thư mục lồng nhau cùng lúc</span>
+touch filename.txt                   <span class="comment"># Tạo file rỗng mới</span>
+cp -r nguồn đích                     <span class="comment"># Sao chép file/folder (cờ -r cho folder)</span>
+mv nguồn đích                        <span class="comment"># Di chuyển HOẶC đổi tên file/folder</span>
+rm -rf folder_name                   <span class="comment"># Xóa đệ quy folder/file ép buộc không hỏi</span>
+cat filename                         <span class="comment"># In toàn bộ nội dung file ra màn hình</span>
+head -n 10 filename                  <span class="comment"># Xem 10 dòng đầu tiên của file</span>
+tail -n 20 filename                  <span class="comment"># Xem 20 dòng cuối cùng của file</span>
+grep "từ_khóa" filename              <span class="comment"># Lọc tìm kiếm dòng chứa từ khóa</span>
+</pre>
+
+<h2>4. PHÂN QUYỀN &amp; QUẢN LÝ USER (chmod, chown, sudo)</h2>
+<p><b>Bảng điểm Octal:</b> Read (<span class="code-inline">r</span>=4), Write (<span class="code-inline">w</span>=2), Execute (<span class="code-inline">x</span>=1). Đối tượng: User (u) | Group (g) | Others (o).</p>
+<table>
+  <tr><th>Mã số</th><th>Chuỗi chữ</th><th>Ý nghĩa &amp; Trường hợp sử dụng</th></tr>
+  <tr><td><b>755</b></td><td><span class="code-inline">rwxr-xr-x</span></td><td>Mặc định cho Thư mục &amp; Script thực thi (Owner全, Group/Others chỉ đọc/chạy).</td></tr>
+  <tr><td><b>644</b></td><td><span class="code-inline">rw-r--r--</span></td><td>Mặc định cho File dữ liệu thường (Owner đọc/ghi, Group/Others chỉ đọc).</td></tr>
+  <tr><td><b>600</b></td><td><span class="code-inline">rw-------</span></td><td>Bắt buộc cho <b>SSH Private Key</b> (Chỉ Owner đọc/ghi, cấm tuyệt đối người khác).</td></tr>
+</table>
+<pre>
+chmod +x script.sh                   <span class="comment"># Cấp quyền thực thi cho file script</span>
+chmod 600 ~/.ssh/id_ed25519          <span class="comment"># Phân quyền chuẩn bảo mật cho SSH Private Key</span>
+sudo chown root:root filename        <span class="comment"># Đổi người sở hữu file sang user root</span>
+</pre>
+
+<h2>5. QUẢN LÝ TIẾN TRÌNH &amp; DỊCH VỤ (PROCESS &amp; SYSTEMD)</h2>
+<pre>
+ps aux | grep tên_tiến_trình          <span class="comment"># Tìm PID (Process ID) của tiến trình đang chạy</span>
+kill -9 &lt;PID&gt;                        <span class="comment"># Ép buộc dừng ngay lập tức tiến trình bị treo</span>
+top / htop                           <span class="comment"># Màn hình giám sát CPU/RAM realtime</span>
+sudo systemctl status nginx          <span class="comment"># Xem trạng thái dịch vụ Nginx</span>
+sudo systemctl start|stop|restart nginx <span class="comment"># Khởi chạy / Dừng / Khởi động lại dịch vụ</span>
+sudo systemctl enable nginx          <span class="comment"># Cho phép dịch vụ tự bật khi khởi động máy</span>
+sudo journalctl -u nginx -n 50 --no-pager <span class="comment"># Xem 50 dòng log mới nhất của Nginx</span>
+sudo nginx -t                        <span class="comment"># Kiểm tra cú pháp file cấu hình Nginx</span>
+</pre>
+
+<h2>6. QUẢN LÝ GÓI &amp; SỬA SỰ CỐ (APT &amp; INCIDENT RECOVERY)</h2>
+<pre>
+sudo apt update && sudo apt install -y package_name <span class="comment"># Cập nhật danh sách &amp; cài đặt gói</span>
+sudo apt purge -y package_name                      <span class="comment"># Xóa sạch gói + XÓA TOÀN BỘ FILE CONFIG TRONG /etc/</span>
+curl -I http://localhost                            <span class="comment"># Kiểm tra Header phản hồi HTTP Server</span>
+</pre>
+
+<h2>7. GIT &amp; GITHUB CƠ BẢN DÀNH CHO DEVOPS</h2>
+<pre>
+ssh-keygen -t ed25519 -C "email@example.com" <span class="comment"># Sinh SSH Key chuẩn Ed25519</span>
+ssh -T git@github.com                        <span class="comment"># Kiểm tra kết nối SSH tới GitHub</span>
+git init                                     <span class="comment"># Khởi tạo kho Git local</span>
+git branch -M main                           <span class="comment"># Đổi tên nhánh mặc định thành main</span>
+git status                                   <span class="comment"># Kiểm tra trạng thái làm việc</span>
+git add .                                    <span class="comment"># Đưa tất cả file vào Staging Area</span>
+git commit -m "feat: mô tả công việc"        <span class="comment"># Chụp ảnh lưu trữ commit</span>
+git remote add origin git@github.com:User/Repo.git <span class="comment"># Kết nối remote GitHub</span>
+git remote -v                                <span class="comment"># Kiểm tra đường dẫn Remote hiện có</span>
+git remote rename origion origin             # Sửa lỗi gõ nhầm tên Remote
+git push -u origin main                      <span class="comment"># Đẩy commit lên nhánh main trên GitHub</span>
+</pre>
+
+<div class="footer">
+  DevOps Personal Tutor System | Project Path: D:\Devops | Updated: 2026-08-01
+</div>
+
+</body>
+</html>
