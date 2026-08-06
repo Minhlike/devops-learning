@@ -16,6 +16,7 @@
 | Linux System Admin| Disk Full Troubleshooting (`du -sh * | sort -rh`)| Troubleshoot được | 2026-08-02 | Incident 5.2: Khoanh vùng và tiêu diệt file log rác phình to 200MB |
 | Automation & Script| Cron Job Automation (`crontab`) | Làm được độc lập | 2026-08-02 | Lab 5.4: Lập lịch cron `* * * * *` tự động chạy script kiểm tra đĩa |
 | Troubleshooting | Systemd & Journalctl Log Analysis | Troubleshoot được | 2026-08-01 | Incident 4.3: Đọc log `journalctl` & `nginx -t`, xử lý lỗi config & khôi phục bằng `apt purge` |
+| Troubleshooting | Multi-Incident Exam & Postmortem Report | Troubleshoot được | 2026-08-07 | Phase 1 Exam: Sửa 3 lỗi đồng thời & viết Postmortem Report trên GitHub |
 | Version Control| Git Config & SSH Key | Làm được độc lập | 2026-07-31 | Sinh SSH key Ed25519, add GitHub, test `ssh -T` thành công |
-| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-02 | Commit & push thành công các bài lab lên GitHub |
+| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-07 | Commit & push thành công bài exam và postmortem report lên GitHub |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |

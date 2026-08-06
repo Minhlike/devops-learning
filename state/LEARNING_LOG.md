@@ -23,10 +23,13 @@
 - Tổ chức phiên Masterclass Syntax Linux CLI và xuất bản tài liệu PDF Cheat Sheet `LINUX_DEVOPS_CHEATSHEET.pdf`.
 
 ## [2026-08-02] Session 5: Resource Monitoring, Disk Full Incident & Cron Automation
-- Trả lời đúng 100% bài kiểm tra kiến thức cũ.
-- Thực hành đọc chỉ số dung lượng đĩa `df -h`, bộ nhớ RAM `free -h` và chỉ số `uptime` (Load Average).
+- Trực tiếp đọc chỉ số dung lượng đĩa `df -h`, bộ nhớ RAM `free -h` và `uptime`.
 - Giải quyết bài lab Failure Injection: Dùng `du -sh * | sort -rh` khoanh vùng và tiêu diệt file log rác phình to 200MB.
-- Tự phát hiện và sửa lỗi gõ nhầm đường dẫn trong script `check_disk.sh` (`lab-5-resources` vs `lab-05-resources`).
 - Thiết lập Cron Job (`crontab`) tự động hóa kiểm tra ổ đĩa mỗi phút và kiểm chứng thành công.
-- Nắm vững khái niệm Log Rotation (`logrotate`, `rotate`, `compress`).
-- Commit và push bài lab `lab-05-resources` lên GitHub `Minhlike/devops-learning`.
+- Commit và push bài lab `lab-05-resources` lên GitHub.
+
+## [2026-08-07] Session 6: Phase 1 Failure Injection Exam & Graduation
+- Học viên hoàn thành Bài kiểm tra Cuối Phase 1: Xử lý độc lập 3 sự cố đồng thời (Nginx crash, Script permissions, Disk space leak).
+- Viết Báo cáo Sự cố Incident Postmortem Report đầu tiên tại `docs/postmortem-phase1.md`.
+- Commit và push bài exam lên GitHub `Minhlike/devops-learning`.
+- Kết quả Đánh giá Phase 1: **100 / 100 điểm** (ĐẠT VỮNG PHASE 1).

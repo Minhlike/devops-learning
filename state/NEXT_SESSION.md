@@ -1,8 +1,8 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 6 — PHASE 1: Bài Kiểm Tra Cố Tình Phá VM (Failure Injection Comprehensive Lab) & Tổng Kết Phase 1.
+- **Buổi học tiếp theo:** BUỔI 7 — BẮT ĐẦU PHASE 2: Mạng Máy Tính Dành Cho DevOps (Networking for DevOps).
 - **Mục tiêu:**
-  1. Đối mặt với một hệ thống Linux bị cố tình phá tổng hợp: Service Nginx ngưng hoạt động, File bị sai phân quyền (`Permission Denied`), Port bị chiếm dụng, File log tăng quá nhanh làm đĩa gần đầy, Biến môi trường bị thiếu.
-  2. Học viên tự điều tra root cause bằng dữ liệu log (`journalctl`, `nginx -t`, `ps`, `df -h`, `du -sh`, `chmod`).
-  3. Viết Báo cáo Sự cố (Incident Postmortem Report) đầu tiên theo mẫu chuẩn Senior DevOps.
-  4. Đánh giá điểm qua Phase 1 (Yêu cầu troubleshooting >= 60%, tổng điểm >= 80%).
+  1. Nắm vững Mô hình OSI 7 Tầng & Mô hình TCP/IP trong thực tế hạ tầng DevOps.
+  2. Phân tích địa chỉ IP (IPv4), Subnet Mask, Default Gateway và CIDR Notation (ví dụ `/24`, `/16`, `/32`).
+  3. Phân biệt sâu sắc IP Public vs IP Private và giải thích luồng một Request đi qua các tầng mạng.
+  4. Sử dụng công cụ quan sát mạng `ip a`, `ping`, `ss -tulpn` để kiểm tra cổng (Port) và giao diện mạng.
