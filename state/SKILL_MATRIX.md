@@ -12,7 +12,10 @@
 | Linux System Admin| User, Group, `sudo`, `chown` | Làm được độc lập | 2026-08-01 | Nắm bản chất root, sudo và đổi owner |
 | Linux System Admin| Process Management (`ps`, PID, `kill -9`) | Làm được độc lập | 2026-08-01 | Lab 4.1: Tra cứu PID và tiêu diệt tiến trình `sleep 1000` |
 | Linux System Admin| Service Management (`systemctl`, Nginx) | Làm được độc lập | 2026-08-01 | Lab 4.2: Cài đặt, start, status Nginx và test `curl -I` |
+| Linux System Admin| Resource Monitoring (`df -h`, `free -m`, `uptime`)| Làm được độc lập | 2026-08-02 | Lab 5.1: Đọc dung lượng đĩa, RAM và Load Average |
+| Linux System Admin| Disk Full Troubleshooting (`du -sh * | sort -rh`)| Troubleshoot được | 2026-08-02 | Incident 5.2: Khoanh vùng và tiêu diệt file log rác phình to 200MB |
+| Automation & Script| Cron Job Automation (`crontab`) | Làm được độc lập | 2026-08-02 | Lab 5.4: Lập lịch cron `* * * * *` tự động chạy script kiểm tra đĩa |
 | Troubleshooting | Systemd & Journalctl Log Analysis | Troubleshoot được | 2026-08-01 | Incident 4.3: Đọc log `journalctl` & `nginx -t`, xử lý lỗi config & khôi phục bằng `apt purge` |
 | Version Control| Git Config & SSH Key | Làm được độc lập | 2026-07-31 | Sinh SSH key Ed25519, add GitHub, test `ssh -T` thành công |
-| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-01 | Commit & push thành công các bài lab lên GitHub |
+| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-02 | Commit & push thành công các bài lab lên GitHub |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |

@@ -19,3 +19,12 @@
 - **Cách kiểm tra:** Chạy `sudo nginx -t` thấy báo thiếu file `/etc/nginx/nginx.conf`.
 - **Cách sửa:** Xóa file lỗi `broken.conf` và dùng `sudo apt purge -y nginx nginx-common nginx-core` rồi `sudo apt install -y nginx` để ép buộc apt tải lại file config mặc định.
 - **Cách phòng tránh:** Đọc kỹ đường dẫn file trước khi thực hiện lệnh `rm`, đặc biệt là trong thư mục hệ thống `/etc/`.
+
+## [2026-08-02] Lỗi gõ nhầm tên thư mục trong Shell Script (`lab-5-resources` vs `lab-05-resources`)
+- **Ngày:** 2026-08-02
+- **Bối cảnh:** Viết script `check_disk.sh` tự động ghi log đĩa.
+- **Triệu chứng:** `./check_disk.sh: line 3: /mnt/d/.../lab-5-resources/disk_audit.log: No such file or directory`.
+- **Nguyên nhân gốc:** Gõ thiếu chữ số `0` trong tên thư mục (`lab-5-resources` thay vì `lab-05-resources`).
+- **Cách kiểm tra:** Đọc thông báo lỗi dòng số 3 từ Bash interpreter.
+- **Cách sửa:** Đọc lại tên thư mục chính xác bằng `pwd` và sửa lại câu lệnh echo trong script.
+- **Cách phòng tránh:** Sử dụng phím `TAB` để tự động hoàn thành (auto-complete) tên file/folder khi gõ lệnh.

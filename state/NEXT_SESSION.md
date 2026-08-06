@@ -1,9 +1,8 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 5 — PHASE 1: Quản lý Tài nguyên (Resource Management), Tự động hóa Cron & Log Rotation.
+- **Buổi học tiếp theo:** BUỔI 6 — PHASE 1: Bài Kiểm Tra Cố Tình Phá VM (Failure Injection Comprehensive Lab) & Tổng Kết Phase 1.
 - **Mục tiêu:**
-  1. Giám sát chuyên sâu tài nguyên CPU, Memory, Swap, Disk và Load Average (`top`, `htop`, `df -h`, `du -sh`, `free -m`).
-  2. Phân tích nguyên nhân sự cố đĩa bị đầy (Disk Full) và tiến trình ngốn CPU / Memory.
-  3. Lập lịch tự động hóa công việc với Cron Job (`crontab -e`, cú pháp 5 dấu sao `* * * * *`).
-  4. Quản lý xoay vòng file log ứng dụng với `logrotate` để tránh tràn đĩa cứng.
-  5. Giải quyết bài lab sự cố đĩa đầy và tạo Cron Job tự động kiểm tra disk space.
+  1. Đối mặt với một hệ thống Linux bị cố tình phá tổng hợp: Service Nginx ngưng hoạt động, File bị sai phân quyền (`Permission Denied`), Port bị chiếm dụng, File log tăng quá nhanh làm đĩa gần đầy, Biến môi trường bị thiếu.
+  2. Học viên tự điều tra root cause bằng dữ liệu log (`journalctl`, `nginx -t`, `ps`, `df -h`, `du -sh`, `chmod`).
+  3. Viết Báo cáo Sự cố (Incident Postmortem Report) đầu tiên theo mẫu chuẩn Senior DevOps.
+  4. Đánh giá điểm qua Phase 1 (Yêu cầu troubleshooting >= 60%, tổng điểm >= 80%).
