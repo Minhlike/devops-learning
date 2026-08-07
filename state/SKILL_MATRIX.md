@@ -18,8 +18,11 @@
 | Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
 | Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
 | Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |
+| Networking | HTTP Status Codes, Headers & `curl -v` | Làm được độc lập | 2026-08-08 | Lab 8.1: Soi chi tiết Request/Response Headers bằng `curl -v` |
+| Networking | DNS Records & Resolution (`dig`, `bind9-dnsutils`) | Làm được độc lập | 2026-08-08 | Lab 8.1: Tra cứu A Record và DNS `google.com` bằng `dig` |
+| Troubleshooting | HTTP 502 Bad Gateway Incident Response | Troubleshoot được | 2026-08-08 | Incident 8.2: Đọc log `Connection refused` từ Nginx error log và sửa lỗi 502 |
 | Troubleshooting | Systemd & Journalctl Log Analysis | Troubleshoot được | 2026-08-01 | Incident 4.3: Đọc log `journalctl` & `nginx -t`, xử lý lỗi config |
 | Troubleshooting | Multi-Incident Exam & Postmortem Report | Troubleshoot được | 2026-08-07 | Phase 1 Exam: Sửa 3 lỗi đồng thời & viết Postmortem Report trên GitHub |
 | Version Control| Git Config & SSH Key | Làm được độc lập | 2026-07-31 | Sinh SSH key Ed25519, add GitHub, test `ssh -T` thành công |
-| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-07 | Commit & push thành công bài lab Phase 2 lên GitHub |
+| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-08 | Commit & push thành công bài lab Phase 2 lên GitHub |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |

@@ -1,9 +1,8 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 8 — PHASE 2: HTTP/HTTPS Deep-Dive, Phân Phân Giải DNS & Quản Lý Firewall (`curl -v`, `dig`, `ufw`).
+- **Buổi học tiếp theo:** BUỔI 9 — PHASE 2: Bắt Gói Tin `tcpdump`, Vẽ Sơ Đồ Kiến Trúc Luồng Request & Bài Kiểm Tra Tổng Kết Phase 2.
 - **Mục tiêu:**
-  1. Phân tích chi tiết cấu trúc HTTP Request / Response (Headers, Status Codes `200`, `301`, `404`, `500`, `502`, `503`, `504`).
-  2. Phân tích quá trình phân giải tên miền DNS (`dig`, `nslookup`, A Record, CNAME, NS Record).
-  3. Thành thạo lệnh `curl -v` để soi quá trình bắt tay TCP, chứng chỉ TLS/SSL và Headers.
-  4. Quản lý Tường lửa Linux UFW (`ufw status`, `ufw allow 80/tcp`, `ufw deny 22/tcp`) để bảo mật máy chủ.
-  5. Xử lý bài lab Failure Injection: Phân biệt và sửa lỗi `502 Bad Gateway` vs `504 Gateway Timeout`.
+  1. Bắt gói tin giao thức HTTP/TCP thực tế bằng công cụ `tcpdump` (`tcpdump -i eth0 port 80 -nn`).
+  2. Tổng hợp luồng Request từ Browser $\rightarrow$ DNS $\rightarrow$ TCP Handshake $\rightarrow$ TLS Handshake $\rightarrow$ Nginx Reverse Proxy $\rightarrow$ Application Backend $\rightarrow$ Database.
+  3. Tự vẽ Sơ đồ Kiến trúc Luồng Request (Architecture Diagram) bằng định dạng Mermaid trong Markdown.
+  4. Thực hiện Bài kiểm tra Sự cố Mạng Cuối Phase 2 (Networking Failure Injection Exam) & Tổng kết Cấp chứng nhận Phase 2.
