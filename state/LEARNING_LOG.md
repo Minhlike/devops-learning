@@ -29,7 +29,14 @@
 - Commit và push bài lab `lab-05-resources` lên GitHub.
 
 ## [2026-08-07] Session 6: Phase 1 Failure Injection Exam & Graduation
-- Học viên hoàn thành Bài kiểm tra Cuối Phase 1: Xử lý độc lập 3 sự cố đồng thời (Nginx crash, Script permissions, Disk space leak).
+- Học viên hoàn thành Bài kiểm tra Cuối Phase 1: Xử lý độc lập 3 sự cố đồng thời.
 - Viết Báo cáo Sự cố Incident Postmortem Report đầu tiên tại `docs/postmortem-phase1.md`.
-- Commit và push bài exam lên GitHub `Minhlike/devops-learning`.
 - Kết quả Đánh giá Phase 1: **100 / 100 điểm** (ĐẠT VỮNG PHASE 1).
+
+## [2026-08-07] Session 7: Phase 2 Networking Fundamentals & Nginx Reverse Proxy
+- Trả lời xuất sắc bài Ôn tập Recall về DNS, HTTP/HTTPS và IP Private/Public.
+- Soi Card mạng `lo`, `eth0`, IP Private `172.19.132.120/20` bằng `ip a` và kiểm tra kết nối mạng bằng `ping -c 4 8.8.8.8`.
+- Giám sát các Port đang mở `sudo ss -tulpn`, xác định Port 80 của Nginx và Port 53 của DNS.
+- Xử lý sự cố Failure Injection 7.2: Tìm PID `1252` chiếm dụng Port 8080 và tiêu diệt bằng `kill -9`.
+- Thực hành bài Lab 7.3: Cấu hình Nginx làm Reverse Proxy tiếp nhận Request ở Port 8080 và chuyển tiếp (`proxy_pass`) tới Python Backend ở Port 8000.
+- Viết script `check_ports.sh`, commit và push bài lab `lab-07-networking` lên GitHub `Minhlike/devops-learning`.

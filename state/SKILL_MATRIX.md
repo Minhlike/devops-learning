@@ -15,8 +15,11 @@
 | Linux System Admin| Resource Monitoring (`df -h`, `free -m`, `uptime`)| Làm được độc lập | 2026-08-02 | Lab 5.1: Đọc dung lượng đĩa, RAM và Load Average |
 | Linux System Admin| Disk Full Troubleshooting (`du -sh * | sort -rh`)| Troubleshoot được | 2026-08-02 | Incident 5.2: Khoanh vùng và tiêu diệt file log rác phình to 200MB |
 | Automation & Script| Cron Job Automation (`crontab`) | Làm được độc lập | 2026-08-02 | Lab 5.4: Lập lịch cron `* * * * *` tự động chạy script kiểm tra đĩa |
-| Troubleshooting | Systemd & Journalctl Log Analysis | Troubleshoot được | 2026-08-01 | Incident 4.3: Đọc log `journalctl` & `nginx -t`, xử lý lỗi config & khôi phục bằng `apt purge` |
+| Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
+| Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
+| Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |
+| Troubleshooting | Systemd & Journalctl Log Analysis | Troubleshoot được | 2026-08-01 | Incident 4.3: Đọc log `journalctl` & `nginx -t`, xử lý lỗi config |
 | Troubleshooting | Multi-Incident Exam & Postmortem Report | Troubleshoot được | 2026-08-07 | Phase 1 Exam: Sửa 3 lỗi đồng thời & viết Postmortem Report trên GitHub |
 | Version Control| Git Config & SSH Key | Làm được độc lập | 2026-07-31 | Sinh SSH key Ed25519, add GitHub, test `ssh -T` thành công |
-| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-07 | Commit & push thành công bài exam và postmortem report lên GitHub |
+| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-07 | Commit & push thành công bài lab Phase 2 lên GitHub |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |
