@@ -40,7 +40,14 @@
 - Commit và push bài lab `lab-07-networking` lên GitHub.
 
 ## [2026-08-08] Session 8: HTTP Status Codes, DNS Resolution & 502 Bad Gateway Incident
-- Trả lời đúng 100% bài kiểm tra kiến thức cũ.
 - Soi chi tiết Request/Response Headers bằng `curl -v http://localhost`. Tra cứu DNS bằng `dig google.com +short`.
-- Giải quyết thành công sự cố Failure Injection 8.2: Phát hiện lỗi `HTTP 502 Bad Gateway` do Backend Python bị sụp, đọc log `connect() failed (111: Connection refused)` từ `/var/log/nginx/error.log` và khôi phục dịch vụ về `200 OK`.
-- Viết script `check_http_status.sh`, commit và push bài lab `lab-08-http-dns` lên GitHub `Minhlike/devops-learning`.
+- Giải quyết thành công sự cố Failure Injection 8.2: Phát hiện lỗi `HTTP 502 Bad Gateway` do Backend Python bị sụp, đọc log `Connection refused` từ `/var/log/nginx/error.log` và khôi phục dịch vụ về `200 OK`.
+- Commit và push bài lab `lab-08-http-dns` lên GitHub.
+
+## [2026-08-08] Session 9: Packet Capture tcpdump, Mermaid Architecture Diagram & Phase 2 Graduation
+- Trả lời xuất sắc 100% bài kiểm tra kiến thức cũ.
+- Bắt và giải mã trực tiếp các gói tin TCP 3-Way Handshake (SYN / SYN-ACK / ACK) và HTTP Data Push bằng `sudo tcpdump -i lo port 80`.
+- Học viên hoàn thành Bài kiểm tra Sự cố Mạng Cuối Phase 2: Khắc phục sự cố Nginx `proxy_pass` sai Port backend 8005 và Backend bị tắt.
+- Tự tay tạo Sơ đồ Kiến trúc Mermaid tại `docs/architecture-phase2.md` và Báo cáo Postmortem tại `docs/postmortem-phase2.md`.
+- Commit và push toàn bộ bài exam lên GitHub `Minhlike/devops-learning`.
+- Kết quả Đánh giá Phase 2: **100 / 100 điểm** (ĐẠT VỮNG PHASE 2).

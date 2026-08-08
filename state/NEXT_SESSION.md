@@ -1,8 +1,8 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 9 — PHASE 2: Bắt Gói Tin `tcpdump`, Vẽ Sơ Đồ Kiến Trúc Luồng Request & Bài Kiểm Tra Tổng Kết Phase 2.
+- **Buổi học tiếp theo:** BUỔI 10 — BẮT ĐẦU PHASE 3: Git, Bash Scripting & Python cho DevOps (Git Advanced Workflow).
 - **Mục tiêu:**
-  1. Bắt gói tin giao thức HTTP/TCP thực tế bằng công cụ `tcpdump` (`tcpdump -i eth0 port 80 -nn`).
-  2. Tổng hợp luồng Request từ Browser $\rightarrow$ DNS $\rightarrow$ TCP Handshake $\rightarrow$ TLS Handshake $\rightarrow$ Nginx Reverse Proxy $\rightarrow$ Application Backend $\rightarrow$ Database.
-  3. Tự vẽ Sơ đồ Kiến trúc Luồng Request (Architecture Diagram) bằng định dạng Mermaid trong Markdown.
-  4. Thực hiện Bài kiểm tra Sự cố Mạng Cuối Phase 2 (Networking Failure Injection Exam) & Tổng kết Cấp chứng nhận Phase 2.
+  1. Nắm vững quy trình làm việc Git nhóm chuyên nghiệp (Feature Branching Workflow, Working Tree, Staging Area, Local/Remote Repo).
+  2. Thực hành tạo Branch (`git checkout -b feature/login`), Commit, Merge branch (`git merge`) và xử lý Conflict (Xung đột code).
+  3. Cấu hình file ẩn `.gitignore` chuẩn production để ngăn ngừa commit secret, file tạm, log rác hay file môi trường `.env`.
+  4. Hiểu bản chất lệnh `git rebase` và `git tag` tạo phiên bản Release (Semantic Versioning `v1.0.0`).
