@@ -1,13 +1,12 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 2 — Mạng Máy Tính Dành Cho DevOps (ĐÃ HOÀN THÀNH XUẤT SẮC)
-- **Next Phase:** PHASE 3 — Git, Bash Scripting & Python cho DevOps (BẮT ĐẦU BUỔI 10)
+- **Current Phase:** PHASE 3 — Git, Bash Scripting & Python cho DevOps
+- **Current Status:** Hoàn thành Buổi 10 (Advanced Git Workflow, Branching, .gitignore, Merge Conflict Resolution & Semantic Tagging). Chuẩn bị Buổi 11 (Bash Scripting Fundamentals: Variables, Quoting, Conditionals, Loops, Arguments & Exit Codes).
 - **Current Week:** Tuần 3
-- **Completed Phase 2 Milestones:**
-  1. Nắm vững bản chất địa chỉ IPv4, Subnet Mask, Ký hiệu CIDR (`/20`, `/24`) và phân biệt IP Public vs Private.
-  2. Sử dụng công cụ `ip a`, `ping -c 4` kiểm tra Card mạng (`lo`, `eth0`) và thông mạng Internet.
-  3. Thành thạo công cụ `sudo ss -tulpn` kiểm tra các Cổng (Port) đang lắng nghe trên server.
-  4. Cấu hình Nginx làm Reverse Proxy tiếp nhận HTTP Request ở Port 8080 và chuyển tiếp (`proxy_pass`) tới ứng dụng Python Backend ở Port 8000.
-  5. Nắm vững cấu trúc HTTP Status Codes (2xx, 3xx, 4xx, 5xx), DNS Records (A Record, CNAME) và soi luồng mạng với `curl -v` & `dig`.
-  6. Bắt và phân tích gói tin quá trình Bắt tay 3 bước TCP (3-Way Handshake SYN/SYN-ACK/ACK) bằng `tcpdump`.
-  7. Bài kiểm tra Cuối Phase 2 (Networking Exam): Đạt 100/100 điểm, tự tay vẽ Sơ đồ Kiến trúc Mermaid `docs/architecture-phase2.md` và viết Báo cáo Postmortem trên GitHub `Minhlike/devops-learning`.
+- **Completed Outputs:**
+  1. Nắm vững quy trình làm việc nhánh Feature Branching Workflow (`main` vs `feature/...`).
+  2. Cấu hình file ẩn `.gitignore` chặn rò rỉ Secret `.env`, file log `*.log` và cache `__pycache__/`.
+  3. Tạo nhánh tính năng `feature/port-8080`, commit và gộp nhánh vào `main`.
+  4. Thực hành bài lab Failure Injection 10.2: Tự tay kích hoạt lỗi `CONFLICT (content): Merge conflict in app_setting.txt`, đọc dải đụng độ `< = >` và tự giải quyết xung đột bằng CLI.
+  5. Đánh nhãn phiên bản Semantic Versioning `v1.0.0` (`git tag -a v1.0.0`).
+  6. Push nhánh `main`, branch tính năng và Release Tag `v1.0.0` lên GitHub `Minhlike/devops-learning`.

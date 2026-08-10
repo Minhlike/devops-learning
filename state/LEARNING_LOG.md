@@ -34,7 +34,6 @@
 - Kết quả Đánh giá Phase 1: **100 / 100 điểm** (ĐẠT VỮNG PHASE 1).
 
 ## [2026-08-07] Session 7: Phase 2 Networking Fundamentals & Nginx Reverse Proxy
-- Trả lời xuất sắc bài Ôn tập Recall về DNS, HTTP/HTTPS và IP Private/Public.
 - Soi Card mạng `lo`, `eth0`, IP Private `172.19.132.120/20` bằng `ip a`, giám sát Port `sudo ss -tulpn`.
 - Cấu hình Nginx làm Reverse Proxy tiếp nhận Request Port 8080 và chuyển tiếp (`proxy_pass`) tới Python Backend Port 8000.
 - Commit và push bài lab `lab-07-networking` lên GitHub.
@@ -45,9 +44,13 @@
 - Commit và push bài lab `lab-08-http-dns` lên GitHub.
 
 ## [2026-08-08] Session 9: Packet Capture tcpdump, Mermaid Architecture Diagram & Phase 2 Graduation
-- Trả lời xuất sắc 100% bài kiểm tra kiến thức cũ.
-- Bắt và giải mã trực tiếp các gói tin TCP 3-Way Handshake (SYN / SYN-ACK / ACK) và HTTP Data Push bằng `sudo tcpdump -i lo port 80`.
-- Học viên hoàn thành Bài kiểm tra Sự cố Mạng Cuối Phase 2: Khắc phục sự cố Nginx `proxy_pass` sai Port backend 8005 và Backend bị tắt.
-- Tự tay tạo Sơ đồ Kiến trúc Mermaid tại `docs/architecture-phase2.md` và Báo cáo Postmortem tại `docs/postmortem-phase2.md`.
-- Commit và push toàn bộ bài exam lên GitHub `Minhlike/devops-learning`.
+- Bắt và giải mã trực tiếp các gói tin TCP 3-Way Handshake (SYN / SYN-ACK / ACK) bằng `sudo tcpdump -i lo port 80`.
+- Tạo Sơ đồ Kiến trúc Mermaid tại `docs/architecture-phase2.md` và Báo cáo Postmortem tại `docs/postmortem-phase2.md`.
 - Kết quả Đánh giá Phase 2: **100 / 100 điểm** (ĐẠT VỮNG PHASE 2).
+
+## [2026-08-08] Session 10: Advanced Git Workflow, .gitignore, Merge Conflict & Tagging
+- Trả lời xuất sắc 100% bài kiểm tra kiến thức cũ (mục đích .gitignore, nguy cơ commit thẳng main).
+- Cấu hình file ẩn `.gitignore` chặn rò rỉ Secret `.env`, log rác `*.log` và cache `__pycache__/`.
+- Thực hành bài lab Failure Injection 10.2: Tự kích hoạt đụng độ `CONFLICT (content): Merge conflict in app_setting.txt`, đọc dải đụng độ `< = >` và tự xử lý conflict bằng CLI.
+- Gắn nhãn phiên bản Semantic Versioning `v1.0.0` (`git tag -a v1.0.0`).
+- Push nhánh `main`, branch tính năng và Release Tag `v1.0.0` lên GitHub `Minhlike/devops-learning`.

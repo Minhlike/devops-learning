@@ -22,8 +22,8 @@
 | Networking | DNS Records & Resolution (`dig`, `bind9-dnsutils`) | Làm được độc lập | 2026-08-08 | Lab 8.1: Tra cứu A Record và DNS `google.com` bằng `dig` |
 | Networking | Network Packet Capture (`tcpdump`) | Làm được độc lập | 2026-08-08 | Lab 9.1: Bắt gói tin TCP 3-Way Handshake SYN/SYN-ACK/ACK bằng `tcpdump` |
 | Architecture | Mermaid Architecture Diagramming | Làm được độc lập | 2026-08-08 | Phase 2 Exam: Vẽ sơ đồ luồng Request End-to-End tại `docs/architecture-phase2.md` |
+| Version Control| Feature Branching & `.gitignore` | Làm được độc lập | 2026-08-08 | Lab 10.1: Cấu hình `.gitignore` bảo vệ `.env`, tạo branch `feature/port-8080` |
+| Version Control| Git Merge Conflict Resolution | Troubleshoot được | 2026-08-08 | Lab 10.2: Đọc dải đụng độ `< = >`, tự sửa conflict và commit merge |
+| Version Control| Semantic Versioning & Release Tags (`git tag`)| Làm được độc lập | 2026-08-08 | Đánh tag `v1.0.0` và push thành công lên GitHub `Minhlike/devops-learning` |
 | Troubleshooting | HTTP 502 Bad Gateway Incident Response | Troubleshoot được | 2026-08-08 | Incident 8.2 & Exam Phase 2: Đọc log `Connection refused` và sửa lỗi 502 |
-| Troubleshooting | Multi-Incident Exam & Postmortem Report | Troubleshoot được | 2026-08-08 | Phase 2 Exam: Sửa lỗi mạng, vẽ sơ đồ Mermaid & viết Postmortem Report trên GitHub |
-| Version Control| Git Config & SSH Key | Làm được độc lập | 2026-07-31 | Sinh SSH key Ed25519, add GitHub, test `ssh -T` thành công |
-| Version Control| Git Local & Remote (init, commit, push) | Làm được độc lập | 2026-08-08 | Commit & push thành công bài exam và postmortem report Phase 2 lên GitHub |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |

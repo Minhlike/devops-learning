@@ -26,5 +26,12 @@
 - **Bối cảnh:** Cấu hình Nginx Reverse Proxy chuyển tiếp request Port 8080 sang Python Backend Port 8000.
 - **Triệu chứng:** `invalid number of arguments in "proxy_pass" directive in /etc/nginx/conf.d/reverse_proxy.conf:6`.
 - **Nguyên nhân gốc:** Thừa/thiếu khoảng trắng khi chèn lệnh proxy_pass bằng bash redirection script.
-- **Cách kiểm tra:** Chạy `sudo nginx -t` đọc chính xác số dòng bị lỗi.
 - **Cách sửa:** Tạo lại file cấu hình tối giản với cú pháp chuẩn `proxy_pass http://127.0.0.1:8000;`.
+
+## [2026-08-08] Lỗi `merge: feature/port-8080 - not something we can merge` khi quên tạo branch
+- **Ngày:** 2026-08-08
+- **Bối cảnh:** Thực hành bài lab Git Merge Conflict.
+- **Triệu chứng:** `merge: feature/port-8080 - not something we can merge`.
+- **Nguyên nhân gốc:** Bỏ qua lệnh tạo nhánh `git checkout -b feature/port-8080` nên branch này chưa tồn tại trong Git.
+- **Cách kiểm tra:** Dùng lệnh `git branch` để xem danh sách các nhánh hiện có.
+- **Cách sửa:** Chạy `git checkout -b feature/port-8080` để tạo nhánh trước khi sửa code và commit.

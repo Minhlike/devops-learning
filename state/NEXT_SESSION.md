@@ -1,8 +1,9 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 10 — BẮT ĐẦU PHASE 3: Git, Bash Scripting & Python cho DevOps (Git Advanced Workflow).
+- **Buổi học tiếp theo:** BUỔI 11 — PHASE 3: Lập Trình Bash Script Cho DevOps (Bash Fundamentals: Variables, Quoting, Conditionals & Exit Codes).
 - **Mục tiêu:**
-  1. Nắm vững quy trình làm việc Git nhóm chuyên nghiệp (Feature Branching Workflow, Working Tree, Staging Area, Local/Remote Repo).
-  2. Thực hành tạo Branch (`git checkout -b feature/login`), Commit, Merge branch (`git merge`) và xử lý Conflict (Xung đột code).
-  3. Cấu hình file ẩn `.gitignore` chuẩn production để ngăn ngừa commit secret, file tạm, log rác hay file môi trường `.env`.
-  4. Hiểu bản chất lệnh `git rebase` và `git tag` tạo phiên bản Release (Semantic Versioning `v1.0.0`).
+  1. Nắm vững cú pháp Bash Script chuẩn: Shebang `#!/bin/bash`, Biến (Variables), Quy tắc Quoting (`""` vs `''` vs `\`).
+  2. Sử dụng thành thạo Cấu trúc rẽ nhánh (Conditionals `if [ ... ]; then ... else ... fi`).
+  3. Kiểm soát Mã thoát (Exit Codes `$?`): Phân biệt Exit code `0` (Success) và khác `0` (Error).
+  4. Nhận Tham số đầu vào (Arguments `$1`, `$2`, `$@`, `$#`).
+  5. Viết script kiểm tra tự động Endpoint Health Check (`check_endpoint.sh`) kết hợp với `curl` và kiểm tra Exit code.
