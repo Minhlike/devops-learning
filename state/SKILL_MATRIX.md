@@ -17,6 +17,11 @@
 | Automation & Script| Cron Job Automation (`crontab`) | Làm được độc lập | 2026-08-02 | Lab 5.4: Lập lịch cron `* * * * *` tự động chạy script kiểm tra đĩa |
 | Automation & Script| Bash Scripting, Variables & Quoting | Làm được độc lập | 2026-08-10 | Lab 11.1: Viết script `check_endpoint.sh` tự động kiểm tra mã HTTP |
 | Automation & Script| Exit Codes (`$?`) & CI/CD `set -e` Safety | Troubleshoot được | 2026-08-10 | Lab 11.2: Kiểm soát Exit Code 0 vs 1 và dùng `set -e` chặn trôi lỗi |
+| Automation & Script| Bash Functions, `return` & Control Flow | Troubleshoot được | 2026-08-24 | Lab 12: `check_backup_dir`, `backup_app`; xử lý success/failure path |
+| Automation & Script| Bash Loops (`for`, `while read`) | Troubleshoot được | 2026-08-24 | Lab 12: Parse nhiều file log bằng `for`; đọc từng dòng bằng `while read -r` |
+| Automation & Script| Log Parsing (`grep`, `$()`) | Troubleshoot được | 2026-08-24 | `parse_log.sh`: đếm ERROR/HTTP 500 và xử lý hàng loạt file log |
+| Automation & Script| Automated Backup (`tar`, timestamp) | Troubleshoot được | 2026-08-24 | `backup_app.sh`: backup timestamp, validation và kiểm tra exit status của `tar` |
+| Automation & Script| Safe File Cleanup (`find`, `-mtime`, safety guard) | Troubleshoot được | 2026-08-24 | `clean_old_backups.sh`: cleanup >7 ngày và Failure Injection chống sai path |
 | Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
 | Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
 | Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |

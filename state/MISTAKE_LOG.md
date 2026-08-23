@@ -35,3 +35,24 @@
 - **Nguyên nhân gốc:** Bỏ qua lệnh tạo nhánh `git checkout -b feature/port-8080` nên branch này chưa tồn tại trong Git.
 - **Cách kiểm tra:** Dùng lệnh `git branch` để xem danh sách các nhánh hiện có.
 - **Cách sửa:** Chạy `git checkout -b feature/port-8080` để tạo nhánh trước khi sửa code và commit.
+
+## [2026-08-24] Bash tạo file literal `BACKUP_FILE` do thiếu `$`
+- **Ngày:** 2026-08-24
+- **Bối cảnh:** Lab 12 — viết `backup_app.sh`.
+- **Triệu chứng:** Xuất hiện file thật tên `BACKUP_FILE` ở thư mục hiện tại dù script thông báo đường dẫn `backups/app-<timestamp>.tar.gz`.
+- **Nguyên nhân gốc:** Viết `tar -czf "BACKUP_FILE" ...` thay vì `tar -czf "$BACKUP_FILE" ...`.
+- **Cách sửa:** Dùng `$BACKUP_FILE` để Bash thực hiện variable expansion và quote biến bằng `"$BACKUP_FILE"`.
+
+## [2026-08-24] `tar` thất bại nhưng script vẫn trả Exit Code 0
+- **Ngày:** 2026-08-24
+- **Bối cảnh:** Failure Injection khi thư mục `backups/` không tồn tại.
+- **Triệu chứng:** `tar` báo `Cannot open` và status 2 nhưng script vẫn in `Backup thanh cong`; `echo $?` trả `0`.
+- **Nguyên nhân gốc:** Sau lệnh `tar` thất bại, `echo` vẫn chạy thành công và trở thành command cuối cùng của script.
+- **Cách sửa:** Kiểm tra trực tiếp `if tar ...; then ... else ... fi` và trả `return/exit` phù hợp.
+
+## [2026-08-24] Nhầm phạm vi biến giữa Shell cha và Script
+- **Ngày:** 2026-08-24
+- **Bối cảnh:** Failure Injection cho `clean_old_backups.sh`.
+- **Triệu chứng:** Chạy `BACKUP_DIR="."` trong terminal nhưng script vẫn sử dụng `backups`.
+- **Nguyên nhân gốc:** Script tự gán lại `BACKUP_DIR="backups"` trong process Bash mới nên giá trị của shell bên ngoài không được sử dụng.
+- **Cách sửa:** Sửa trực tiếp biến khi test hoặc thiết kế script nhận giá trị bên ngoài bằng `BACKUP_DIR="${BACKUP_DIR:-backups}"`.

@@ -59,3 +59,13 @@
 - Lập trình thành công script `check_endpoint.sh` tự động kiểm tra mã phản hồi HTTP và trích xuất Exit Code `$?` (0 vs 1).
 - Thực hành bài lab Failure Injection 11.2: Sử dụng cờ `set -e` để chặn trôi lỗi trong Bash script cho Pipeline CI/CD.
 - Commit và push bài lab `lab-11-bash` lên GitHub `Minhlike/devops-learning`.
+
+## [2026-08-24] Session 12: Bash Advanced Automation, Log Parsing & Safe Cleanup
+- Viết và kiểm thử `backup_app.sh` tự động tạo archive `.tar.gz` với timestamp.
+- Dùng Functions, `return`, `exit`, `if` và kiểm thử cả success path lẫn failure path.
+- Phát hiện hiện tượng `tar` thất bại nhưng script vẫn báo thành công do lệnh `echo` cuối trả Exit Code `0`; sửa bằng kiểm tra trực tiếp exit status của `tar`.
+- Viết `parse_log.sh` dùng `grep -c`, command substitution `$()`, vòng lặp `for` xử lý nhiều log và `while read -r` đọc log từng dòng.
+- Viết `clean_old_backups.sh` tìm/xóa file `.tar.gz` cũ hơn 7 ngày bằng `find -mtime +7`.
+- Hoàn thành Failure Injection chống xóa nhầm file khi `BACKUP_DIR` bị cấu hình sai.
+- Tự sửa lỗi Bash `missing ']'` và troubleshoot lỗi thiếu `$` khiến `BACKUP_FILE` bị hiểu thành chuỗi literal.
+- Kết quả: **ĐẠT BUỔI 12**.

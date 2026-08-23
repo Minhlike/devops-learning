@@ -1,9 +1,12 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 12 — PHASE 3: Tự Động Hóa Vận Hành Bằng Bash Script Nâng Cao (Functions, Loops, Log Parser & Automated Backup).
+- **Buổi học tiếp theo:** BUỔI 13 — PHASE 3: Python Fundamentals for DevOps Automation.
 - **Mục tiêu:**
-  1. Tổ chức mã nguồn Bash chuyên nghiệp với Hàm (Functions) và Vòng lặp (`for` / `while`).
-  2. Viết script tự động nén & sao lưu thư mục dự án (`backup_app.sh`) kèm timestamp ngày giờ.
-  3. Viết script phân tích file log (`parse_log.sh`) tự động lọc các dòng chứa lỗi `ERROR` / `500` và đếm số lượng lỗi.
-  4. Viết script tự động dọn dẹp file backup quá hạn 7 ngày an toàn (`clean_old_backups.sh`).
-  5. Xử lý bài lab Failure Injection: Script xóa file rác nhưng vô tình xóa nhầm dữ liệu nếu không kiểm tra đường dẫn an toàn.
+  1. Hiểu khi nào nên dùng Bash và khi nào nên chuyển sang Python trong công việc DevOps.
+  2. Ôn nhanh Bash variable/function/loop và chuyển tư duy pseudocode sang Python.
+  3. Làm việc với biến, kiểu dữ liệu, `if`, `for`, function và Exit Code trong Python.
+  4. Dùng `pathlib` để kiểm tra file/thư mục và đọc file log.
+  5. Viết `parse_log.py` để phân tích `ERROR` / HTTP `500`, sau đó so sánh với phiên bản Bash của Buổi 12.
+  6. Dùng `subprocess` để gọi Linux command từ Python và kiểm tra return code.
+  7. Failure Injection: file log bị mất, command trả non-zero và dữ liệu đầu vào không hợp lệ.
+  8. Cuối buổi: mini challenge viết Python automation nhỏ mà không copy nguyên đáp án.
