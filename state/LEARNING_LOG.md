@@ -49,8 +49,13 @@
 - Kết quả Đánh giá Phase 2: **100 / 100 điểm** (ĐẠT VỮNG PHASE 2).
 
 ## [2026-08-08] Session 10: Advanced Git Workflow, .gitignore, Merge Conflict & Tagging
-- Trả lời xuất sắc 100% bài kiểm tra kiến thức cũ (mục đích .gitignore, nguy cơ commit thẳng main).
-- Cấu hình file ẩn `.gitignore` chặn rò rỉ Secret `.env`, log rác `*.log` và cache `__pycache__/`.
-- Thực hành bài lab Failure Injection 10.2: Tự kích hoạt đụng độ `CONFLICT (content): Merge conflict in app_setting.txt`, đọc dải đụng độ `< = >` và tự xử lý conflict bằng CLI.
-- Gắn nhãn phiên bản Semantic Versioning `v1.0.0` (`git tag -a v1.0.0`).
-- Push nhánh `main`, branch tính năng và Release Tag `v1.0.0` lên GitHub `Minhlike/devops-learning`.
+- Cấu hình `.gitignore` chặn rò rỉ Secret `.env`, log rác `*.log` và cache `__pycache__/`.
+- Thực hành bài lab Failure Injection 10.2: Tự kích hoạt đụng độ `CONFLICT (content): Merge conflict in app_setting.txt` và tự xử lý conflict bằng CLI.
+- Đánh nhãn phiên bản Semantic Versioning `v1.0.0` và push tag lên GitHub.
+
+## [2026-08-10] Session 11: Bash Scripting Fundamentals, Variables, Conditionals & Exit Codes
+- Trả lời đúng 100% bài kiểm tra kiến thức cũ.
+- Tự tay viết Pseudocode (Mã giả) chuẩn logic lập trình trước khi viết mã nguồn Bash.
+- Lập trình thành công script `check_endpoint.sh` tự động kiểm tra mã phản hồi HTTP và trích xuất Exit Code `$?` (0 vs 1).
+- Thực hành bài lab Failure Injection 11.2: Sử dụng cờ `set -e` để chặn trôi lỗi trong Bash script cho Pipeline CI/CD.
+- Commit và push bài lab `lab-11-bash` lên GitHub `Minhlike/devops-learning`.
