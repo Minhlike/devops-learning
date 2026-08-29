@@ -22,6 +22,15 @@
 | Automation & Script| Log Parsing (`grep`, `$()`) | Troubleshoot được | 2026-08-24 | `parse_log.sh`: đếm ERROR/HTTP 500 và xử lý hàng loạt file log |
 | Automation & Script| Automated Backup (`tar`, timestamp) | Troubleshoot được | 2026-08-24 | `backup_app.sh`: backup timestamp, validation và kiểm tra exit status của `tar` |
 | Automation & Script| Safe File Cleanup (`find`, `-mtime`, safety guard) | Troubleshoot được | 2026-08-24 | `clean_old_backups.sh`: cleanup >7 ngày và Failure Injection chống sai path |
+| Automation & Script| Python File & Log Handling (`pathlib`, `glob`) | Làm được độc lập | 2026-08-29 | Lab 13: `read_log.py`, `health_report.py`, lọc ERROR và HTTP 500 |
+| Automation & Script| Python JSON Reporting (`dict`, `json.dump`) | Làm được độc lập | 2026-08-29 | Lab 13: Tổng hợp dict và xuất file `health_report.json` |
+| Automation & Script| Python System Commands (`subprocess.run`, `sys.exit`) | Troubleshoot được | 2026-08-29 | Lab 13: `check_command.py`, xử lý returncode non-zero & missing executable |
+| Containers & Cloud| Docker Engine & WSL Integration | Làm được độc lập | 2026-08-29 | Lab 14: Cài đặt và vận hành Docker Engine native trên Ubuntu 24.04 WSL |
+| Containers & Cloud| Container Lifecycle (`run`, `start`, `stop`, `exec`, `rm`, PID 1) | Làm được độc lập | 2026-08-29 | Lab 14: Quản lý vòng đời container và PID 1 |
+| Containers & Cloud| Docker Storage & Persistence (Named Volumes) | Làm được độc lập | 2026-08-29 | Lab 14: Writable layer vs Named Volumes duy trì dữ liệu bền vững |
+| Containers & Cloud| Docker Networking & Port Publishing | Troubleshoot được | 2026-08-29 | Lab 14: Port publishing `HOST:CONTAINER`, Bridge network & Docker DNS |
+| Containers & Cloud| Dockerfile Building & Versioning (`.dockerignore`) | Làm được độc lập | 2026-08-29 | Lab 14: Build context, layers cache, `my-web:v1/v2`, `CMD` vs `ENTRYPOINT` |
+| Containers & Cloud| Docker Troubleshooting (`logs`, `inspect`, `top`, Failure Injections)| Troubleshoot được | 2026-08-29 | Lab 14: Chẩn đoán lỗi build-time, status Created/Exited + ExitCode |
 | Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
 | Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
 | Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |

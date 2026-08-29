@@ -1,9 +1,14 @@
 .env
 *.log
 __pycache__/
+*.pyc
+*.tmp
+*.temp
+big.tmp
 
-# Lab 12 generated backup artifacts
+# Lab generated artifacts
 labs/lab-12-bash-advanced/backups/*.tar.gz
 
-# Keep Lab 12 sample log for reproducibility
+# Keep sample logs for reproducibility
 !labs/lab-12-bash-advanced/logs/app.log
+!labs/lab-13-python-devops/logs/*.log

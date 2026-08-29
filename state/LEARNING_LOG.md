@@ -69,3 +69,25 @@
 - Hoàn thành Failure Injection chống xóa nhầm file khi `BACKUP_DIR` bị cấu hình sai.
 - Tự sửa lỗi Bash `missing ']'` và troubleshoot lỗi thiếu `$` khiến `BACKUP_FILE` bị hiểu thành chuỗi literal.
 - Kết quả: **ĐẠT BUỔI 12**.
+
+## [2026-08-29] Session 13: Python Fundamentals for DevOps Automation
+- Viết và hoàn thiện `read_log.py`, `health_report.py`, `check_command.py`.
+- Sử dụng `pathlib` (`exists()`, `is_file()`, `read_text()`, `glob()`) thao tác file và kiểm tra đường dẫn an toàn.
+- Đọc và phân tích file log tự động lọc chuỗi `ERROR` và mã HTTP `500`.
+- Xuất báo cáo cấu trúc JSON qua `dict` và `json.dump()` (`health_report.json`).
+- Tương tác hệ thống bằng `subprocess.run()`, xử lý `stdout`, `stderr`, kiểm tra `returncode` và điều khiển mã thoát bằng `sys.exit()`.
+- Thực hành Failure Injection: log file bị thiếu, non-zero return code, executable không tồn tại.
+- Kết quả: **ĐẠT BUỔI 13**.
+
+## [2026-08-29] Session 14: Docker Fundamentals
+- Cài đặt và vận hành Docker Engine native trên Ubuntu 24.04 WSL.
+- Phân biệt bản chất Image vs Container, quản lý PID 1 và vòng đời container (`run`, `start`, `stop`, `exec`, `rm`).
+- Phân biệt Writable Layer vs xoá/tạo lại container; sử dụng Named Volumes cho Data Persistence.
+- Cấu hình Port Publishing `HOST_PORT:CONTAINER_PORT`.
+- Nắm vững Bridge Network, hiện tượng Localhost Isolation trong container, tạo User-defined Network và Docker DNS theo Container Name.
+- Soạn thảo `Dockerfile`, hiểu Build Context, Image Layers + Cache, versioning `my-web:v1/v2`.
+- Cấu hình `.dockerignore` loại bỏ file rác.
+- Thực hành Failure Injections: Build-time failure, container start failure (Created), application crash (Exited + ExitCode).
+- Chẩn đoán lỗi bằng `docker logs`, `inspect`, `top`.
+- Phân biệt cơ chế `CMD` vs `ENTRYPOINT`.
+- Kết quả: **ĐẠT BUỔI 14**.

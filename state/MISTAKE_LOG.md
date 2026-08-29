@@ -56,3 +56,17 @@
 - **Triệu chứng:** Chạy `BACKUP_DIR="."` trong terminal nhưng script vẫn sử dụng `backups`.
 - **Nguyên nhân gốc:** Script tự gán lại `BACKUP_DIR="backups"` trong process Bash mới nên giá trị của shell bên ngoài không được sử dụng.
 - **Cách sửa:** Sửa trực tiếp biến khi test hoặc thiết kế script nhận giá trị bên ngoài bằng `BACKUP_DIR="${BACKUP_DIR:-backups}"`.
+
+## [2026-08-29] Python FileNotFoundError do sai đường dẫn tương đối
+- **Ngày:** 2026-08-29
+- **Bối cảnh:** Lab 13 — Python Automation & Log Parsing (`health_report.py`).
+- **Triệu chứng:** `FileNotFoundError: [Errno 2] No such file or directory` khi đọc log.
+- **Nguyên nhân gốc:** Dùng đường dẫn tương đối cứng mà không kiểm tra bằng `pathlib.Path.exists()`.
+- **Cách sửa:** Sử dụng `pathlib.Path` và kiểm tra `if not path.exists(): sys.exit(1)` trước khi mở file.
+
+## [2026-08-29] Container không kết nối DB do nhầm Localhost Isolation
+- **Ngày:** 2026-08-29
+- **Bối cảnh:** Lab 14 — Docker Fundamentals & Networking.
+- **Triệu chứng:** App container báo `Connection refused` khi cố kết nối DB tại `127.0.0.1`.
+- **Nguyên nhân gốc:** Mỗi container có `localhost` (`127.0.0.1`) hoàn toàn cô lập; `localhost` bên trong container không trỏ ra Host OS hay container DB.
+- **Cách sửa:** Đưa 2 container vào chung một User-defined Network và dùng Docker DNS trỏ tới tên container DB.

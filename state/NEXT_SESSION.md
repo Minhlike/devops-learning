@@ -1,12 +1,13 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 13 — PHASE 3: Python Fundamentals for DevOps Automation.
-- **Mục tiêu:**
-  1. Hiểu khi nào nên dùng Bash và khi nào nên chuyển sang Python trong công việc DevOps.
-  2. Ôn nhanh Bash variable/function/loop và chuyển tư duy pseudocode sang Python.
-  3. Làm việc với biến, kiểu dữ liệu, `if`, `for`, function và Exit Code trong Python.
-  4. Dùng `pathlib` để kiểm tra file/thư mục và đọc file log.
-  5. Viết `parse_log.py` để phân tích `ERROR` / HTTP `500`, sau đó so sánh với phiên bản Bash của Buổi 12.
-  6. Dùng `subprocess` để gọi Linux command từ Python và kiểm tra return code.
-  7. Failure Injection: file log bị mất, command trả non-zero và dữ liệu đầu vào không hợp lệ.
-  8. Cuối buổi: mini challenge viết Python automation nhỏ mà không copy nguyên đáp án.
+- **Buổi học tiếp theo:** BUỔI 15 — PHASE 4: Docker Compose & Multi-Container Application.
+- **Mục tiêu Buổi 15:**
+  1. Hiểu khái niệm Docker Compose là gì và tại sao dùng Docker Compose thay vì chạy nhiều câu lệnh `docker run` thủ công.
+  2. Nắm vững cú pháp YAML cơ bản (indentation, key-value, lists).
+  3. Cấu hình các khối dịch vụ chính trong `docker-compose.yml`: `services`, `build`, `image`, `ports`, `environment`, `volumes`, `networks`.
+  4. Triển khai mô hình ứng dụng đa container (Multi-Container App): App + Database (PostgreSQL / MySQL / Redis).
+  5. Nắm vững cơ chế Service-Name DNS giữa các container trong cùng Compose Network.
+  6. Gắn Database Persistent Volume để đảm bảo dữ liệu DB không bị mất khi container restart/down.
+  7. Quản lý biến môi trường (Environment Variables) và Secrets an toàn.
+  8. Thành thạo các lệnh quản lý Compose: `docker compose up -d`, `docker compose ps`, `docker compose logs`, `docker compose exec`, `docker compose down`.
+  9. Failure Injection: Database down, sai hostname kết nối, sai credential (username/password), và xung đột cổng (Port conflict).
