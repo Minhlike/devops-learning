@@ -91,3 +91,15 @@
 - Chẩn đoán lỗi bằng `docker logs`, `inspect`, `top`.
 - Phân biệt cơ chế `CMD` vs `ENTRYPOINT`.
 - Kết quả: **ĐẠT BUỔI 14**.
+
+## [2026-08-30] Session 15: Docker Compose & Multi-Container Application
+- Thực hành xây dựng và vận hành hệ thống đa container Flask App + PostgreSQL Database bằng Docker Compose (`compose.yaml`).
+- Cấu hình Compose Network nội bộ và kiểm chứng cơ chế Docker DNS tự động phân giải IP theo Service Name (`db`).
+- Thiết lập `healthcheck` trên container PostgreSQL (`pg_isready`) và sử dụng `depends_on` với `condition: service_healthy` giúp Flask app chờ DB khởi tạo xong mới kết nối.
+- Cấu hình Named Volume cho PostgreSQL đảm bảo dữ liệu ghi vào DB không bị mất khi restart hay `docker compose down`.
+- Thực hành Failure Injection `docker compose down -v` và hiểu hậu quả của cờ `-v` làm xóa sạch volume dữ liệu.
+- Quản lý biến môi trường an toàn với file `.env` và file mẫu `.env.example`; kiểm tra bảo mật đảm bảo `.env` bị chặn bởi `.gitignore`.
+- Sử dụng `docker compose config` kiểm tra cú pháp file YAML.
+- Thực hành Failure Injections: cấu hình sai `DB_HOST` (gây lỗi DNS resolution), sai `DB_PASSWORD` (gây lỗi PostgreSQL authentication).
+- Khắc phục sự cố và phục hồi thành công stack: `app` Up (Port 8086), `db` healthy, `curl http://localhost:8086` trả về `{"database":"...","status":"ok"}`.
+- Kết quả: **ĐẠT BUỔI 15**.

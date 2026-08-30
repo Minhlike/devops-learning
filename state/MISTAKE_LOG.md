@@ -70,3 +70,18 @@
 - **Triệu chứng:** App container báo `Connection refused` khi cố kết nối DB tại `127.0.0.1`.
 - **Nguyên nhân gốc:** Mỗi container có `localhost` (`127.0.0.1`) hoàn toàn cô lập; `localhost` bên trong container không trỏ ra Host OS hay container DB.
 - **Cách sửa:** Đưa 2 container vào chung một User-defined Network và dùng Docker DNS trỏ tới tên container DB.
+
+## [2026-08-30] Các lỗi cú pháp và vận hành trong Lab 15 Docker Compose
+- **Ngày:** 2026-08-30
+- **Bối cảnh:** Lab 15 — Docker Compose Multi-Container Application.
+- **Danh sách lỗi & bài học:**
+  - `wget -q0-` thay vì `wget -qO-` (nhầm số 0 với chữ O in hoa).
+  - `port:` thay vì `ports:` (sai keyword trong `compose.yaml`).
+  - Sai indentation `depends_on` (lỗi cú pháp YAML).
+  - PyPI tải rất chậm khi build dependency (`pip install`).
+  - Thiếu `DB_PORT` trong cấu hình môi trường kết nối database.
+  - Typo `appdp` thay vì `appdb` trong tên database.
+  - `psql -s appdb` thay vì `psql -d appdb` (sai flag psql).
+  - Failure Injection sai DB hostname (`DB_HOST`): Gây lỗi DNS resolution failure làm App không tìm thấy DB container.
+  - Failure Injection sai DB password (`DB_PASSWORD`): Gây lỗi PostgreSQL authentication failure.
+  - `docker compose down -v`: Xóa sạch named volume và làm mất dữ liệu database.

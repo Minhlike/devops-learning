@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 4 — Docker, Containers & Application Deployment
-- **Current Status:** Hoàn thành Buổi 13 (Python Fundamentals for DevOps Automation) và Buổi 14 (Docker Fundamentals). Chuẩn bị Buổi 15 — Docker Compose & Multi-Container Application.
+- **Current Status:** Hoàn thành Buổi 15 — Docker Compose & Multi-Container Application. Chuẩn bị Buổi 16 — Advanced Docker Compose & Production Deployment.
 - **Current Week:** Tuần 4
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -26,3 +26,16 @@
      - Giám sát và chẩn đoán container với `docker logs`, `inspect`, `top`.
      - Phân biệt cơ chế `CMD` vs `ENTRYPOINT`.
      - Kết quả: **ĐẠT BUỔI 14**.
+  3. **Buổi 15 — Docker Compose & Multi-Container Application:**
+     - Nắm vững khái niệm Docker Compose cơ bản và quản lý multi-container ứng dụng đa dịch vụ.
+     - Cấu hình `compose.yaml`: `services`, `build`, `image`, `ports`, `environment`, `volumes`, `networks`.
+     - Xây dựng mô hình ứng dụng Flask app + PostgreSQL database.
+     - Cấu hình Compose Network và cơ chế Docker DNS phân giải theo Service Name (`db`).
+     - Thiết lập cơ chế `healthcheck` trên DB và điều kiện phụ thuộc `depends_on` với `condition: service_healthy`.
+     - Gắn Named Volume cho PostgreSQL duy trì dữ liệu bền vững qua các lần restart.
+     - Phân biệt rõ `docker compose down` (giữ volume) vs `docker compose down -v` (xóa volume làm mất dữ liệu DB).
+     - Quản lý biến môi trường an toàn bằng `.env` và mẫu `.env.example`, đảm bảo `.env` được bảo vệ bởi `.gitignore`.
+     - Sử dụng `docker compose config` kiểm tra cú pháp YAML.
+     - Thực hành Failure Injections: Sai `DB_HOST` (DNS resolution failure), sai `DB_PASSWORD` (PostgreSQL authentication failure), `docker compose down -v` gây mất dữ liệu DB.
+     - Phục hồi stack ứng dụng hoàn chỉnh: `app` Up, `db` healthy, `curl http://localhost:8086` trả `"status":"ok"`.
+     - Kết quả: **ĐẠT BUỔI 15**.

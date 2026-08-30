@@ -31,6 +31,12 @@
 | Containers & Cloud| Docker Networking & Port Publishing | Troubleshoot được | 2026-08-29 | Lab 14: Port publishing `HOST:CONTAINER`, Bridge network & Docker DNS |
 | Containers & Cloud| Dockerfile Building & Versioning (`.dockerignore`) | Làm được độc lập | 2026-08-29 | Lab 14: Build context, layers cache, `my-web:v1/v2`, `CMD` vs `ENTRYPOINT` |
 | Containers & Cloud| Docker Troubleshooting (`logs`, `inspect`, `top`, Failure Injections)| Troubleshoot được | 2026-08-29 | Lab 14: Chẩn đoán lỗi build-time, status Created/Exited + ExitCode |
+| Containers & Cloud| Docker Compose Fundamentals (`compose.yaml`, `services`, `build`) | Làm được độc lập | 2026-08-30 | Lab 15: Định nghĩa Flask App + PostgreSQL trong `compose.yaml` |
+| Containers & Cloud| Docker Compose Networking & Service-Name DNS | Làm được độc lập | 2026-08-30 | Lab 15: Phân giải hostname theo Service Name (`db`) trong Compose Network |
+| Containers & Cloud| Docker Healthcheck & `depends_on` (service_healthy) | Troubleshoot được | 2026-08-30 | Lab 15: Cấu hình `healthcheck` pg_isready và `depends_on` chờ DB ready |
+| Containers & Cloud| Docker Compose Volume Persistence & Data Safety | Troubleshoot được | 2026-08-30 | Lab 15: Named volume persistence, phân biệt `down` vs `down -v` gây mất data |
+| Containers & Cloud| Secrets & Environment Variable Management (`.env`, `.gitignore`)| Làm được độc lập | 2026-08-30 | Lab 15: Quản lý biến môi trường bằng `.env`, tạo `.env.example`, gitignore `.env` |
+| Containers & Cloud| Multi-Container Troubleshooting & Failure Injections | Troubleshoot được | 2026-08-30 | Lab 15: Sửa lỗi DNS resolution (`DB_HOST`), DB auth (`DB_PASSWORD`), syntax YAML |
 | Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
 | Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
 | Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |
