@@ -85,3 +85,14 @@
   - Failure Injection sai DB hostname (`DB_HOST`): Gây lỗi DNS resolution failure làm App không tìm thấy DB container.
   - Failure Injection sai DB password (`DB_PASSWORD`): Gây lỗi PostgreSQL authentication failure.
   - `docker compose down -v`: Xóa sạch named volume và làm mất dữ liệu database.
+
+## [2026-08-31] Bài học kinh nghiệm & Sự cố trong Lab 16 Advanced Docker Compose
+- **Ngày:** 2026-08-31
+- **Bối cảnh:** Lab 16 — Advanced Docker Compose & Production Operations.
+- **Danh sách bài học & giải pháp:**
+  - Image `python:3.12-slim` không có binary `ps`: Phải đọc tiến trình trực tiếp qua hệ thống file ảo `/proc`.
+  - Shell Builtin `kill`: Lệnh `docker compose exec app kill ...` không chạy vì `kill` là shell builtin; phải dùng `sh -c 'kill ...'`.
+  - TTY cho Heredoc: Heredoc với `docker compose exec` cần cờ `-T` để tắt TTY (`docker compose exec -T app sh -c ...`).
+  - Memory Swap limit: Ban đầu test cấp phát 300 MiB không bị OOM vì `MemorySwap` mặc định cho phép tổng 512 MiB; phải cấu hình `memswap_limit: 256m` để kích hoạt OOM Killer chuẩn xác.
+  - Cơ chế Healthcheck: Trạng thái `unhealthy` của healthcheck không tự động kích hoạt restart policy của Docker.
+  - Reset RestartCount: Chỉ số `RestartCount` sẽ reset về `0` khi Compose recreate một container mới.

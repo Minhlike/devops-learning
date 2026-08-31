@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 4 — Docker, Containers & Application Deployment
-- **Current Status:** Hoàn thành Buổi 15 — Docker Compose & Multi-Container Application. Chuẩn bị Buổi 16 — Advanced Docker Compose & Production Deployment.
+- **Current Status:** Hoàn thành Buổi 16 — Advanced Docker Compose & Production Operations. Chuẩn bị Buổi 17 — Docker Capstone Project & Container Registry Deployment.
 - **Current Week:** Tuần 4
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -39,3 +39,19 @@
      - Thực hành Failure Injections: Sai `DB_HOST` (DNS resolution failure), sai `DB_PASSWORD` (PostgreSQL authentication failure), `docker compose down -v` gây mất dữ liệu DB.
      - Phục hồi stack ứng dụng hoàn chỉnh: `app` Up, `db` healthy, `curl http://localhost:8086` trả `"status":"ok"`.
      - Kết quả: **ĐẠT BUỔI 15**.
+  4. **Buổi 16 — Advanced Docker Compose & Production Operations:**
+     - Chuyển đổi Flask development server sang Production WSGI Server Gunicorn (Master + 2 Workers).
+     - Thực hành Failure Injection: kill một worker process, Gunicorn master tự động spawn worker mới duy trì khả năng phục vụ.
+     - Hiểu bản chất PID 1 trong container và tầm quan trọng của Process Management.
+     - Thêm chính sách tự phục hồi `restart: unless-stopped` trong `compose.yaml`.
+     - Thực hành Failure Injection: kill Gunicorn PID 1, Docker Engine tự động restart container và xác minh `RestartCount` tăng.
+     - Tạo Flask endpoint `/health` và cấu hình Docker `healthcheck` cho ứng dụng.
+     - Hiểu rõ nguyên lý `Up != Healthy`.
+     - Thực hành Failure Injection cấu hình sai healthcheck URL: container vẫn `Up` nhưng Docker status báo `unhealthy`; hiểu rằng status `unhealthy` không tự động kích hoạt `restart` policy.
+     - Khôi phục healthcheck URL chính xác đưa status trở lại `healthy`.
+     - Thiết lập Resource Limits: `cpus: "0.50"`, `mem_limit: 256m`, `memswap_limit: 256m`.
+     - Xác minh CPU limit bằng `docker stats`: CPU hog process bị throttle ở mức ~50%.
+     - Xác minh Memory limit: process test cấp phát 300 MiB bị OOM kill, exit code `137`, `OOMKilled=true`; Gunicorn master vẫn sống nên container không bị restart.
+     - Thực hành Graceful Shutdown với `docker compose stop app`: Gunicorn nhận SIGTERM, workers exit sạch sẽ, master shutdown, container kết thúc với `Exited (0)`.
+     - Start lại app và kiểm tra `/health` phản hồi `healthy`.
+     - Kết quả: **ĐẠT BUỔI 16**.

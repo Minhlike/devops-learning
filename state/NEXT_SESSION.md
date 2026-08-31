@@ -1,10 +1,9 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 16 — PHASE 4: Advanced Docker Compose & Production Deployment.
-- **Mục tiêu Buổi 16:**
-  1. Nắm vững kỹ thuật Override & Multiple Compose Files (`compose.override.yaml`, `compose.prod.yaml`).
-  2. Phân biệt môi trường Development vs Production trong Docker Compose.
-  3. Cấu hình Resource Limits (CPU / Memory limits) cho container.
-  4. Quản lý Restart Policies (`restart: unless-stopped` / `always`).
-  5. Tối ưu hoá Dockerfile multi-stage build cho ứng dụng sản xuất.
-  6. Failure Injection: OOMKilled (Out of Memory), container restart loop, config drift giữa các môi trường.
+- **Buổi học tiếp theo:** BUỔI 17 — PHASE 4: Docker Capstone Project & Container Registry Deployment.
+- **Mục tiêu Buổi 17:**
+  1. Tổng hợp toàn bộ kiến thức Docker (Dockerfile multi-stage, Docker Compose, Volumes, Networks, Healthchecks, Resource limits).
+  2. Đẩy Docker Images lên Container Registry (Docker Hub / GitHub Container Registry - GHCR) với Semantic Versioning tags.
+  3. Cấu hình Nginx Reverse Proxy làm SSL Termination / Proxy pass phía trước Docker Compose Stack.
+  4. Triển khai ứng dụng sản xuất hoàn chỉnh và viết Báo cáo Postmortem / Sơ đồ Kiến trúc Mermaid.
+  5. Failure Injection: Registry auth failure, image pull failure, port collision với host Nginx, SSL cert expiration.

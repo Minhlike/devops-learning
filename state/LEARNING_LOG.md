@@ -103,3 +103,16 @@
 - Thực hành Failure Injections: cấu hình sai `DB_HOST` (gây lỗi DNS resolution), sai `DB_PASSWORD` (gây lỗi PostgreSQL authentication).
 - Khắc phục sự cố và phục hồi thành công stack: `app` Up (Port 8086), `db` healthy, `curl http://localhost:8086` trả về `{"database":"...","status":"ok"}`.
 - Kết quả: **ĐẠT BUỔI 15**.
+
+## [2026-08-31] Session 16: Advanced Docker Compose & Production Operations
+- Nâng cấp ứng dụng Flask từ Development Server sang Production WSGI Server Gunicorn (1 Master + 2 Workers).
+- Thực hành Failure Injection kill worker process: Gunicorn master tự động phát hiện và spawn worker mới duy trì tính khả dụng.
+- Thêm `restart: unless-stopped` trong `compose.yaml`; kill PID 1 Gunicorn và xác minh Docker tự restart container với `RestartCount` tăng.
+- Xây dựng endpoint `/health` và cấu hình Docker `healthcheck` cho container app.
+- Phân biệt sâu sắc nguyên lý `Up != Healthy`: cố tình cấu hình sai URL healthcheck khiến container giữ trạng thái `Up` nhưng báo `unhealthy`, hiểu rằng `unhealthy` không tự động kích hoạt `restart` policy.
+- Khôi phục URL healthcheck chính xác đưa container về trạng thái `healthy`.
+- Cấu hình giới hạn tài nguyên: `cpus: "0.50"`, `mem_limit: 256m`, `memswap_limit: 256m`.
+- Kiểm chứng CPU limit bằng `docker stats` (CPU hog bị throttle ở mức 50%) và Memory limit (process xin cấp phát 300 MiB bị OOM kill với exit code 137 và `OOMKilled=true`).
+- Kiểm chứng Gunicorn master không bị chết khi worker con bị OOM kill, giúp container giữ tính ổn định.
+- Thực hành Graceful Shutdown bằng `docker compose stop app`: Gunicorn master nhận SIGTERM, giải phóng workers và shutdown an toàn với `Exited (0)`.
+- Kết quả: **ĐẠT BUỔI 16**.

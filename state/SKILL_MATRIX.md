@@ -37,6 +37,11 @@
 | Containers & Cloud| Docker Compose Volume Persistence & Data Safety | Troubleshoot được | 2026-08-30 | Lab 15: Named volume persistence, phân biệt `down` vs `down -v` gây mất data |
 | Containers & Cloud| Secrets & Environment Variable Management (`.env`, `.gitignore`)| Làm được độc lập | 2026-08-30 | Lab 15: Quản lý biến môi trường bằng `.env`, tạo `.env.example`, gitignore `.env` |
 | Containers & Cloud| Multi-Container Troubleshooting & Failure Injections | Troubleshoot được | 2026-08-30 | Lab 15: Sửa lỗi DNS resolution (`DB_HOST`), DB auth (`DB_PASSWORD`), syntax YAML |
+| Containers & Cloud| Production WSGI & Process Supervision (Gunicorn Worker Management) | Làm được độc lập | 2026-08-31 | Lab 16: Gunicorn master + 2 workers, tự spawn worker mới khi process bị kill |
+| Containers & Cloud| Container PID 1 & Auto-Restart Policies (`restart: unless-stopped`) | Troubleshoot được | 2026-08-31 | Lab 16: Kill PID 1, Docker tự restart container, xác minh RestartCount tăng |
+| Containers & Cloud| Advanced Container Healthchecks & Status Monitoring (`Up` vs `Healthy`) | Troubleshoot được | 2026-08-31 | Lab 16: Endpoint `/health`, phân biệt Up vs Healthy, unhealthy không trigger restart |
+| Containers & Cloud| Container Resource Limits & OOM Killer (`cpus`, `mem_limit`, `memswap_limit`)| Troubleshoot được | 2026-08-31 | Lab 16: CPU throttle ~50%, OOM kill 300MiB process, exit code 137, OOMKilled=true |
+| Containers & Cloud| Graceful Shutdown & Signal Handling (`SIGTERM`, `Exited (0)`) | Làm được độc lập | 2026-08-31 | Lab 16: `docker compose stop app`, Gunicorn bắt SIGTERM, shutdown sạch sẻ |
 | Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
 | Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
 | Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |
