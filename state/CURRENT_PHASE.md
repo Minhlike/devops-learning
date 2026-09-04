@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 4 — Docker, Containers & Application Deployment
-- **Current Status:** Hoàn thành Buổi 16 — Advanced Docker Compose & Production Operations. Chuẩn bị Buổi 17 — Docker Capstone Project & Container Registry Deployment.
-- **Current Week:** Tuần 4
+- **Current Phase:** PHASE 4 — Docker, Containers & Application Deployment (ĐÃ HOÀN THÀNH XUẤT SẮC BÀI CAPSTONE)
+- **Next Phase:** PHASE 5 — CI/CD Automation & GitHub Actions (BẮT ĐẦU BUỔI 18)
+- **Current Week:** Tuần 5
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -55,3 +55,15 @@
      - Thực hành Graceful Shutdown với `docker compose stop app`: Gunicorn nhận SIGTERM, workers exit sạch sẽ, master shutdown, container kết thúc với `Exited (0)`.
      - Start lại app và kiểm tra `/health` phản hồi `healthy`.
      - Kết quả: **ĐẠT BUỔI 16**.
+  5. **Buổi 17 — Docker Capstone Project & Container Registry Deployment:**
+     - Xây dựng Flask API Capstone hoàn chỉnh với các endpoints: `GET /`, `GET /health`, `GET /visits`, `POST /visits`.
+     - Sử dụng Gunicorn (2 workers), PostgreSQL `postgres:17-alpine` (hostname `db`, port `5432`, named volume `db-data`).
+     - Soạn thảo `Dockerfile` tối ưu dựa trên `python:3.12-slim` và `.dockerignore`.
+     - Cấu hình `compose.yaml`: `app` + `db`, Docker DNS, `healthcheck`, `depends_on: service_healthy`, `restart: unless-stopped`, resource limits (CPU `0.50`, mem `256m`, memswap `256m`), host publish `8087:8000`.
+     - Kiểm tra bảo mật `.env` local bị `.gitignore` tuyệt đối, tạo `.env.example`.
+     - Kiểm tra hoạt động ứng dụng: `GET /`, `GET /health`, `POST /visits` tăng counter `0 -> 1 -> 2`.
+     - Chứng minh Data Persistence: `docker compose down` xoá container nhưng named volume `db-data` còn nguyên; khi dựng lại stack counter vẫn bằng 2.
+     - Đăng nhập Docker Hub (`minhhociot`), đánh tag `minhhociot/docker-capstone:v1`, push image lên Docker Hub (digest `sha256:6823167bb94c7ac57320f69a886e50ebecf53139fd03d8ab8059d9649410b0bc`).
+     - Thực hành xoá image local, pull image từ Docker Hub và cập nhật `compose.yaml` chuyển từ `build: ./app` sang `image: minhhociot/docker-capstone:v1`.
+     - Deploy thành công trực tiếp từ registry image; `docker inspect` xác nhận `Image=minhhociot/docker-capstone:v1` và `RepoDigest` khớp digest registry.
+     - Kết quả: **ĐẠT BUỔI 17 (HOÀN THÀNH CAPSTONE PHASE 4)**.

@@ -42,6 +42,10 @@
 | Containers & Cloud| Advanced Container Healthchecks & Status Monitoring (`Up` vs `Healthy`) | Troubleshoot được | 2026-08-31 | Lab 16: Endpoint `/health`, phân biệt Up vs Healthy, unhealthy không trigger restart |
 | Containers & Cloud| Container Resource Limits & OOM Killer (`cpus`, `mem_limit`, `memswap_limit`)| Troubleshoot được | 2026-08-31 | Lab 16: CPU throttle ~50%, OOM kill 300MiB process, exit code 137, OOMKilled=true |
 | Containers & Cloud| Graceful Shutdown & Signal Handling (`SIGTERM`, `Exited (0)`) | Làm được độc lập | 2026-08-31 | Lab 16: `docker compose stop app`, Gunicorn bắt SIGTERM, shutdown sạch sẻ |
+| Containers & Cloud| Container Registry Operations (Docker Hub Login, Tag, Push, Pull) | Làm được độc lập | 2026-09-04 | Lab 17: Push image `minhhociot/docker-capstone:v1` lên Docker Hub & pull deploy |
+| Containers & Cloud| Image Immutability & Registry Digest Verification | Làm được độc lập | 2026-09-04 | Lab 17: Kiểm tra digest `sha256:6823...` qua `docker inspect` và RepoDigest |
+| Containers & Cloud| Docker Compose Image Deployment (Decoupled Build & Deploy) | Làm được độc lập | 2026-09-04 | Lab 17: Chuyển `compose.yaml` từ `build: ./app` sang `image: registry/repo:tag` |
+| Containers & Cloud| End-to-End Docker Capstone Architecture (App + DB + Persistence + Health) | Mastery | 2026-09-04 | Lab 17: Capstone Flask API + PostgreSQL + Volume persistence + Healthchecks |
 | Networking | IP Address, CIDR Notation (`/20`, `/24`), Interfaces | Làm được độc lập | 2026-08-07 | Lab 7.1: Đọc thông số card `lo`, `eth0`, IP `172.19.132.120/20` từ `ip a` |
 | Networking | Port Inspection (`ss -tulpn`, TCP/UDP) | Troubleshoot được | 2026-08-07 | Incident 7.2: Tìm PID `1252` ngốn Port 8080 và giải phóng bằng `kill -9` |
 | Networking | Nginx Reverse Proxy & `proxy_pass` | Làm được độc lập | 2026-08-07 | Lab 7.3: Cấu hình Nginx reverse proxy Port 8080 sang Python Backend 8000 |

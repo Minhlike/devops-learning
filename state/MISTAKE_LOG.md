@@ -96,3 +96,24 @@
   - Memory Swap limit: Ban đầu test cấp phát 300 MiB không bị OOM vì `MemorySwap` mặc định cho phép tổng 512 MiB; phải cấu hình `memswap_limit: 256m` để kích hoạt OOM Killer chuẩn xác.
   - Cơ chế Healthcheck: Trạng thái `unhealthy` của healthcheck không tự động kích hoạt restart policy của Docker.
   - Reset RestartCount: Chỉ số `RestartCount` sẽ reset về `0` khi Compose recreate một container mới.
+
+## [2026-09-04] Lỗi cú pháp và bài học kinh nghiệm trong Lab 17 Docker Capstone
+- **Ngày:** 2026-09-04
+- **Bối cảnh:** Lab 17 — Docker Capstone Project & Container Registry Deployment.
+- **Danh sách lỗi & cú pháp:**
+  - Dockerfile thiếu `\` ở chuỗi `RUN apt-get`.
+  - Dockerfile từng viết `COPY app.py` thiếu destination `.`.
+  - Python từng typo: `flash` / `Flash` thay vì `flask` / `Flask`.
+  - Biến môi trường: `DB_POST` thay vì `DB_PORT`.
+  - Lỗi Python DB: `add_visit` từng thiếu `fetchone()` và `commit()`.
+  - Cú pháp YAML `compose.yaml`: dùng `&{DB_NAME}` thay vì `${DB_NAME}`.
+  - Typo healthcheck: `retires` thay vì `retries`.
+  - Typo environment: `environments` thay vì `environment`.
+  - Khối app environment từng thiếu `DB_USER`.
+  - Lỗi CLI: gõ `docker compose volume ls` nhưng lệnh đúng phải là `docker volume ls`.
+- **Bài học rút ra (Lessons):**
+  - `py_compile` chỉ kiểm tra cú pháp syntax, không bắt được các lỗi import, name error hoặc lỗi runtime.
+  - `docker compose config` là bước validate quan trọng trước khi deployment.
+  - Thao tác `tag` không copy/duplicate image, chỉ tạo thêm tên trỏ cùng Image ID.
+  - Container Registry cho phép các máy khác pull/deploy image mà không cần mã nguồn local.
+  - Vòng đời Volume (Volume Lifecycle) hoàn toàn độc lập với vòng đời Container (Container Lifecycle).

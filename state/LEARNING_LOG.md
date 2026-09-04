@@ -116,3 +116,14 @@
 - Kiểm chứng Gunicorn master không bị chết khi worker con bị OOM kill, giúp container giữ tính ổn định.
 - Thực hành Graceful Shutdown bằng `docker compose stop app`: Gunicorn master nhận SIGTERM, giải phóng workers và shutdown an toàn với `Exited (0)`.
 - Kết quả: **ĐẠT BUỔI 16**.
+
+## [2026-09-04] Session 17: Docker Capstone Project & Container Registry Deployment
+- Hoàn thành dự án Capstone Phase 4 xây dựng ứng dụng Flask API đếm lượt truy cập (`POST /visits`, `GET /visits`) kết nối PostgreSQL 17 database.
+- Đóng gói ứng dụng bằng Dockerfile (`python:3.12-slim`, Gunicorn 2 workers) và cấu hình `.dockerignore`.
+- Thiết lập hệ thống đa dịch vụ qua `compose.yaml`: `app` + `db`, Docker DNS nội bộ, `healthcheck` pg_isready, `depends_on: service_healthy`, resource limits (`0.50` CPU, `256m` RAM), `restart: unless-stopped` và port publish `8087:8000`.
+- Kiểm tra bảo mật: file `.env` chứa mật khẩu bị chặn bởi `.gitignore`, duy trì file mẫu `.env.example`.
+- Kiểm thử chức năng API và chứng minh Data Persistence: thực hiện `docker compose down` xoá container nhưng named volume `db-data` được giữ nguyên; khi dựng lại stack dữ liệu lượt truy cập vẫn nguyên vẹn.
+- Đăng nhập Docker Hub (`minhhociot`), đánh tag `minhhociot/docker-capstone:v1`, push image lên Docker Hub và ghi nhận digest `sha256:6823167bb94c7ac57320f69a886e50ebecf53139fd03d8ab8059d9649410b0bc`.
+- Xoá image local, cập nhật `compose.yaml` từ `build: ./app` sang `image: minhhociot/docker-capstone:v1` và pull/deploy thành công trực tiếp từ Docker Hub Registry.
+- Xác minh qua `docker inspect` khớp `Image` và `RepoDigest` với registry.
+- Kết quả: **ĐẠT BUỔI 17 (HOÀN THÀNH PHASE 4)**.
