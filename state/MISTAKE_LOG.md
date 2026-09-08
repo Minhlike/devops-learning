@@ -117,3 +117,29 @@
   - Thao tác `tag` không copy/duplicate image, chỉ tạo thêm tên trỏ cùng Image ID.
   - Container Registry cho phép các máy khác pull/deploy image mà không cần mã nguồn local.
   - Vòng đời Volume (Volume Lifecycle) hoàn toàn độc lập với vòng đời Container (Container Lifecycle).
+
+## [2026-09-08] Lỗi Linter Ruff I001 (Import Block Formatting) trong CI Runner
+- **Ngày:** 2026-09-08
+- **Bối cảnh:** Lab 18 — CI/CD Pipeline với GitHub Actions & Ruff Linter.
+- **Triệu chứng:** Pipeline bị đỏ tại step `Lint with Ruff` với thông báo `I001 [*] Import block is un-sorted or un-formatted`.
+- **Nguyên nhân gốc:** Không có dòng trống ngăn cách giữa standard library (`import unittest`) và local import (`from app import app`) theo chuẩn PEP 8.
+- **Cách sửa:** Thêm 1 dòng trống phân cách giữa 2 nhóm import trong `test_app.py`.
+
+## [2026-09-08] Lỗi 401 Unauthorized khi GitHub Actions đăng nhập Docker Hub
+- **Ngày:** 2026-09-08
+- **Bối cảnh:** Lab 18 — Cấu hình CD Job push image lên Docker Hub.
+- **Triệu chứng:** `Error response from daemon: Get "https://registry-1.docker.io/v2/": unauthorized: incorrect username or password`.
+- **Nguyên nhân gốc:** Docker Hub Token hoặc Username trong GitHub Repository Secrets bị thiếu, sai hoặc dính khoảng trắng khi copy-paste.
+- **Cách sửa:** Tạo Personal Access Token mới trên Docker Hub (quyền Read & Write), cập nhật lại secret `DOCKER_HUB_TOKEN` trên GitHub Settings và dùng tính năng `Re-run jobs` mà không cần tạo commit rác.
+
+## [2026-09-08] Docker Buildx lỗi "open Dockerfile: no such file or directory"
+- **Ngày:** 2026-09-08
+- **Bối cảnh:** Lab 18 — Build Docker Image trong GitHub Actions runner.
+- **Triệu chứng:** `buildx failed with: ERROR: failed to build: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory`.
+- **Nguyên nhân gốc:** File `Dockerfile` bị đặt nhầm vị trí (nằm trong `app/Dockerfile` hoặc thư mục `Dockerfile/`) thay vì nằm ngay tại context root `labs/lab-18-ci-cd/Dockerfile`.
+- **Cách sửa:** Dùng lệnh `mv labs/lab-18-ci-cd/app/Dockerfile labs/lab-18-ci-cd/Dockerfile` đưa file ra đúng thư mục gốc của lab rồi commit.
+- **Bài học rút ra (Lessons):**
+  - Cơ chế Fail-Fast: Step trước fail (Exit Code $\neq 0$) thì các step và job phụ thuộc phía sau bị hủy ngay lập tức, tiết kiệm chi phí tính toán.
+  - Phân biệt Linter vs Test: Linter bắt vi phạm quy chuẩn và cấu trúc tĩnh; Unittest kiểm tra tính đúng đắn của logic nghiệp vụ tại runtime.
+  - Phân trang Linux (`less`): Bấm `q` để thoát pager khi xem `git diff` hoặc `git log`.
+  - Re-run Jobs: Khi lỗi thuộc về Secret hoặc hạ tầng bên ngoài, dùng `Re-run failed jobs` thay vì tạo commit rỗng.

@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 4 — Docker, Containers & Application Deployment (ĐÃ HOÀN THÀNH XUẤT SẮC BÀI CAPSTONE)
-- **Next Phase:** PHASE 5 — CI/CD Automation & GitHub Actions (BẮT ĐẦU BUỔI 18)
+- **Current Phase:** PHASE 5 — CI/CD Automation & GitHub Actions
+- **Current Status:** Hoàn thành Buổi 18 — CI/CD Fundamentals with GitHub Actions. Chuẩn bị Buổi 19 — Advanced GitHub Actions & Multi-Stage CI/CD Workflows.
 - **Current Week:** Tuần 5
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -67,3 +67,13 @@
      - Thực hành xoá image local, pull image từ Docker Hub và cập nhật `compose.yaml` chuyển từ `build: ./app` sang `image: minhhociot/docker-capstone:v1`.
      - Deploy thành công trực tiếp từ registry image; `docker inspect` xác nhận `Image=minhhociot/docker-capstone:v1` và `RepoDigest` khớp digest registry.
      - Kết quả: **ĐẠT BUỔI 17 (HOÀN THÀNH CAPSTONE PHASE 4)**.
+  6. **Buổi 18 — CI/CD Fundamentals with GitHub Actions:**
+     - Xây dựng Flask API microservice (`app.py`, Gunicorn 2 workers, endpoint `/`, `/health`).
+     - Thiết lập Unit Test với Flask Test Client (`test_app.py`) kiểm tra HTTP status code 200 và dữ liệu JSON response.
+     - Tích hợp công cụ Linter hiện đại Ruff (Rust) tối ưu tốc độ quét mã nguồn tĩnh và chuẩn hóa quy chuẩn PEP 8.
+     - Soạn thảo GitHub Actions Workflow (`.github/workflows/ci.yml`) đa job (`test` và `build-and-push`) kết nối qua quan hệ phụ thuộc `needs: test`.
+     - Quản lý an toàn GitHub Repository Secrets: `DOCKER_HUB_USERNAME` và `DOCKER_HUB_TOKEN` chống rò rỉ credential ra log.
+     - Tự động hóa build Docker image từ runner cloud và push lên Docker Hub Registry với tag kép `:latest` và `:${{ github.sha }}`.
+     - Kéo image `minhhociot/devops-lab18:latest` từ Docker Hub về máy local qua WSL và kiểm thử endpoint `/health` trả về `healthy`.
+     - Hoàn thành chuỗi Failure Injections: sửa lỗi linter `I001`, bắt lỗi logic test `1.0.0 != 2.0.0`, khắc phục sự cố xác thực Registry 401 Unauthorized, và xử lý lỗi thiếu `Dockerfile` trong build context.
+     - Kết quả: **ĐẠT BUỔI 18 (XUẤT SẮC)**.

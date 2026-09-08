@@ -58,3 +58,9 @@
 | Version Control| Semantic Versioning & Release Tags (`git tag`)| Làm được độc lập | 2026-08-08 | Đánh tag `v1.0.0` và push thành công lên GitHub `Minhlike/devops-learning` |
 | Troubleshooting | HTTP 502 Bad Gateway Incident Response | Troubleshoot được | 2026-08-08 | Incident 8.2 & Exam Phase 2: Đọc log `Connection refused` và sửa lỗi 502 |
 | Technical English| Reading Documentation | Làm được độc lập | 2026-07-30 | Diagnostic Test (Tốt) |
+| CI/CD & Automation | GitHub Actions Workflow Syntax (`name`, `on`, `jobs`, `steps`, `uses`, `run`) | Làm được độc lập | 2026-09-08 | Lab 18: Viết `.github/workflows/ci.yml` chuẩn cú pháp YAML |
+| CI/CD & Automation | Multi-Job Pipeline & Dependencies (`needs: test`) | Làm được độc lập | 2026-09-08 | Lab 18: Cấu hình `build-and-push` phụ thuộc kết quả `test` (Fail-Fast) |
+| CI/CD & Automation | Modern Python Linting (`ruff check`) | Làm được độc lập | 2026-09-08 | Lab 18: Tích hợp Ruff (Rust) quét mã nguồn tĩnh và chuẩn PEP 8 |
+| CI/CD & Automation | GitHub Repository Secrets Management (`DOCKER_HUB_*`) | Làm được độc lập | 2026-09-08 | Lab 18: Quản lý và bảo vệ an toàn Docker Hub Personal Access Token |
+| CI/CD & Automation | Automated Docker Build & Registry Push (`docker/build-push-action`) | Làm được độc lập | 2026-09-08 | Lab 18: Tự động build và push `minhhociot/devops-lab18` với tag kép `:latest` & `:${{ github.sha }}` |
+| CI/CD & Automation | CI/CD Failure Injections & Log Diagnostics | Troubleshoot được | 2026-09-08 | Lab 18: Xử lý lỗi Ruff `I001`, AssertionError, Registry 401, Dockerfile missing |

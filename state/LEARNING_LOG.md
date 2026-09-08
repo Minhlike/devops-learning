@@ -127,3 +127,19 @@
 - Xoá image local, cập nhật `compose.yaml` từ `build: ./app` sang `image: minhhociot/docker-capstone:v1` và pull/deploy thành công trực tiếp từ Docker Hub Registry.
 - Xác minh qua `docker inspect` khớp `Image` và `RepoDigest` với registry.
 - Kết quả: **ĐẠT BUỔI 17 (HOÀN THÀNH PHASE 4)**.
+
+## [2026-09-08] Session 18: CI/CD Fundamentals with GitHub Actions
+- Bắt đầu Phase 5: CI/CD Automation & GitHub Actions.
+- Xây dựng Flask API microservice (`app.py`, Gunicorn 2 workers, endpoint `/`, `/health`) và viết bộ kiểm thử tự động bằng Flask test client (`test_app.py`).
+- Tích hợp công cụ Linter hiện đại Ruff (Astral/Rust) tối ưu tốc độ quét mã nguồn tĩnh và chuẩn hóa PEP 8.
+- Soạn thảo GitHub Actions Workflow (`.github/workflows/ci.yml`), quản lý 2 jobs tuần tự (`test` và `build-and-push`) kết nối qua quan hệ phụ thuộc `needs: test` (cơ chế Fail-Fast).
+- Cấu hình an toàn GitHub Repository Secrets (`DOCKER_HUB_USERNAME` và `DOCKER_HUB_TOKEN`) để runner đăng nhập Docker Hub an toàn, không để lộ credential.
+- Sử dụng bộ Docker GitHub Actions (`setup-buildx-action`, `login-action`, `build-push-action`) tự động hóa đóng gói container và push lên Docker Hub Registry với tag kép `:latest` và `:${{ github.sha }}`.
+- Kéo trực tiếp image `minhhociot/devops-lab18:latest` từ Docker Hub về máy local qua WSL, chạy container và xác minh `curl /health` phản hồi `healthy`.
+- Thực hành chuỗi Failure Injections và chẩn đoán sự cố:
+  1. Lỗi Linter Ruff `I001`: Thiếu dòng trống ngăn cách standard library và local import $\rightarrow$ sửa theo chuẩn PEP 8.
+  2. Lỗi logic test: Cố tình đổi mong đợi `version` thành `2.0.0` $\rightarrow$ Runner bắt AssertionError, pipeline đỏ tại step `Run unit tests` và dừng khẩn cấp trước khi build Docker.
+  3. Lỗi xác thực Registry: Khắc phục lỗi `401 Unauthorized` do thiếu/sai Secret token Docker Hub, áp dụng tính năng `Re-run jobs` mà không cần commit rác.
+  4. Lỗi Build Context: Xử lý lỗi `open Dockerfile: no such file or directory` do nhầm vị trí file `Dockerfile`.
+- Merge toàn bộ code nhánh `feature/lab-18-ci-cd` vào nhánh `main` và push thành công lên GitHub.
+- Kết quả: **ĐẠT BUỔI 18 (XUẤT SẮC)**.
