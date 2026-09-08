@@ -12,7 +12,7 @@ class TestFlaskApp(unittest.TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
-        self.assertEqual(data["version"], "1.0.0")
+        self.assertEqual(data["version"], "2.0.0")
 
     def test_health(self):
         response = self.client.get("/health")
