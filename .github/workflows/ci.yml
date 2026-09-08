@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -31,3 +31,28 @@ jobs:
       - name: Run unit tests
         working-directory: labs/lab-18-ci-cd
         run: python -m unittest discover -s app -p 'test_*.py'
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: labs/lab-18-ci-cd
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
