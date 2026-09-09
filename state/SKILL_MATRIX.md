@@ -64,3 +64,13 @@
 | CI/CD & Automation | GitHub Repository Secrets Management (`DOCKER_HUB_*`) | Làm được độc lập | 2026-09-08 | Lab 18: Quản lý và bảo vệ an toàn Docker Hub Personal Access Token |
 | CI/CD & Automation | Automated Docker Build & Registry Push (`docker/build-push-action`) | Làm được độc lập | 2026-09-08 | Lab 18: Tự động build và push `minhhociot/devops-lab18` với tag kép `:latest` & `:${{ github.sha }}` |
 | CI/CD & Automation | CI/CD Failure Injections & Log Diagnostics | Troubleshoot được | 2026-09-08 | Lab 18: Xử lý lỗi Ruff `I001`, AssertionError, Registry 401, Dockerfile missing |
+| CI/CD & Automation | GitHub Actions Matrix Strategy (`strategy.matrix`) | Làm được độc lập | 2026-09-09 | Lab 19: Chạy song song test trên Python 3.10, 3.11, 3.12 |
+| CI/CD & Automation | Python Multi-Version Compatibility Testing | Làm được độc lập | 2026-09-09 | Lab 19: Xác minh tương thích app trên nhiều runtime Python độc lập |
+| CI/CD & Automation | Matrix Execution & Fail-Fast Control (`fail-fast: false`) | Làm được độc lập | 2026-09-09 | Lab 19: Giữ các job matrix khác tiếp tục chạy khi 1 job bị fail |
+| CI/CD & Automation | pip Dependency Caching (`actions/setup-python`) | Làm được độc lập | 2026-09-09 | Lab 19: Cache package pip theo hash file requirements.txt tối ưu CI time |
+| CI/CD & Automation | Test Coverage & Quality Gate (`coverage --fail-under=80`) | Làm được độc lập | 2026-09-09 | Lab 19: Tự động chặn CI nếu độ bao phủ mã nguồn dưới ngưỡng 80% |
+| CI/CD & Automation | GitHub Actions Artifacts (`actions/upload-artifact@v4`) | Làm được độc lập | 2026-09-09 | Lab 19: Đóng gói và lưu trữ báo cáo coverage xml cho từng matrix job |
+| CI/CD & Automation | GitHub Branch Rulesets & Branch Protection | Làm được độc lập | 2026-09-09 | Lab 19: Thiết lập ruleset bảo vệ main, chặn force push, yêu cầu PR |
+| CI/CD & Automation | Required Status Checks & Pull Request CI Gate | Làm được độc lập | 2026-09-09 | Lab 19: Bắt buộc 3 checks Matrix test pass mới cho phép merge PR #1 |
+| CI/CD & Automation | Conditional Deployment by Branch (`github.ref`, `event_name`) | Làm được độc lập | 2026-09-09 | Lab 19: Chỉ kích hoạt build-and-push khi push vào main, feature chỉ CI |
+| CI/CD & Automation | CI Failure Injection & Threshold Gate Recovery | Troubleshoot được | 2026-09-09 | Lab 19: Inject lỗi threshold 101% chặn merge PR, khôi phục 80% mở khóa CI |

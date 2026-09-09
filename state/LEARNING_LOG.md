@@ -143,3 +143,17 @@
   4. Lỗi Build Context: Xử lý lỗi `open Dockerfile: no such file or directory` do nhầm vị trí file `Dockerfile`.
 - Merge toàn bộ code nhánh `feature/lab-18-ci-cd` vào nhánh `main` và push thành công lên GitHub.
 - Kết quả: **ĐẠT BUỔI 18 (XUẤT SẮC)**.
+
+## [2026-09-09] Session 19: Advanced GitHub Actions & Multi-Stage CI/CD Workflows
+- Tiếp tục Phase 5: CI/CD Automation & GitHub Actions.
+- Nâng cấp CI workflow từ single-job sang Matrix Build: Chạy song song unit test trên 3 runtime Python 3.10, 3.11, 3.12 sử dụng `strategy.matrix` và tắt `fail-fast` (`fail-fast: false`) để thu thập đầy đủ kết quả của mọi phiên bản độc lập.
+- Tối ưu hóa thời gian chạy pipeline bằng cơ chế Caching dependencies với `actions/setup-python` (`cache: "pip"`, `cache-dependency-path: labs/lab-18-ci-cd/app/requirements.txt`).
+- Tích hợp kiểm thử độ bao phủ mã nguồn với `coverage>=7.6.0`: Thực thi `coverage run`, xuất báo cáo định dạng `coverage.xml` và thiết lập Quality Gate `--fail-under=80` (Coverage < 80% thì CI tự động đánh FAIL).
+- Lưu trữ và upload báo cáo coverage thành CI Artifacts riêng biệt cho từng phiên bản (`coverage-python-3.10`, `coverage-python-3.11`, `coverage-python-3.12`) qua `actions/upload-artifact@v4`.
+- Phân định ranh giới CI vs CD an toàn: Cấu hình job `build-and-push` chỉ chạy khi có sự kiện push vào nhánh `main` (`github.event_name == 'push' && github.ref == 'refs/heads/main'`), nhánh feature chỉ chạy test/lint/coverage, không deploy image.
+- Tạo nhánh tính năng `feature/lab-19-matrix-ci` và mở Pull Request #1 vào `main`.
+- Thiết lập GitHub Branch Ruleset bảo vệ nhánh `main`: Chặn force push, bắt buộc Pull Request và yêu cầu 3 status checks bắt buộc (`Test - Python 3.10`, `Test - Python 3.11`, `Test - Python 3.12`) phải pass mới được merge.
+- Thực hành Failure Injection: Cố tình nâng ngưỡng coverage lên 101% (`--fail-under=101`) khiến CI bị đỏ và GitHub khóa chặn nút merge PR #1; sau khi khôi phục threshold về 80%, CI xanh trở lại và mở khóa merge.
+- Merge thành công PR #1 vào `main` (merge commit `68bb478`).
+- Xác minh sau merge trên `main`: Matrix test 3.10/3.11/3.12 đều PASS, upload artifact PASS, job `build-and-push` tự động kích hoạt thực hiện Docker Buildx, Docker Hub login và push image thành công.
+- Kết quả: **ĐẠT BUỔI 19 (XUẤT SẮC)**.
