@@ -37,7 +37,16 @@ jobs:
 
       - name: Run unit tests
         working-directory: labs/lab-18-ci-cd
-        run: python -m unittest discover -s app -p 'test_*.py'
+        run: |
+          coverage run --source=app -m unittest discover -s app -p 'test_*.py'
+          coverage report --fail-under=80
+          coverage xml -o coverage.xml
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-python-${{ matrix.python-version }}
+          path: labs/lab-18-ci-cd/coverage.xml
 
   build-and-push:
     needs: test
