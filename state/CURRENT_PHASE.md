@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 5 — CI/CD Automation & GitHub Actions
-- **Current Status:** Hoàn thành Buổi 18 — CI/CD Fundamentals with GitHub Actions. Chuẩn bị Buổi 19 — Advanced GitHub Actions & Multi-Stage CI/CD Workflows.
+- **Current Status:** Hoàn thành Buổi 19 — Advanced GitHub Actions & Multi-Stage CI/CD Workflows. Chuẩn bị Buổi 20 — Production-Ready CD & Release Automation (Environments, Semantic Release & Rollback).
 - **Current Week:** Tuần 5
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -77,3 +77,17 @@
      - Kéo image `minhhociot/devops-lab18:latest` từ Docker Hub về máy local qua WSL và kiểm thử endpoint `/health` trả về `healthy`.
      - Hoàn thành chuỗi Failure Injections: sửa lỗi linter `I001`, bắt lỗi logic test `1.0.0 != 2.0.0`, khắc phục sự cố xác thực Registry 401 Unauthorized, và xử lý lỗi thiếu `Dockerfile` trong build context.
      - Kết quả: **ĐẠT BUỔI 18 (XUẤT SẮC)**.
+  7. **Buổi 19 — Advanced GitHub Actions & Multi-Stage CI/CD Workflows:**
+     - Nâng cấp CI Pipeline lên Matrix Build chạy song song trên 3 phiên bản Python: 3.10, 3.11, 3.12 sử dụng `strategy.matrix` và `fail-fast: false`.
+     - Cả 3 matrix jobs chạy độc lập và đều PASS thành công.
+     - Tối ưu hóa pipeline với Pip Dependency Caching qua `actions/setup-python` (`cache: "pip"`, `cache-dependency-path: labs/lab-18-ci-cd/app/requirements.txt`).
+     - Tích hợp kiểm tra độ bao phủ mã nguồn với `coverage>=7.6.0`, `coverage run`, `coverage report` và xuất báo cáo `coverage.xml`.
+     - Thiết lập Quality Gate tự động: Chặn pipeline nếu Test Coverage dưới 80% (`--fail-under=80`).
+     - Upload báo cáo coverage thành CI Artifacts riêng biệt cho từng phiên bản Python (`coverage-python-3.10`, `3.11`, `3.12`) qua `actions/upload-artifact@v4`.
+     - Bảo vệ deployment: Cấu hình điều kiện chỉ chạy job `build-and-push` khi có sự kiện push vào nhánh `main`. Nhánh feature chỉ chạy test/lint/coverage, không push Docker image.
+     - Tạo feature branch `feature/lab-19-matrix-ci` và mở Pull Request #1 vào `main`.
+     - Thiết lập GitHub Ruleset bảo vệ nhánh `main`: Bắt buộc Pull Request, chặn force push, yêu cầu 3 status checks Matrix Test (Python 3.10, 3.11, 3.12) pass mới cho merge.
+     - Thực hành Failure Injection: Cố tình nâng threshold coverage lên 101% khiến CI báo đỏ và PR bị chặn bởi required checks. Khôi phục về 80% CI xanh trở lại.
+     - Merge PR #1 thành công vào `main` (commit `68bb478`).
+     - Sau merge: Matrix tests, upload artifact và job `build-and-push` (Docker Buildx, Docker Hub login, push image) đều chạy thành công trên `main`.
+     - Kết quả: **ĐẠT BUỔI 19 (XUẤT SẮC)**.

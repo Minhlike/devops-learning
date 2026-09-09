@@ -143,3 +143,31 @@
   - Phân biệt Linter vs Test: Linter bắt vi phạm quy chuẩn và cấu trúc tĩnh; Unittest kiểm tra tính đúng đắn của logic nghiệp vụ tại runtime.
   - Phân trang Linux (`less`): Bấm `q` để thoát pager khi xem `git diff` hoặc `git log`.
   - Re-run Jobs: Khi lỗi thuộc về Secret hoặc hạ tầng bên ngoài, dùng `Re-run failed jobs` thay vì tạo commit rỗng.
+
+## [2026-09-09] Lỗi Unittest Discovery Pattern ('*_test.py' vs 'test_*.py')
+- **Ngày:** 2026-09-09
+- **Bối cảnh:** Lab 19 — Cấu hình lệnh chạy test trong GitHub Actions workflow.
+- **Triệu chứng:** Unittest không tìm thấy bất kỳ test case nào (Ran 0 tests in 0.000s).
+- **Nguyên nhân gốc:** Đặt sai pattern discovery là `'*_test.py'` trong khi file test đặt tên theo quy ước `test_app.py`.
+- **Cách sửa:** Đổi pattern thành `'test_*.py'` trong câu lệnh `python -m unittest discover -s app -p 'test_*.py'`.
+
+## [2026-09-09] Lỗi thụt lề cú pháp YAML dưới khối lệnh đa dòng 'run: |'
+- **Ngày:** 2026-09-09
+- **Bối cảnh:** Lab 19 — Soạn thảo các step chạy shell script trong file workflow `.github/workflows/ci.yml`.
+- **Triệu chứng:** GitHub Actions báo lỗi parsing YAML workflow file (`mapping values are not allowed in this context` hoặc step không thực thi đúng).
+- **Nguyên nhân gốc:** Thụt lề không đồng nhất giữa các dòng lệnh con bên dưới khối `run: |`. Trong YAML, khoảng trắng (whitespace indentation) mang ý nghĩa phân cấp cú pháp bắt buộc.
+- **Cách sửa:** Căn lề thụt đầu dòng thẳng hàng (chuẩn 2 spaces) cho toàn bộ các dòng shell script nằm trong khối `run: |`.
+
+## [2026-09-09] Runner thiếu binary 'coverage' do quên khai báo trong requirements.txt
+- **Ngày:** 2026-09-09
+- **Bối cảnh:** Lab 19 — Tích hợp bước đo lường độ bao phủ mã nguồn (Coverage Gate).
+- **Triệu chứng:** Step chạy coverage báo lỗi `/bin/bash: line ...: coverage: command not found`.
+- **Nguyên nhân gốc:** Thư viện `coverage` chưa được thêm vào `requirements.txt`, nên bước `pip install -r requirements.txt` không cài đặt công cụ này lên môi trường runner.
+- **Cách sửa:** Thêm `coverage>=7.6.0` vào `labs/lab-18-ci-cd/app/requirements.txt`.
+
+## [2026-09-09] Bài học về cơ chế Conditional Job Execution và Branch Protection
+- **Ngày:** 2026-09-09
+- **Bối cảnh:** Lab 19 — Quản lý vòng đời CI/CD với Branch Rulesets và Pull Request.
+- **Bài học rút ra (Lessons):**
+  - **Job Skipped là hành vi thiết kế đúng:** Job `build-and-push` bị chuyển trạng thái `skipped` khi push trên feature branch là do điều kiện `if: github.event_name == 'push' && github.ref == 'refs/heads/main'`. Đây là hành vi bảo vệ hạ tầng đúng, không phải lỗi pipeline.
+  - **Xác thực Branch Protection bằng Failure Injection:** Việc cố tình nâng threshold `--fail-under=101` đã chứng minh trực quan cách GitHub Ruleset và Required Status Checks khóa chặt nút merge PR, ngăn chặn hoàn toàn mã nguồn lỗi lọt vào nhánh `main`.
