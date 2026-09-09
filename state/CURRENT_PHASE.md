@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 5 — CI/CD Automation & GitHub Actions
-- **Current Status:** Hoàn thành Buổi 19 — Advanced GitHub Actions & Multi-Stage CI/CD Workflows. Chuẩn bị Buổi 20 — Production-Ready CD & Release Automation (Environments, Semantic Release & Rollback).
+- **Current Status:** Hoàn thành Buổi 20 — Deployment Environments, Approval Gates & Rollback. Chuẩn bị Buổi 21 — DevSecOps Security Scanning, Automated GitHub Releases & Phase 5 Capstone.
 - **Current Week:** Tuần 5
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -91,3 +91,15 @@
      - Merge PR #1 thành công vào `main` (commit `68bb478`).
      - Sau merge: Matrix tests, upload artifact và job `build-and-push` (Docker Buildx, Docker Hub login, push image) đều chạy thành công trên `main`.
      - Kết quả: **ĐẠT BUỔI 19 (XUẤT SẮC)**.
+  8. **Buổi 20 — Deployment Environments, Approval Gates & Rollback:**
+     - Thiết lập GitHub Environments đa tầng: `staging` và `production`.
+     - Cấu hình Deployment Protection Rules: Thiết lập Required Reviewers / manual approval gate bảo vệ môi trường `production`.
+     - Xây dựng luồng pipeline tự động phân tầng: `test matrix` $\rightarrow$ `build-and-push` $\rightarrow$ `deploy-staging` $\rightarrow$ `smoke test staging` $\rightarrow$ `deploy-production`.
+     - Bảo vệ an toàn nhánh: Nhánh feature chỉ kích hoạt test matrix, không deploy lên staging/production.
+     - Tự động hóa sau merge `main`: Staging tự động deploy và smoke test PASS; Production dừng lại chờ review thủ công và chỉ deploy sau khi được phê duyệt (Approval).
+     - Áp dụng nguyên lý Artifact Immutability: Sử dụng image tag bất biến `${{ github.sha }}` cho toàn bộ chu trình deploy thay vì phụ thuộc vào tag mutable `latest`.
+     - Triển khai cơ chế Image Promotion: Sau khi production smoke test `/health` thành công, image được gắn thêm tag `stable` đại diện cho bản phát hành tốt nhất hiện tại.
+     - Tích hợp Trigger thủ công `workflow_dispatch` với input boolean `rollback` để kích hoạt kịch bản khôi phục thảm họa.
+     - Thiết kế job `rollback-production`: Chỉ chạy khi `rollback=true`, vẫn tuân thủ Environment Protection Rules của `production`, kéo image `:stable`, chạy smoke test `/health` và dọn dẹp container.
+     - Thực hành Manual Rollback thật trên GitHub Actions UI (Run #28: SUCCESS), kiểm chứng toàn bộ các job build/test/staging được bỏ qua (skipped) đúng thiết kế khi kích hoạt rollback.
+     - Kết quả: **ĐẠT BUỔI 20 (XUẤT SẮC)**.

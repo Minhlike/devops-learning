@@ -157,3 +157,28 @@
 - Merge thành công PR #1 vào `main` (merge commit `68bb478`).
 - Xác minh sau merge trên `main`: Matrix test 3.10/3.11/3.12 đều PASS, upload artifact PASS, job `build-and-push` tự động kích hoạt thực hiện Docker Buildx, Docker Hub login và push image thành công.
 - Kết quả: **ĐẠT BUỔI 19 (XUẤT SẮC)**.
+
+## [2026-09-09] Session 20: Deployment Environments, Approval Gates & Rollback
+- Hoàn thành Buổi 20 trong Phase 5: CI/CD Automation & GitHub Actions.
+- Thiết lập hệ thống GitHub Environments đa tầng gồm `staging` và `production` trên repository GitHub.
+- Cấu hình Deployment Protection Rules cho môi trường `production`: Thiết lập Required Reviewers (yêu cầu phê duyệt thủ công từ reviewer chỉ định trước khi job deploy được phép chạy).
+- Xây dựng kiến trúc CD Pipeline phân tầng hoàn chỉnh:
+  1. `test` (Matrix Python 3.10, 3.11, 3.12, Linting Ruff, Coverage Gate 80%).
+  2. `build-and-push` (Chỉ kích hoạt trên `main`, đóng gói Docker image và push lên Docker Hub).
+  3. `deploy-staging` (Deploy tự động lên môi trường staging sau khi build thành công).
+  4. `staging-smoke-test` (Tự động kiểm tra tính khả dụng của endpoint `/health` trên staging).
+  5. `deploy-production` (Gán `environment: production`, tự động dừng lại chờ manual approval của reviewer; chỉ chạy khi staging smoke test PASS).
+  6. `production-smoke-test` (Kiểm tra sức khỏe dịch vụ trên production).
+  7. `promote-stable` (Sau khi production smoke test PASS, tiến hành promote Docker image gán thêm tag `stable`).
+- Kiểm soát phạm vi triển khai theo nhánh: Các nhánh tính năng (feature branches) chỉ thực thi các job CI kiểm thử, tuyệt đối không kích hoạt deploy lên staging hay production.
+- Áp dụng nguyên lý Artifact Immutability: Chuyển đổi toàn bộ quá trình đóng gói và deploy sang image tag bất biến dựa trên Git commit SHA (`${{ github.sha }}`) thay vì phụ thuộc vào tag mutable `latest`.
+- Triển khai cơ chế Image Promotion: Khẳng định tính ổn định của bản release bằng việc gắn tag `stable` cho container image chỉ sau khi nó đã vượt qua toàn bộ các bài kiểm tra thực tế trên production.
+- Tích hợp tính năng Manual Workflow Trigger: Bổ sung sự kiện `workflow_dispatch` với input `rollback` (kiểu boolean, mặc định false) cho phép người vận hành kích hoạt quy trình khẩn cấp trực tiếp từ GitHub Actions UI.
+- Thiết kế và kiểm chứng quy trình Rollback khẩn cấp (`rollback-production`):
+  - Khi kích hoạt với `rollback=true`, pipeline thông minh bỏ qua toàn bộ các bước `test`, `build-and-push`, `staging` và chỉ chạy duy nhất job `rollback-production`.
+  - Job rollback vẫn tuân thủ Environment Protection Rules của `production` (đảm bảo tính kiểm soát truy cập và audit trail).
+  - Kéo phiên bản an toàn đã được chứng nhận (`:stable`), khởi chạy, thực hiện smoke test `/health` xác minh khôi phục và dọn dẹp tài nguyên.
+- Kiểm chứng thực tế trên GitHub Actions UI:
+  - Kích hoạt Manual Rollback thành công trên run #28 (SUCCESS), xác minh các job không liên quan đều ở trạng thái `skipped`.
+- Kết quả: **ĐẠT BUỔI 20 (XUẤT SẮC)**.
+
