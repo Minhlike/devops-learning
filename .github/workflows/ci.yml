@@ -8,7 +8,12 @@ on:
 
 jobs:
   test:
+    name: Test - Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10","3.11","3.12"]
 
     steps:
       - name: Checkout repository
@@ -17,7 +22,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          cache-dependency-path: labs/lab-18-ci-cd/app/requirements.txt
 
       - name: Install dependencies
         run: |
@@ -30,10 +37,20 @@ jobs:
 
       - name: Run unit tests
         working-directory: labs/lab-18-ci-cd
-        run: python -m unittest discover -s app -p 'test_*.py'
+        run: |
+          coverage run --source=app -m unittest discover -s app -p 'test_*.py'
+          coverage report --fail-under=80
+          coverage xml -o coverage.xml
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-python-${{ matrix.python-version }}
+          path: labs/lab-18-ci-cd/coverage.xml
 
   build-and-push:
     needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
