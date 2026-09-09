@@ -171,3 +171,16 @@
 - **Bài học rút ra (Lessons):**
   - **Job Skipped là hành vi thiết kế đúng:** Job `build-and-push` bị chuyển trạng thái `skipped` khi push trên feature branch là do điều kiện `if: github.event_name == 'push' && github.ref == 'refs/heads/main'`. Đây là hành vi bảo vệ hạ tầng đúng, không phải lỗi pipeline.
   - **Xác thực Branch Protection bằng Failure Injection:** Việc cố tình nâng threshold `--fail-under=101` đã chứng minh trực quan cách GitHub Ruleset và Required Status Checks khóa chặt nút merge PR, ngăn chặn hoàn toàn mã nguồn lỗi lọt vào nhánh `main`.
+
+## [2026-09-09] Bài học về Production CD, Approval Gates, Image Immutability và Rollback Strategy
+- **Ngày:** 2026-09-09
+- **Bối cảnh:** Lab 20 — Thiết lập Pipeline CD đa môi trường, cổng phê duyệt thủ công và quy trình Rollback khẩn cấp.
+- **Bài học rút ra (Lessons):**
+  - **Môi trường Staging là lớp đệm (Buffer Zone) bắt buộc:** Không bao giờ deploy trực tiếp lên production ngay sau khi build. Staging cho phép chạy smoke test kiểm thử toàn diện container trong môi trường tương đồng production, phát hiện lỗi cấu hình runtime, port mapping hay crashloop trước khi ảnh hưởng người dùng thật.
+  - **Manual Approval Gate là chốt chặn an toàn:** Cấu hình Required Reviewers trên GitHub Environment `production` ngăn chặn việc deploy tự động ngoài ý muốn sau khi merge PR. Đội ngũ kỹ thuật có thời gian đánh giá kết quả staging và chủ động lựa chọn thời điểm release an toàn.
+  - **Tag SHA Bất biến (Immutability) loại bỏ rủi ro của tag 'latest':** Tag `latest` có tính biến động (mutable), có thể bị ghi đè bất kỳ lúc nào khiến việc tái hiện sự cố hoặc rollback trở nên mơ hồ. Sử dụng tag `${{ github.sha }}` đảm bảo tính xác định tuyệt đối (deterministic) giữa mã nguồn Git và Docker image artifact.
+  - **Chiến lược Image Promotion an toàn:** Chỉ gắn tag `:stable` cho Docker image sau khi đã vượt qua bài smoke test thực tế trên production. Không bao giờ rebuild image từ mã nguồn khi promote để tránh rủi ro trôi phiên bản dependencies.
+  - **Quy trình Rollback phải được chuẩn bị sẵn (Pre-engineered):** Khi xảy ra thảm họa production, việc revert git commit và chờ build lại từ đầu tốn rất nhiều thời gian (MTTR cao). Một job rollback chuyên dụng kích hoạt qua `workflow_dispatch` kéo ngay image `:stable` đã được chứng nhận giúp hạ thời gian phục hồi xuống dưới 1 phút.
+  - **Bảo toàn Environment Protection Rules trong Rollback:** Job rollback vẫn phải khai báo `environment: production` để lưu vết audit log và đảm bảo chỉ những reviewer có thẩm quyền mới được phê duyệt kích hoạt rollback.
+  - **Phân nhánh điều kiện chặt chẽ (Conditional Job Execution):** Sử dụng biểu thức điều kiện `if` rõ ràng ở từng job để tách biệt rạch ròi giữa luồng triển khai định kỳ (`rollback != 'true'`) và luồng khôi phục khẩn cấp (`rollback == 'true'`), đảm bảo không chạy thừa các job test/build khi cần cứu hộ hệ thống.
+

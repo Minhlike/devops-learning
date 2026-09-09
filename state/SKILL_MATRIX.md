@@ -74,3 +74,13 @@
 | CI/CD & Automation | Required Status Checks & Pull Request CI Gate | Làm được độc lập | 2026-09-09 | Lab 19: Bắt buộc 3 checks Matrix test pass mới cho phép merge PR #1 |
 | CI/CD & Automation | Conditional Deployment by Branch (`github.ref`, `event_name`) | Làm được độc lập | 2026-09-09 | Lab 19: Chỉ kích hoạt build-and-push khi push vào main, feature chỉ CI |
 | CI/CD & Automation | CI Failure Injection & Threshold Gate Recovery | Troubleshoot được | 2026-09-09 | Lab 19: Inject lỗi threshold 101% chặn merge PR, khôi phục 80% mở khóa CI |
+| CI/CD & Automation | GitHub Deployment Environments (`staging`, `production`) | Làm được độc lập | 2026-09-09 | Lab 20: Thiết lập và phân tách cấu hình môi trường staging và production |
+| CI/CD & Automation | Deployment Protection Rules & Manual Approval Gate | Làm được độc lập | 2026-09-09 | Lab 20: Cấu hình Required Reviewers chặn production chờ phê duyệt thủ công |
+| CI/CD & Automation | Multi-Stage Deployment Pipeline (Staging $\rightarrow$ Production) | Làm được độc lập | 2026-09-09 | Lab 20: Chuỗi pipeline test matrix $\rightarrow$ build $\rightarrow$ staging $\rightarrow$ prod |
+| CI/CD & Automation | Post-Deployment Automated Smoke Testing (`curl /health`) | Làm được độc lập | 2026-09-09 | Lab 20: Tự động kiểm tra endpoint `/health` sau khi deploy từng môi trường |
+| CI/CD & Automation | Immutable Artifact Tagging (`${{ github.sha }}`) | Làm được độc lập | 2026-09-09 | Lab 20: Dùng commit SHA bất biến cho image tag, tránh rủi ro của tag `latest` |
+| CI/CD & Automation | Container Image Promotion (`:stable` tag) | Làm được độc lập | 2026-09-09 | Lab 20: Promote image đạt chuẩn production smoke test thành tag `stable` |
+| CI/CD & Automation | Manual Workflow Trigger (`workflow_dispatch`) | Làm được độc lập | 2026-09-09 | Lab 20: Kích hoạt pipeline thủ công trên GitHub UI với input boolean `rollback` |
+| CI/CD & Automation | Production Rollback Automation & Disaster Recovery | Troubleshoot được | 2026-09-09 | Lab 20: Rollback kéo image `:stable`, smoke test và dọn dẹp (Run #28 SUCCESS) |
+| CI/CD & Automation | Conditional Job Skip & Workflow Branching Control | Làm được độc lập | 2026-09-09 | Lab 20: Phân luồng điều kiện bỏ qua build/staging khi rollback=true |
+
