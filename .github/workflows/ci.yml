@@ -35,7 +35,7 @@ jobs:
         run: |
           ruff check labs/lab-18-ci-cd/app
 
-      - name: Run unit tests
+      - name: Run tests with coverage
         working-directory: labs/lab-18-ci-cd
         run: |
           coverage run --source=app -m unittest discover -s app -p 'test_*.py'
@@ -74,3 +74,63 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+  
+  deploy-staging:
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: Pull exact image
+        run: |
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+      
+      - name: Run staging container
+        run: |
+          docker run -d \
+            --name app-staging \
+            -p 8080:8000 \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+
+      - name: Wait for application
+        run: sleep 5
+
+      - name: Smoke test staging
+        run: |
+          curl --fail http://localhost:8080/health
+      
+      - name: Cleanup staging
+        if: always()
+        run: docker rm -f app-staging || true
+
+  deploy-production:
+    needs: deploy-staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+
+    steps:
+      - name: Pull exact image
+        run: |
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+
+      - name: Run production candidate
+        run: |
+          docker run -d \
+            --name app-production \
+            -p 8080:8000 \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+           
+      - name: Wait for application
+        run: sleep 5
+
+      - name: Smoke test production
+        run: |
+          curl --fail http://localhost:8080/health
+      
+      - name: Cleanup production
+        if: always()
+        run: docker rm -f app-production || true
