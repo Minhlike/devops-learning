@@ -5,9 +5,17 @@ on:
     branches: [ "**" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      rollback:
+        description: "Rollback production to stable image"
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   test:
+    if: github.event_name != 'workflow_dispatch' || inputs.rollback == false
     name: Test - Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
@@ -113,6 +121,12 @@ jobs:
       name: production
 
     steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
       - name: Pull exact image
         run: |
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
@@ -131,6 +145,48 @@ jobs:
         run: |
           curl --fail http://localhost:8080/health
       
+      - name: Promote candidate to stable
+        run: |
+          docker tag \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }} \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:stable
+          docker push \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:stable
+
       - name: Cleanup production
+        if: always()
+        run: docker rm -f app-production || true
+  rollback-production:
+    if: github.event_name == 'workflow_dispatch' && inputs.rollback == true
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Pull stable image
+        run: |
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:stable
+
+      - name: Run rollback candidate
+        run: |
+          docker run -d \
+            --name app-production \
+            -p 8080:8000 \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:stable
+
+      - name: Wait for application
+        run: sleep 5
+
+      - name: Smoke test rollback
+        run: |
+          curl --fail http://localhost:8080/health
+
+      - name: Cleanup rollback
         if: always()
         run: docker rm -f app-production || true
