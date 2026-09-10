@@ -182,3 +182,31 @@
   - Kích hoạt Manual Rollback thành công trên run #28 (SUCCESS), xác minh các job không liên quan đều ở trạng thái `skipped`.
 - Kết quả: **ĐẠT BUỔI 20 (XUẤT SẮC)**.
 
+## [2026-09-10] Session 21: DevSecOps Security Scanning, Automated Releases & Phase 5 Capstone
+- Hoàn thành Buổi 21 và chính thức tốt nghiệp PHASE 5: CI/CD Automation & GitHub Actions.
+- Tích hợp công cụ Static Application Security Testing (SAST) với Bandit (`bandit -r app -ll`) để phân tích mã nguồn tĩnh, phát hiện sớm các rủi ro bảo mật trong Python code.
+- Thực hành Failure Injection với Bandit: Bandit phát hiện cảnh báo bảo mật B104 (Hardcoded bind all interfaces `0.0.0.0`) trong khối `app.run()` phục vụ môi trường development; đã tiến hành tái cấu trúc, loại bỏ hoàn toàn dev server khỏi mã nguồn production và chuyển sang chạy thuần Gunicorn WSGI.
+- Tích hợp Secret Detection với Gitleaks GitHub Action (`gitleaks-action`):
+  - Cấu hình bắt buộc `fetch-depth: 0` để Gitleaks quét toàn bộ lịch sử Git commit thay vì chỉ quét commit nông gần nhất.
+  - Thực hành Failure Injection với Gitleaks: Thử commit secret giả lập, nhận diện bài học cốt lõi rằng việc tạo commit mới để xóa file chứa secret KHÔNG loại bỏ được secret khỏi repository do Git lưu vết bất biến; đã thực hiện quy trình remediation viết lại lịch sử commit (commit amend/rebase) và force push an toàn bằng `--force-with-lease`.
+- Tích hợp Container Vulnerability Scanning với Aqua Security Trivy (`aquasecurity/trivy-action`):
+  - Tự động quét Docker image ngay sau khi build và TRƯỚC KHI đẩy lên Docker Hub Registry.
+  - Cấu hình chốt chặn an ninh nghiêm ngặt: Thiết lập `--severity HIGH,CRITICAL` và `--exit-code 1` để tự động ngắt pipeline lập tức nếu phát hiện lỗ hổng nghiêm trọng trong base image hoặc application dependencies.
+- Vận hành và chuẩn hóa luồng CI/CD + DevSecOps hoàn chỉnh trên nhánh `main`:
+  1. `test`: Chạy song song Matrix Test (Python 3.10, 3.11, 3.12) kết hợp Ruff Linter, Coverage Gate (>=80%), Bandit SAST và Gitleaks secret detection.
+  2. `build-and-push`: Đóng gói Docker image với commit SHA tag bất biến (`${{ github.sha }}`).
+  3. `trivy-scan`: Quét lỗ hổng container image; chỉ khi vượt qua bài kiểm tra bảo mật mới push image lên Docker Hub.
+  4. `deploy-staging` & `staging-smoke-test`: Triển khai tự động lên môi trường staging và chạy smoke test `/health`.
+  5. `deploy-production`: Chốt chặn an toàn với Environment Protection Rules, yêu cầu manual approval từ reviewer chỉ định.
+  6. `production-smoke-test`: Xác minh endpoint `/health` trên production.
+  7. `promote-stable`: Gán thêm tag `:stable` cho image sau khi vượt qua smoke test production.
+  8. `rollback-production`: Sẵn sàng kích hoạt khẩn cấp qua `workflow_dispatch` kéo `:stable` phục hồi khi có sự cố.
+- Mở và merge thành công Pull Request #6 tích hợp toàn bộ các DevSecOps security gates.
+- Tích hợp Google Release Please (`google-github-actions/release-please-action`):
+  - Cấu hình manifest-driven release mode thông qua file `release-please-config.json` và `.release-please-manifest.json` tại thư mục gốc repository.
+  - Cấu hình phân quyền bảo mật cho GitHub Actions Runner: Bật quyền `Allow GitHub Actions to create and approve pull requests` trong repository Settings.
+  - Tự động hóa Semantic Versioning & Conventional Commits: Dựa trên các commit format `feat:`, `fix:`, `chore:`, Release Please tự động phân tích và mở Pull Request #8 (`chore(main): release 1.1.0`).
+  - Merge thành công Release PR #8: Release Please tự động sinh file `CHANGELOG.md`, cập nhật `version.txt` lên `1.1.0`, tạo Git tag `v1.1.0` và xuất bản GitHub Release `v1.1.0` chính thức.
+- Kết quả: **ĐẠT BUỔI 21 — HOÀN THÀNH TOÀN DIỆN VÀ TỐT NGHIỆP PHASE 5 (XUẤT SẮC)**.
+
+
