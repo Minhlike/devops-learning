@@ -47,7 +47,7 @@ jobs:
       - name: Security check with Bandit
         run: |
           bandit -r labs/lab-18-ci-cd/app
-
+         
       - name: Run tests with coverage
         working-directory: labs/lab-18-ci-cd
         run: |
@@ -61,8 +61,22 @@ jobs:
           name: coverage-python-${{ matrix.python-version }}
           path: labs/lab-18-ci-cd/coverage.xml
 
+  secret-scan:
+    if: github.event_name != 'workflow_dispatch' || inputs.rollback == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full Git history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Scan secrets with Gitleaks
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-and-push:
-    needs: test
+    needs: [test, secret-scan]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
