@@ -83,4 +83,15 @@
 | CI/CD & Automation | Manual Workflow Trigger (`workflow_dispatch`) | Làm được độc lập | 2026-09-09 | Lab 20: Kích hoạt pipeline thủ công trên GitHub UI với input boolean `rollback` |
 | CI/CD & Automation | Production Rollback Automation & Disaster Recovery | Troubleshoot được | 2026-09-09 | Lab 20: Rollback kéo image `:stable`, smoke test và dọn dẹp (Run #28 SUCCESS) |
 | CI/CD & Automation | Conditional Job Skip & Workflow Branching Control | Làm được độc lập | 2026-09-09 | Lab 20: Phân luồng điều kiện bỏ qua build/staging khi rollback=true |
+| CI/CD & Automation | Python SAST Security Scanning (`bandit`) | Troubleshoot được | 2026-09-10 | Lab 21: Quét mã tĩnh Bandit phát hiện và loại bỏ insecure host binding 0.0.0.0 |
+| CI/CD & Automation | Secret Detection with Gitleaks (`gitleaks-action`) | Làm được độc lập | 2026-09-10 | Lab 21: Quét toàn bộ Git history (`fetch-depth: 0`) phát hiện secret leak |
+| Version Control | Git History Secret Remediation | Troubleshoot được | 2026-09-10 | Lab 21: Loại bỏ secret khỏi Git history bằng commit rewrite và force-with-lease |
+| CI/CD & Automation | Docker Image CVE Scanning with Trivy (`aquasecurity/trivy-action`) | Làm được độc lập | 2026-09-10 | Lab 21: Quét lỗ hổng container trước khi push, chặn HIGH/CRITICAL với exit-code 1 |
+| CI/CD & Automation | DevSecOps Multi-Stage Security Gates | Làm được độc lập | 2026-09-10 | Lab 21: Tích hợp chốt chặn SAST, Secret và Container Vulnerabilities vào CI/CD |
+| CI/CD & Automation | Conventional Commits Specification | Làm được độc lập | 2026-09-10 | Lab 21: Chuẩn hóa commit format (`feat:`, `fix:`, `chore:`) phục vụ automation |
+| CI/CD & Automation | Automated Semantic Versioning (SemVer) | Làm được độc lập | 2026-09-10 | Lab 21: Tự động tính toán bump version (`1.0.0` $\rightarrow$ `1.1.0`) từ commit history |
+| CI/CD & Automation | Automated Release Management (`google-github-actions/release-please-action`) | Làm được độc lập | 2026-09-10 | Lab 21: Tích hợp Release Please manifest mode, tự động tạo Release PR #8 |
+| CI/CD & Automation | GitHub Release, Tag & Changelog Automation | Làm được độc lập | 2026-09-10 | Lab 21: Tự động sinh CHANGELOG.md, cập nhật version.txt, tạo tag/release `v1.1.0` |
+| CI/CD & Automation | End-to-End CI/CD + Security + Deployment Pipeline | Làm được độc lập | 2026-09-10 | Lab 21: Vận hành toàn diện luồng Test $\rightarrow$ Security Gates $\rightarrow$ Build $\rightarrow$ Trivy $\rightarrow$ Registry $\rightarrow$ Staging $\rightarrow$ Manual Approval $\rightarrow$ Prod $\rightarrow$ Release |
+
 

@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 5 — CI/CD Automation & GitHub Actions
-- **Current Status:** Hoàn thành Buổi 20 — Deployment Environments, Approval Gates & Rollback. Chuẩn bị Buổi 21 — DevSecOps Security Scanning, Automated GitHub Releases & Phase 5 Capstone.
-- **Current Week:** Tuần 5
+- **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
+- **Current Status:** Hoàn thành Buổi 21 — DevSecOps Security Scanning, Automated Releases & Phase 5 Capstone. Tốt nghiệp PHASE 5 — CI/CD Automation & GitHub Actions. Chuẩn bị Buổi 22 — AWS Foundations, IAM, CLI & Cost Safety.
+- **Current Week:** Tuần 6
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -103,3 +103,26 @@
      - Thiết kế job `rollback-production`: Chỉ chạy khi `rollback=true`, vẫn tuân thủ Environment Protection Rules của `production`, kéo image `:stable`, chạy smoke test `/health` và dọn dẹp container.
      - Thực hành Manual Rollback thật trên GitHub Actions UI (Run #28: SUCCESS), kiểm chứng toàn bộ các job build/test/staging được bỏ qua (skipped) đúng thiết kế khi kích hoạt rollback.
      - Kết quả: **ĐẠT BUỔI 20 (XUẤT SẮC)**.
+  9. **Buổi 21 — DevSecOps Security Scanning, Automated Releases & Phase 5 Capstone:**
+     - Tích hợp công cụ SAST Bandit quét mã nguồn Python tĩnh vào CI Pipeline nhằm phát hiện các lỗ hổng bảo mật ứng dụng.
+     - Thực hành Failure Injection với Bandit: Bandit phát hiện binding Flask development server `app.run(host='0.0.0.0')` tiềm ẩn rủi ro lộ lọt port; đã tiến hành gỡ bỏ code dev thừa, chuyển quyền chạy hoàn toàn cho Gunicorn WSGI server.
+     - Tích hợp Gitleaks GitHub Action quét bảo mật toàn bộ lịch sử commit (`fetch-depth: 0`).
+     - Thực hành Failure Injection với Gitleaks: Thấu hiểu sâu sắc nguyên lý bảo mật rằng xóa file chứa secret bằng một commit mới là không đủ; secret vẫn tồn tại vĩnh viễn trong Git history; đã khắc phục bằng cách rewrite commit history và loại bỏ secret triệt để.
+     - Tích hợp Aqua Security Trivy vào CI/CD: Quét lỗ hổng bảo mật (CVE) của Docker image trước khi đẩy lên registry, cấu hình chốt chặn nghiêm ngặt ngắt pipeline nếu phát hiện lỗ hổng mức `HIGH,CRITICAL` (`--severity HIGH,CRITICAL --exit-code 1`).
+     - Hoàn thiện luồng CI/CD + DevSecOps hoàn chỉnh trên nhánh `main`:
+       `Matrix Test (Python 3.10, 3.11, 3.12)` + `Ruff Lint` + `Coverage Gate 80%` + `Bandit SAST` + `Gitleaks`
+       $\rightarrow$ `Docker Build`
+       $\rightarrow$ `Trivy CVE Scanning`
+       $\rightarrow$ `Docker Hub Push (Immutable SHA Tag)`
+       $\rightarrow$ `Staging Deploy & Smoke Test (/health)`
+       $\rightarrow$ `Production Manual Approval Gate (Required Reviewers)`
+       $\rightarrow$ `Production Deploy & Smoke Test (/health)`
+       $\rightarrow$ `Image Promotion (:stable tag)`
+       $\rightarrow$ `Rollback Disaster Readiness`.
+     - Mở và merge thành công PR #6 tích hợp toàn diện các DevSecOps security gates vào repository.
+     - Tích hợp Google Release Please (`google-github-actions/release-please-action`) theo mô hình manifest mode (`release-please-config.json`, `.release-please-manifest.json`).
+     - Cấu hình phân quyền GitHub Actions cho phép tự động tạo và phê duyệt Pull Request (`Settings` $\rightarrow$ `Actions` $\rightarrow$ `General` $\rightarrow$ `Allow GitHub Actions to create and approve pull requests`).
+     - Tự động hóa Semantic Versioning & Conventional Commits: Merge thành công Release PR #8 (`chore(main): release 1.1.0`).
+     - Tự động sinh `CHANGELOG.md`, cập nhật file `version.txt` và tự động gắn Git tag / xuất bản GitHub Release `v1.1.0`.
+     - Kết quả: **ĐẠT BUỔI 21 — HOÀN THÀNH PHASE 5 (TỐT NGHIỆP XUẤT SẮC)**.
+
