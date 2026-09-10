@@ -93,15 +93,30 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: labs/lab-18-ci-cd
-          push: true
+          load: true
+          push: false
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
-  
+      
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+          format: table
+          exit-code: "1"
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+
+      - name: Push scanned Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:latest
+
   deploy-staging:
     needs: build-and-push
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
