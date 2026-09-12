@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 21 — DevSecOps Security Scanning, Automated Releases & Phase 5 Capstone. Tốt nghiệp PHASE 5 — CI/CD Automation & GitHub Actions. Chuẩn bị Buổi 22 — AWS Foundations, IAM, CLI & Cost Safety.
+- **Current Status:** Hoàn thành Buổi 22 — AWS Foundations, IAM, CLI & Cost Safety. Chuẩn bị Buổi 23 — AWS EC2 & VPC Fundamentals.
 - **Current Week:** Tuần 6
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -125,4 +125,23 @@
      - Tự động hóa Semantic Versioning & Conventional Commits: Merge thành công Release PR #8 (`chore(main): release 1.1.0`).
      - Tự động sinh `CHANGELOG.md`, cập nhật file `version.txt` và tự động gắn Git tag / xuất bản GitHub Release `v1.1.0`.
      - Kết quả: **ĐẠT BUỔI 21 — HOÀN THÀNH PHASE 5 (TỐT NGHIỆP XUẤT SẮC)**.
+  10. **Buổi 22 — AWS Foundations, IAM, CLI & Cost Safety:**
+      - Nắm vững kiến trúc hạ tầng toàn cầu của AWS: Phân biệt Region, Availability Zone (AZ) và Data Center; hiểu Shared Responsibility Model giữa AWS (Security OF the Cloud) và khách hàng (Security IN the Cloud).
+      - Thiết lập an toàn tài khoản tối cao: Kích hoạt Root MFA (Hardware/Virtual Authenticator), không dùng root user cho tác vụ hàng ngày.
+      - Cấu hình quản trị chi phí và ngân sách: Tạo AWS Zero-Spend Budget với cảnh báo chi phí tức thì qua email khi phát sinh vượt ngưỡng $0.01.
+      - Xây dựng hệ thống IAM theo nguyên tắc Least Privilege:
+        - Tạo IAM User `minh-devops` không cấp direct policy.
+        - Tạo IAM Group `devops-lab`.
+        - Soạn thảo Customer-managed Policy `DevOpsLabReadOnly` phân quyền chi tiết đọc tài nguyên EC2 metadata và S3.
+        - Hiểu cơ chế implicit deny (mọi hành động không được Explicit Allow thì mặc định bị Deny).
+      - Phân biệt rõ IAM Role, Trust Policy (ai được phép assume role) và Permission Policy (role được làm gì).
+      - Cài đặt và vận hành AWS CLI v2 trên Ubuntu 24.04 WSL, cấu hình region mặc định `ap-southeast-1` (Singapore).
+      - Xác thực CLI an toàn qua `aws login` với Temporary Credentials ngắn hạn (STS token), kiên quyết không tạo static long-term Access Key.
+      - Kiểm thử và xác minh quyền qua CLI:
+        - `aws ec2 describe-regions` và `aws ec2 describe-availability-zones` thành công.
+        - `aws s3api list-buckets` (`ListAllMyBuckets`) thành công.
+      - Thực hành Failure Injection: Chạy `aws ec2 describe-instances` bị chặn với lỗi `UnauthorizedOperation` chính xác theo thiết kế Least Privilege do policy chỉ cho phép xem regions/AZs, không cho phép xem instances.
+      - Chẩn đoán và xử lý sự cố (Troubleshooting): Sửa lỗi liên kết symlink `~/.aws` giữa Windows và WSL; khắc phục phiên xác thực hết hạn (`expired aws login session`) bằng quy trình re-authenticate.
+      - Kết quả: **ĐẠT BUỔI 22 (XUẤT SẮC)**.
+
 

@@ -209,4 +209,36 @@
   - Merge thành công Release PR #8: Release Please tự động sinh file `CHANGELOG.md`, cập nhật `version.txt` lên `1.1.0`, tạo Git tag `v1.1.0` và xuất bản GitHub Release `v1.1.0` chính thức.
 - Kết quả: **ĐẠT BUỔI 21 — HOÀN THÀNH TOÀN DIỆN VÀ TỐT NGHIỆP PHASE 5 (XUẤT SẮC)**.
 
+## [2026-09-12] Session 22: AWS Foundations, IAM, CLI & Cost Safety
+- Chính thức khởi động PHASE 6: AWS Cloud Infrastructure.
+- Nghiên cứu nền tảng hạ tầng toàn cầu của AWS:
+  - Phân biệt bản chất giữa AWS Region (khu vực địa lý độc lập), Availability Zone (AZ - một hoặc nhiều trung tâm dữ liệu tách biệt về điện, mạng và lũ lụt nhưng kết nối độ trễ cực thấp) và Data Center.
+  - Phân tích sâu Shared Responsibility Model: AWS chịu trách nhiệm về "Security OF the Cloud" (hạ tầng vật lý, server, mạng quang, hypervisor), khách hàng chịu trách nhiệm về "Security IN the Cloud" (dữ liệu khách hàng, quản lý danh tính IAM, cấu hình hệ điều hành, firewall security groups và mã hóa).
+- Thiết lập chốt chặn an toàn tài khoản AWS (Root Account Hardening):
+  - Kích hoạt Multi-Factor Authentication (MFA) bảo vệ tài khoản root.
+  - Khóa chặt tài khoản root, kiên quyết không tạo Access Key cho root và không sử dụng root cho các công việc vận hành hàng ngày.
+- Quản trị an toàn chi phí với AWS Zero-Spend Budget:
+  - Tạo AWS Budget với hạn mức chi phí $0.01 kèm cảnh báo tức thì qua email khi có bất kỳ chi phí nào phát sinh, đảm bảo môi trường học tập luôn an toàn chi phí tuyệt đối.
+- Thiết kế hệ thống quản trị danh tính và truy cập (IAM) theo chuẩn Least Privilege:
+  - Khởi tạo IAM User `minh-devops` không gán trực tiếp policy (No Direct Attached Policies).
+  - Khởi tạo IAM Group `devops-lab` và gán user `minh-devops` vào nhóm.
+  - Soạn thảo Customer-managed Policy `DevOpsLabReadOnly`: Cấp quyền đọc metadata khu vực EC2 (`ec2:DescribeRegions`, `ec2:DescribeAvailabilityZones`) và danh sách S3 bucket (`s3:ListAllMyBuckets`).
+  - Thấu hiểu nguyên lý Implicit Deny: Mọi hành động không được cấp quyền Explicit Allow thì mặc định sẽ bị Deny.
+- Phân biệt kiến trúc IAM Role:
+  - Nắm vững cấu trúc Role gồm Trust Policy (ai/dịch vụ nào được phép assume role qua `sts:AssumeRole`) và Permission Policy (role đó được phép thao tác những tài nguyên nào sau khi assume).
+- Vận hành AWS CLI v2 trên môi trường Ubuntu 24.04 WSL:
+  - Cài đặt và cấu hình AWS CLI v2, đặt region mặc định là `ap-southeast-1` (Singapore).
+  - Triển khai phương thức xác thực an toàn: Sử dụng `aws login` với Temporary Credentials ngắn hạn (STS token), hoàn toàn không tạo hay lưu trữ static long-term Access Key trên máy tính cá nhân.
+  - Kiểm thử tương tác tài nguyên qua CLI:
+    - Chạy `aws ec2 describe-regions` và `aws ec2 describe-availability-zones` thành công.
+    - Chạy `aws s3api list-buckets` thành công.
+- Thực hành Failure Injection kiểm chứng Least Privilege:
+  - Cố tình thực thi câu lệnh `aws ec2 describe-instances`.
+  - Kết quả: AWS API phản hồi lỗi `ClientError (UnauthorizedOperation)` đúng như thiết kế kiến trúc bảo mật, chứng minh policy chỉ cho phép xem metadata hạ tầng mà không cho phép truy cập danh sách máy chủ compute.
+- Xử lý sự cố kỹ thuật (Troubleshooting):
+  - Khắc phục lỗi đường dẫn và quyền hạn khi đồng bộ symlink cấu hình `~/.aws` giữa Windows host và Ubuntu WSL.
+  - Nhận diện và xử lý phiên làm việc hết hạn (`expired aws login session`), thiết lập quy trình refresh token/login nhanh chóng.
+- Kết quả: **ĐẠT BUỔI 22 (XUẤT SẮC)**.
+
+
 

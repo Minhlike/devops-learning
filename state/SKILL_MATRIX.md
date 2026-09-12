@@ -93,5 +93,16 @@
 | CI/CD & Automation | Automated Release Management (`google-github-actions/release-please-action`) | Làm được độc lập | 2026-09-10 | Lab 21: Tích hợp Release Please manifest mode, tự động tạo Release PR #8 |
 | CI/CD & Automation | GitHub Release, Tag & Changelog Automation | Làm được độc lập | 2026-09-10 | Lab 21: Tự động sinh CHANGELOG.md, cập nhật version.txt, tạo tag/release `v1.1.0` |
 | CI/CD & Automation | End-to-End CI/CD + Security + Deployment Pipeline | Làm được độc lập | 2026-09-10 | Lab 21: Vận hành toàn diện luồng Test $\rightarrow$ Security Gates $\rightarrow$ Build $\rightarrow$ Trivy $\rightarrow$ Registry $\rightarrow$ Staging $\rightarrow$ Manual Approval $\rightarrow$ Prod $\rightarrow$ Release |
+| Cloud & AWS | AWS Global Infrastructure (Regions, AZs & Data Centers) | Làm được độc lập | 2026-09-12 | Lab 22: Phân tích Region, Availability Zone và Shared Responsibility Model |
+| Cloud & AWS | AWS Root Account Hardening & Multi-Factor Authentication (MFA) | Làm được độc lập | 2026-09-12 | Lab 22: Kích hoạt MFA cho root user, cô lập root khỏi tác vụ vận hành thường ngày |
+| Cloud & AWS | AWS Cost Management & Zero-Spend Budgets | Làm được độc lập | 2026-09-12 | Lab 22: Tạo AWS Budget $0.01 với email alert tức thì ngăn chặn rủi ro chi phí |
+| Cloud & AWS | IAM Architecture (Users, Groups, Policies & Least Privilege) | Làm được độc lập | 2026-09-12 | Lab 22: Tạo User `minh-devops`, Group `devops-lab`, áp dụng nguyên tắc Implicit Deny |
+| Cloud & AWS | IAM Customer-Managed Policies (`DevOpsLabReadOnly`) | Làm được độc lập | 2026-09-12 | Lab 22: Soạn thảo JSON policy cấp quyền đọc EC2 metadata và S3 buckets |
+| Cloud & AWS | IAM Roles, Trust Policies & Permission Policies | Làm được độc lập | 2026-09-12 | Lab 22: Phân biệt Trust Policy (ai được assume) và Permission Policy (được làm gì) |
+| Cloud & AWS | AWS CLI v2 Administration & Configuration (Ubuntu WSL) | Làm được độc lập | 2026-09-12 | Lab 22: Cài đặt CLI v2 trên WSL, thiết lập default region `ap-southeast-1` |
+| Cloud & AWS | Temporary Credentials & Secure Authentication (`aws login`) | Làm được độc lập | 2026-09-12 | Lab 22: Xác thực CLI qua STS temporary credentials, loại bỏ long-term access keys |
+| Cloud & AWS | AWS CLI Resource Querying (EC2 & S3 API) | Làm được độc lập | 2026-09-12 | Lab 22: Thực thi `DescribeRegions`, `DescribeAvailabilityZones` và S3 `list-buckets` |
+| Cloud & AWS | IAM Permission Boundaries & CLI Diagnostics | Troubleshoot được | 2026-09-12 | Lab 22: Chẩn đoán lỗi `UnauthorizedOperation`, symlink `~/.aws` và expired session |
+
 
 

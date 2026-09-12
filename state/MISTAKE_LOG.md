@@ -195,4 +195,14 @@
   - **GitHub chặn GitHub Actions tự tạo Pull Request theo mặc định:** Release Please chạy thành công nhưng không tạo được Release PR do cơ chế bảo mật mặc định của GitHub ngăn cản `GITHUB_TOKEN` tạo hoặc phê duyệt Pull Request. Cần kích hoạt thủ công quyền này trong giao diện repository: `Settings` $\rightarrow$ `Actions` $\rightarrow$ `General` $\rightarrow$ tích chọn `Allow GitHub Actions to create and approve pull requests`.
   - **Đặc điểm của CHANGELOG.md trong lần chạy đầu tiên của Release Please:** Bản Changelog phát hành đầu tiên của `v1.1.0` có độ dài lớn do repository trước đó đã có sẵn tag `v1.0.0` từ Phase 2 và tích lũy toàn bộ commit history từ Buổi 10 đến Buổi 21. Kể từ bản release này trở đi, mọi Pull Request và Release tiếp theo sẽ tính toán chênh lệch (incremental) một cách ngắn gọn, chính xác theo từng release cycle.
 
+## [2026-09-12] Sự cố và Bài học về AWS IAM, CLI Authentication và Symlink Configuration
+- **Ngày:** 2026-09-12
+- **Bối cảnh:** Lab 22 — Thiết lập môi trường AWS Foundations, cấu hình AWS CLI v2 trên WSL, quản lý quyền hạn IAM và xác thực phiên.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Sự cố đứt gãy Symlink thư mục `~/.aws` trên WSL:** Khi tạo symlink trỏ từ thư mục `~/.aws` trong Ubuntu WSL sang thư mục cấu hình AWS trên Windows (`/mnt/c/Users/.../.aws`), quyền truy cập file (file permissions) và đường dẫn mount có thể khiến AWS CLI trên Linux không đọc hoặc không ghi được cache token phiên (`credentials`/`sso cache`). Khắc phục bằng cách đảm bảo symlink trỏ đúng path hợp lệ hoặc duy trì thư mục `~/.aws` độc lập bên trong filesystem ext4 của WSL với quyền `chmod 600/700` chuẩn bảo mật Linux.
+  - **Phiên làm việc AWS CLI hết hạn (`ExpiredToken / Token has expired`):** Khi sử dụng phương thức đăng nhập an toàn `aws login` tạo Temporary Credentials ngắn hạn qua AWS STS, token sẽ tự động hết hạn sau khoảng thời gian quy định (thường từ 1 đến 12 giờ). Khi thực thi lệnh CLI bị chặn với lỗi token hết hạn, người vận hành cần thực hiện re-authenticate (`aws login` hoặc `aws sso login`) thay vì nhầm lẫn rằng quyền hạn IAM bị thu hồi.
+  - **Failure Injection chứng minh sức mạnh của nguyên tắc Implicit Deny:** Việc thực thi `aws ec2 describe-instances` bị từ chối với lỗi `ClientError: An error occurred (UnauthorizedOperation) when calling the DescribeInstances operation` là minh chứng rõ ràng nhất cho kiến trúc Zero Trust / Least Privilege. IAM không cần câu lệnh Explicit Deny; chỉ cần hành động không nằm trong danh sách `Action` của Policy được gán, AWS sẽ tự động từ chối.
+  - **Kiên quyết loại bỏ Long-term Access Keys trên máy local:** Việc tạo static `aws_access_key_id` và `aws_secret_access_key` lưu trong file plain text `~/.aws/credentials` mang rủi ro bảo mật cực lớn nếu máy tính bị tấn công hoặc vô tình commit vào Git. Việc chuẩn hóa quy trình sử dụng Temporary Credentials qua `aws login` giúp triệt tiêu hoàn toàn rủi ro lộ lọt credential vĩnh viễn.
+
+
 
