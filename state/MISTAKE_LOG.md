@@ -213,6 +213,23 @@
   - **Bẫy chi phí giữa Stop vs Terminate và Public IPv4:** Dừng máy chủ (`stop-instances`) chỉ dừng tính phí compute (vCPU/RAM), nhưng AWS vẫn tiếp tục tính phí cho root EBS storage volume và địa chỉ Public IPv4 gán cho instance. Để duy trì nguyên tắc Zero-Spend / Cost Safety tuyệt đối trong môi trường học tập, bắt buộc phải `terminate-instances` để tự động hủy toàn bộ EBS volume gắn kèm và giải phóng Public IPv4 về lại AWS pool.
   - **Vệ sinh đặc quyền (Privilege Hygiene) và kiểm thử với `--dry-run`:** Việc cấp tạm quyền ghi để làm lab cần tuân thủ quy trình thu hồi ngay sau khi dọn dẹp tài nguyên. Cờ `--dry-run` của AWS CLI là công cụ kiểm thử phân quyền vô cùng đắc lực: cho phép xác minh quyền hạn IAM mà không thực sự tạo hay xóa tài nguyên, tránh gây rủi ro sai sót trong môi trường cloud.
 
+## [2026-09-13] Sự cố và Bài học về Automation Timing, IAM Role vs PassRole và Block Storage Attach
+- **Ngày:** 2026-09-13
+- **Bối cảnh:** Lab 24 — Quản trị AWS Storage (S3, EBS, Snapshot), cấu hình IAM Role cho EC2 và tự động hóa qua User Data.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Sự cố Timeout trong User Data do Retry Window quá ngắn:**
+    - *Triệu chứng:* Script User Data kiểm tra quyền đọc S3 ban đầu thiết lập vòng lặp thử lại 30 lần x 10 giây (tổng cộng 5 phút). Do quá trình attach IAM Instance Profile thủ công diễn ra sau khi máy chủ đã khởi động, script chạy hết 30 lần trước khi Role được gắn thành công, kết thúc với thông điệp lỗi `S24_FAILED`.
+    - *Chẩn đoán:* Xác định chính xác nguyên nhân gốc (root cause) thông qua console log hệ thống (`aws ec2 get-console-output`).
+    - *Khắc phục:* Mở rộng retry window lên 120 lần x 10 giây (20 phút) và bổ sung log chi tiết có thể quan sát được (observable logs). Khi chạy lại, EC2 bắt được temporary credentials ngay sau khi gắn role và hoàn thành thành công với `S24_SUCCESS`.
+    - *Bài học:* Mọi kịch bản tự động hóa phụ thuộc vào tính đồng nhất sau cùng (eventual consistency) hoặc độ trễ thao tác giữa các thành phần cloud phân tán đều cần có Retry Window đủ rộng và cơ chế ghi log tường minh.
+  - **Phân biệt rạch ròi giữa AWS Block Device Attach và Linux OS Mount:**
+    - Việc gọi API `aws ec2 attach-volume` chỉ đưa volume vào danh sách thiết bị phần cứng ảo hóa của máy chủ (hiện diện dưới dạng block device như `/dev/xvdf` hoặc `/dev/nvme1n1`).
+    - Hệ điều hành Linux bên trong EC2 hoàn toàn chưa thể sử dụng nếu chưa thực hiện các bước: kiểm tra filesystem (`lsblk -f`), định dạng hệ thống tệp tin (`mkfs -t ext4`) và gắn kết vào cây thư mục (`mount /dev/... /mnt/...`).
+  - **Phân biệt `sts:AssumeRole` và `iam:PassRole`:**
+    - `sts:AssumeRole`: Là hành động của chủ thể (ở đây là máy chủ EC2 thông qua service principal `ec2.amazonaws.com`) thực hiện lấy danh tính tạm thời từ IAM Role thông qua Trust Policy.
+    - `iam:PassRole`: Là quyền hạn của người dùng hoặc tiến trình khởi tạo máy chủ (User/CLI) cho phép "chuyển giao" Role đó cho tài nguyên EC2. Cần scope quyền `iam:PassRole` chính xác về ARN của Role cần cấp thay vì dùng `*` để tránh nguy cơ leo thang đặc quyền (Privilege Escalation).
+
+
 
 
 

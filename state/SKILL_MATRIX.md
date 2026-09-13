@@ -112,6 +112,16 @@
 | Cloud & AWS | Security Group Failure Injection & Network Troubleshooting | Troubleshoot được | 2026-09-12 | Lab 23: Revoke TCP/80 gây timeout curl, restore rule đưa website hoạt động lại |
 | Cloud & AWS | EC2 Cost Safety & Resource Deprovisioning | Làm được độc lập | 2026-09-12 | Lab 23: Terminate EC2 instance, xóa security group và giải phóng Public IPv4 |
 | Cloud & AWS | Temporary Privilege Hygiene & Least Privilege Enforcement | Làm được độc lập | 2026-09-12 | Lab 23: Thu hồi toàn bộ quyền ghi sau lab; kiểm chứng UnauthorizedOperation với `--dry-run` |
+| Cloud & AWS | AWS Storage Models (Block Storage vs Object Storage vs Instance Store) | Làm được độc lập | 2026-09-13 | Lab 24: So sánh đặc tính EBS vs S3 vs Instance Store; tính phù hợp cho DB |
+| Cloud & AWS | Amazon S3 Fundamentals & API Operations (`s3api`) | Làm được độc lập | 2026-09-13 | Lab 24: Quản lý Bucket, Object, Prefix qua `PutObject`, `ListObjectsV2`, `GetObject` |
+| Cloud & AWS | S3 Server-Side Encryption (SSE-S3 AES256) | Làm được độc lập | 2026-09-13 | Lab 24: Kiểm tra và áp dụng cơ chế mã hóa lưu trữ mặc định AES256 trên S3 |
+| Cloud & AWS | S3 IAM Policy Scoping (Bucket-level vs Object-level Permissions) | Làm được độc lập | 2026-09-13 | Lab 24: Tách biệt `s3:ListBucket` (bucket ARN) và `s3:GetObject` (object wildcard ARN) |
+| Cloud & AWS | IAM Roles for EC2 & Instance Profiles (`sts:AssumeRole` vs `iam:PassRole`) | Làm được độc lập | 2026-09-13 | Lab 24: Cấu hình Trust Policy ec2.amazonaws.com, Instance Profile và scope PassRole |
+| Cloud & AWS | EC2 Secure S3 Access via Instance Metadata (No Long-term Keys) | Làm được độc lập | 2026-09-13 | Lab 24: EC2 tự lấy STS token đọc S3; Failure Injection chặn khi thiếu Role |
+| Cloud & AWS | Amazon EBS Volume Provisioning & AZ Affinity | Làm được độc lập | 2026-09-13 | Lab 24: Tạo encrypted gp3 volume, kiểm chứng nguyên tắc cùng AZ để attach vào EC2 |
+| Cloud & AWS | Amazon EBS Snapshots & Point-in-Time Backup | Làm được độc lập | 2026-09-13 | Lab 24: Tạo snapshot sao lưu cấp khối block-level, detach và delete volume an toàn |
+| Cloud & AWS | Cloud Automation Timing & Observable Retry Windows | Troubleshoot được | 2026-09-13 | Lab 24: Xử lý timeout user-data, mở rộng retry window 120x10s giải quyết race condition |
+
 
 
 

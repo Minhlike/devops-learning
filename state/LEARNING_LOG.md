@@ -265,6 +265,41 @@
   - Kiểm chứng bằng cờ `--dry-run` và lệnh `aws ec2 create-security-group`: AWS API trả về lỗi `UnauthorizedOperation` chính xác theo thiết kế ban đầu, đưa tài khoản về trạng thái an toàn tuyệt đối.
 - Kết quả: **ĐẠT BUỔI 23 (XUẤT SẮC)**.
 
+## [2026-09-13] Session 24: AWS Storage & IAM Role for EC2
+- Tiếp tục PHASE 6: AWS Cloud Infrastructure.
+- Phân tích toàn diện mô hình lưu trữ trên đám mây AWS:
+  - So sánh Block Storage (Amazon EBS) vs Object Storage (Amazon S3) vs Ephemeral Local Storage (EC2 Instance Store).
+  - Thấu hiểu tính phù hợp kiến trúc: Thư mục dữ liệu PostgreSQL (`PGDATA`) đòi hỏi đọc/ghi ngẫu nhiên (random I/O), độ trễ micro-giây và tương thích POSIX nên bắt buộc triển khai trên Block Storage/EBS thay vì Object Storage/S3.
+- Quản trị dịch vụ lưu trữ đối tượng Amazon S3:
+  - Tạo S3 bucket lab tại region `ap-southeast-1`.
+  - Phân tích cấu trúc dữ liệu: Bucket, Object, Key và Prefix; nắm vững nguyên lý S3 là hệ thống lưu trữ đối tượng dạng Flat Namespace truy cập qua HTTPS REST API chứ không phải mounted filesystem.
+  - Vận hành thành thạo bộ lệnh CLI: `PutObject`, `ListObjectsV2`, `GetObject`.
+  - Kiểm tra tính năng Server-Side Encryption mặc định SSE-S3 sử dụng thuật toán mã hóa AES256.
+  - Phân định rõ ràng phạm vi quyền hạn: Tách biệt quyền mức bucket (`s3:ListBucket` trên `arn:aws:s3:::bucket`) và quyền mức object (`s3:GetObject` trên `arn:aws:s3:::bucket/*`).
+  - Thực hành Failure Injection S3: Cố tình loại bỏ quyền `s3:CreateBucket` khỏi policy $\rightarrow$ API phản hồi ngay lập tức `AccessDenied`.
+- Thiết kế và triển khai cơ chế IAM Role & Instance Profile cho EC2:
+  - Khởi tạo IAM Role `S24-EC2-S3-Role` với Trust Policy cho phép `ec2.amazonaws.com` gọi `sts:AssumeRole`.
+  - Soạn thảo Permission Policy theo chuẩn Least Privilege: Chỉ cấp quyền `s3:ListBucket` và `s3:GetObject` duy nhất trên bucket bài lab.
+  - Tạo Instance Profile đính kèm Role vào máy chủ EC2; hiểu rõ sự khác biệt giữa `sts:AssumeRole` (danh tính EC2 assume role) và `iam:PassRole` (quyền của người dùng ủy quyền chuyển giao role cho EC2).
+- Thực hành Failure Injection kiểm chứng cơ chế xác thực IAM Role:
+  - Khởi tạo EC2 instance không có IAM Role $\rightarrow$ AWS CLI trong instance báo lỗi `Unable to locate credentials`.
+  - Thực hiện live-attach Instance Profile vào instance đang chạy $\rightarrow$ máy chủ tự động truy xuất temporary credentials qua IMDSv2.
+  - Chạy `GetObject` tải file thành công ghi nhận chuỗi `S24_SUCCESS: EC2 READ S3`, loại bỏ triệt để việc lưu trữ long-term Access Key trên máy chủ.
+- Quản trị ổ đĩa lưu trữ khối Amazon Elastic Block Store (EBS):
+  - Khảo sát Root EBS Volume (gp3, 8 GiB, `ap-southeast-1a`, `DeleteOnTermination=True`).
+  - Kiểm chứng ràng buộc vật lý: EBS Volume và EC2 Instance bắt buộc phải nằm trong cùng một Availability Zone (AZ).
+  - Tạo volume bổ sung 1 GiB gp3 có mã hóa (Encrypted) và gắn (attach) vào EC2 instance; phân tích sự khác nhau giữa việc attach block device ở tầng ảo hóa và việc format filesystem/mount trong Linux.
+  - Tạo EBS Snapshot kiểm chứng giải pháp sao lưu dữ liệu point-in-time; thực hành detach và delete EBS volume, xóa snapshot an toàn.
+- Tuân thủ nghiêm ngặt nguyên tắc Cost Safety & Resource Deprovisioning:
+  - Terminate toàn bộ máy chủ EC2 bài lab.
+  - Xóa sạch EBS volume bổ sung và EBS snapshot.
+  - Dọn sạch S3 objects và xóa bucket.
+  - Xóa IAM Role, Instance Profile và inline policy.
+  - Thu hồi toàn bộ quyền ghi tạm thời, giữ quyền `ec2:DescribeVolumes` trong policy `EC2ReadOnly`.
+  - Kiểm chứng bằng kỹ thuật dry-run `CreateVolume` trả về `UnauthorizedOperation` chính xác theo thiết kế.
+- Kết quả: **ĐẠT BUỔI 24 (XUẤT SẮC)**.
+
+
 
 
 

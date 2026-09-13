@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 23 — AWS EC2 & VPC Fundamentals. Chuẩn bị Buổi 24 — AWS Storage & IAM Role for EC2.
+- **Current Status:** Hoàn thành Buổi 24 — AWS Storage & IAM Role for EC2. Chuẩn bị Buổi 25 — AWS RDS & Managed Database Fundamentals.
 - **Current Week:** Tuần 6
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -164,6 +164,38 @@
         - Thu hồi toàn bộ quyền ghi tạm thời đã cấp cho user để làm lab.
         - Kiểm chứng bằng kỹ thuật `--dry-run` và lệnh `CreateSecurityGroup`: AWS API trả về lỗi `UnauthorizedOperation` chính xác theo thiết kế ban đầu.
       - Kết quả: **ĐẠT BUỔI 23 (XUẤT SẮC)**.
+  12. **Buổi 24 — AWS Storage & IAM Role for EC2:**
+      - Nắm vững mô hình phân loại lưu trữ tổng quát trên AWS: Block Storage (EBS), Object Storage (S3) và Ephemeral Local Storage (Instance Store); hiểu rõ lý do thư mục dữ liệu PostgreSQL phù hợp với Block Storage/EBS hơn Object Storage do yêu cầu đọc ghi ngẫu nhiên (random read/write), POSIX compliance và độ trễ thấp.
+      - Quản trị dịch vụ lưu trữ đối tượng Amazon S3:
+        - Tạo S3 bucket lab tại region `ap-southeast-1`.
+        - Hiểu sâu sắc cấu trúc Bucket, Object, Key và Prefix (phân cấp thư mục logic); phân biệt rõ S3 là Object Storage qua API/HTTPS chứ không phải filesystem hay mounted disk.
+        - Thực thi thành thạo các tác vụ `PutObject`, `ListObjectsV2`, `GetObject`.
+        - Kiểm tra cơ chế mã hóa lưu trữ mặc định Server-Side Encryption (SSE-S3 AES256).
+        - Phân tách rạch ròi giữa bucket-level permissions (`s3:ListBucket`) và object-level permissions (`s3:GetObject`, `s3:PutObject`); cấu hình scope Resource chính xác theo ARN (`arn:aws:s3:::bucket` vs `arn:aws:s3:::bucket/*`).
+        - Thực hành Failure Injection S3: Thu hồi quyền `s3:CreateBucket` $\rightarrow$ API lập tức trả về `AccessDenied`.
+      - Thiết kế và triển khai IAM Role cho máy chủ EC2 (`S24-EC2-S3-Role`):
+        - Cấu hình Trust Policy: Cho phép principal `ec2.amazonaws.com` thực hiện `sts:AssumeRole`.
+        - Cấu hình Permission Policy: Giới hạn nghiêm ngặt chỉ cấp `s3:ListBucket` và `s3:GetObject` trên S3 bucket bài lab.
+        - Tạo Instance Profile làm cầu nối đính kèm IAM Role vào máy chủ EC2.
+        - Phân biệt bản chất `iam:PassRole` (ủy quyền cho EC2 nhận Role) và `sts:AssumeRole` (hành động assume danh tính của EC2); scope `iam:PassRole` chính xác về ARN của S24 Role.
+      - Thực hành Failure Injection kiểm chứng IAM Role cho EC2:
+        - Khởi tạo EC2 không gán IAM Role $\rightarrow$ AWS CLI trong instance báo lỗi `Unable to locate credentials`.
+        - Đính kèm Instance Profile vào EC2 đang chạy (live attachment) $\rightarrow$ EC2 tự động nhận temporary credentials thông qua Instance Metadata Service (IMDS).
+        - Thực thi `GetObject` thành công ghi nhận nội dung `S24_SUCCESS: EC2 READ S3`, chứng minh máy chủ đọc S3 an toàn tuyệt đối mà không cần tạo hay lưu trữ long-term Access Key.
+      - Quản trị ổ đĩa lưu trữ khối Amazon Elastic Block Store (EBS):
+        - Khảo sát Root EBS Volume: `gp3`, 8 GiB, gắn liền Availability Zone `ap-southeast-1a`, cấu hình `DeleteOnTermination=True`.
+        - Nắm vững nguyên tắc vật lý: EBS Volume chỉ có thể attach vào EC2 instance nằm trong cùng Availability Zone (AZ).
+        - Tạo bổ sung 1 GiB gp3 encrypted volume, gắn (attach) thành công vào EC2 instance; phân biệt rõ việc attach ở tầng hạ tầng ảo hóa AWS chưa đồng nghĩa với việc định dạng filesystem (`mkfs`) hay mount vào thư mục trong Linux OS.
+        - Tạo EBS Snapshot kiểm chứng giải pháp sao lưu point-in-time cấp block-level; thực hành detach và delete EBS volume, xóa snapshot an toàn.
+      - Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+        - Terminate toàn bộ EC2 instances bài lab.
+        - Xóa sạch EBS lab volume và EBS snapshot.
+        - Dọn sạch S3 objects và xóa S3 bucket.
+        - Xóa IAM Instance Profile, IAM Role và inline policy liên quan.
+        - Thu hồi toàn bộ quyền ghi tạm thời, giữ quyền `ec2:DescribeVolumes` trong policy `EC2ReadOnly`.
+        - Kiểm chứng bằng dry-run `CreateVolume` trả về `UnauthorizedOperation` chính xác theo thiết kế.
+      - Kết quả: **ĐẠT BUỔI 24 (XUẤT SẮC)**.
+
 
 
 
