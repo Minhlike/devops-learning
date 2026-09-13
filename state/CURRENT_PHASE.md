@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 22 — AWS Foundations, IAM, CLI & Cost Safety. Chuẩn bị Buổi 23 — AWS EC2 & VPC Fundamentals.
+- **Current Status:** Hoàn thành Buổi 23 — AWS EC2 & VPC Fundamentals. Chuẩn bị Buổi 24 — AWS Storage & IAM Role for EC2.
 - **Current Week:** Tuần 6
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -143,5 +143,27 @@
       - Thực hành Failure Injection: Chạy `aws ec2 describe-instances` bị chặn với lỗi `UnauthorizedOperation` chính xác theo thiết kế Least Privilege do policy chỉ cho phép xem regions/AZs, không cho phép xem instances.
       - Chẩn đoán và xử lý sự cố (Troubleshooting): Sửa lỗi liên kết symlink `~/.aws` giữa Windows và WSL; khắc phục phiên xác thực hết hạn (`expired aws login session`) bằng quy trình re-authenticate.
       - Kết quả: **ĐẠT BUỔI 22 (XUẤT SẮC)**.
+  11. **Buổi 23 — AWS EC2 & VPC Fundamentals:**
+      - Hiểu sâu sắc bản chất mạng VPC (Virtual Private Cloud), Subnet và mối quan hệ ràng buộc: Mỗi Subnet nằm trọn vẹn trong một Availability Zone (AZ) duy nhất.
+      - Khảo sát và phân tích Default VPC tại region `ap-southeast-1` (Singapore), kiểm tra các default subnets phân bổ qua 3 AZ (`ap-southeast-1a`, `ap-southeast-1b`, `ap-southeast-1c`).
+      - Nắm vững vai trò của Internet Gateway (IGW) và Route Table trong việc định tuyến Public Subnet; xác minh route mặc định `0.0.0.0/0` trỏ ra Internet Gateway.
+      - Phân tích cơ chế hoạt động của Security Group: Tường lửa ảo cấp độ máy chủ có tính chất stateful (tự động cho phép traffic phản hồi mà không cần mở outbound tương ứng).
+      - Thiết lập Security Group độc lập `web-sg`, tuân thủ nguyên tắc Least Privilege: Chỉ mở inbound rule cho giao thức TCP port 80 từ mọi nguồn (`0.0.0.0/0`), không mở SSH công khai không cần thiết.
+      - Phân biệt Amazon Machine Image (AMI) và Instance Types; lựa chọn image chuẩn `Amazon Linux 2023` và instance type `t3.micro` (2 vCPU, 1 GiB RAM) tối ưu chi phí trong Free Tier.
+      - Tự động hóa triển khai hạ tầng EC2 bằng AWS CLI (`aws ec2 run-instances`):
+        - Sử dụng User Data script (`user-data.sh`) để tự động cài đặt `nginx`, tạo trang HTML tùy biến (`Hello from AWS EC2 - DevOps Learning - Session 23`) và enable systemd service ngay khi máy chủ khởi động lần đầu.
+        - Gán Public IPv4 tự động và kiểm thử website thật ngoài Internet bằng lệnh `curl http://<PUBLIC_IP>` trả về HTTP 200 kèm nội dung chính xác.
+      - Thực hành Failure Injection kiểm chứng Stateful Firewall:
+        - Thu hồi (revoke) rule TCP/80 trong Security Group $\rightarrow$ lệnh `curl` tới Public IP bị treo timeout ngay lập tức.
+        - Khôi phục (authorize) lại rule TCP/80 $\rightarrow$ website lập tức phản hồi thông suốt trở lại mà không cần khởi động lại dịch vụ web hay máy chủ.
+      - Tuân thủ nghiêm ngặt nguyên tắc Cost Safety & Resource Cleanup:
+        - Terminate EC2 instance ngay sau khi hoàn thành lab.
+        - Xóa Security Group `web-sg`.
+        - Xác minh Public IPv4 được giải phóng hoàn toàn về pool của AWS, tránh phát sinh chi phí IPv4 theo giờ.
+      - Bảo vệ an toàn quyền hạn (Least Privilege):
+        - Thu hồi toàn bộ quyền ghi tạm thời đã cấp cho user để làm lab.
+        - Kiểm chứng bằng kỹ thuật `--dry-run` và lệnh `CreateSecurityGroup`: AWS API trả về lỗi `UnauthorizedOperation` chính xác theo thiết kế ban đầu.
+      - Kết quả: **ĐẠT BUỔI 23 (XUẤT SẮC)**.
+
 
 

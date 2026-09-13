@@ -240,5 +240,31 @@
   - Nhận diện và xử lý phiên làm việc hết hạn (`expired aws login session`), thiết lập quy trình refresh token/login nhanh chóng.
 - Kết quả: **ĐẠT BUỔI 22 (XUẤT SẮC)**.
 
+## [2026-09-12] Session 23: AWS EC2 & VPC Fundamentals
+- Tiếp tục PHASE 6: AWS Cloud Infrastructure.
+- Khảo sát kiến trúc mạng AWS VPC và Subnet:
+  - Phân tích Default VPC tại region `ap-southeast-1` (CIDR `172.31.0.0/16`).
+  - Kiểm tra các default subnets và nắm vững nguyên lý vật lý: mỗi subnet nằm trọn vẹn trong một Availability Zone cụ thể (`ap-southeast-1a`, `ap-southeast-1b`, `ap-southeast-1c`).
+  - Phân tích cơ chế Internet Gateway (IGW) và Route Table: xác minh route `0.0.0.0/0` trỏ tới Internet Gateway cho phép các tài nguyên trong Public Subnet kết nối hai chiều với Internet.
+- Phân tích và cấu hình Security Group (Tường lửa ảo cấp máy chủ):
+  - Hiểu rõ cơ chế Stateful: Khi cho phép traffic đi vào (inbound), traffic phản hồi (outbound response) tự động được cho phép mà không cần quy tắc outbound tương ứng.
+  - Tạo Security Group riêng biệt `web-sg` chỉ mở cổng TCP 80 (`0.0.0.0/0`), không mở SSH công khai, tuân thủ nghiêm ngặt nguyên tắc Least Privilege.
+- Khởi tạo và tự động hóa triển khai máy chủ EC2 (Bootstrapping via User Data):
+  - Lựa chọn AMI Amazon Linux 2023 (`al2023-ami-...`) kết hợp instance type `t3.micro` (Free Tier eligible).
+  - Sử dụng AWS CLI (`aws ec2 run-instances`) cùng file script `user-data.sh` truyền vào base64 để tự động hóa toàn bộ quá trình: cập nhật hệ thống, cài đặt Nginx (`dnf install -y nginx`), tạo file trang chủ HTML (`Hello from AWS EC2 - DevOps Learning - Session 23`) và kích hoạt service (`systemctl enable --now nginx`).
+  - Kiểm tra và xác minh qua Public IPv4: Sử dụng `curl http://<PUBLIC_IP>` truy cập thành công từ máy local, nhận mã HTTP 200 và nội dung HTML đúng như kịch bản.
+- Thực hành Failure Injection kiểm chứng tính chất Stateful Firewall:
+  - Thu hồi (revoke) rule cho phép cổng 80 (`aws ec2 revoke-security-group-ingress`) $\rightarrow$ lệnh `curl` tới Public IP bị treo timeout ngay lập tức, chứng minh gói tin bị drop tại tầng Security Group trước khi vào OS.
+  - Khôi phục (authorize) rule cổng 80 $\rightarrow$ website ngay lập tức phản hồi thông suốt trở lại mà không cần can thiệp vào máy chủ hay restart Nginx.
+- Vận hành nguyên tắc Cost Safety & Resource Cleanup triệt để:
+  - Thực thi `aws ec2 terminate-instances` xóa hoàn toàn máy chủ EC2 sau khi hoàn tất bài lab.
+  - Xóa Security Group `web-sg` sau khi instance đã terminated hoàn toàn.
+  - Xác minh Public IPv4 được tự động thu hồi và giải phóng về pool của AWS, ngăn chặn chi phí phát sinh cho IPv4 công cộng.
+- Quản lý vòng đời đặc quyền (Privilege Hygiene) & Least Privilege:
+  - Thu hồi toàn bộ các quyền ghi tạm thời (EC2 write permissions) đã cấp cho IAM User phục vụ bài lab.
+  - Kiểm chứng bằng cờ `--dry-run` và lệnh `aws ec2 create-security-group`: AWS API trả về lỗi `UnauthorizedOperation` chính xác theo thiết kế ban đầu, đưa tài khoản về trạng thái an toàn tuyệt đối.
+- Kết quả: **ĐẠT BUỔI 23 (XUẤT SẮC)**.
+
+
 
 
