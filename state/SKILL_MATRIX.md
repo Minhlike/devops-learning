@@ -103,6 +103,16 @@
 | Cloud & AWS | Temporary Credentials & Secure Authentication (`aws login`) | Làm được độc lập | 2026-09-12 | Lab 22: Xác thực CLI qua STS temporary credentials, loại bỏ long-term access keys |
 | Cloud & AWS | AWS CLI Resource Querying (EC2 & S3 API) | Làm được độc lập | 2026-09-12 | Lab 22: Thực thi `DescribeRegions`, `DescribeAvailabilityZones` và S3 `list-buckets` |
 | Cloud & AWS | IAM Permission Boundaries & CLI Diagnostics | Troubleshoot được | 2026-09-12 | Lab 22: Chẩn đoán lỗi `UnauthorizedOperation`, symlink `~/.aws` và expired session |
+| Cloud & AWS | VPC & Subnet Architecture (Default VPC & Subnet-to-AZ Mapping) | Làm được độc lập | 2026-09-12 | Lab 23: Khảo sát Default VPC ap-southeast-1 và mapping 3 subnets theo từng AZ |
+| Cloud & AWS | Internet Gateway (IGW) & Route Table Configuration | Làm được độc lập | 2026-09-12 | Lab 23: Xác minh route `0.0.0.0/0` trỏ ra Internet Gateway cho Public Subnet |
+| Cloud & AWS | Security Group Administration & Stateful Firewall Inspection | Làm được độc lập | 2026-09-12 | Lab 23: Tạo `web-sg` chỉ mở TCP/80; hiểu bản chất stateful connection tracking |
+| Cloud & AWS | AMI & Instance Type Selection (Amazon Linux 2023 & t3.micro) | Làm được độc lập | 2026-09-12 | Lab 23: Lựa chọn AMI Amazon Linux 2023 và `t3.micro` chuẩn Free Tier |
+| Cloud & AWS | EC2 Automated Provisioning via AWS CLI (`aws ec2 run-instances`) | Làm được độc lập | 2026-09-12 | Lab 23: Launch EC2 instance hoàn toàn từ dòng lệnh CLI với subnet và security group |
+| Cloud & AWS | EC2 Bootstrapping with User Data (`user-data.sh`) | Làm được độc lập | 2026-09-12 | Lab 23: Tự động cài đặt Nginx, tạo trang HTML và start service qua User Data |
+| Cloud & AWS | Security Group Failure Injection & Network Troubleshooting | Troubleshoot được | 2026-09-12 | Lab 23: Revoke TCP/80 gây timeout curl, restore rule đưa website hoạt động lại |
+| Cloud & AWS | EC2 Cost Safety & Resource Deprovisioning | Làm được độc lập | 2026-09-12 | Lab 23: Terminate EC2 instance, xóa security group và giải phóng Public IPv4 |
+| Cloud & AWS | Temporary Privilege Hygiene & Least Privilege Enforcement | Làm được độc lập | 2026-09-12 | Lab 23: Thu hồi toàn bộ quyền ghi sau lab; kiểm chứng UnauthorizedOperation với `--dry-run` |
+
 
 
 

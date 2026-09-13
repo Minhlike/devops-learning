@@ -204,5 +204,15 @@
   - **Failure Injection chứng minh sức mạnh của nguyên tắc Implicit Deny:** Việc thực thi `aws ec2 describe-instances` bị từ chối với lỗi `ClientError: An error occurred (UnauthorizedOperation) when calling the DescribeInstances operation` là minh chứng rõ ràng nhất cho kiến trúc Zero Trust / Least Privilege. IAM không cần câu lệnh Explicit Deny; chỉ cần hành động không nằm trong danh sách `Action` của Policy được gán, AWS sẽ tự động từ chối.
   - **Kiên quyết loại bỏ Long-term Access Keys trên máy local:** Việc tạo static `aws_access_key_id` và `aws_secret_access_key` lưu trong file plain text `~/.aws/credentials` mang rủi ro bảo mật cực lớn nếu máy tính bị tấn công hoặc vô tình commit vào Git. Việc chuẩn hóa quy trình sử dụng Temporary Credentials qua `aws login` giúp triệt tiêu hoàn toàn rủi ro lộ lọt credential vĩnh viễn.
 
+## [2026-09-12] Sự cố và Bài học về AWS EC2, Security Group Stateful Firewall và Cost Lifecycle
+- **Ngày:** 2026-09-12
+- **Bối cảnh:** Lab 23 — Khảo sát VPC/Subnet, khởi tạo EC2 qua CLI với User Data, kiểm thử Security Group và dọn dẹp tài nguyên.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Triệu chứng Timeout khi Security Group chặn traffic vs Connection Refused:** Khi thu hồi (revoke) rule TCP/80 trong bài Failure Injection, lệnh `curl` tới Public IP bị rơi vào trạng thái treo và timeout (không nhận được phản hồi). Điều này chứng minh Security Group hoạt động như một packet filter ở tầng ảo hóa hypervisor: gói tin bị âm thầm loại bỏ (drop silently) mà không gửi gói TCP RST về cho client. Khác với trường hợp Nginx bị tắt (OS trả về `Connection refused` ngay lập tức).
+  - **Lỗi `DependencyViolation` khi xóa Security Group trước khi EC2 Terminated:** Khi cố gắng xóa Security Group `web-sg` ngay sau lệnh `terminate-instances`, AWS API trả về lỗi `DependencyViolation` do instance vẫn đang ở trạng thái `shutting-down` và network interface (ENI) chưa được tháo gỡ (detach). Cần sử dụng lệnh `aws ec2 wait instance-terminated` để đảm bảo máy chủ đã hủy hoàn toàn trước khi xóa Security Group.
+  - **Bẫy chi phí giữa Stop vs Terminate và Public IPv4:** Dừng máy chủ (`stop-instances`) chỉ dừng tính phí compute (vCPU/RAM), nhưng AWS vẫn tiếp tục tính phí cho root EBS storage volume và địa chỉ Public IPv4 gán cho instance. Để duy trì nguyên tắc Zero-Spend / Cost Safety tuyệt đối trong môi trường học tập, bắt buộc phải `terminate-instances` để tự động hủy toàn bộ EBS volume gắn kèm và giải phóng Public IPv4 về lại AWS pool.
+  - **Vệ sinh đặc quyền (Privilege Hygiene) và kiểm thử với `--dry-run`:** Việc cấp tạm quyền ghi để làm lab cần tuân thủ quy trình thu hồi ngay sau khi dọn dẹp tài nguyên. Cờ `--dry-run` của AWS CLI là công cụ kiểm thử phân quyền vô cùng đắc lực: cho phép xác minh quyền hạn IAM mà không thực sự tạo hay xóa tài nguyên, tránh gây rủi ro sai sót trong môi trường cloud.
+
+
 
 

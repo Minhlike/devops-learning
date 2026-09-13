@@ -1,18 +1,19 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 23 — PHASE 6: AWS EC2 & VPC Fundamentals.
-- **Mục tiêu Buổi 23:**
-  1. Nắm vững vòng đời của máy chủ EC2 (EC2 Instance Lifecycle): Pending, Running, Stopping, Stopped, Terminated; hiểu cơ chế thanh toán và rủi ro chi phí giữa Stop vs Terminate (EBS volume tiếp tục tính phí khi instance stopped).
-  2. Phân loại Amazon Machine Image (AMI): AWS Managed AMI (Amazon Linux 2023, Ubuntu Server), Custom AMI và Marketplace.
-  3. Lựa chọn Instance Types phù hợp: Hiểu naming convention (ví dụ `t4g.nano`, `t3.micro`), tối ưu theo nhu cầu CPU/RAM/Network và tận dụng AWS Free Tier.
-  4. Quản trị tường lửa mạng máy chủ với Security Group: Bản chất stateful của Security Group, cấu hình Inbound Rules (chỉ mở SSH port 22 và HTTP port 80 cho CIDR cần thiết) và Outbound Rules.
-  5. Xây dựng mạng riêng ảo AWS VPC Fundamentals:
-     - Tạo VPC với CIDR block chuẩn (ví dụ `10.0.0.0/16`).
-     - Tạo Public Subnet gắn liền với Availability Zone cụ thể.
-     - Tạo và gắn Internet Gateway (IGW) vào VPC.
-     - Cấu hình Route Table điều hướng traffic ra Internet (`0.0.0.0/0` $\rightarrow$ IGW).
-  6. Triển khai một EC2 instance nhỏ trong Public Subnet: Gắn SSH Key Pair, Public IP, cài đặt web server đơn giản (Nginx) bằng User Data script.
-  7. Thực hành Cost Safety nghiêm ngặt: Kiểm tra trạng thái tài nguyên, thiết lập thói quen cleanup hoặc terminate instance sau khi hoàn thành lab để duy trì chi phí $0.
+- **Buổi học tiếp theo:** BUỔI 24 — PHASE 6: AWS Storage & IAM Role for EC2.
+- **Mục tiêu Buổi 24:**
+  1. Nắm vững nền tảng Amazon S3 (Simple Storage Service): Khái niệm Bucket, Object, Prefix (giả lập thư mục), Storage Class và tính độc lập Region.
+  2. Nắm vững nền tảng Amazon Elastic Block Store (EBS): Phân loại Volume (gp3, io2), Snapshot, cơ chế đính kèm/tháo gỡ (Attach/Detach) và gắn kết Availability Zone.
+  3. So sánh chuyên sâu các loại hình lưu trữ trên AWS: Instance Store (Ephemerality/Hiệu năng cao) vs EBS (Block Storage/Persistence) vs S3 (Object Storage/Scale vô hạn/REST API).
+  4. Tạo S3 Bucket thực hành với tiêu chí Cost Safety: Cấu hình bucket duy nhất toàn cầu, bật mã hóa SSE-S3 mặc định và chặn truy cập công khai (Block Public Access).
+  5. Thiết kế và khởi tạo IAM Role dành riêng cho máy chủ EC2:
+     - Soạn thảo Trust Policy cho phép dịch vụ `ec2.amazonaws.com` assume role qua `sts:AssumeRole`.
+     - Soạn thảo Permission Policy cấp quyền đọc hạn chế (`s3:GetObject`, `s3:ListBucket`) trên S3 bucket bài lab.
+     - Tạo IAM Instance Profile để gắn Role vào máy chủ EC2.
+  6. Triển khai kiến trúc bảo mật không lưu trữ Credentials: Cấu hình cho EC2 tự động truy xuất temporary credentials qua Instance Metadata Service (IMDSv2) để đọc object từ S3, tuyệt đối KHÔNG lưu static Access Key trong file `.env` hay config máy chủ.
+  7. Thực hành Failure Injection: Truy vấn S3 từ EC2 khi chưa attach IAM Role $\rightarrow$ bắt lỗi `AccessDenied` / `403 Forbidden`; đính kèm Instance Profile $\rightarrow$ truy vấn S3 thành công tức thì.
+  8. Dọn dẹp tài nguyên (Cleanup) triệt để sau lab: Xóa object và delete S3 bucket, terminate EC2 instance và xóa IAM Role/Instance Profile nhằm duy trì chi phí $0.
+
 
 
 
