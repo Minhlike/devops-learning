@@ -1,19 +1,20 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 25 — PHASE 6: AWS RDS & Managed Database Fundamentals.
-- **Mục tiêu Buổi 25:**
-  1. So sánh kiến trúc Database tự vận hành trên EC2 vs Dịch vụ cơ sở dữ liệu được quản lý hoàn toàn (AWS Managed Database - Amazon RDS): Trade-offs về quản trị, patching, backup, HA và chi phí.
-  2. Nắm vững kiến trúc cốt lõi của Amazon RDS: DB Instance class, Database Engine (PostgreSQL/MySQL), Storage types (gp3/io2), IOPS, Storage Auto-scaling và cơ chế phân giải DNS Endpoint.
-  3. Cấu hình mạng riêng tư và bảo mật cho RDS:
-     - Tạo DB Subnet Group bao phủ ít nhất 2 Availability Zones trong VPC theo chuẩn AWS Best Practice.
-     - Thiết lập Security Group chuyên biệt cho Database: Chỉ cho phép traffic cổng DB (ví dụ TCP 5432) từ Security Group của EC2/Application layer, tuyệt đối không mở ra Internet (`0.0.0.0/0`).
-  4. Phân biệt chuyên sâu High Availability (HA) vs Read Scaling:
-     - Multi-AZ Deployment: Cơ chế đồng bộ dữ liệu (Synchronous replication), tự động chuyển đổi dự phòng (Automatic failover) nhằm đảm bảo tính sẵn sàng cao (High Availability).
-     - Read Replica: Cơ chế bất đồng bộ (Asynchronous replication), tăng tải đọc (Read scaling) và giảm áp lực cho Primary DB.
-  5. Cơ chế sao lưu và bảo trì: Automated Backups, Transaction Logs (PITR - Point-in-Time Recovery), Manual DB Snapshots và Maintenance Windows.
-  6. Kiểm thử kết nối ứng dụng/EC2 tới RDS qua Private Networking: Truy cập cơ sở dữ liệu từ EC2 instance thông qua Private IP/Endpoint nội bộ.
-  7. Thực hành Failure Injection: Cố tình cấu hình sai Database Security Group hoặc chặn Network Connectivity $\rightarrow$ ứng dụng báo lỗi Connection Timeout; điều chỉnh lại Security Group $\rightarrow$ kết nối thông suốt.
-  8. Vận hành nguyên tắc Cost Safety nghiêm ngặt: Lựa chọn `db.t3.micro`/`db.t4g.micro` Single-AZ trong Free Tier, vô hiệu hóa Multi-AZ khi làm lab, và thực hiện xóa DB instance (kèm disable final snapshot hoặc xóa snapshot sau đó) để duy trì chi phí $0.
+- **Buổi học tiếp theo:** BUỔI 26 — PHASE 6: AWS Load Balancing & Auto Scaling.
+- **Mục tiêu Buổi 26:**
+  1. Phân biệt Vertical Scaling (Scale Up/Down - nâng cấp cấu hình máy chủ) vs Horizontal Scaling (Scale Out/In - tăng giảm số lượng máy chủ).
+  2. Hiểu bản chất và vai trò của Load Balancer: Đóng vai trò Reverse Proxy phân phối lưu lượng truy cập đồng đều, tránh điểm nghẽn (Single Point of Failure).
+  3. Cấu hình Application Load Balancer (ALB), Target Group và Health Checks định kỳ kiểm tra tình trạng máy chủ.
+  4. Quản trị Auto Scaling Group (ASG) kết hợp Launch Template: Định nghĩa cấu hình máy chủ chuẩn (AMI, instance type, user data) để tự động sinh instance.
+  5. Cấu hình dung lượng nhóm máy chủ: Desired Capacity, Min Capacity và Max Capacity.
+  6. Cơ chế tự phục hồi (Self-Healing): Khi một instance bị lỗi hoặc chết, ASG phát hiện qua health check và tự động spawn instance mới thay thế.
+  7. Thực hành Failure Injection: Cố tình terminate một EC2 instance và quan sát trực tiếp hành vi của ASG tự động tạo máy chủ mới để duy trì Desired Capacity.
+  8. Giới thiệu chỉ số giám sát cơ bản với Amazon CloudWatch Metrics (CPUUtilization, HealthyHostCount).
+  9. Vận hành nguyên tắc Cost Safety nghiêm ngặt và dọn dẹp sạch toàn bộ tài nguyên (ALB, Target Group, ASG, Launch Template) sau bài lab.
+- **Yêu cầu phương pháp giảng dạy S26:**
+  - Áp dụng nguyên tắc **Architecture-First**: Trình bày kiến trúc và mục tiêu trước, giải thích rõ ràng "chúng ta đang xây cái gì và tại sao cần từng resource" trước khi thao tác.
+  - Tối ưu hóa câu lệnh, giảm bớt chuỗi CLI rườm rà không cần thiết so với S25 để tập trung sâu vào mental model và hiểu bản chất hệ thống.
+
 
 
 

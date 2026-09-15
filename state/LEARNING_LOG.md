@@ -299,6 +299,30 @@
   - Kiểm chứng bằng kỹ thuật dry-run `CreateVolume` trả về `UnauthorizedOperation` chính xác theo thiết kế.
 - Kết quả: **ĐẠT BUỔI 24 (XUẤT SẮC)**.
 
+## [2026-09-15] Session 25: AWS RDS & Managed Database Fundamentals
+- Tiếp tục PHASE 6: AWS Cloud Infrastructure.
+- Phân tích sâu sắc kiến trúc cơ sở dữ liệu trên đám mây AWS:
+  - So sánh chi tiết Database tự quản trên EC2 (Self-Managed) vs Amazon RDS (Managed Database): Trade-offs về việc tự quản lý OS/Database Engine, patching định kỳ, automated backup, point-in-time recovery, Multi-AZ high availability và tối ưu hóa chi phí vận hành.
+  - Nắm vững các thành phần kiến trúc cốt lõi của RDS: DB Instance class (`db.t4g.micro`), database engine (PostgreSQL 17.11), storage (gp3 20 GiB, encrypted bằng KMS key mặc định).
+  - Phân tích bản chất RDS Endpoint: Điểm truy cập DNS hostname ổn định mang tính trừu tượng hóa cao, giúp ứng dụng không bị ảnh hưởng khi địa chỉ IP underlying của database thay đổi sau bảo trì hoặc failover.
+- Khởi tạo và cấu hình cơ sở dữ liệu Amazon RDS PostgreSQL:
+  - Tạo DB Subnet Group gồm 2 Availability Zones (`ap-southeast-1a`, `ap-southeast-1b`) xác định phạm vi cấp phát mạng cho database; thiết lập `PubliclyAccessible=False` cô lập hoàn toàn database khỏi Internet.
+  - Phân biệt từ nền tảng giữa High Availability (Multi-AZ synchronous replication với automatic failover cho thảm họa) vs Read Scaling (Read Replica asynchronous phục vụ phân tải truy vấn đọc).
+- Thiết kế bảo mật mạng phân tầng với Security Group Referencing:
+  - Tạo riêng biệt Security Group `app-sg` cho EC2 application layer và `rds-sg` cho RDS database layer.
+  - Thực hành Failure Injection: EC2 cùng nằm trong VPC nhưng `rds-sg` chưa mở cổng TCP/5432 $\rightarrow$ kết nối bị chặn hoàn toàn (connection timeout).
+  - Khắc phục theo chuẩn Least Privilege: Thêm rule cho phép TCP/5432 trên `rds-sg` với source là `app-sg` (Security Group Referencing thay vì mở dải IP CIDR hay `0.0.0.0/0`) $\rightarrow$ kết nối thông suốt.
+  - Dùng công cụ `pg_isready` từ EC2 kiểm chứng PostgreSQL thực sự chấp nhận kết nối (accepting connections) qua mạng private nội bộ mà không cần đi qua Internet Gateway.
+- Kiểm chứng vòng đời sao lưu dữ liệu (Automated Backups vs Manual Snapshots):
+  - Phân tích sự khác biệt: Automated Backup bị ràng buộc bởi retention window và tự động bị hủy theo DB (khi dùng `--delete-automated-backups`), trong khi Manual Snapshot tồn tại vĩnh viễn và độc lập với vòng đời của DB instance.
+  - Tạo manual snapshot; xóa DB instance và kiểm chứng manual snapshot vẫn tồn tại độc lập nguyên vẹn.
+- Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+  - Dọn sạch toàn bộ EC2, RDS DB instance, manual snapshot, Security Groups (`app-sg`, `rds-sg`) và DB Subnet Group.
+  - Thu hồi quyền `S25TemporaryLabManagement` và quyền `CreateServiceLinkedRole`; giữ lại service-linked role hệ thống `AWSServiceRoleForRDS`.
+  - Kiểm tra AWS Billing xác nhận chi phí ước tính thực tế chỉ phát sinh khoảng ~$0.01 tại thời điểm kiểm tra.
+- Kết quả: **ĐẠT BUỔI 25 (XUẤT SẮC)**.
+
+
 
 
 

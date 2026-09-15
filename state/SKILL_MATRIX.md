@@ -121,6 +121,17 @@
 | Cloud & AWS | Amazon EBS Volume Provisioning & AZ Affinity | Làm được độc lập | 2026-09-13 | Lab 24: Tạo encrypted gp3 volume, kiểm chứng nguyên tắc cùng AZ để attach vào EC2 |
 | Cloud & AWS | Amazon EBS Snapshots & Point-in-Time Backup | Làm được độc lập | 2026-09-13 | Lab 24: Tạo snapshot sao lưu cấp khối block-level, detach và delete volume an toàn |
 | Cloud & AWS | Cloud Automation Timing & Observable Retry Windows | Troubleshoot được | 2026-09-13 | Lab 24: Xử lý timeout user-data, mở rộng retry window 120x10s giải quyết race condition |
+| Cloud & AWS | AWS Managed Database Architecture (Self-Managed EC2 vs RDS) | Làm được độc lập | 2026-09-15 | Lab 25: So sánh trade-offs EC2 DB vs RDS (patching, backup, Multi-AZ HA) |
+| Cloud & AWS | Amazon RDS DB Instance Provisioning (PostgreSQL 17 & Graviton) | Làm được độc lập | 2026-09-15 | Lab 25: Khởi tạo PostgreSQL 17 db.t4g.micro gp3 20GiB mã hóa KMS an toàn |
+| Cloud & AWS | RDS DB Subnet Groups & VPC Placement | Làm được độc lập | 2026-09-15 | Lab 25: Tạo DB Subnet Group đa AZ (1a, 1b); cấu hình PubliclyAccessible=False |
+| Cloud & AWS | Multi-Tier Security Group Referencing (App-SG to RDS-SG) | Làm được độc lập | 2026-09-15 | Lab 25: Cấp phép TCP/5432 nguồn app-sg; Failure Injection chặn khi chưa mở rule |
+| Cloud & AWS | Private Database Networking & Endpoint Resolution | Làm được độc lập | 2026-09-15 | Lab 25: Kết nối private EC2 tới RDS endpoint qua DNS nội bộ không cần IGW |
+| Cloud & AWS | Database Connectivity Diagnostics (`pg_isready`) | Làm được độc lập | 2026-09-15 | Lab 25: Kiểm chứng PostgreSQL thực sự chấp nhận connection từ client |
+| Cloud & AWS | High Availability vs Read Scaling (Multi-AZ vs Read Replica) | Làm được độc lập | 2026-09-15 | Lab 25: Phân biệt bản chất synchronous failover HA vs asynchronous read replica |
+| Cloud & AWS | RDS Backup & Snapshot Management (Automated vs Manual) | Làm được độc lập | 2026-09-15 | Lab 25: Tạo manual snapshot; xóa DB instance và kiểm chứng snapshot vẫn tồn tại |
+| Cloud & AWS | AWS Service-Linked Roles Management (`AWSServiceRoleForRDS`) | Làm được độc lập | 2026-09-15 | Lab 25: Hiểu vai trò role hệ thống cấp quyền cho RDS quản lý ENI/storage |
+| Cloud & AWS | Cloud Database Deprovisioning & Cost Safety | Làm được độc lập | 2026-09-15 | Lab 25: Xóa DB instance, snapshot, Subnet Group; kiểm soát chi phí ~$0.01 |
+
 
 
 

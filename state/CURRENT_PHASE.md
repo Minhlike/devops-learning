@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 24 — AWS Storage & IAM Role for EC2. Chuẩn bị Buổi 25 — AWS RDS & Managed Database Fundamentals.
-- **Current Week:** Tuần 6
+- **Current Status:** Hoàn thành Buổi 25 — AWS RDS & Managed Database Fundamentals. Chuẩn bị Buổi 26 — AWS Load Balancing & Auto Scaling.
+- **Current Week:** Tuần 7
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -195,6 +195,26 @@
         - Thu hồi toàn bộ quyền ghi tạm thời, giữ quyền `ec2:DescribeVolumes` trong policy `EC2ReadOnly`.
         - Kiểm chứng bằng dry-run `CreateVolume` trả về `UnauthorizedOperation` chính xác theo thiết kế.
       - Kết quả: **ĐẠT BUỔI 24 (XUẤT SẮC)**.
+  13. **Buổi 25 — AWS RDS & Managed Database Fundamentals:**
+      - Phân tích sâu sắc trade-offs giữa Database tự quản trên EC2 (Self-Managed) vs Cơ sở dữ liệu có quản lý (AWS Managed Database - Amazon RDS): Quản trị OS/Engine, automated patching, backup tự động, point-in-time recovery, Multi-AZ failover tự động và tối ưu hóa vận hành.
+      - Nắm vững các thành phần kiến trúc cốt lõi của RDS: DB Instance class (`db.t4g.micro` Graviton tối ưu chi phí), database engine (PostgreSQL 17.11), storage (gp3 20 GiB, encrypted bằng AWS KMS key mặc định).
+      - Hiểu sâu sắc bản chất RDS Endpoint: Điểm truy cập DNS hostname ổn định mang tính trừu tượng hóa cao, không bao giờ hard-code IP của database server.
+      - Cấu hình mạng lưu trữ DB Subnet Group: Xác định rõ tập hợp các subnets/AZs (`ap-southeast-1a`, `ap-southeast-1b`) mà RDS có thể cấp phát tài nguyên; cấu hình `PubliclyAccessible=False` cô lập database hoàn toàn trong mạng nội bộ.
+      - Phân biệt từ nền tảng giữa High Availability (Multi-AZ synchronous standby replica với tự động failover) vs Read Scaling (Read Replica asynchronous phục vụ mở rộng tải đọc).
+      - Thiết kế bảo mật mạng phân tầng (Multi-Tier Security Group):
+        - Tạo `app-sg` riêng cho EC2 và `rds-sg` riêng cho RDS.
+        - Thực hành Failure Injection: EC2 cùng nằm trong VPC nhưng `rds-sg` chưa mở cổng TCP/5432 $\rightarrow$ kết nối bị chặn hoàn toàn (connection timeout).
+        - Khắc phục theo nguyên tắc Least Privilege: Thêm rule TCP/5432 trên `rds-sg` với source là `app-sg` (Security Group Referencing thay vì mở dải IP CIDR hay `0.0.0.0/0`) $\rightarrow$ kết nối thành công.
+        - Dùng công cụ `pg_isready` từ EC2 kiểm chứng PostgreSQL thực sự chấp nhận kết nối (accepting connections) qua mạng private nội bộ mà không cần đi qua Internet Gateway.
+      - Phân tích và kiểm chứng cơ chế sao lưu dữ liệu:
+        - Phân biệt Automated Backup (sao lưu tự động hàng ngày + transaction logs lưu trong retention window) vs Manual Snapshot (bản snapshot do người dùng chủ động tạo, tồn tại độc lập ngay cả sau khi xóa DB instance).
+        - Tạo manual snapshot; xóa DB instance với tùy chọn `--delete-automated-backups` và chứng minh manual snapshot vẫn tồn tại độc lập nguyên vẹn.
+      - Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+        - Cleanup toàn bộ EC2, RDS DB instance, manual snapshot, Security Groups (`app-sg`, `rds-sg`) và DB Subnet Group.
+        - Thu hồi quyền `S25TemporaryLabManagement` và quyền `CreateServiceLinkedRole`; giữ lại service-linked role hệ thống `AWSServiceRoleForRDS`.
+        - Kiểm soát chi phí thực tế qua AWS Billing: Ghi nhận mức sử dụng chỉ phát sinh khoảng ~$0.01 tại thời điểm kiểm tra.
+      - Kết quả: **ĐẠT BUỔI 25 (XUẤT SẮC)**.
+
 
 
 
