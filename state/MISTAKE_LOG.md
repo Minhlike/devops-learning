@@ -229,6 +229,21 @@
     - `sts:AssumeRole`: Là hành động của chủ thể (ở đây là máy chủ EC2 thông qua service principal `ec2.amazonaws.com`) thực hiện lấy danh tính tạm thời từ IAM Role thông qua Trust Policy.
     - `iam:PassRole`: Là quyền hạn của người dùng hoặc tiến trình khởi tạo máy chủ (User/CLI) cho phép "chuyển giao" Role đó cho tài nguyên EC2. Cần scope quyền `iam:PassRole` chính xác về ARN của Role cần cấp thay vì dùng `*` để tránh nguy cơ leo thang đặc quyền (Privilege Escalation).
 
+## [2026-09-15] Bài học về Phương pháp tiếp cận Cloud Architecture, Bảo mật RDS Security Group và Quản lý Snapshot
+- **Ngày:** 2026-09-15
+- **Bối cảnh:** Lab 25 — Khảo sát và triển khai cơ sở dữ liệu Amazon RDS PostgreSQL, kết nối private từ EC2 và quản lý sao lưu snapshot.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Bài học phương pháp luận (Teaching & Learning Mental Model):**
+    - *Vấn đề:* Buổi học ban đầu quá tập trung vào các chuỗi lệnh CLI phức tạp kéo dài khiến người học bị quá tải chi tiết cú pháp và đánh mất bức tranh toàn cảnh (mental model) về kiến trúc hệ thống.
+    - *Cải tiến:* Kể từ các buổi học tiếp theo, luôn áp dụng nguyên tắc **Architecture-First**: Phác thảo sơ đồ kiến trúc và nêu rõ mục tiêu tổng thể trước, giải thích bản chất và vai trò của từng resource ("chúng ta đang xây dựng thành phần gì và tại sao hệ thống cần nó") trước khi bắt tay vào gõ lệnh. Đồng thời gom toàn bộ quy trình dọn dẹp (Cleanup) thành một phase độc lập ở cuối buổi thay vì để việc dọn dẹp xen lẫn làm loãng nội dung học chính.
+  - **Bảo mật mạng RDS với Source Security Group (Least Privilege):**
+    - Tuyệt đối không bao giờ dùng dải IP CIDR của máy chủ (vì IP có thể thay đổi khi relaunch/reboot) hoặc `0.0.0.0/0` để mở cổng kết nối database.
+    - Thay vào đó, sử dụng tính năng **Security Group Referencing**: Cấu hình rule inbound trên `rds-sg` với source trực tiếp là `app-sg`. Mọi instance được gán `app-sg` sẽ tự động có quyền kết nối vào RDS một cách bảo mật và linh hoạt nhất.
+  - **Phân biệt vòng đời Automated Backup vs Manual Snapshot:**
+    - Automated Backup của RDS bị giới hạn bởi thời gian lưu trữ (retention period) và mặc định sẽ bị xóa bỏ cùng với DB instance nếu truyền cờ `--delete-automated-backups`.
+    - Manual Snapshot là bản chụp độc lập do người dùng chủ động tạo ra, sẽ tiếp tục tồn tại vĩnh viễn ngay cả khi DB instance gốc đã bị xóa bỏ hoàn toàn. Do đó, cần kiểm tra và xóa cả manual snapshot sau khi hoàn thành lab để tránh phát sinh chi phí lưu trữ ngoài ý muốn.
+
+
 
 
 
