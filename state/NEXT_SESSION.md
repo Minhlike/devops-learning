@@ -1,19 +1,27 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 26 — PHASE 6: AWS Load Balancing & Auto Scaling.
-- **Mục tiêu Buổi 26:**
-  1. Phân biệt Vertical Scaling (Scale Up/Down - nâng cấp cấu hình máy chủ) vs Horizontal Scaling (Scale Out/In - tăng giảm số lượng máy chủ).
-  2. Hiểu bản chất và vai trò của Load Balancer: Đóng vai trò Reverse Proxy phân phối lưu lượng truy cập đồng đều, tránh điểm nghẽn (Single Point of Failure).
-  3. Cấu hình Application Load Balancer (ALB), Target Group và Health Checks định kỳ kiểm tra tình trạng máy chủ.
-  4. Quản trị Auto Scaling Group (ASG) kết hợp Launch Template: Định nghĩa cấu hình máy chủ chuẩn (AMI, instance type, user data) để tự động sinh instance.
-  5. Cấu hình dung lượng nhóm máy chủ: Desired Capacity, Min Capacity và Max Capacity.
-  6. Cơ chế tự phục hồi (Self-Healing): Khi một instance bị lỗi hoặc chết, ASG phát hiện qua health check và tự động spawn instance mới thay thế.
-  7. Thực hành Failure Injection: Cố tình terminate một EC2 instance và quan sát trực tiếp hành vi của ASG tự động tạo máy chủ mới để duy trì Desired Capacity.
-  8. Giới thiệu chỉ số giám sát cơ bản với Amazon CloudWatch Metrics (CPUUtilization, HealthyHostCount).
-  9. Vận hành nguyên tắc Cost Safety nghiêm ngặt và dọn dẹp sạch toàn bộ tài nguyên (ALB, Target Group, ASG, Launch Template) sau bài lab.
-- **Yêu cầu phương pháp giảng dạy S26:**
-  - Áp dụng nguyên tắc **Architecture-First**: Trình bày kiến trúc và mục tiêu trước, giải thích rõ ràng "chúng ta đang xây cái gì và tại sao cần từng resource" trước khi thao tác.
-  - Tối ưu hóa câu lệnh, giảm bớt chuỗi CLI rườm rà không cần thiết so với S25 để tập trung sâu vào mental model và hiểu bản chất hệ thống.
+- **Buổi học tiếp theo:** BUỔI 27 — PHASE 6: AWS DNS, Route 53 & HTTPS/TLS Fundamentals.
+- **Mục tiêu Buổi 27:**
+  1. Hiểu nền tảng hệ thống phân giải tên miền (DNS): Bản chất DNS, Domain Name, Root Servers, TLD, Authoritative Name Servers, DNS Query Resolution Flow.
+  2. Nắm vững dịch vụ Amazon Route 53: Public Hosted Zones vs Private Hosted Zones.
+  3. Phân biệt và thực hành các loại bản ghi DNS cốt lõi:
+     - Record `A` (IPv4 address).
+     - Record `CNAME` (Canonical Name - trỏ domain tới domain).
+     - Record `Alias` (Tính năng độc quyền của Route 53: Trỏ trực tiếp domain apex tới AWS resources như ALB mà không bị giới hạn như CNAME).
+  4. Hiểu các chính sách định tuyến Route 53 Routing Policies: Simple Routing, Weighted Routing, Latency-based Routing, Failover Routing và Health Checks.
+  5. Bảo mật truyền thông với HTTPS/TLS & AWS Certificate Manager (ACM):
+     - Hiểu nguyên lý mã hóa đối xứng, bất đối xứng, chứng chỉ SSL/TLS và CA (Certificate Authority).
+     - Đăng ký và xác thực SSL/TLS Certificate miễn phí qua ACM (DNS Validation qua Route 53).
+  6. Tích hợp HTTPS vào Application Load Balancer:
+     - Cấu hình HTTPS Listener (Cổng 443) gắn SSL Certificate từ ACM.
+     - Thiết lập HTTP to HTTPS Redirection (Tự động chuyển hướng toàn bộ traffic HTTP cổng 80 sang HTTPS cổng 443).
+     - Đạt được luồng bảo mật End-to-End: Người dùng truy cập domain với HTTPS bảo mật hoàn toàn.
+  7. Thực hành Failure Injection: Truy cập HTTP và kiểm chứng hành vi redirect 301 sang HTTPS; kiểm tra bảo mật certificate bằng `curl -v` hoặc trình duyệt.
+  8. Vận hành nguyên tắc Cost Safety nghiêm ngặt và dọn dẹp sạch toàn bộ tài nguyên (Route 53 records/hosted zone, ACM certificates, ALB listeners) sau bài lab.
+- **Yêu cầu phương pháp giảng dạy S27:**
+  - Tiếp tục duy trì nguyên tắc **Architecture-First**: Giải thích sơ đồ luồng phân giải DNS và luồng bắt tay TLS (TLS Handshake) trước khi bắt tay cấu hình tài nguyên.
+  - Hướng dẫn chi tiết, rõ ràng từng bước, tối ưu lệnh CLI và đảm bảo không phát sinh chi phí ngoài ý muốn.
+
 
 
 

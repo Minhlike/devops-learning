@@ -131,6 +131,17 @@
 | Cloud & AWS | RDS Backup & Snapshot Management (Automated vs Manual) | Làm được độc lập | 2026-09-15 | Lab 25: Tạo manual snapshot; xóa DB instance và kiểm chứng snapshot vẫn tồn tại |
 | Cloud & AWS | AWS Service-Linked Roles Management (`AWSServiceRoleForRDS`) | Làm được độc lập | 2026-09-15 | Lab 25: Hiểu vai trò role hệ thống cấp quyền cho RDS quản lý ENI/storage |
 | Cloud & AWS | Cloud Database Deprovisioning & Cost Safety | Làm được độc lập | 2026-09-15 | Lab 25: Xóa DB instance, snapshot, Subnet Group; kiểm soát chi phí ~$0.01 |
+| Cloud & AWS | Horizontal Scaling vs Vertical Scaling & SPOF Elimination | Làm được độc lập | 2026-09-16 | Lab 26: Phân biệt Scale Up vs Scale Out, loại bỏ Single Point of Failure |
+| Cloud & AWS | Application Load Balancer (ALB) Architecture & Provisioning | Làm được độc lập | 2026-09-16 | Lab 26: Khởi tạo ALB Layer 7, phân phối tải đa AZ qua DNS Endpoint |
+| Cloud & AWS | Target Groups & Active HTTP Health Checking (`/health`) | Làm được độc lập | 2026-09-16 | Lab 26: Cấu hình Target Group, threshold và health check định kỳ cho EC2 |
+| Cloud & AWS | EC2 Launch Templates for Infrastructure Reproducibility | Làm được độc lập | 2026-09-16 | Lab 26: Tạo bản thiết kế Launch Template (AMI, t3.micro, Nginx user-data) |
+| Cloud & AWS | Auto Scaling Group (ASG) Capacity Management (Min/Desired/Max) | Làm được độc lập | 2026-09-16 | Lab 26: Quản trị capacity ASG trải trên 2 Subnets/AZs (1a, 1b) |
+| Cloud & AWS | Layered Security Group Referencing (ALB-SG to Web-SG) | Làm được độc lập | 2026-09-16 | Lab 26: Khóa chặt EC2, chỉ nhận traffic HTTP/80 từ ALB SG, chặn Internet |
+| Cloud & AWS | Automated Self-Healing & Scaling Activities | Làm được độc lập | 2026-09-16 | Lab 26: ASG tự phát hiện node chết và tự spawn instance mới thay thế |
+| Cloud & AWS | Connection Draining (Deregistration Delay) & Zero Downtime | Làm được độc lập | 2026-09-16 | Lab 26: ALB drain kết nối an toàn khi instance dừng, bảo đảm 10/10 reqs pass |
+| Cloud & AWS | AWS Service-Linked Roles for Auto Scaling (`AWSServiceRoleForAutoScaling`) | Làm được độc lập | 2026-09-16 | Lab 26: Khởi tạo và quản lý role hệ thống cho phép ASG gọi EC2/ELB APIs |
+| Cloud & AWS | Load Balanced Cluster Deprovisioning & Safe Resource Teardown | Làm được độc lập | 2026-09-16 | Lab 26: Scale-in về 0, đợi drain, xóa ALB/TG/ASG/LT và thu hồi quyền hạn |
+
 
 
 

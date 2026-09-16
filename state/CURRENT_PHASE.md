@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 25 — AWS RDS & Managed Database Fundamentals. Chuẩn bị Buổi 26 — AWS Load Balancing & Auto Scaling.
+- **Current Status:** Hoàn thành Buổi 26 — AWS Load Balancing & Auto Scaling. Chuẩn bị Buổi 27 — AWS DNS, Route 53 & HTTPS/TLS Fundamentals.
 - **Current Week:** Tuần 7
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -214,6 +214,28 @@
         - Thu hồi quyền `S25TemporaryLabManagement` và quyền `CreateServiceLinkedRole`; giữ lại service-linked role hệ thống `AWSServiceRoleForRDS`.
         - Kiểm soát chi phí thực tế qua AWS Billing: Ghi nhận mức sử dụng chỉ phát sinh khoảng ~$0.01 tại thời điểm kiểm tra.
       - Kết quả: **ĐẠT BUỔI 25 (XUẤT SẮC)**.
+  14. **Buổi 26 — AWS Load Balancing & Auto Scaling:**
+      - Phân tích và nắm vững các mô hình mở rộng hệ thống: Vertical Scaling (Scale Up/Down - nâng cấp cấu hình phần cứng) vs Horizontal Scaling (Scale Out/In - tăng giảm số lượng nút máy chủ); hiểu rõ rủi ro điểm nghẽn đơn lẻ (Single Point of Failure - SPOF) và cách khắc phục bằng kiến trúc phân tán.
+      - Nắm vững vai trò và nguyên lý hoạt động của Application Load Balancer (ALB): Hoạt động tại tầng ứng dụng (Layer 7 - HTTP/HTTPS), đóng vai trò Reverse Proxy thông minh tiếp nhận lưu lượng từ Internet và phân phối đồng đều tải tới các target instances.
+      - Cấu hình Target Group và Health Checks: Thiết lập cơ chế giám sát sức khỏe định kỳ trên đường dẫn `/health` (HTTP 200 OK) để ALB tự động nhận biết và cô lập các máy chủ bị sự cố.
+      - Thiết kế kiến trúc Launch Template làm bản thiết kế phần cứng và phần mềm chuẩn hóa (Amazon Linux 2023, `t3.micro`, user-data tự động khởi tạo Nginx service) phục vụ việc tái tạo EC2 instance tự động, đồng nhất.
+      - Vận hành Auto Scaling Group (ASG) quản trị vòng đời và quy mô cụm máy chủ: Cấu hình dung lượng linh hoạt `Min=2`, `Desired=2`, `Max=4` trải rộng trên 2 Availability Zones (`ap-southeast-1a` và `ap-southeast-1b`) giúp triệt tiêu single failure domain.
+      - Thiết lập mô hình bảo mật mạng phân tầng nhiều lớp (Layered Security Groups):
+        - Mô hình luồng dữ liệu: `Internet` $\rightarrow$ `ALB SG` $\rightarrow$ `Web SG` $\rightarrow$ `EC2`.
+        - `ALB SG` mở cổng TCP/80 từ Internet (`0.0.0.0/0`).
+        - `Web SG` chỉ cho phép inbound HTTP/80 từ `ALB SG` thông qua Security Group Referencing; chặn đứng hoàn toàn mọi truy cập trực tiếp từ Internet vào máy chủ EC2.
+      - Kiểm thử cân bằng tải thực tế: Gọi liên tục endpoint DNS của ALB qua lệnh `curl` và ghi nhận các lượt request được phân bổ luân phiên giữa 2 EC2 instances nằm ở 2 AZ khác nhau.
+      - Thực hành Failure Injection & Cơ chế Tự phục hồi (Self-Healing):
+        - Chủ động `terminate` 1 máy chủ EC2 $\rightarrow$ trạng thái chuyển từ `running` sang `shutting-down`.
+        - ASG phát hiện instance rơi vào trạng thái `Unhealthy`; ALB thực hiện cơ chế Connection Draining và loại bỏ instance khỏi luồng định tuyến an toàn.
+        - 10/10 requests kiểm thử liên tục trong quá trình xảy ra sự cố vẫn phản hồi HTTP 200 thông suốt nhờ instance khỏe mạnh còn lại xử lý.
+        - ASG tự động kích hoạt Scaling Activity, áp dụng Launch Template khởi tạo 1 EC2 instance thay thế mới trên AZ bị thiếu hụt; instance mới pass Target Group Health Checks và đưa cụm trở lại trạng thái cân bằng hoàn hảo (2 healthy instances trải đều 2 AZs).
+      - Tuân thủ nghiêm ngặt nguyên tắc Cost Safety & Resource Deprovisioning:
+        - Scale `Desired`/`Min` về 0, quan sát quá trình `WaitingForELBConnectionDraining` an toàn.
+        - Hủy toàn bộ ASG, Listener, ALB, Target Group, Launch Template và Security Groups.
+        - Thu hồi các chính sách IAM cấp quyền tạm thời (`S26TemporaryLoadBalancingLab`, `S26CreateRequiredServiceLinkedRoles`), giữ lại các quyền đọc cơ bản và service-linked roles hệ thống.
+      - Kết quả: **ĐẠT BUỔI 26 (XUẤT SẮC)**.
+
 
 
 
