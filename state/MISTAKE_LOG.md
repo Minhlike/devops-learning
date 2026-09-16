@@ -243,6 +243,31 @@
     - Automated Backup của RDS bị giới hạn bởi thời gian lưu trữ (retention period) và mặc định sẽ bị xóa bỏ cùng với DB instance nếu truyền cờ `--delete-automated-backups`.
     - Manual Snapshot là bản chụp độc lập do người dùng chủ động tạo ra, sẽ tiếp tục tồn tại vĩnh viễn ngay cả khi DB instance gốc đã bị xóa bỏ hoàn toàn. Do đó, cần kiểm tra và xóa cả manual snapshot sau khi hoàn thành lab để tránh phát sinh chi phí lưu trữ ngoài ý muốn.
 
+## [2026-09-16] Sự cố và Bài học về ALB, Auto Scaling Group và Connection Draining
+- **Ngày:** 2026-09-16
+- **Bối cảnh:** Lab 26 — Khởi tạo Application Load Balancer, Launch Template, Auto Scaling Group đa AZ, kiểm thử Self-Healing và dọn dẹp tài nguyên.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Lỗi `ServiceLinkedRoleFailure` khi tạo Auto Scaling Group:**
+    - *Triệu chứng:* Lệnh `aws autoscaling create-auto-scaling-group` thất bại với lỗi `ServiceLinkedRoleFailure: Failed to create or use a service linked role for auto scaling`.
+    - *Nguyên nhân:* Service-linked role `AWSServiceRoleForAutoScaling` vừa mới được tạo nhưng do độ trễ truyền bá (eventual consistency) trong hệ thống phân tán IAM của AWS, quyền hạn chưa kịp sẵn sàng trên toàn bộ endpoint của dịch vụ Auto Scaling.
+    - *Cách khắc phục:* Đợi một khoảng thời gian ngắn (propagation window ~15-30 giây) và thử lại lệnh tạo ASG.
+    - *Bài học:* Khi tạo mới IAM Role hoặc Service-Linked Role, luôn dự phòng khoảng thời gian trễ nhất định trước khi gọi các dịch vụ phụ thuộc vào role đó.
+  - **Lỗi thiếu quyền `ec2:RunInstances` trong S26 Temporary Policy:**
+    - *Triệu chứng:* Auto Scaling Group được tạo nhưng không thể khởi tạo các EC2 instances từ Launch Template; kiểm tra `DescribeScalingActivities` thấy hoạt động scale bị Failed do thiếu quyền.
+    - *Nguyên nhân:* Policy tạm thời ban đầu của lab cấp quyền cho các API ASG và ELB nhưng thiếu quyền `ec2:RunInstances` và các quyền EC2 tài nguyên liên quan khi ASG thực thi launch instance.
+    - *Cách khắc phục:* Bổ sung quyền `ec2:RunInstances`, `ec2:CreateSecurityGroup`, `ec2:CreateTags`... vào policy tạm thời để ASG có đầy đủ quyền thao tác với EC2.
+  - **Lỗi thiếu quyền `ec2:DescribeAccountAttributes` khi tạo Load Balancer:**
+    - *Triệu chứng:* Lệnh `aws elbv2 create-load-balancer` bị từ chối với lỗi `AccessDenied` / `UnauthorizedOperation`.
+    - *Nguyên nhân:* Khi tạo ALB, dịch vụ Elastic Load Balancing ngầm gọi API `ec2:DescribeAccountAttributes` để kiểm tra các thiết lập VPC mặc định và giới hạn tài nguyên của tài khoản AWS.
+    - *Cách khắc phục:* Bổ sung quyền `ec2:DescribeAccountAttributes` vào chính sách IAM đọc của lab.
+  - **Lỗi `ScalingActivityInProgress` khi xóa Auto Scaling Group:**
+    - *Triệu chứng:* Lệnh `aws autoscaling delete-auto-scaling-group` trả về lỗi thông báo đang có hoạt động scaling diễn ra và không cho phép xóa ngay.
+    - *Nguyên nhân:* Khi hạ capacity về 0 hoặc khi instances đang trong giai đoạn `WaitingForELBConnectionDraining` (Connection Draining), ASG đang tiến hành thu hồi tài nguyên và chờ Target Group giải phóng kết nối an toàn.
+    - *Cách khắc phục:* Chờ đợi scaling activity hoàn tất (hoặc truyền cờ `--force-delete` nếu cần thiết sau khi đã verify hạ capacity) trước khi thực hiện xóa ASG.
+  - **Bài học phương pháp luận (Teaching & Execution Mental Model):**
+    - Tiếp tục phát huy hiệu quả của phương pháp **Architecture-First**: Phân tích sơ đồ kiến trúc luồng dữ liệu (`Internet` $\rightarrow$ `ALB SG` $\rightarrow$ `Web SG` $\rightarrow$ `EC2`), giải thích cặn kẽ bản chất và vai trò của từng thành phần trước khi thực thi CLI giúp người học nắm chắc tư duy hệ thống và tự tin xử lý sự cố.
+
+
 
 
 

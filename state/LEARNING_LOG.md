@@ -322,6 +322,35 @@
   - Kiểm tra AWS Billing xác nhận chi phí ước tính thực tế chỉ phát sinh khoảng ~$0.01 tại thời điểm kiểm tra.
 - Kết quả: **ĐẠT BUỔI 25 (XUẤT SẮC)**.
 
+## [2026-09-16] Session 26: AWS Load Balancing & Auto Scaling
+- Tiếp tục PHASE 6: AWS Cloud Infrastructure.
+- Nắm vững các khái niệm mở rộng và tính sẵn sàng cao (High Availability):
+  - Phân biệt Vertical Scaling (Scale Up/Down - thay đổi kích thước CPU/RAM máy chủ) vs Horizontal Scaling (Scale Out/In - thay đổi số lượng máy chủ).
+  - Nhận diện rủi ro Single Point of Failure (SPOF): Một máy chủ đơn lẻ chết sẽ làm sập toàn bộ dịch vụ; giải pháp là phân tán tải qua nhiều máy chủ và đa Availability Zone.
+  - Hiểu vai trò của Application Load Balancer (ALB): Reverse Proxy hoạt động ở tầng ứng dụng Layer 7, tiếp nhận request từ client và định tuyến thông minh tới các backend targets.
+  - Phân tích vai trò của Target Group và cơ chế Active Health Check: Giám sát định kỳ endpoint `/health` để tự động gỡ bỏ máy chủ lỗi khỏi bảng định tuyến.
+  - Hiểu Launch Template là bản thiết kế (blueprint) chuẩn hóa cho phép tái tạo cấu hình máy chủ giống hệt nhau (AMI, type, script user-data) bất kỳ lúc nào.
+  - Phân biệt rõ: ALB quản lý và định tuyến request; ASG quản trị và đảm bảo số lượng máy chủ chạy (Desired, Min, Max Capacity).
+- Xây dựng kiến trúc cân bằng tải và bảo mật phân tầng:
+  - Thiết lập luồng bảo mật nghiêm ngặt: `Internet` $\rightarrow$ `ALB SG` $\rightarrow$ `Web SG` $\rightarrow$ `EC2`.
+  - Cấu hình `Web SG` chỉ cho phép lưu lượng TCP/80 đến từ `ALB SG` (Security Group Referencing), chặn hoàn toàn kết nối trực tiếp từ Internet vào máy chủ EC2.
+  - Khởi tạo ALB, HTTP Listener (cổng 80), Target Group với health check path `/health`.
+  - Khởi tạo Launch Template với cấu hình Amazon Linux 2023, `t3.micro`, Nginx user-data.
+  - Khởi tạo Auto Scaling Group với `Min=2`, `Desired=2`, `Max=4`, phân bổ đều trên 2 Subnets thuộc `ap-southeast-1a` và `ap-southeast-1b`.
+  - Kiểm tra qua ALB DNS Endpoint: Các request gửi bằng `curl` được phân phối luân phiên đồng đều tới 2 EC2 instances ở 2 AZs khác nhau.
+- Thực hành Failure Injection & Kiểm chứng Khả năng Tự phục hồi (Self-Healing):
+  - Cố tình `terminate` 1 máy chủ EC2 đang hoạt động $\rightarrow$ instance chuyển sang `shutting-down`.
+  - ASG phát hiện trạng thái `Unhealthy`, báo hiệu cho Target Group.
+  - ALB kích hoạt Connection Draining, ngừng gửi request mới tới instance đang dừng nhưng duy trì hoàn thành các request đang dở dang.
+  - Kiểm thử 10/10 requests liên tục trong thời gian sự cố: Toàn bộ đều trả về HTTP 200 thành công nhờ máy chủ khỏe mạnh còn lại gánh tải.
+  - ASG tự động kích hoạt Scaling Activity, dùng Launch Template khởi tạo 1 máy chủ mới thay thế; máy chủ mới pass health check và đưa cụm trở lại 2 healthy instances trên 2 AZs mà không cần sự can thiệp thủ công của con người.
+- Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+  - Hạ `Desired`/`Min` của ASG về 0, quan sát quá trình `WaitingForELBConnectionDraining`.
+  - Xóa tuần tự ASG, ALB Listener, Application Load Balancer, Target Group, Launch Template và các Security Groups.
+  - Thu hồi toàn bộ quyền IAM ghi tạm thời (`S26TemporaryLoadBalancingLab`, `S26CreateRequiredServiceLinkedRoles`), giữ lại các quyền đọc an toàn và service-linked roles hệ thống.
+- Kết quả: **ĐẠT BUỔI 26 (XUẤT SẮC)**.
+
+
 
 
 
