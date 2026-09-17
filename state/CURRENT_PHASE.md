@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 26 — AWS Load Balancing & Auto Scaling. Chuẩn bị Buổi 27 — AWS DNS, Route 53 & HTTPS/TLS Fundamentals.
+- **Current Status:** Hoàn thành Buổi 27 — AWS DNS, Route 53 & HTTPS/TLS Fundamentals. Chuẩn bị Buổi 28 — AWS CloudWatch Monitoring, Metrics, Logs & Alarms.
 - **Current Week:** Tuần 7
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -235,6 +235,27 @@
         - Hủy toàn bộ ASG, Listener, ALB, Target Group, Launch Template và Security Groups.
         - Thu hồi các chính sách IAM cấp quyền tạm thời (`S26TemporaryLoadBalancingLab`, `S26CreateRequiredServiceLinkedRoles`), giữ lại các quyền đọc cơ bản và service-linked roles hệ thống.
       - Kết quả: **ĐẠT BUỔI 26 (XUẤT SẮC)**.
+  15. **Buổi 27 — AWS DNS, Route 53 & HTTPS/TLS Fundamentals:**
+      - Nắm vững kiến trúc hệ thống phân giải tên miền (DNS): Phân biệt rõ Recursive Resolver vs Authoritative DNS Server, cơ chế Name Server (NS) delegation và ảnh hưởng của Time to Live (TTL) / DNS caching.
+      - Thực hiện NS delegation cho subdomain `aws.orianawren.com` từ Cloudflare sang Amazon Route 53 bằng các bản ghi NS tương ứng.
+      - Khởi tạo Route 53 Public Hosted Zone và xác minh việc ủy quyền (delegation) thành công bằng công cụ `dig`.
+      - Cấp phát chứng chỉ số công khai qua AWS Certificate Manager (ACM) cho FQDN `s27.aws.orianawren.com` thông qua phương thức DNS validation (tự động tạo bản ghi CNAME xác thực trên Route 53).
+      - Khởi tạo hạ tầng tính toán: EC2 instance chuẩn Amazon Linux 2023, tự động cài đặt Nginx và cấu hình endpoint `/health` qua script User Data.
+      - Thiết lập mô hình an ninh mạng phân tầng (Security Group referencing):
+        - `Internet` $\rightarrow$ `ALB SG` (cho phép inbound TCP/80 và TCP/443).
+        - `ALB SG` $\rightarrow$ `EC2 SG` (chỉ cho phép inbound TCP/80 từ nguồn `ALB SG`).
+      - Cấu hình Target Group với health check đường dẫn `/health` và khởi tạo Application Load Balancer (ALB) trải trên 2 Availability Zones.
+      - Thiết lập các Listeners và định tuyến lưu lượng trên ALB:
+        - HTTP Listener (cổng 80): Cấu hình redirect 301 chuyển hướng toàn bộ sang HTTPS cổng 443.
+        - HTTPS Listener (cổng 443): Đính kèm SSL/TLS certificate từ ACM và forward lưu lượng tới Target Group.
+      - Tạo bản ghi Route 53 Alias `A` cho `s27.aws.orianawren.com` trỏ trực tiếp tới ALB DNS name.
+      - Kiểm thử và xác minh toàn diện bằng `curl -v`: Xác nhận giao thức TLS 1.3, hostname khớp (hostname match), chứng chỉ số hợp lệ (certificate verify OK), giao thức HTTP/2 và backend phản hồi HTTP 200.
+      - Thực hành Failure Injection: Cố tình truy cập HTTPS trực tiếp qua ALB default DNS name thay vì domain chuẩn $\rightarrow$ ghi nhận lỗi Certificate Hostname Mismatch (do chứng chỉ chỉ cấp cho tên miền tùy chỉnh); phân biệt rõ giữa mã hóa đường truyền (TLS encryption) và xác thực danh tính tên miền (certificate hostname authentication).
+      - Hiểu bản chất TLS Termination tại ALB: Quá trình mã hóa/giải mã kết thúc tại ALB, chặng backend `ALB -> EC2` trong bài lab là HTTP không mã hóa.
+      - Vận hành quy trình Cost Safety và dọn dẹp tài nguyên bài lab triệt để: Xóa Route 53 Alias record, ALB, Target Group, EC2 instance, ACM certificate, Security Groups, ACM validation CNAME record, Cloudflare NS delegation và xóa Route 53 Hosted Zone.
+      - Quan sát hiện tượng DNS cache: Recursive resolver có thể tiếp tục giữ các NS records cũ cho đến khi TTL hết hạn, ngay cả khi cấu hình authoritative zone đã bị xóa.
+      - Kết quả: **ĐẠT BUỔI 27 (XUẤT SẮC)**.
+
 
 
 

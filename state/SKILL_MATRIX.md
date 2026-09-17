@@ -141,6 +141,17 @@
 | Cloud & AWS | Connection Draining (Deregistration Delay) & Zero Downtime | Làm được độc lập | 2026-09-16 | Lab 26: ALB drain kết nối an toàn khi instance dừng, bảo đảm 10/10 reqs pass |
 | Cloud & AWS | AWS Service-Linked Roles for Auto Scaling (`AWSServiceRoleForAutoScaling`) | Làm được độc lập | 2026-09-16 | Lab 26: Khởi tạo và quản lý role hệ thống cho phép ASG gọi EC2/ELB APIs |
 | Cloud & AWS | Load Balanced Cluster Deprovisioning & Safe Resource Teardown | Làm được độc lập | 2026-09-16 | Lab 26: Scale-in về 0, đợi drain, xóa ALB/TG/ASG/LT và thu hồi quyền hạn |
+| Cloud & AWS | DNS Architecture (Recursive Resolvers vs Authoritative Servers) | Làm được độc lập | 2026-09-17 | Lab 27: Phân biệt vai trò resolver, authoritative NS và TTL caching |
+| Cloud & AWS | Subdomain Delegation & Route 53 Public Hosted Zones | Làm được độc lập | 2026-09-17 | Lab 27: Delegate subdomain từ Cloudflare sang Route 53 qua NS records |
+| Cloud & AWS | DNS Diagnostics & Delegation Verification (`dig`) | Làm được độc lập | 2026-09-17 | Lab 27: Truy vấn và xác minh authoritative delegation và records bằng `dig` |
+| Cloud & AWS | AWS Certificate Manager (ACM) Public Certificate & DNS Validation | Làm được độc lập | 2026-09-17 | Lab 27: Yêu cầu chứng chỉ ACM và xác thực quyền sở hữu qua CNAME record |
+| Cloud & AWS | Route 53 Alias Records (Apex/Subdomain to AWS ALB Mapping) | Làm được độc lập | 2026-09-17 | Lab 27: Tạo Alias A record trỏ FQDN tới ALB DNS name |
+| Cloud & AWS | ALB HTTPS Listener & TLS Termination Architecture | Làm được độc lập | 2026-09-17 | Lab 27: Gắn ACM certificate vào cổng 443, hiểu mô hình TLS termination tại ALB |
+| Cloud & AWS | HTTP to HTTPS Automated Redirection (HTTP 301) | Làm được độc lập | 2026-09-17 | Lab 27: Cấu hình ALB Listener 80 redirect 301 chuyển hướng sang HTTPS 443 |
+| Cloud & AWS | TLS Handshake Verification & Diagnostics (`curl -v`) | Làm được độc lập | 2026-09-17 | Lab 27: Kiểm tra TLS 1.3, ALPN HTTP/2, cert verification và SNI |
+| Cloud & AWS | Certificate Hostname Mismatch Failure Injection | Troubleshoot được | 2026-09-17 | Lab 27: Phân biệt TLS encryption vs hostname authentication qua ALB default URL |
+| Cloud & AWS | DNS & TLS Infrastructure Deprovisioning & Cache Invalidation | Làm được độc lập | 2026-09-17 | Lab 27: Teardown ACM, Alias, ALB, TG, Hosted Zone; hiểu TTL cache persistence |
+
 
 
 
