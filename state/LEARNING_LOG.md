@@ -350,6 +350,34 @@
   - Thu hồi toàn bộ quyền IAM ghi tạm thời (`S26TemporaryLoadBalancingLab`, `S26CreateRequiredServiceLinkedRoles`), giữ lại các quyền đọc an toàn và service-linked roles hệ thống.
 - Kết quả: **ĐẠT BUỔI 26 (XUẤT SẮC)**.
 
+## [2026-09-17] Session 27: AWS DNS, Route 53 & HTTPS/TLS Fundamentals
+- Tiếp tục PHASE 6: AWS Cloud Infrastructure.
+- Nắm vững các khái niệm nền tảng về DNS và quản lý định tuyến:
+  - Phân biệt vai trò của Recursive DNS Resolver (máy chủ phân giải trung gian nhận truy vấn từ client/browser và truy lùng câu trả lời) vs Authoritative DNS Server (máy chủ nắm giữ bản ghi gốc chính thức của tên miền).
+  - Hiểu cơ chế ủy quyền Name Server (NS delegation) và vai trò của Time to Live (TTL) trong việc lưu bộ đệm (DNS cache) tại các resolver trung gian.
+  - Ủy nhiệm subdomain `aws.orianawren.com` từ DNS quản lý trên Cloudflare sang Amazon Route 53 bằng cách tạo các bản ghi NS tương ứng; sử dụng `dig` để truy vấn trực tiếp và xác thực việc delegation hoàn tất.
+- Quản lý chứng chỉ số với AWS Certificate Manager (ACM):
+  - Yêu cầu cấp phát chứng chỉ SSL/TLS công khai miễn phí cho FQDN `s27.aws.orianawren.com`.
+  - Thực hiện xác thực danh tính tên miền bằng phương thức DNS Validation: Tạo bản ghi CNAME bí mật trong Route 53 Hosted Zone để ACM tự động xác thực và chuyển chứng chỉ sang trạng thái `ISSUED`.
+- Thiết kế hạ tầng cân bằng tải HTTPS và bảo mật phân tầng:
+  - Khởi tạo EC2 instance chạy Amazon Linux 2023, tự động cấu hình Nginx với endpoint `/health` qua User Data script.
+  - Áp dụng mô hình bảo mật Security Group nhiều lớp: `Internet` $\rightarrow$ `ALB SG` (mở cổng TCP 80 và 443) $\rightarrow$ `EC2 SG` (chỉ cho phép cổng 80 có source từ `ALB SG` qua cơ chế Security Group Referencing).
+  - Khởi tạo Target Group gắn health check `/health` và tạo Application Load Balancer (ALB) đa AZ.
+  - Cấu hình HTTP Listener (cổng 80) tự động redirect 301 sang giao thức HTTPS cổng 443.
+  - Cấu hình HTTPS Listener (cổng 443) đính kèm ACM Certificate và forward lưu lượng an toàn tới Target Group.
+  - Tạo bản ghi Route 53 Alias `A` cho `s27.aws.orianawren.com` trỏ tới ALB DNS endpoint.
+- Kiểm thử và xác minh giao thức TLS:
+  - Dùng `curl -v https://s27.aws.orianawren.com/health` kiểm chứng luồng HTTPS: Kết nối thành công qua TLS 1.3, ALPN đàm phán giao thức HTTP/2, xác nhận chuỗi chứng chỉ hợp lệ (certificate verify OK) và nhận mã HTTP 200 từ Nginx backend.
+- Thực hành Failure Injection & Phân biệt các khái niệm bảo mật cốt lõi:
+  - Truy cập trực tiếp qua hostname mặc định của ALB (`https://<alb-id>...elb.amazonaws.com`) $\rightarrow$ ghi nhận lỗi Certificate Hostname Mismatch (`SSL: no alternative certificate subject name matches target host name`).
+  - Phân tích và làm rõ: TLS encryption (mã hóa luồng dữ liệu) khác với Certificate Hostname Authentication (xác thực danh tính máy chủ với hostname người dùng yêu cầu). Lỗi hostname mismatch có thể đơn thuần do cấu hình sai URL truy cập chứ không đồng nghĩa chắc chắn có tấn công Man-in-the-Middle (MITM).
+  - Nhận diện kiến trúc TLS Termination tại ALB: ALB chịu trách nhiệm giải mã TLS; chặng backend giữa `ALB` và `EC2` trong bài lab này là HTTP thông thường (unencrypted).
+- Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+  - Dọn sạch toàn bộ tài nguyên: Xóa Alias record, ALB, Target Group, EC2 instance, ACM certificate, Security Groups, ACM validation CNAME record, xóa bản ghi NS delegation trên Cloudflare và xóa Route 53 Hosted Zone.
+  - Ghi nhận hiện tượng lưu cache DNS: Recursive resolver có thể vẫn lưu trữ và trả về thông tin NS delegation cũ cho tới khi TTL hết hiệu lực, ngay cả khi authoritative configuration đã bị hủy bỏ.
+- Kết quả: **ĐẠT BUỔI 27 (XUẤT SẮC)**.
+
+
 
 
 

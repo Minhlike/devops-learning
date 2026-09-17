@@ -267,6 +267,30 @@
   - **Bài học phương pháp luận (Teaching & Execution Mental Model):**
     - Tiếp tục phát huy hiệu quả của phương pháp **Architecture-First**: Phân tích sơ đồ kiến trúc luồng dữ liệu (`Internet` $\rightarrow$ `ALB SG` $\rightarrow$ `Web SG` $\rightarrow$ `EC2`), giải thích cặn kẽ bản chất và vai trò của từng thành phần trước khi thực thi CLI giúp người học nắm chắc tư duy hệ thống và tự tin xử lý sự cố.
 
+## [2026-09-17] Sự cố và Bài học về DNS Resolution, ACM Certificate, TLS Termination và Ngữ nghĩa An ninh Mạng
+- **Ngày:** 2026-09-17
+- **Bối cảnh:** Lab 27 — Cấu hình DNS Delegation, Route 53 Hosted Zone, ACM Certificate, ALB HTTPS Listener và kiểm thử TLS.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Mô hình truy vấn DNS: Trình duyệt không hỏi trực tiếp Authoritative DNS Server:**
+    - *Hiểu lầm phổ biến:* Cho rằng trình duyệt người dùng trực tiếp gửi query tới Route 53 Name Server.
+    - *Thực tế chuẩn xác:* Trình duyệt máy khách gửi truy vấn tới Recursive DNS Resolver (ví dụ resolver của ISP hoặc public resolver như 1.1.1.1, 8.8.8.8). Recursive resolver mới là đối tượng thực hiện lần theo hệ thống phân cấp (Root $\rightarrow$ TLD $\rightarrow$ Authoritative Server) và lưu đệm (cache) kết quả theo giá trị TTL.
+  - **Phân định ranh giới giữa ALB và AWS WAF (Không nhầm lẫn chức năng bảo mật):**
+    - *Hiểu lầm phổ biến:* Cho rằng Application Load Balancer mặc định có sẵn khả năng lọc mã độc, chặn tấn công SQLi, XSS hoặc lọc payload HTTP độc hại.
+    - *Thực tế chuẩn xác:* ALB chỉ là bộ cân bằng tải tầng ứng dụng (Layer 7 reverse proxy). Khả năng thanh lọc gói tin, ngăn chặn mã độc và lọc payload web nằm ở dịch vụ tường lửa ứng dụng web riêng biệt là **AWS WAF** (Web Application Firewall) khi được liên kết với ALB.
+  - **Phân biệt vai trò của ACM và giao thức TLS trong mã hóa đường truyền:**
+    - *Hiểu lầm phổ biến:* Nói rằng "ACM thực hiện mã hóa dữ liệu".
+    - *Thực tế chuẩn xác:* ACM (AWS Certificate Manager) là dịch vụ quản lý vòng đời chứng chỉ (cấp phát, lưu trữ, tự động gia hạn). Bản thân giao thức TLS kết hợp cùng phần mềm máy chủ/ALB mới là thành phần trực tiếp thực hiện quá trình bắt tay (TLS Handshake) và mã hóa lưu lượng mạng.
+  - **Bản chất của TLS Termination tại ALB và luồng lưu lượng backend:**
+    - *Lưu ý quan trọng:* Trong mô hình TLS Termination tại ALB của bài lab này, lưu lượng được mã hóa HTTPS giữa Client và ALB. Chặng kết nối nội bộ từ ALB đến EC2 instances qua Target Group sử dụng giao thức HTTP thông thường (unencrypted). Không được gọi toàn bộ luồng traffic từ đầu đến cuối là "được mã hóa" mà cần nêu rõ ranh giới termination.
+  - **Bản chất của lỗi Certificate Hostname Mismatch trong Failure Injection:**
+    - *Hiểu lầm:* Xem lỗi hostname mismatch là bằng chứng khẳng định đang bị tấn công Man-in-the-Middle (MITM).
+    - *Thực tế chuẩn xác:* Hostname mismatch đơn giản là kết quả khi client kiểm tra trường Subject Alternative Name (SAN) trong chứng chỉ do server gửi về không trùng khớp với hostname mà client gửi yêu cầu (ở đây là dùng ALB default hostname truy cập vào chứng chỉ cấp cho `s27.aws.orianawren.com`). Đây thường là lỗi cấu hình (misconfiguration) thay vì chắc chắn có kẻ tấn công can thiệp.
+  - **Tránh sử dụng các thuật ngữ an ninh mang tính tuyệt đối:**
+    - *Nguyên tắc thuật ngữ:* Trong tài liệu kỹ thuật và thiết kế hệ thống, tránh sử dụng các từ mang tính khẳng định tuyệt đối như "bảo mật tối đa" hay "ngăn chặn hoàn toàn". Cần sử dụng các mô tả chính xác về mặt kỹ thuật (ví dụ: "áp dụng mô hình Least Privilege", "hạn chế bề mặt tấn công", "phân tầng kiểm soát truy cập").
+  - **Đặc tính lưu đệm của Recursive DNS và độ trễ khi dọn dẹp tài nguyên:**
+    - Khi xóa bỏ bản ghi hoặc hủy ủy quyền trên Authoritative Server (Cloudflare / Route 53), các Recursive Resolver trên Internet vẫn có thể tiếp tục phân giải bản ghi cũ cho đến khi TTL hết hạn. Cần tính toán thời gian TTL caching trong quá trình lập kế hoạch migration hoặc rollback hệ thống DNS.
+
+
 
 
 
