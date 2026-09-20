@@ -290,6 +290,30 @@
   - **Đặc tính lưu đệm của Recursive DNS và độ trễ khi dọn dẹp tài nguyên:**
     - Khi xóa bỏ bản ghi hoặc hủy ủy quyền trên Authoritative Server (Cloudflare / Route 53), các Recursive Resolver trên Internet vẫn có thể tiếp tục phân giải bản ghi cũ cho đến khi TTL hết hạn. Cần tính toán thời gian TTL caching trong quá trình lập kế hoạch migration hoặc rollback hệ thống DNS.
 
+## [2026-09-20] Sự cố và Bài học về CloudWatch Agent, Telemetry Timing, Logs Insights và Phân định Vai trò Observability
+- **Ngày:** 2026-09-20
+- **Bối cảnh:** Lab 28 — Cài đặt Amazon CloudWatch Unified Agent, thu thập in-guest memory metric, cấu hình CloudWatch Alarm/SNS, phân tích Logs Insights và tạo Dashboard.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Lỗi nhầm lẫn giữa đường dẫn tuyệt đối (Absolute Path) và đường dẫn tương đối (Relative Path):**
+    - *Triệu chứng:* Khi kiểm tra thông tin hệ điều hành trên EC2, gõ nhầm lệnh `cat etc/os-release` và nhận thông báo lỗi `cat: etc/os-release: No such file or directory`.
+    - *Nguyên nhân gốc:* Thư mục `etc/` nằm trực tiếp dưới thư mục gốc (`/`). Việc bỏ quên dấu gạch chéo `/` ở đầu khiến shell hiểu nhầm là tìm thư mục con `etc/` tương đối so với thư mục hiện tại (working directory `/home/ec2-user`).
+    - *Cách sửa:* Luôn sử dụng đường dẫn tuyệt đối chuẩn xác: `cat /etc/os-release`.
+  - **Phân biệt rõ Agent Collection Interval vs CloudWatch Evaluation Period:**
+    - *Hiểu lầm phổ biến:* Đồng nhất chu kỳ thu thập của agent với Period của CloudWatch Alarm, hoặc ngộ nhận rằng việc tăng Period từ 1 phút lên 5 phút sẽ tự động làm giảm chi phí lưu trữ metric (metric storage cost).
+    - *Thực tế chuẩn xác:*
+      - *Agent Collection Interval:* Là tần suất CloudWatch Agent bên trong máy chủ đo lường và gửi mẫu dữ liệu (sample) lên dịch vụ CloudWatch (ví dụ: mỗi 60 giây).
+      - *CloudWatch Period:* Là cửa sổ thời gian mà CloudWatch gom (aggregate) các mẫu dữ liệu nhận được để tính toán giá trị thống kê (Average, Sum, Maximum...) phục vụ vẽ biểu đồ và đánh giá điều kiện Alarm.
+      - *Về chi phí:* Chi phí custom metric được tính dựa trên số lượng metrics được tạo và độ phân giải lưu trữ (Standard Resolution 1 phút vs High Resolution dưới 1 phút), không đơn thuần phụ thuộc vào giá trị Period khai báo trong Alarm.
+  - **Quy trình kích hoạt thông báo Amazon SNS qua Email:**
+    - *Lưu ý quan trọng:* Khi tạo email subscription trên SNS Topic, trạng thái ban đầu luôn là `PendingConfirmation`. AWS sẽ tự động gửi email xác thực kèm link xác nhận tới địa chỉ đăng ký. Người vận hành bắt buộc phải mở email và click "Confirm subscription" để chuyển trạng thái sang `Confirmed` trước khi thực hiện test Alarm; nếu không, toàn bộ notification gửi qua SNS Topic sẽ bị drop và không tới được hộp thư người nhận.
+  - **Tính biến đổi của giao diện quản trị AWS Console (UI Adaptability):**
+    - *Bài học vận hành:* Giao diện người dùng AWS Management Console được cập nhật và thay đổi định kỳ theo thời gian; người vận hành không nên phụ thuộc cứng nhắc vào tên gọi hoặc vị trí cụ thể của các nút bấm cũ (ví dụ: nút `Add metric`). Thay vào đó, cần nắm vững cấu trúc logic của dịch vụ (Namespace $\rightarrow$ Metric Name $\rightarrow$ Dimension) để dễ dàng thao tác trên mọi phiên bản giao diện.
+  - **Tránh các nhận định tuyệt đối trong mô hình Observability và Security:**
+    - *Về việc thiếu Memory metric mặc định trên EC2:* Không giải thích rằng hypervisor "không có quyền vì lý do privacy" một cách cảm tính/tuyệt đối. Thực tế kỹ thuật: Memory utilization là số liệu đo lường cấp hệ điều hành khách (in-guest/OS-level telemetry), hypervisor chỉ phân bổ và quản lý các khối RAM vật lý ảo hóa mà không can thiệp vào cấu trúc quản lý bộ nhớ bên trong guest kernel; do đó metric này không nằm trong bộ EC2 default metrics và cần agent chạy trong OS để thu thập.
+    - *Về Dashboard:* Dashboard chỉ trực quan hóa các tín hiệu đo lường được người quản trị chủ động lựa chọn hiển thị; việc các widget trên dashboard bình thường không tự động chứng minh rằng toàn bộ hệ thống đang hoạt động tốt (healthy).
+    - *Về Amazon SNS:* SNS chỉ đóng vai trò kênh phân phối thông báo (message delivery), không có cơ chế tự phát hiện, phân tích hay đánh giá tình trạng sự cố của hệ thống.
+
+
 
 
 

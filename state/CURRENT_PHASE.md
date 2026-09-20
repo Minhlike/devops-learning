@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 27 — AWS DNS, Route 53 & HTTPS/TLS Fundamentals. Chuẩn bị Buổi 28 — AWS CloudWatch Monitoring, Metrics, Logs & Alarms.
+- **Current Status:** Hoàn thành Buổi 28 — AWS CloudWatch Monitoring, Metrics, Logs & Alarms. Chuẩn bị Buổi 29 — Chưa được định nghĩa.
 - **Current Week:** Tuần 7
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -255,6 +255,48 @@
       - Vận hành quy trình Cost Safety và dọn dẹp tài nguyên bài lab triệt để: Xóa Route 53 Alias record, ALB, Target Group, EC2 instance, ACM certificate, Security Groups, ACM validation CNAME record, Cloudflare NS delegation và xóa Route 53 Hosted Zone.
       - Quan sát hiện tượng DNS cache: Recursive resolver có thể tiếp tục giữ các NS records cũ cho đến khi TTL hết hạn, ngay cả khi cấu hình authoritative zone đã bị xóa.
       - Kết quả: **ĐẠT BUỔI 27 (XUẤT SẮC)**.
+  16. **Buổi 28 — AWS CloudWatch Monitoring, Metrics, Logs & Alarms:**
+      - Nắm vững kiến trúc và mô hình tư duy (Mental Model) của hệ thống giám sát CloudWatch:
+        - Metrics: Dữ liệu số theo chuỗi thời gian (time-series numerical data).
+        - Logs: Bằng chứng/sự kiện chi tiết về hành vi hệ thống (discrete event records).
+        - Alarms: Đánh giá điều kiện/ngưỡng trên dữ liệu giám sát để kích hoạt hành động.
+        - SNS (Simple Notification Service): Phân phối thông báo (notification delivery), không tự phát hiện sự cố.
+        - Dashboard: Trực quan hóa và tổng hợp tín hiệu, không tự kết luận hệ thống hoạt động tốt (healthy).
+      - Thiết lập hạ tầng bài lab:
+        - Khởi tạo EC2 Amazon Linux 2023, instance type `t3.micro`.
+        - Kết nối và quản trị an toàn thông qua AWS Systems Manager Session Manager, không mở hay sử dụng SSH public.
+        - Cài đặt Nginx và xác minh phản hồi HTTP 200 từ localhost và Public IPv4.
+        - Giữ nguyên chế độ EC2 Basic Monitoring (chu kỳ 5 phút), không bật Detailed Monitoring trong bài lab.
+      - Vận hành Amazon CloudWatch Agent & Thu thập In-Guest Metrics:
+        - Gán IAM Role `S28CloudWatchAgentRole` cho EC2, tuân thủ nguyên tắc không lưu trữ static long-term Access Key trên máy chủ.
+        - Cài đặt và cấu hình CloudWatch Agent đẩy in-guest metric `mem_used_percent` vào custom namespace `CWAgent`.
+        - Cấu hình `metrics_collection_interval = 60` giây và định danh dimension theo `InstanceId`.
+      - Thực hành Failure Injection kiểm chứng Telemetry Memory:
+        - Quan sát baseline RAM hệ thống ở mức ~25%.
+        - Chạy tiến trình Python cấp phát và giữ thêm ~300 MiB RAM, đưa `mem_used_percent` tăng vọt lên ~55%; sau khi kết thúc process, metric hạ dần về baseline.
+        - Phân biệt rõ ràng: Agent Collection Interval (chu kỳ agent thu và gửi mẫu) vs CloudWatch Period (cửa sổ tổng hợp và đánh giá dữ liệu).
+        - Thấu hiểu rằng thống kê `Average` với Period 5 phút sẽ làm mượt (smooth) các đột biến ngắn hạn hơn so với Period 1 phút.
+      - Thiết lập và kiểm chứng vòng đời CloudWatch Alarm:
+        - Khởi tạo Alarm `S28-High-Memory` trên metric `mem_used_percent` (Statistic `Average`, Period 1 minute, Threshold `> 45%`, Datapoints to alarm `1 out of 1`).
+        - Quan sát và ghi nhận trọn vẹn vòng đời trạng thái của Alarm: `OK` $\rightarrow$ `ALARM` $\rightarrow$ `OK`.
+      - Tích hợp thông báo tự động qua Amazon SNS:
+        - Tạo SNS Topic `s28-cloudwatch-alerts` và đăng ký email subscription.
+        - Xác nhận (Confirm) subscription qua email trước khi kích hoạt cảnh báo.
+        - Nhận email cảnh báo tự động khi CloudWatch Alarm chuyển sang trạng thái `ALARM`.
+      - Thu thập và phân tích nhật ký với CloudWatch Logs & Logs Insights:
+        - Thu thập nhật ký web server: `/var/log/nginx/access.log` $\rightarrow$ `/s28/nginx/access` và `/var/log/nginx/error.log` $\rightarrow$ `/s28/nginx/error` với retention policy 3 ngày.
+        - Thực hành Failure Injection tạo lỗi client: Gửi request `GET /this-page-does-not-exist` sinh mã HTTP 404.
+        - Sử dụng CloudWatch Logs Insights viết truy vấn lọc các mã lỗi 404, bóc tách cấu trúc log bằng lệnh `parse` thành các trường `method`, `path`, `protocol`, `status` và tổng hợp thống kê bằng `stats count(*) as requests by status`.
+      - Xây dựng CloudWatch Dashboard:
+        - Tạo dashboard `S28-Observability` tổng hợp widget `CPUUtilization` (namespace `AWS/EC2`) và `mem_used_percent` (namespace `CWAgent`).
+        - Ghi nhận nguyên tắc: Dashboard chỉ hiển thị tín hiệu đo lường, không tự chứng minh hệ thống hoàn toàn khỏe mạnh.
+      - Hoàn thành Active Recall và tiếp thu hiệu chỉnh kỹ thuật:
+        - Trả lời đạt 7/7 câu hỏi ôn tập.
+        - Hiệu chỉnh kỹ thuật: Memory là in-guest/OS-level telemetry không nằm trong bộ EC2 default metrics (chứ không phải hypervisor không có quyền vì privacy); không đồng nhất Period với collection interval và không ngộ nhận rằng tăng Period sẽ tự làm giảm chi phí lưu trữ metric.
+      - Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+        - Thực hiện checklist dọn dẹp tài nguyên bài lab: Xóa CloudWatch Alarm `S28-High-Memory`, Dashboard `S28-Observability`, hai Log Groups (`/s28/nginx/access`, `/s28/nginx/error`), SNS Topic `s28-cloudwatch-alerts` và email subscription, EC2 instance, Security Group và IAM Role `S28CloudWatchAgentRole`.
+      - Kết quả: **ĐẠT BUỔI 28**.
+
 
 
 
