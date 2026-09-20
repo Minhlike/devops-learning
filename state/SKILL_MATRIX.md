@@ -151,6 +151,17 @@
 | Cloud & AWS | TLS Handshake Verification & Diagnostics (`curl -v`) | Làm được độc lập | 2026-09-17 | Lab 27: Kiểm tra TLS 1.3, ALPN HTTP/2, cert verification và SNI |
 | Cloud & AWS | Certificate Hostname Mismatch Failure Injection | Troubleshoot được | 2026-09-17 | Lab 27: Phân biệt TLS encryption vs hostname authentication qua ALB default URL |
 | Cloud & AWS | DNS & TLS Infrastructure Deprovisioning & Cache Invalidation | Làm được độc lập | 2026-09-17 | Lab 27: Teardown ACM, Alias, ALB, TG, Hosted Zone; hiểu TTL cache persistence |
+| Cloud & AWS | CloudWatch Observability Architecture (Metrics, Logs, Alarms, Dashboards & SNS) | Làm được độc lập | 2026-09-20 | Lab 28: Phân biệt các trụ cột observability và vai trò của từng thành phần |
+| Cloud & AWS | AWS Systems Manager Session Manager (SSH-Free Host Administration) | Làm được độc lập | 2026-09-20 | Lab 28: Kết nối và quản trị EC2 an toàn qua SSM không cần mở cổng SSH |
+| Cloud & AWS | CloudWatch Unified Agent & In-Guest Telemetry (`mem_used_percent`) | Làm được độc lập | 2026-09-20 | Lab 28: Cài agent, thu thập RAM metric vào CWAgent namespace qua IAM Role |
+| Cloud & AWS | Telemetry Timing Dynamics (Collection Interval vs CloudWatch Period) | Làm được độc lập | 2026-09-20 | Lab 28: Phân biệt chu kỳ thu thập của agent vs cửa sổ aggregate của CloudWatch |
+| Cloud & AWS | CloudWatch Alarm Engineering & Lifecycle Observation (`OK -> ALARM -> OK`) | Làm được độc lập | 2026-09-20 | Lab 28: Cấu hình alarm RAM > 45%, quan sát chuyển trạng thái qua failure injection |
+| Cloud & AWS | Amazon SNS Automated Alert Distribution (Email Subscription Confirmation) | Làm được độc lập | 2026-09-20 | Lab 28: Tạo SNS topic, xác nhận email subscription và nhận thông báo alarm |
+| Cloud & AWS | CloudWatch Logs Collection & Retention Management (Nginx Access/Error Logs) | Làm được độc lập | 2026-09-20 | Lab 28: Thu thập log Nginx qua agent, thiết lập log retention policy 3 ngày |
+| Cloud & AWS | CloudWatch Logs Insights Querying & Log Parsing (`parse`, `stats by status`) | Làm được độc lập | 2026-09-20 | Lab 28: Truy vấn lọc HTTP 404, parse cấu trúc log và thống kê request count |
+| Cloud & AWS | CloudWatch Observability Dashboards (`S28-Observability`) | Làm được độc lập | 2026-09-20 | Lab 28: Tạo dashboard trực quan hóa CPU và RAM, hiểu giới hạn của dashboard |
+| Cloud & AWS | Observability & Telemetry Infrastructure Deprovisioning Checklist | Làm được độc lập | 2026-09-20 | Lab 28: Thực hiện checklist dọn dẹp Alarm, Dashboard, Log Groups, SNS, EC2, IAM |
+
 
 
 
