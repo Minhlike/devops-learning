@@ -313,6 +313,30 @@
     - *Về Dashboard:* Dashboard chỉ trực quan hóa các tín hiệu đo lường được người quản trị chủ động lựa chọn hiển thị; việc các widget trên dashboard bình thường không tự động chứng minh rằng toàn bộ hệ thống đang hoạt động tốt (healthy).
     - *Về Amazon SNS:* SNS chỉ đóng vai trò kênh phân phối thông báo (message delivery), không có cơ chế tự phát hiện, phân tích hay đánh giá tình trạng sự cố của hệ thống.
 
+## [2026-09-21] Sự cố và Bài học về Terraform IaC, IAM Authorization, Input Encoding và Flow-Control
+- **Ngày:** 2026-09-21
+- **Bối cảnh:** Lab 29 — Khởi tạo hạ tầng AWS S3 bằng HashiCorp Terraform, quản lý state, drift và xử lý lỗi phân quyền IAM.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Lỗi `AccessDenied` do thiếu quyền `s3:CreateBucket` khi thực thi `terraform apply`:**
+    - *Triệu chứng:* Khi chạy `terraform apply s29.tfplan`, Terraform báo lỗi `creating Amazon S3 (Simple Storage Service) Bucket: operation error S3: CreateBucket, https response error StatusCode: 403, api error AccessDenied: Access Denied`.
+    - *Nguyên nhân:* IAM User `minh-devops` trước đó chỉ được cấp các quyền đọc (ReadOnly) và quyền lab cụ thể của các buổi trước; user chưa có quyền tạo bucket trên dịch vụ S3.
+    - *Cách khắc phục & Nguyên tắc:* Tạo inline policy tạm thời `S29TerraformS3Lab` cấp quyền `s3:*` nhưng giới hạn nghiêm ngặt theo chuẩn Least Privilege với scope ARN: `arn:aws:s3:::s29-terraform-lab-*` và `arn:aws:s3:::s29-terraform-lab-*/*`. Sau khi hoàn thành bài lab, tiến hành xóa bỏ hoàn toàn inline policy này.
+  - **Phân biệt rạch ròi giữa Authentication (Xác thực) và Authorization (Phân quyền):**
+    - *Hiểu lầm phổ biến:* Ngộ nhận rằng khi lệnh `aws login` thành công và AWS CLI nhận được temporary credentials hợp lệ (Authentication PASS) thì Terraform sẽ tự động có quyền thao tác mọi tài nguyên trên AWS.
+    - *Thực tế chuẩn xác:* Authentication chỉ chứng minh "bạn là ai" (Identity Verification). Việc bạn được phép làm gì (tạo bucket, hủy máy chủ...) hoàn toàn phụ thuộc vào Authorization (IAM Permission Policies gán cho User/Role). Lỗi 403 `AccessDenied` từ AWS API là lỗi Authorization, không phải lỗi Authentication.
+  - **Nguyên tắc vàng: Không bao giờ dùng Root User hoặc AdministratorAccess để "né" lỗi IAM:**
+    - *Cám dỗ thường gặp:* Khi gặp lỗi quyền hạn trong Terraform, người mới bắt đầu rất dễ chọn giải pháp "đi tắt" bằng cách dùng Root Account Credentials hoặc cấp quyền `AdministratorAccess` (`*:*`) cho tiện để lệnh chạy qua.
+    - *Bài học kỹ thuật:* Đây là lỗ hổng bảo mật cực kỳ nguy hiểm trong môi trường thực tế. Khi gặp lỗi thiếu quyền trong IaC, người kỹ sư DevOps chuyên nghiệp phải đọc kỹ error message để xác định chính xác API Action bị thiếu (ví dụ `s3:CreateBucket`), soạn thảo policy tối thiểu cần thiết, giới hạn đúng Resource ARN (Least Privilege) và dọn dẹp quyền hạn tạm sau khi xong việc.
+  - **Bộ gõ tiếng Việt Telex làm `terraform apply` không nhận đúng ký tự xác nhận "yes":**
+    - *Triệu chứng:* Tại bước Terraform hỏi xác nhận `Do you want to perform these actions? Enter a value: yes`, người dùng gõ `yes` và nhấn Enter nhưng Terraform phản hồi `Apply cancelled.` ngay lập tức.
+    - *Nguyên nhân:* Bộ gõ tiếng Việt Telex can thiệp vào bộ đệm bàn phím (input buffer), tự động chèn thêm ký tự điều khiển, dấu hoặc thay đổi mã ký tự khiến chuỗi gửi vào luồng standard input (`stdin`) không khớp chính xác 3 ký tự ASCII `y-e-s`.
+    - *Cách khắc phục:* Chuyển sang chế độ gõ tiếng Anh (English input) trên hệ điều hành trước khi tương tác với các câu lệnh CLI yêu cầu xác nhận tương tác.
+  - **Terminal bị "đóng băng" (Freeze) do tính năng Terminal Flow-Control (XOFF/XON):**
+    - *Triệu chứng:* Cửa sổ dòng lệnh trong VS Code / WSL bỗng nhiên không phản hồi phím gõ, con trỏ đứng yên như bị treo.
+    - *Nguyên nhân:* Người dùng vô tình bấm tổ hợp phím `Ctrl+S`, kích hoạt tín hiệu điều khiển luồng phần mềm XOFF (Software Flow Control) tạm dừng việc xuất dữ liệu ra màn hình.
+    - *Cách khắc phục:* Nhấn tổ hợp phím `Ctrl+Q` để gửi tín hiệu XON khôi phục luồng I/O bình thường của terminal.
+
+
 
 
 

@@ -420,6 +420,54 @@
   - Thực hiện checklist dọn dẹp tài nguyên bài lab: Xóa CloudWatch Alarm `S28-High-Memory`, Dashboard `S28-Observability`, 2 Log Groups (`/s28/nginx/access`, `/s28/nginx/error`), SNS Topic `s28-cloudwatch-alerts` và email subscription, EC2 instance, Security Group và IAM Role `S28CloudWatchAgentRole`.
 - Kết quả: **ĐẠT BUỔI 28**.
 
+## [2026-09-21] Session 29: Infrastructure as Code Fundamentals with Terraform on AWS
+- Tiếp tục lộ trình kỹ thuật: Khởi động Infrastructure as Code (IaC) với HashiCorp Terraform trên nền tảng AWS.
+- Nắm vững kiến trúc và mô hình tư duy Declarative Infrastructure as Code:
+  - Declarative (khai báo): Mô tả trạng thái mong muốn (Desired State) trong file cấu hình `.tf`, Terraform tự tính toán các bước thực thi để đưa hạ tầng thực tế về trạng thái đó, khác biệt với tư duy Imperative (mệnh lệnh) của Shell Scripting.
+  - Providers: Plugin trung gian (`hashicorp/aws`) chịu trách nhiệm dịch cú pháp HCL thành các lệnh gọi AWS API tương ứng.
+  - State (`terraform.tfstate`): Nguồn chân lý (Source of Truth) lưu trữ ánh xạ giữa resource định nghĩa trong code và ID/thuộc tính của resource thực tế ngoài cloud.
+  - Core Workflow: Chu trình chuẩn mực `Author` $\rightarrow$ `Init` $\rightarrow$ `Plan` $\rightarrow$ `Apply` $\rightarrow$ `State` $\rightarrow$ `Update` $\rightarrow$ `Destroy`.
+  - Idempotency (tính lũy thừa): Khả năng chạy lại cùng một configuration nhiều lần mà không tạo ra các tác dụng phụ hay thay đổi ngoài ý muốn nếu hạ tầng đã khớp code.
+  - Configuration Drift: Hiện tượng sai lệch giữa tài nguyên thực tế ngoài AWS và định nghĩa trong mã nguồn Terraform (thường do ai đó sửa tay qua AWS Console/CLI).
+  - Update-in-place: Cơ chế cập nhật trực tiếp các thuộc tính của tài nguyên tại chỗ mà không cần phải hủy bỏ (destroy) và tái tạo lại (recreate).
+  - Saved Execution Plan (`terraform plan -out=s29.tfplan`): Kỹ thuật xuất bản kế hoạch thực thi ra file nhị phân để đảm bảo `apply` đúng chính xác những gì đã review, ngăn chặn race condition.
+  - Git Hygiene & An toàn bí mật: Không bao giờ hard-code AWS access key/secret trong file cấu hình, sử dụng AWS Credential Chain (`AWS_PROFILE=devops-lab`, `AWS_REGION=ap-southeast-1`); giữ `.terraform.lock.hcl` trong Git để cố định phiên bản provider; cấu hình `.gitignore` loại bỏ `.terraform/`, `*.tfstate`, `*.tfstate.*`, `*.tfvars`, `*.tfplan`.
+- Môi trường & Cấu hình Terraform:
+  - Môi trường: Windows 11 + WSL2 Ubuntu 24.04, Terraform v1.16.3, AWS Region `ap-southeast-1`, IAM User `minh-devops`, AWS CLI profile `devops-lab`.
+  - Xác thực an toàn qua `aws login --remote --profile devops-lab --region ap-southeast-1`, tuyệt đối không dùng Root User cho Terraform.
+  - Soạn thảo `providers.tf`: Khai báo `required_version >= 1.16.0`, provider `hashicorp/aws`.
+  - Soạn thảo `main.tf`: Khai báo data sources `aws_caller_identity.current`, `aws_region.current`; resource `aws_s3_bucket.lab` với `bucket_prefix = "s29-terraform-lab-"` và tags (`Name = s29-terraform-lab`, `Session = S29`, `ManagedBy = Terraform`); outputs: `aws_account_id`, `aws_arn`, `aws_region`.
+- Thực hành Lab & Đối soát Drift:
+  1. `terraform init`: Tải và cài đặt provider plugin AWS vào `.terraform/`, sinh file lock `.terraform.lock.hcl`.
+  2. `terraform fmt` & `terraform validate`: Chuẩn hóa định dạng code và kiểm tra tính hợp lệ về mặt cú pháp.
+  3. `terraform plan`: Phân tích trạng thái hiện tại và tạo execution plan thêm mới 1 resource.
+  4. `terraform plan -out=s29.tfplan`: Lưu execution plan ra file.
+  5. `terraform apply s29.tfplan`: Thực thi áp dụng kế hoạch đã lưu, khởi tạo thành công S3 bucket `s29-terraform-lab-cfde5b5df619082b66ff5228cd` tại `ap-southeast-1`.
+  6. `terraform state list` & `terraform state show aws_s3_bucket.lab`: Khảo sát metadata lưu trong state file.
+  7. `terraform output`: Kiểm tra các giá trị caller identity, ARN và region được trích xuất.
+  8. Update tag `ManagedBy`: Chỉnh sửa code, chạy `terraform apply` quan sát hành vi update-in-place thành công.
+  9. Tạo drift thủ công bằng AWS CLI: Sửa tag `ManagedBy = Manual` trực tiếp ngoài cloud.
+  10. `terraform plan`: Phát hiện chính xác drift (`ManagedBy: "Manual" -> "Terraform"`).
+  11. `terraform apply`: Tự động đối soát (reconcile) đưa tag ngoài cloud trở lại đúng giá trị trong code.
+  12. `terraform plan` lần cuối: Xác nhận hạ tầng đồng nhất tuyệt đối (`No changes. Your infrastructure matches the configuration.`).
+  13. `terraform destroy`: Hủy bỏ hoàn toàn S3 bucket được quản lý bởi Terraform.
+  14. `terraform state list`: Xác nhận danh sách resource trong state trống rỗng sau khi destroy.
+- Failure Injection & Xử lý Sự cố:
+  - Lần apply đầu tiên thất bại với lỗi `AccessDenied` do user `minh-devops` chưa được cấp quyền `s3:CreateBucket`.
+  - Hiểu sâu sắc sự khác biệt giữa Authentication (đăng nhập thành công) $\ne$ Authorization (được phép thực hiện hành động).
+  - Khắc phục bằng cách gắn inline policy tạm thời `S29TerraformS3Lab` cấp quyền `s3:*` nhưng giới hạn phạm vi chặt chẽ (scoped) về ARN của bucket bài lab (`arn:aws:s3:::s29-terraform-lab-*`). Kiên quyết không dùng root user hoặc AdministratorAccess để né lỗi phân quyền.
+  - Lỗi bộ gõ tiếng Việt Telex: Gõ chuỗi xác nhận "yes" bị bộ gõ chèn ký tự/diacritic khiến Terraform hiểu nhầm là chuỗi khác và tự động hủy ("Apply cancelled"); khắc phục bằng cách chuyển bộ gõ sang English input.
+  - Terminal VS Code bị đóng băng do tính năng flow-control (XOFF) khi vô tình bấm `Ctrl+S`; sử dụng `Ctrl+Q` (XON) để giải phóng luồng I/O.
+- Hoàn thành Active Recall cuối buổi:
+  - Trả lời đạt 7/7 câu hỏi ôn tập về plan vs apply, vai trò terraform.tfstate, drift, update-in-place, bucket_prefix, bảo mật credentials, và phạm vi quản lý của terraform destroy.
+- Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+  - S3 bucket bài lab đã được `terraform destroy` thành công.
+  - Kiểm tra `terraform state list` sau cleanup: Không còn output.
+  - Xóa hoàn toàn inline IAM policy tạm thời `S29TerraformS3Lab`.
+  - Không còn tài nguyên AWS nào của S29 bị lưu lại chạy ngầm.
+- Kết quả: **ĐẠT BUỔI 29**.
+
+
 
 
 
