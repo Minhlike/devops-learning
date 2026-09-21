@@ -161,6 +161,17 @@
 | Cloud & AWS | CloudWatch Logs Insights Querying & Log Parsing (`parse`, `stats by status`) | Làm được độc lập | 2026-09-20 | Lab 28: Truy vấn lọc HTTP 404, parse cấu trúc log và thống kê request count |
 | Cloud & AWS | CloudWatch Observability Dashboards (`S28-Observability`) | Làm được độc lập | 2026-09-20 | Lab 28: Tạo dashboard trực quan hóa CPU và RAM, hiểu giới hạn của dashboard |
 | Cloud & AWS | Observability & Telemetry Infrastructure Deprovisioning Checklist | Làm được độc lập | 2026-09-20 | Lab 28: Thực hiện checklist dọn dẹp Alarm, Dashboard, Log Groups, SNS, EC2, IAM |
+| Infrastructure as Code | Declarative Infrastructure as Code (IaC) Fundamentals | Làm được độc lập | 2026-09-21 | Lab 29: Hiểu desired state, idempotency, configuration drift, update-in-place |
+| Infrastructure as Code | Terraform Core Workflow (Init, Plan, Apply, Destroy) | Làm được độc lập | 2026-09-21 | Lab 29: Vận hành Author -> Init -> Plan -> Apply -> State -> Destroy |
+| Infrastructure as Code | AWS Provider Configuration & Credential Chain | Làm được độc lập | 2026-09-21 | Lab 29: Cấu hình provider hashicorp/aws, AWS profile devops-lab, không hard-code credentials |
+| Infrastructure as Code | Terraform State Management (`terraform.tfstate`) | Làm được độc lập | 2026-09-21 | Lab 29: Hiểu ánh xạ code và thực tế, kiểm tra bằng terraform state list/show |
+| Infrastructure as Code | Saved Execution Plans (`terraform plan -out`) | Làm được độc lập | 2026-09-21 | Lab 29: Xuất và apply s29.tfplan đảm bảo tính xác định và an toàn khi deploy |
+| Infrastructure as Code | Terraform Data Sources & Outputs | Làm được độc lập | 2026-09-21 | Lab 29: Đọc caller_identity, region và xuất outputs aws_account_id, aws_arn, aws_region |
+| Infrastructure as Code | AWS Resource Provisioning with Terraform (`aws_s3_bucket`) | Làm được độc lập | 2026-09-21 | Lab 29: Khởi tạo S3 bucket với bucket_prefix và metadata tags phân loại |
+| Infrastructure as Code | Drift Detection & Infrastructure Reconciliation | Làm được độc lập | 2026-09-21 | Lab 29: Phát hiện sửa tag thủ công qua AWS CLI và apply reconcile về desired state |
+| Infrastructure as Code | Terraform Git Hygiene & Secrets Safety | Làm được độc lập | 2026-09-21 | Lab 29: Giữ .terraform.lock.hcl trong Git; ignore .terraform/, tfstate, tfvars, tfplan |
+| Infrastructure as Code | Terraform IAM Scoping & Permission Troubleshooting | Troubleshoot được | 2026-09-21 | Lab 29: Xử lý AccessDenied s3:CreateBucket, cấp inline policy scoped và cleanup |
+
 
 
 

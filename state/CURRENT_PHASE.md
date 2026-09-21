@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 28 — AWS CloudWatch Monitoring, Metrics, Logs & Alarms. Chuẩn bị Buổi 29 — Chưa được định nghĩa.
+- **Current Status:** Hoàn thành Buổi 29 — Infrastructure as Code Fundamentals with Terraform on AWS. Chuẩn bị Buổi 30 — Terraform Variables, Outputs & Multi-Resource Provisioning.
 - **Current Week:** Tuần 7
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -296,6 +296,33 @@
       - Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
         - Thực hiện checklist dọn dẹp tài nguyên bài lab: Xóa CloudWatch Alarm `S28-High-Memory`, Dashboard `S28-Observability`, hai Log Groups (`/s28/nginx/access`, `/s28/nginx/error`), SNS Topic `s28-cloudwatch-alerts` và email subscription, EC2 instance, Security Group và IAM Role `S28CloudWatchAgentRole`.
       - Kết quả: **ĐẠT BUỔI 28**.
+  17. **Buổi 29 — Infrastructure as Code Fundamentals with Terraform on AWS:**
+      - Nắm vững kiến trúc và mô hình tư duy Declarative Infrastructure as Code (IaC):
+        - Ngôn ngữ cấu hình HCL (.tf) mô tả trạng thái mong muốn (Desired State) của hạ tầng.
+        - Provider: Plugin giao tiếp với AWS API (`hashicorp/aws`), sử dụng AWS Credential Chain (`devops-lab` profile), không hard-code credentials.
+        - State (`terraform.tfstate`): File ánh xạ giữa tài nguyên định nghĩa trong code và thực tế trên AWS Cloud.
+        - Vòng đời cốt lõi (Core Workflow): `Author` $\rightarrow$ `Init` $\rightarrow$ `Plan` $\rightarrow$ `Apply` $\rightarrow$ `State` $\rightarrow$ `Update` $\rightarrow$ `Destroy`.
+        - Idempotency (tính lũy thừa): Đảm bảo nhiều lần apply không gây thay đổi nếu code không đổi.
+        - Configuration Drift: Khả năng phát hiện và đối soát (reconcile) sai lệch giữa code và thực tế.
+        - Update-in-place: Cập nhật thuộc tính tài nguyên mà không cần tái tạo.
+        - Saved Execution Plan (`terraform plan -out=s29.tfplan`): Đảm bảo tính xác định (deterministic execution).
+        - Git Hygiene: Giữ `.terraform.lock.hcl` trong Git; cấu hình `.gitignore` loại bỏ `.terraform/`, `*.tfstate`, `*.tfstate.*`, `*.tfvars`, `*.tfplan`.
+      - Thực hành cấu hình và triển khai hạ tầng:
+        - Soạn thảo `providers.tf` (`required_version >= 1.16.0`, AWS provider).
+        - Soạn thảo `main.tf` sử dụng data sources (`aws_caller_identity.current`, `aws_region.current`), khai báo resource `aws_s3_bucket.lab` với `bucket_prefix = "s29-terraform-lab-"` và metadata tags (`Name`, `Session`, `ManagedBy = Terraform`), xuất các outputs (`aws_account_id`, `aws_arn`, `aws_region`).
+        - Khởi tạo S3 bucket thật trên region `ap-southeast-1` (`s29-terraform-lab-cfde5b5df619082b66ff5228cd`).
+        - Khảo sát state bằng `terraform state list`, `terraform state show` và `terraform output`.
+      - Thực hành Failure Injection & Đối soát Drift:
+        - Xử lý lỗi `AccessDenied` trong lần apply đầu do user `minh-devops` thiếu quyền `s3:CreateBucket`. Cấp inline policy tạm thời `S29TerraformS3Lab` scoped về ARN của bucket bài lab; xóa hoàn toàn policy sau lab.
+        - Nhận thức sâu sắc: Authentication (xác thực thành công) $\ne$ Authorization (được phép tạo tài nguyên); không bao giờ dùng root user để né lỗi IAM.
+        - Sửa tag thủ công bằng AWS CLI (`ManagedBy = Manual`), chạy `terraform plan` phát hiện drift và `terraform apply` để đối soát đưa hạ tầng về đúng desired state trong code.
+        - Khắc phục sự cố bộ gõ tiếng Việt Telex khiến `terraform apply` không nhận đúng chuỗi "yes"; chuyển sang English input để xác nhận thành công.
+      - Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+        - Thực thi `terraform destroy` xóa sạch S3 bucket lab trên AWS.
+        - Xác minh `terraform state list` sau cleanup không còn tài nguyên.
+        - Xóa hoàn toàn inline IAM policy tạm thời `S29TerraformS3Lab`.
+      - Kết quả: **ĐẠT BUỔI 29**.
+
 
 
 
