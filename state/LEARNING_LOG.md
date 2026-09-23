@@ -467,6 +467,79 @@
   - Không còn tài nguyên AWS nào của S29 bị lưu lại chạy ngầm.
 - Kết quả: **ĐẠT BUỔI 29**.
 
+## [2026-09-23] Session 31: Terraform Remote State, S3 State Locking & Reusable Modules
+- Tiếp tục lộ trình kỹ thuật: Quản trị Remote State, S3 State Locking và cấu trúc Reusable Modules với HashiCorp Terraform trên AWS.
+- Môi trường & Không gian làm việc:
+  - Workspace: `/mnt/d/Devops/labs/lab-31-terraform-remote-state`
+  - Hệ điều hành: Windows 11 + WSL2 Ubuntu 24.04, Terraform v1.16.3, AWS Region `ap-southeast-1`.
+  - IAM User: `minh-devops`, AWS CLI profile `devops-lab`.
+- Phân biệt kiến trúc cốt lõi:
+  - Git: Nơi lưu trữ và chia sẻ mã nguồn khai báo hạ tầng Terraform (`.tf`).
+  - Remote Backend: Hạ tầng lưu trữ tập trung file trạng thái thực tế (`terraform.tfstate`), cho phép team/CI cùng nhìn thấy một nguồn chân lý.
+  - State Locking: Cơ chế khóa trạng thái nhằm ngăn chặn race condition và concurrent state operations (nhiều tiến trình apply/plan đồng thời gây corrupt state).
+- Mô hình Bootstrap Pattern cho Terraform Backend:
+  - Khởi tạo thư mục `bootstrap/` sử dụng local state để tạo S3 backend bucket trước (`s31-terraform-state-*`).
+  - Thấu hiểu bản chất: Backend bucket phải tồn tại và sẵn sàng hoạt động trước khi cấu hình remote backend của thư mục `app/` có thể trỏ vào sử dụng.
+- Cấu hình chuẩn hóa và an toàn S3 Backend Bucket:
+  - S3 bucket prefix: `s31-terraform-state-*` tại region `ap-southeast-1`.
+  - Bật S3 Bucket Versioning (`versioning_configuration { status = "Enabled" }`).
+  - Khóa toàn bộ truy cập công khai (`aws_s3_bucket_public_access_block` bật tất cả 4 thiết lập chặn public access).
+  - Kích hoạt mã hóa lưu trữ SSE-S3 AES256.
+- Quản trị IAM Least Privilege & Failure Injection:
+  - Lần apply đầu tiên của bootstrap thất bại chính xác tại API `s3:CreateBucket` do user `minh-devops` thiếu quyền ghi S3.
+  - Cấp inline policy tạm thời `S31TerraformStateLab` giới hạn nghiêm ngặt phạm vi tài nguyên (scoped) chỉ trên bucket `s31-terraform-state-*` và `s31-terraform-state-*/*`.
+  - Xóa bỏ hoàn toàn inline policy này ở cuối session theo quy trình Privilege Hygiene.
+- Di chuyển State lên Remote Backend (Remote-State Migration):
+  - Khởi tạo tài nguyên `terraform_data.demo` với local state ban đầu (`terraform.tfstate`).
+  - Kích hoạt S3 backend qua file cấu hình `backend.hcl` với key `s31/app/terraform.tfstate`.
+  - Thực thi di chuyển state: `terraform init -migrate-state -backend-config=backend.hcl`.
+  - Kiểm tra `terraform state list`: Resource `terraform_data.demo` vẫn hiện diện nguyên vẹn sau migration, chứng minh Terraform đã chuyển dịch toàn bộ metadata state lên remote backend mà không tái tạo (recreate) tài nguyên.
+- Kiểm chứng S3 Versioning & Mental Model Phục hồi State:
+  - Chỉnh sửa thuộc tính của `terraform_data.demo`, chạy `terraform apply` để ghi state mới lên S3.
+  - Quan sát S3 object versions: State cũ chuyển sang `IsLatest=false`, state mới có `IsLatest=true` kèm VersionId mới.
+  - Mental Model chuẩn xác: S3 Versioning là cơ chế bảo vệ phục hồi state khi xảy ra lỗi ghi đè hoặc hỏng file; việc restore state từ version cũ chỉ phục hồi bộ nhớ mapping của Terraform, hoàn toàn không đồng nghĩa với việc tự động rollback hạ tầng thực tế ngoài cloud.
+- Kiểm chứng Native S3 State Locking (`use_lockfile = true`):
+  - Sử dụng tính năng S3 Native Locking (`use_lockfile = true`), KHÔNG dùng DynamoDB (DynamoDB locking là kiến thức cũ/deprecated đối với workflow này).
+  - Kiểm thử tranh chấp khóa (Locking Concurrency):
+    - Terminal A: Kích hoạt apply giữ lock thông qua `terraform_data.lock_holder` kết hợp `local-exec sleep`.
+    - Terminal B: Chạy `terraform plan -lock-timeout=3s`.
+    - Kết quả: Terminal B bị chặn đứng với thông báo lỗi `Error acquiring the state lock` và mã lỗi HTTP S3 `412 PreconditionFailed` trên file `.tflock`.
+    - Lock info hiển thị rõ định danh tiến trình và `OperationTypeApply`.
+    - Sau khi Terminal A hoàn tất và nhả lock, Terminal B thực thi lại `terraform plan` thành công và trả về `No changes`.
+- Thiết kế và Tái sử dụng Child Modules (Reusable Modules):
+  - Xây dựng Child Module chuẩn mực tại `app/modules/message/` gồm:
+    - `variables.tf`: Khai báo input variables cho module.
+    - `main.tf`: Khai báo logic tài nguyên của module (`terraform_data.this`).
+    - `outputs.tf`: Xuất output từ module ra ngoài.
+  - Root module gọi cùng một source module hai lần độc lập:
+    - `module.message_app`
+    - `module.message_ops`
+  - Quản lý phân cấp không gian địa chỉ state:
+    - `terraform_data.demo`
+    - `terraform_data.lock_holder`
+    - `module.message_app.terraform_data.this`
+    - `module.message_ops.terraform_data.this`.
+  - Kiểm tra và xuất thành công module outputs: `app_module_data` và `ops_module_data`.
+- Active Recall cuối buổi & Hiệu chỉnh Mental Model:
+  - Nắm vững kiến thức: Remote State vs Locking, Bootstrap Pattern, Versioning, Module Addresses, Module Inputs/Outputs.
+  - Hiệu chỉnh nhận thức quan trọng: Chuyển đổi dứt điểm từ mental model cũ `S3 + DynamoDB locking` sang S3 Native Locking `.tflock`.
+  - Hiệu chỉnh bản chất của State: State là bộ nhớ/mapping của Terraform để liên kết cấu hình code với đối tượng thực tế, không phải là bản sao tuyệt đối của thực tế ("reality").
+- Thử thách Defense Mode (Thời lượng quy định: 10 phút):
+  - Kịch bản sự cố injected:
+    - Backend key bị đổi từ `s31/app/terraform.tfstate` thành `s31/defense/terraform.tfstate`.
+    - Child module output `data` bị đổi tên thành `payload`.
+  - Kết quả xử lý sự cố:
+    - Technical Recovery: **PASS** (`terraform validate`: PASS; `terraform plan`: `No changes`; `terraform state list`: đủ 4 addresses; module outputs hiển thị chính xác; không destroy/recreate tài nguyên để chữa lỗi; root-cause reasoning sau Defense: PASS).
+    - Time Requirement: **FAIL** (thời gian xử lý thực tế 19m26s, vượt ngưỡng quy định 9m26s).
+    - Đánh giá tổng hợp Defense Mode: Technical PASS / Timed FAIL.
+- Vận hành nguyên tắc Cost Safety & Resource Deprovisioning:
+  - `terraform destroy` toàn bộ tài nguyên trong thư mục `app/`.
+  - Xóa sạch toàn bộ versioned objects và delete markers trong S3 bucket backend.
+  - `terraform destroy` xóa sạch S3 bucket trong thư mục `bootstrap/`.
+  - Xóa hoàn toàn Temporary Inline IAM Policy `S31TerraformStateLab`.
+  - Không còn tài nguyên AWS nào của S31 bị lưu lại chạy ngầm.
+- Kết quả: **ĐẠT BUỔI 31 (Technical PASS / Timed FAIL Defense Mode)**.
+
 
 
 

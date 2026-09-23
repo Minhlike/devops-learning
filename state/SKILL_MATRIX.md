@@ -171,6 +171,14 @@
 | Infrastructure as Code | Drift Detection & Infrastructure Reconciliation | Làm được độc lập | 2026-09-21 | Lab 29: Phát hiện sửa tag thủ công qua AWS CLI và apply reconcile về desired state |
 | Infrastructure as Code | Terraform Git Hygiene & Secrets Safety | Làm được độc lập | 2026-09-21 | Lab 29: Giữ .terraform.lock.hcl trong Git; ignore .terraform/, tfstate, tfvars, tfplan |
 | Infrastructure as Code | Terraform IAM Scoping & Permission Troubleshooting | Troubleshoot được | 2026-09-21 | Lab 29: Xử lý AccessDenied s3:CreateBucket, cấp inline policy scoped và cleanup |
+| Infrastructure as Code | Terraform Remote State Architecture (S3 Backend & State Sharing) | Làm được độc lập | 2026-09-23 | Lab 31: Tách biệt Git config vs remote state, migrate local sang S3 backend an toàn |
+| Infrastructure as Code | Terraform Backend Bootstrap Pattern | Làm được độc lập | 2026-09-23 | Lab 31: Dùng local state bootstrap S3 bucket trước khi app backend sử dụng |
+| Infrastructure as Code | S3 Versioning for State Recovery | Làm được độc lập | 2026-09-23 | Lab 31: Bật versioning trên bucket state, hiểu versioning phục hồi state vs rollback hạ tầng |
+| Infrastructure as Code | Native S3 State Locking (`use_lockfile = true` & `.tflock`) | Làm được độc lập | 2026-09-23 | Lab 31: Sử dụng S3 lockfile thay DynamoDB, kiểm chứng 412 PreconditionFailed khi conflict |
+| Infrastructure as Code | Terraform Reusable Child Modules Architecture | Làm được độc lập | 2026-09-23 | Lab 31: Viết module message (variables, main, outputs), gọi đa instance từ root module |
+| Infrastructure as Code | Terraform Module Address & Hierarchical State Inspection | Làm được độc lập | 2026-09-23 | Lab 31: Quản trị module address `module.<name>.<resource>` và output mapping qua CLI |
+| Infrastructure as Code | Terraform State Troubleshooting & Defense Mode Recovery | Cần hướng dẫn thêm | 2026-09-23 | Lab 31: Phục hồi backend key và module output drift không destroy tài nguyên (vượt thời gian 19m26s/10m) |
+| Infrastructure as Code | Terraform Remote Infrastructure Teardown & Versioned Object Cleanup | Làm được độc lập | 2026-09-23 | Lab 31: Destroy app, dọn toàn bộ versioned S3 state objects, xóa bucket bootstrap và IAM policy |
 
 
 
