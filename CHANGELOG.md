@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Minhlike/devops-learning/compare/v1.1.0...v1.2.0) (2026-09-23)
+
+
+### Features
+
+* **labs:** add AWS and Terraform lab artifacts (labs 23-26, 29) ([7e83cdc](https://github.com/Minhlike/devops-learning/commit/7e83cdc30829d1f18160a4b7403ea4792779f01a))
+
 ## [1.1.0](https://github.com/Minhlike/devops-learning/compare/v1.0.0...v1.1.0) (2026-09-10)
 
 
