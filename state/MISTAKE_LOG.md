@@ -336,6 +336,39 @@
     - *Nguyên nhân:* Người dùng vô tình bấm tổ hợp phím `Ctrl+S`, kích hoạt tín hiệu điều khiển luồng phần mềm XOFF (Software Flow Control) tạm dừng việc xuất dữ liệu ra màn hình.
     - *Cách khắc phục:* Nhấn tổ hợp phím `Ctrl+Q` để gửi tín hiệu XON khôi phục luồng I/O bình thường của terminal.
 
+## [2026-09-23] Sự cố và Bài học về Terraform Remote State, Native Locking, Reusable Modules và Defense Mode
+- **Ngày:** 2026-09-23
+- **Bối cảnh:** Lab 31 — Cấu hình S3 Remote Backend, Native State Locking (`use_lockfile`), Reusable Child Modules và Thử thách Defense Mode.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Lỗi hướng dẫn không ghi rõ exact path dẫn đến duplicate module blocks (Teaching Note):**
+    - *Triệu chứng:* Người học khai báo nhầm hoặc bị duplicate các block module giữa root module và child module.
+    - *Nguyên nhân gốc:* Hướng dẫn kỹ thuật chưa ghi rõ đường dẫn tệp tin cụ thể cần thao tác (`app/main.tf` hay `app/modules/message/main.tf`). Đây là lỗi từ phía tài liệu hướng dẫn, không phải lỗi conceptual của học viên.
+    - *Quy chuẩn cải tiến kể từ session sau:*
+      - Trước MỌI lệnh chỉnh sửa file, bắt buộc ghi rõ: `File cần sửa: <exact path>`.
+      - Không dồn quá nhiều lệnh liên tiếp mà không giải thích bản chất kỹ thuật.
+      - Giữ vững quy trình giảng dạy: `Theory` $\rightarrow$ `Guided Action` $\rightarrow$ `Explain Result` $\rightarrow$ `Check Question`.
+      - Kiên định phương châm: Lab-first nhưng không phải command-only.
+  - **Hiệu chỉnh Mental Model: S3 Native State Locking (`use_lockfile = true`) thay thế DynamoDB:**
+    - *Hiểu lầm ban đầu:* Học viên vẫn giữ mental model cũ cho rằng Terraform bắt buộc phải dùng bảng Amazon DynamoDB để khóa trạng thái khi dùng S3 backend.
+    - *Thực tế kỹ thuật:* Kể từ Terraform v1.10+, backend S3 đã hỗ trợ native locking trực tiếp thông qua conditional writes (`use_lockfile = true`) bằng file `.tflock` trên chính S3 bucket. Việc tạo riêng DynamoDB table cho locking hiện nay là giải pháp cũ (deprecated/legacy) đối với workflow này.
+  - **Hiệu chỉnh Mental Model: State là Bộ nhớ Ánh xạ (Mapping), không phải Bản sao Tuyệt đối của Thực tế:**
+    - *Hiểu lầm ban đầu:* Xem file `terraform.tfstate` là bản sao đồng nhất tuyệt đối của hạ tầng thực tế ngoài cloud.
+    - *Thực tế kỹ thuật:* State là bộ nhớ ánh xạ (mapping) giữa các resource block trong code HCL và ID tài nguyên thực tế ngoài cloud tại thời điểm apply cuối cùng. Nếu hạ tầng bị can thiệp bên ngoài hoặc state bị hỏng, việc restore state từ S3 version cũ chỉ phục hồi metadata của Terraform chứ không tự động rollback hạ tầng ngoài thực tế.
+  - **Thử thách Defense Mode: Vượt ngưỡng thời gian và Quy chuẩn tổ chức kịch bản phòng thủ:**
+    - *Bối cảnh:* Kịch bản sự cố injected đổi backend key sang `s31/defense/terraform.tfstate` và đổi child module output `data` thành `payload`.
+    - *Kết quả:*
+      - Về mặt kỹ thuật (Technical Recovery): **PASS** (`terraform validate` pass, `terraform plan` no changes, `terraform state list` đủ 4 addresses, module outputs chính xác, không destroy/recreate tài nguyên để chữa lỗi, phân tích root cause chuẩn xác).
+      - Về mặt thời gian (Time Requirement): **FAIL** (thời gian xử lý thực tế 19m26s so với hạn mức 10m, vượt 9m26s).
+      - Đánh giá tổng hợp: Technical PASS / Timed FAIL.
+    - *Quy chuẩn cho Defense Mode các session sau:*
+      - Chuẩn bị đầy đủ kiến thức nền tảng trước khi bước vào phòng thủ.
+      - Scenario chỉ kiểm tra đúng các nội dung đã được học trong buổi.
+      - Thiết lập bộ đếm thời gian (Countdown) thực tế.
+      - Tuyệt đối không đưa gợi ý (hints) trong quá trình người học giải quyết Defense scenario.
+      - Xây dựng Rubric đánh giá rõ ràng và quy trình Verification minh bạch.
+      - Không dùng công nghệ chưa học làm nội dung bị kiểm tra.
+      - Chỉ tạo sandbox khi fault injection có nguy cơ ảnh hưởng trực tiếp đến môi trường host/WSL.
+
 
 
 
