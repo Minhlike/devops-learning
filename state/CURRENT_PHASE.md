@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 31 — Terraform Remote State, S3 State Locking & Reusable Modules. Chuẩn bị Buổi 32 — Terraform Meta-Arguments, Lifecycle, for_each/count, Import & Safe Refactoring.
-- **Current Week:** Tuần 7
+- **Current Status:** Hoàn thành Buổi 33 — Ansible Fundamentals & Safe Configuration Management. Chuẩn bị Buổi 34 (Cần xác minh roadmap chi tiết; ưu tiên 15-20 phút đầu review củng cố S33).
+- **Current Week:** Tuần 8
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -378,6 +378,77 @@
         - Xóa hoàn toàn Temporary Inline IAM Policy `S31TerraformStateLab`.
         - Không để sót bất kỳ tài nguyên AWS nào chạy ngầm sau lab.
       - Kết quả: **ĐẠT BUỔI 31 (Technical PASS / Timed FAIL Defense Mode)**.
+  19. **Buổi 32 — Terraform Meta-Arguments, Lifecycle, Import & Safe Refactoring:**
+      - Nắm vững kiến trúc Meta-Arguments `count` vs `for_each`:
+        - `count`: Định danh dựa trên numeric index (`[0]`, `[1]`, `[2]`). Thực hành xóa phần tử `worker` ở giữa list dẫn tới hiện tượng Index Shift (`0 added, 1 changed, 1 destroyed`), tài nguyên `scheduler` bị dịch từ `[2]` sang `[1]` gây sửa đổi/recreate ngoài ý muốn.
+        - `for_each`: Định danh dựa trên stable string key (`service["api"]`, `service["worker"]`, `service["scheduler"]`). Xóa phần tử `worker` chỉ tác động đúng mục tiêu (`0 added, 0 changed, 1 destroyed`), các instances khác giữ nguyên bản sắc.
+      - Quản trị vòng đời tài nguyên nâng cao (Resource Lifecycle Rules):
+        - `create_before_destroy`: Khởi tạo tài nguyên mới trước khi hủy tài nguyên cũ nhằm giảm downtime.
+        - `prevent_destroy`: Bảo vệ tài nguyên quan trọng ở tầng Terraform CLI; kiểm chứng lệnh `terraform destroy` bị chặn với `Error: Instance cannot be destroyed.` (Lưu ý: Không ngăn cản xóa trực tiếp qua Console/API).
+        - `ignore_changes`: Bỏ qua các thay đổi drift trên thuộc tính được chỉ định; plan báo `No changes` khi code đổi từ value-v1 sang value-v2 (Lưu ý: Tránh lạm dụng gây che giấu drift hệ thống).
+        - `replace_triggered_by`: Buộc tài nguyên phụ thuộc phải thay thế khi tài nguyên nguồn thay đổi; phân biệt rạch ròi với `depends_on` (thứ tự thực thi vs điều kiện bắt buộc thay thế).
+      - Quản trị Import tài nguyên hiện hữu với Modern Config-Driven Import:
+        - Khởi tạo container Docker ngoài Terraform (`s32-import-demo`, port `8088 -> 80`, ID `1b423fff7695853972214aea38992f97393d6c67bf536a1d6de220b351aaac93`).
+        - Khai báo khối `import {}` và chạy `terraform plan -generate-config-out=generated.tf`.
+        - Phân tích rủi ro plan lần đầu (`1 to import, 1 to add, 1 to destroy` do `env` mặc định buộc replacement); kiên quyết không apply plan phá hủy này.
+        - Tinh chỉnh `generated.tf` với `env = []` đưa plan về trạng thái an toàn (`1 to import, 0 to add, 1 to change, 0 to destroy`).
+        - Thực thi apply thành công, ánh xạ container vào `docker_container.imported` và bảo toàn 100% Docker ID ban đầu.
+      - Tái cấu trúc an toàn với Declarative Refactoring (`moved {}` vs `terraform state mv`):
+        - Đổi tên `terraform_data.server_old` sang `server_app` dùng khối `moved {}`: Plan sạch `0 to add, 0 to change, 0 to destroy`, lưu vết version control và review được qua Git/CI.
+        - Thực hành `terraform state mv`: Thao tác trực tiếp vào state, nhận diện nguy cơ lệch pha (mismatch) giữa code và state nếu không chỉnh sửa đồng thời.
+      - Tối ưu hóa cấu hình với Dynamic Blocks:
+        - Sử dụng `dynamic "ports"` kết hợp `local.port_mappings` sinh các khối nested port lồng nhau (`18091 -> 80`, `18092 -> 80`); phân biệt dynamic blocks (lặp block trong 1 resource) vs `count`/`for_each` (lặp resource instances).
+      - Thử thách Defense Mode (Hạn mức 10 phút, bắt đầu 20:03:28 UTC+7 ngày 2026-09-24):
+        - Nhiệm vụ: Đổi `docker_container.imported` sang `docker_container.web` bằng `moved {}`, chuyển port mapping sang dynamic block, không recreate container.
+        - Kết quả: Plan/Apply `0 added, 0 changed, 0 destroyed`, bảo toàn nguyên vẹn Docker ID.
+        - Technical Defense: **PASS**; Time Requirement (19m49s / 10m): **FAIL**.
+      - Hoàn thành Active Recall & Cleanup: Trả lời đúng 7/7 câu hỏi; destroy an toàn 1 imported container và 5 lifecycle resources, state trống; không tạo tài nguyên AWS, chi phí $0.
+      - Kết quả: **ĐẠT BUỔI 32 (Technical PASS / Timed FAIL Defense Mode)**.
+  20. **Buổi 33 — Ansible Fundamentals & Safe Configuration Management:**
+      - Nắm vững kiến trúc Configuration Management (Terraform vs Ansible):
+        - Terraform: Quản trị và cấp phát hạ tầng (Infrastructure Provisioning).
+        - Ansible: Quản trị cấu hình, cài đặt gói và đồng bộ trạng thái hệ điều hành (Configuration Management), kiến trúc agentless giao tiếp qua SSH hoặc local connection.
+      - Thiết lập Inventory & Ad-hoc Command:
+        - Soạn thảo `inventory.ini` với `localhost ansible_connection=local`.
+        - Chạy lệnh ad-hoc `ansible -i inventory.ini all -m ping` nhận `SUCCESS`, `changed=false`, `ping=pong`; thấu hiểu module ping kiểm tra môi trường Python trên host, không phải ICMP network ping.
+      - Xây dựng Playbook & Kiểm chứng Tính Lũy Thừa (Idempotency):
+        - Sử dụng module `ansible.builtin.copy` tạo file `/tmp/ansible-demo.txt`; lần đầu chạy `changed=1`, lần hai chạy `changed=0`.
+      - Quản trị Biến và Xử lý Từ khóa Bảo lưu (Reserved Variables):
+        - Nhận diện lỗi khi đặt tên biến là `environment` (từ khóa dành riêng của Ansible khiến biến trả về `[]`); đổi tên thành `app_environment`.
+        - Tách biến ra file `vars.yml` (`app_name`, `app_environment`) phục vụ chuẩn hóa mã nguồn, refactor không làm thay đổi trạng thái máy (`changed=0`).
+      - Cơ chế Handlers & Event-Driven Notification:
+        - Nắm vững nguyên lý: Chỉ khi task có trạng thái `changed=true` mới kích hoạt notify handler, nhiều task notify cùng handler chỉ chạy một lần ở cuối play.
+      - Mẫu cấu hình động với Jinja2 Template:
+        - Sử dụng `ansible.builtin.template` (`templates/app.conf.j2`), khắc phục lỗi đường dẫn template; render file động theo biến môi trường.
+      - Thu thập Facts hệ thống & Điều kiện hóa tác vụ (`when`):
+        - Bật `gather_facts: true`, trích xuất thông tin hệ điều hành (Ubuntu 24.04 noble); áp dụng điều kiện `when: ansible_facts['distribution'] == "Ubuntu"`.
+      - Phân quyền Quản trị & Dịch vụ Hệ thống (`become`, `apt`, `service`):
+        - Chạy với đặc quyền `become: true` (`--ask-become-pass`); kiểm tra gói Nginx (`state=present`) và dịch vụ Nginx (`state: started, enabled: true`) idempotent.
+      - Thực hành Failure Injection & Xây dựng Safe Nginx Deployment Pipeline:
+        - Failure Injection 1 (Unsafe pattern): Ghi đè file lỗi (`listen abc;`) trực tiếp vào `/etc/nginx/conf.d/` khiến `nginx -t` fail và dịch vụ chết khi khởi động lại.
+        - Thiết lập Safe Deployment Pipeline:
+          1. Render candidate config tạm thời ra `/tmp/ansible-nginx-demo.conf`.
+          2. Tạo file cấu hình kiểm thử `/tmp/ansible-nginx-test.conf`.
+          3. Validate cú pháp với `nginx -t -c /tmp/ansible-nginx-test.conf`.
+          4. Chỉ khi validate PASS mới copy candidate vào vị trí chính thức `/etc/nginx/conf.d/` (sử dụng `remote_src: true`).
+          5. Kích hoạt notify `Reload Nginx`.
+        - Failure Injection 2 (Safe pipeline): Cố tình tạo template lỗi, task validate tại `/tmp` chặn đứng quá trình deploy, file chính thức và dịch vụ Nginx 8081 hoàn toàn không bị ảnh hưởng.
+      - Đăng ký Biến & Điều kiện Lỗi Nghiệp vụ (`register`, `failed_when`):
+        - Dùng `register` lưu telemetry của `systemctl` và HTTP health check (`curl -s -o /dev/null -w "%{http_code}"`).
+        - Dùng `failed_when: http_check.stdout != "200"` để bắt lỗi logic phản hồi web thay vì chỉ dựa vào process exit code.
+      - Xử lý Ngoại lệ Có Cấu trúc (`block`, `rescue`, `always`):
+        - Bọc tác vụ rủi ro trong `block`, tự động điều hướng sang `rescue` khi có lỗi và luôn thực thi tác vụ dọn dẹp trong `always`.
+      - Thử thách Defense Mode (Bắt đầu 17:40:26 UTC+7 ngày 2026-10-01):
+        - Mục tiêu: Chuyển port Nginx từ 8081 sang 8082 qua `vars.yml`, duy trì safe pipeline, reload dịch vụ và kiểm tra HTTP 200.
+        - Học viên tự tối ưu: Bổ sung `meta: flush_handlers` ép reload Nginx ngay lập tức trước bước HTTP health check để tránh race condition.
+        - Kết quả: Run 1 deploy thành công (`curl :8082` pass), Run 2 đạt Idempotency (`changed=0`). Thời gian 13m40s.
+        - Đánh giá: Technical Defense **PASS**, Safe Deployment **PASS**, Idempotency **PASS**, Timed Requirement (10m) **FAIL**.
+      - Tiếp thu Phản hồi Giảng dạy (Teaching-Quality Process Note):
+        - Học viên trả lời đúng 7/7 câu hỏi Active Recall nhưng ghi nhận trải nghiệm học chưa hài lòng (nhiều concept bị dồn nén, giảng lướt, tăng độ khó bất ngờ cuối buổi).
+        - Ghi nhận trạng thái: "Answers correct, reinforcement required" (không đánh giá mastery tuyệt đối).
+        - Quy chuẩn cải tiến từ S34: Giảng sâu theo bản chất (Là gì -> Vì sao cần -> Hoạt động thế nào -> Ví dụ), mini-check từng phần, giảm tải concept mới, dành 15-20 phút đầu S34 củng cố 5 trọng tâm của S33.
+      - Dọn dẹp Tài nguyên: Xóa sạch các file demo trong `/etc/nginx/conf.d/` và `/tmp/`, Nginx quay về trạng thái mặc định; không tạo tài nguyên cloud, chi phí $0.
+      - Kết quả: **ĐẠT BUỔI 33 (Technical PASS / Timed FAIL Defense Mode; Reinforcement Required for Core Concepts)**.
 
 
 

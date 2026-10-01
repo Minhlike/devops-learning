@@ -369,6 +369,65 @@
       - Không dùng công nghệ chưa học làm nội dung bị kiểm tra.
       - Chỉ tạo sandbox khi fault injection có nguy cơ ảnh hưởng trực tiếp đến môi trường host/WSL.
 
+## [2026-09-24] Sự cố và Bài học về Terraform Meta-Arguments, Lifecycle, Import và Safe Refactoring
+- **Ngày:** 2026-09-24
+- **Bối cảnh:** Lab 32 — So sánh `count` vs `for_each`, kiểm thử quy tắc lifecycle, import container Docker và tái cấu trúc mã nguồn.
+- **Sự cố & Bài học rút ra (Lessons):**
+  - **Hiện tượng Index Shift khi xóa/chèn phần tử ở giữa danh sách dùng `count`:**
+    - *Triệu chứng:* Khi xóa phần tử `worker` ở vị trí index `[1]`, tài nguyên `scheduler` ở index `[2]` bị dịch chuyển sang `[1]`. Terraform lên kế hoạch sửa đổi hoặc hủy và tạo lại (replace) instance `scheduler` thay vì chỉ hủy đúng `worker`.
+    - *Nguyên nhân gốc:* `count` định danh instance hoàn toàn dựa trên numeric index mảng. Bất kỳ sự thay đổi thứ tự hoặc xóa phần tử ở giữa mảng đều làm thay đổi toàn bộ index của các phần tử phía sau.
+    - *Cách khắc phục & Mental Model:* Sử dụng `for_each` với map hoặc set các chuỗi định danh tự nhiên (stable keys: `api`, `worker`, `scheduler`). Khi xóa một key, chỉ instance mang key đó bị destroy (`0 added, 0 changed, 1 destroyed`), các instance khác bảo toàn tuyệt đối.
+  - **Giới hạn bảo vệ của `prevent_destroy` và rủi ro che giấu drift của `ignore_changes`:**
+    - *Về `prevent_destroy`:* Đây là cơ chế bảo vệ tại tầng client Terraform CLI nhằm ngăn chặn lệnh `terraform destroy` hoặc plan gây replacement vô tình. Thuộc tính này KHÔNG ngăn cản việc người dùng khác xóa trực tiếp tài nguyên qua AWS Console, Docker CLI hoặc Cloud API.
+    - *Về `ignore_changes`:* Bỏ qua các thuộc tính do hệ thống khác (như autoscaling, external taggers) quản trị. Nếu lạm dụng trên các thuộc tính cấu hình chính, nó sẽ che giấu hiện tượng Configuration Drift và làm giảm tính minh bạch của IaC.
+    - *Phân biệt `replace_triggered_by` vs `depends_on`:* `depends_on` chỉ định nghĩa thứ tự thực thi tạo/hủy tài nguyên. `replace_triggered_by` là điều kiện nghiệp vụ buộc tài nguyên hiện tại phải bị hủy và tạo mới khi tài nguyên được tham chiếu có sự thay đổi.
+  - **Rủi ro sinh cấu hình tự động khi Import (`generated.tf`):**
+    - *Triệu chứng:* Lệnh `terraform plan -generate-config-out=generated.tf` sinh ra file cấu hình ban đầu có thuộc tính `env` mặc định, dẫn tới plan đòi recreate container đang chạy (`1 to import, 1 to add, 1 to destroy`).
+    - *Bài học:* `generated.tf` chỉ là bản nháp gợi ý ban đầu của Terraform. Kỹ sư bắt buộc phải đối soát plan chi tiết và tinh chỉnh thuộc tính (ví dụ đặt `env = []`) trước khi apply để đảm bảo chỉ có hành động import mà không gây destroy/recreate tài nguyên đang chạy.
+  - **Tái cấu trúc mã nguồn: `moved {}` (Declarative) vs `terraform state mv` (Imperative):**
+    - `moved {}`: Là phương thức tái cấu trúc dạng khai báo (refactor-as-code), được lưu trữ trong Git, cho phép cả nhóm và pipeline CI áp dụng đồng bộ mà không cần can thiệp tay.
+    - `terraform state mv`: Thao tác sửa đổi trực tiếp vào state file, chỉ phù hợp cho tác vụ sửa chữa cục bộ một lần (one-off repair). Nếu dùng lệnh này mà quên sửa code hoặc code chưa khớp sẽ tạo ra sự lệch pha (mismatch) giữa code và state.
+  - **Thử thách Defense Mode S32: Đạt chuẩn kỹ thuật nhưng vượt hạn mức thời gian:**
+    - *Kết quả:* Technical Defense PASS (sử dụng thành thạo `moved {}`, `dynamic "ports"`, bảo toàn nguyên vẹn Docker ID); Time requirement FAIL (thời gian thực tế 19m49s so với hạn mức 10m).
+
+## [2026-10-01] Sự cố và Bài học về Ansible Fundamentals, Safe Deployment Pipeline và Đổi mới Phương pháp Giảng dạy
+- **Ngày:** 2026-10-01 (Bắt đầu 2026-09-28 và hoàn thành 2026-10-01)
+- **Bối cảnh:** Lab 33 — Khởi tạo Ansible inventory, playbook, biến, Jinja2 template, handlers, facts, privilege escalation, safe deployment pipeline và Defense Mode.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Xung đột tên biến với từ khóa bảo lưu (Reserved Keyword) `environment` trong Ansible:**
+    - *Triệu chứng:* Khai báo biến `environment: dev` nhưng khi render qua Jinja2 template chỉ nhận giá trị rỗng `Environment: []`.
+    - *Nguyên nhân gốc:* `environment` là từ khóa đặc biệt của Ansible ở cấp độ play/task dùng để thiết lập biến môi trường hệ thống (system environment variables dạng dict).
+    - *Cách khắc phục:* Đổi tên biến sang tiền tố nghiệp vụ rõ ràng: `app_environment: dev`.
+  - **Lỗi sai lệch đường dẫn tệp tin mẫu Jinja2 Template:**
+    - *Triệu chứng:* Task template báo lỗi không tìm thấy file template nguồn trên Ansible controller.
+    - *Nguyên nhân:* Nhầm lẫn tên file giữa `templates/app_info.j2` và `templates/app.conf.j2`.
+    - *Cách khắc phục:* Đọc kỹ thông báo lỗi đường dẫn từ Ansible output và hiệu chỉnh chính xác đường dẫn tệp tin thực tế trong thư mục `templates/`.
+  - **Rủi ro phá hủy dịch vụ từ mô hình triển khai không an toàn (Unsafe Nginx Deployment Pattern):**
+    - *Triệu chứng:* Khi cố tình tạo lỗi cú pháp `listen abc;` và ghi đè trực tiếp vào `/etc/nginx/conf.d/ansible-demo.conf`, lệnh `nginx -t` fail. Sau khi tạm dừng session và mở lại máy, Nginx không thể khởi động lại và curl cổng 8081 hoàn toàn mất kết nối.
+    - *Nguyên nhân:* Tệp tin cấu hình lỗi đã nằm trực tiếp trên disk trong thư mục cấu hình của dịch vụ đang chạy (`/etc/nginx/conf.d/`).
+    - *Cách khắc phục (Safe Deployment Pipeline):*
+      1. Render candidate file ra thư mục tạm thời `/tmp/ansible-nginx-demo.conf`.
+      2. Tạo file cấu hình test độc lập `/tmp/ansible-nginx-test.conf`.
+      3. Kiểm tra cú pháp an toàn bằng lệnh `nginx -t -c /tmp/ansible-nginx-test.conf`.
+      4. Chỉ khi bước kiểm tra cú pháp thành công mới copy atomic candidate file vào `/etc/nginx/conf.d/` (sử dụng module `copy` với tham số `remote_src: true`).
+      5. Kích hoạt notify `Reload Nginx`.
+  - **Race Condition giữa Event-Driven Handler và Task Kiểm thử HTTP (Ứng dụng `flush_handlers`):**
+    - *Triệu chứng:* Khi đổi cổng sang 8082, task kiểm tra HTTP chạy ngay sau task deploy bị fail do Nginx vẫn đang lắng nghe ở cổng cũ 8081 (do handler reload mặc định chỉ chạy ở cuối play).
+    - *Cách khắc phục:* Chèn task `ansible.builtin.meta: flush_handlers` ngay trước bước HTTP health check để ép Ansible thực thi toàn bộ các handler đang chờ (pending handlers) lập tức, loại bỏ hoàn toàn race condition.
+- **Vấn đề Phương pháp Giảng dạy & Quy trình Đánh giá (Teaching-Quality Process Note):**
+  - *Phản hồi thực tế:* Sau khi trả lời 7/7 câu hỏi Active Recall, học viên phản hồi rất không hài lòng về trải nghiệm học tập của Buổi 33:
+    1. Bài giảng đi lướt qua quá nhiều khái niệm, chỉ dừng ở mức hướng dẫn chạy lab mà chưa giải thích bản chất kỹ thuật đủ sâu.
+    2. Câu hỏi Active Recall cuối buổi lại đòi hỏi mức độ giải thích sâu và phân tích bản chất vượt xa mức độ đã được truyền đạt trong buổi.
+    3. Session bị dồn ép quá nhiều khái niệm mới cùng lúc (inventory, playbook, vars, templates, handlers, facts, become, register, failed_when, blocks...).
+  - *Đánh giá năng lực chuẩn xác:* Kết quả 7/7 câu trả lời đúng không phản ánh "mastery" toàn diện mà được ghi nhận là: **"Answers correct, reinforcement required"**.
+  - *Xác định bản chất:* Đây là vấn đề thuộc về phương pháp sư phạm và quy trình giảng dạy (Teaching/Process Issue), KHÔNG quy kết thành lỗi kiến thức hay tư duy của học viên.
+  - *Quy chuẩn cải tiến bắt buộc kể từ Buổi 34:*
+    - **Cấu trúc 4 bước cho từng khái niệm:** `Nó là gì` $\rightarrow$ `Vì sao cần nó` $\rightarrow$ `Nó hoạt động thế nào` $\rightarrow$ `Ví dụ thực tế trong doanh nghiệp`.
+    - **Mini-check tức thì:** Kiểm tra câu hỏi nhỏ ngay sau từng phần lý thuyết trước khi chuyển sang phần tiếp theo.
+    - **Recall đúng tầm:** Câu hỏi Active Recall cuối buổi chỉ kiểm tra đúng phạm vi và độ sâu đã được giảng dạy, không tăng độ khó bất ngờ.
+    - **Kiểm soát tải nhận thức:** Giảm tốc độ giảng dạy và giảm số lượng khái niệm mới trong mỗi buổi.
+    - **Khởi động Buổi 34:** Dành riêng 15–20 phút đầu Buổi 34 để giảng sâu và củng cố vững chắc 5 nội dung trọng tâm của S33: (1) `handlers & notify`, (2) `register`, (3) `failed_when`, (4) `block / rescue / always`, (5) `Safe Nginx deployment pipeline`.
+
 
 
 
