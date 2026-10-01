@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 33 — Ansible Fundamentals & Safe Configuration Management. Chuẩn bị Buổi 34 (Cần xác minh roadmap chi tiết; ưu tiên 15-20 phút đầu review củng cố S33).
+- **Current Status:** Hoàn thành Buổi 34 — Ansible Roles & Modular Playbooks. Chuẩn bị Buổi 35 — Advanced Inventory & Multi-Host Automation.
 - **Current Week:** Tuần 8
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -449,6 +449,31 @@
         - Quy chuẩn cải tiến từ S34: Giảng sâu theo bản chất (Là gì -> Vì sao cần -> Hoạt động thế nào -> Ví dụ), mini-check từng phần, giảm tải concept mới, dành 15-20 phút đầu S34 củng cố 5 trọng tâm của S33.
       - Dọn dẹp Tài nguyên: Xóa sạch các file demo trong `/etc/nginx/conf.d/` và `/tmp/`, Nginx quay về trạng thái mặc định; không tạo tài nguyên cloud, chi phí $0.
       - Kết quả: **ĐẠT BUỔI 33 (Technical PASS / Timed FAIL Defense Mode; Reinforcement Required for Core Concepts)**.
+  21. **Buổi 34 — Ansible Roles & Modular Playbooks:**
+      - Refactor kiến trúc mã nguồn từ monolithic playbook S33 sang cấu trúc Ansible Role chuẩn hóa:
+        - Tổ chức role directory structure: `tasks/` (tác vụ chính), `handlers/` (xử lý sự kiện dịch vụ), `templates/` (mẫu Jinja2 động), `files/` (tệp tin tĩnh), `defaults/` (biến mặc định độ ưu tiên thấp nhất), `vars/` (biến nội bộ độ ưu tiên cao), `meta/` (metadata tác giả/dependencies).
+      - Quản trị độ ưu tiên biến trong Role Architecture:
+        - Phân biệt rạch ròi `defaults/main.yml` (dễ dàng bị ghi đè bởi playbook/inventory) vs `vars/main.yml` (biến nội bộ của role, khó bị ghi đè ngoài ý muốn).
+      - Kỹ thuật gọi Role & Nạp động:
+        - Sử dụng chỉ thị `roles:` ở cấp độ Play để nạp role tuần tự trước các tasks thông thường.
+        - Tìm hiểu cơ chế `ansible.builtin.include_role` phục vụ nạp role động theo điều kiện logic trong task list.
+      - Tái sử dụng Role (Role Reusability):
+        - Tái sử dụng role `nginx` linh hoạt tại playbook call site bằng cách override biến (`vars: app_port: ...`) mà không cần nhân bản code.
+      - Phát hiện & Cách ly Hidden Dependency:
+        - Phát hiện phụ thuộc ngầm vào biến `app_environment` trong Jinja2 template (`nginx-demo.conf.j2`).
+        - Khắc phục triệt để bằng cách định nghĩa giá trị fallback `app_environment: staging` ngay trong `roles/nginx/defaults/main.yml`, đảm bảo role tự chủ và độc lập (loose coupling, high cohesion).
+      - Kiểm chứng Tính Lũy Thừa (Idempotency):
+        - Chạy lại playbook lần 2: Ghi nhận `changed=0`, toàn bộ tasks ở trạng thái `ok`, dịch vụ Nginx ổn định không có drift.
+      - Thực hành Failure Injection:
+        - Cố tình cấu hình sai role name / đường dẫn role trong playbook: Ansible parser chặn ngay từ khâu nạp role (`ERROR! the role '...' was not found in ...`). Nhận diện và sửa đúng đường dẫn chuẩn.
+      - Thử thách Defense Mode (Hạn mức 10 phút):
+        - Nhiệm vụ: Tái sử dụng role `nginx` deploy trên port mới 8084, áp dụng safe pipeline, reload Nginx, kiểm tra HTTP 200 và xác minh Idempotency.
+        - Kết quả: Vượt qua xuất sắc cả mặt kỹ thuật và tốc độ (Technical PASS / Timed PASS: hoàn thành trong ~4m02s so với hạn mức 10 phút).
+      - Xác minh Dịch vụ & Dọn dẹp:
+        - HTTP Verification: `curl http://localhost:8084` phản hồi mã HTTP 200.
+        - Cleanup PASS: Thu hồi các cấu hình thử nghiệm và file tạm trên disk an toàn.
+      - Đánh giá Năng lực: Trả lời chính xác 7/7 câu hỏi Active Recall, nắm chắc bản chất phân tầng của Ansible Role.
+      - Kết quả: **ĐẠT BUỔI 34 (Technical PASS / Timed PASS Defense Mode: ~4m02s)**.
 
 
 

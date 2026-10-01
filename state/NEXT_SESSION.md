@@ -1,37 +1,23 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 34 — Cần xác minh chủ đề chi tiết theo roadmap (Đề xuất định hướng logic tiếp theo: Ansible Roles, Modular Playbooks & Multi-Host Automation hoặc Ansible AWS Integration).
-- **Lưu ý Roadmap:** Source of truth hiện tại (`STUDENT_PROFILE.md`) chỉ định nghĩa mục tiêu giai đoạn cấp cao (Phase 7-8: IaC Terraform/Ansible) mà chưa cố định tiêu đề cụ thể cho S34. Do đó, tiêu đề và phạm vi kỹ thuật chi tiết của S34 cần được người hướng dẫn / học viên thống nhất trước khi triển khai, không tự ý sáng tác nội dung ngoài lộ trình.
+- **Buổi học tiếp theo:** BUỔI 35 — Advanced Inventory & Multi-Host Automation.
+- **Trạng thái:** S34 đã HOÀN THÀNH (COMPLETED) ngày 2026-10-02. S35 là buổi học kế tiếp theo lộ trình.
+- **Mục tiêu Kỹ thuật Buổi 35:**
+  - Nâng cấp Ansible Inventory từ single host/localhost sang kiến trúc Multi-Host và Dynamic/Advanced Grouping.
+  - Quản lý cấu trúc `inventory/` đa file hoặc chia nhóm logic (`[web]`, `[db]`, `[loadbalancer]`, parent-child groups `[all:children]`).
+  - Quản trị biến môi trường theo nhóm (`group_vars/`) và theo host (`host_vars/`).
+  - Tự động hóa điều khiển song song (`forks`, `serial` execution) và rolling updates an toàn.
+  - Tích hợp kỹ năng role đã xây dựng từ S34 để triển khai đồng bộ trên nhiều target hosts.
 
-- **Nội dung Khởi động Bắt buộc Đầu Buổi 34 (Thời lượng: 15–20 phút):**
-  - **Mục tiêu:** Củng cố sâu bản chất và khắc phục triệt để lỗ hổng tiếp thu của Buổi 33 trước khi tiếp cận kiến thức mới.
-  - **5 Chuyên đề Review Sâu:**
-    1. **Handlers & Event-Driven Notification:**
-       - Bản chất điều kiện kích hoạt: Chỉ chạy khi task có `changed: true`.
-       - Cơ chế gom (batch execution): Mặc định chỉ chạy một lần duy nhất ở cuối play dù có nhiều task cùng notify.
-       - Kỹ thuật điều khiển luồng: Ứng dụng `ansible.builtin.meta: flush_handlers` để ép reload dịch vụ ngay lập tức khi cần tránh race condition.
-    2. **Task Telemetry & Variable Registration (`register`):**
-       - Cơ chế hoạt động: Lưu toàn bộ kết quả thực thi của task (stdout, stderr, rc, changed...) vào biến.
-       - Cách truy xuất: Sử dụng biến đăng ký (`<var_name>.stdout`, `<var_name>.rc`) để làm dữ liệu đầu vào hoặc điều kiện rẽ nhánh cho các task sau.
-    3. **Custom Business Failure Criteria (`failed_when`):**
-       - Bản chất: Ghi đè cơ chế bắt lỗi mặc định dựa trên exit code (`rc != 0`).
-       - Ứng dụng thực tế: Đánh dấu task thất bại dựa trên logic nghiệp vụ (ví dụ: HTTP status code trả về khác 200 dù lệnh `curl` có exit code 0).
-    4. **Structured Error Handling (`block`, `rescue`, `always`):**
-       - Phân tầng xử lý: `block` chứa tác vụ chính cần thực thi; `rescue` tự động kích hoạt khi có lỗi xảy ra trong block; `always` luôn được thực thi dù block thành công hay thất bại.
-       - Ứng dụng: Đảm bảo dọn dẹp tài nguyên tạm thời hoặc phục hồi trạng thái khi gặp sự cố bất ngờ.
-    5. **Safe Web Server Deployment Pipeline:**
-       - Nhận diện rủi ro: Ghi file cấu hình lỗi trực tiếp vào thư mục dịch vụ đang chạy làm hỏng service trên disk.
-       - Luồng triển khai 5 bước chuẩn hóa:
-         1. Render candidate file ra thư mục tạm (`/tmp`).
-         2. Tạo file cấu hình test độc lập.
-         3. Validate cú pháp an toàn (`nginx -t -c`).
-         4. Copy atomic candidate file vào thư mục chính thức (`/etc/nginx/conf.d/`) với `remote_src: true` chỉ khi validation PASS.
-         5. Trigger handler reload dịch vụ.
+- **Nội dung Khởi động Đầu Buổi 35 (Thời lượng: 10–15 phút):**
+  - **Mục tiêu:** Củng cố nhanh kiến trúc role và nguyên lý phân tầng biến trước khi mở rộng quy mô multi-host.
+  - **Trọng tâm Review:**
+    1. Cấu trúc thư mục role chuẩn và chức năng từng phân tầng (`tasks`, `handlers`, `templates`, `defaults`, `vars`, `meta`).
+    2. Độ ưu tiên biến: `defaults/main.yml` vs `vars/main.yml` vs `vars:` tại playbook call site.
+    3. Tránh hidden dependency trong role bằng cách thiết lập fallback an toàn trong `defaults`.
+    4. Kỹ thuật `flush_handlers` và kiểm chứng Idempotency (`changed=0`).
 
-- **Nội dung Kỹ thuật Dự kiến Buổi 34 (Sau khi hoàn tất 15-20 phút Review):**
-  - Tiếp tục phát triển kỹ năng Ansible theo định hướng module hóa và tự động hóa nâng cao (chờ xác nhận chính thức từ roadmap).
-
-- **Quy chuẩn Phương pháp Giảng dạy & Vận hành S34:**
+- **Quy chuẩn Phương pháp Giảng dạy & Vận hành S35:**
   - **Hiển thị tiến độ phiên:** Mỗi phản hồi trong session học phải hiển thị ngắn gọn tiến độ toàn buổi: phần đã xong, phần hiện tại, phần còn lại.
   - **Lab là trung tâm:** Lab là phần trung tâm của session; tuyệt đối không biến buổi học thành chuỗi hỏi–đáp lý thuyết suông.
   - **Nhịp chuẩn triển khai:** Lý thuyết cần thiết $\rightarrow$ Guided Lab nhỏ $\rightarrow$ học viên chạy $\rightarrow$ đọc output thật $\rightarrow$ giải thích output $\rightarrow$ mini-check khi thực sự cần $\rightarrow$ tăng dần mức tự làm $\rightarrow$ Failure Injection $\rightarrow$ Troubleshooting $\rightarrow$ Defense $\rightarrow$ Active Recall $\rightarrow$ Cleanup.

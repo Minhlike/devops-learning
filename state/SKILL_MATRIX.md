@@ -198,6 +198,13 @@
 | Configuration Management | Ansible Custom Business Failure Criteria (failed_when) | Cần củng cố thêm | 2026-10-01 | Lab 33: Ghi đè điều kiện lỗi hệ thống theo HTTP status code nghiệp vụ (failed_when: stdout != '200') |
 | Configuration Management | Ansible Structured Error Handling (block, rescue, always) | Cần củng cố thêm | 2026-10-01 | Lab 33: Bọc logic lệnh quan trọng, bắt lỗi tự động qua rescue và dọn dẹp môi trường với always |
 | Configuration Management | Ansible Safe Port Migration & Dynamic Defense Recovery | Cần hướng dẫn thêm | 2026-10-01 | Lab 33: Chuyển port Nginx qua vars, flush_handlers reload và pass idempotency check (Technical PASS / Timed FAIL 13m40s) |
+| Configuration Management | Ansible Role Directory Structure & Modular Architecture (`tasks`, `handlers`, `templates`, `defaults`, `vars`, `meta`) | Làm được độc lập | 2026-10-02 | Lab 34: Refactor monolithic playbook sang role nginx phân tầng chuẩn |
+| Configuration Management | Ansible Role Variable Precedence (`defaults/main.yml` vs `vars/main.yml`) | Làm được độc lập | 2026-10-02 | Lab 34: Phân biệt default vars mức ưu tiên thấp nhất để override vs vars nội bộ |
+| Configuration Management | Ansible Role Invocation & Dynamic Inclusion (`roles:` directive & `include_role`) | Làm được độc lập | 2026-10-02 | Lab 34: Gọi role tĩnh cấp play và hiểu cơ chế nạp động include_role trong runtime |
+| Configuration Management | Ansible Role Reusability & Parameterized Override (`vars: app_port: ...`) | Làm được độc lập | 2026-10-02 | Lab 34: Tái sử dụng role linh hoạt với biến ghi đè tại playbook call site |
+| Configuration Management | Ansible Hidden Dependency Detection & Isolation (`defaults fallback`) | Troubleshoot được | 2026-10-02 | Lab 34: Phát hiện và xử lý phụ thuộc ngầm app_environment trong template Jinja2 |
+| Configuration Management | Ansible Role Failure Injection & Path Resolution | Troubleshoot được | 2026-10-02 | Lab 34: Xử lý lỗi sai role name / missing role path từ parser phase |
+| Configuration Management | Ansible Role Idempotency & Defense Automation | Làm được độc lập | 2026-10-02 | Lab 34: Technical PASS + Timed PASS ~4m02s/10m, verify HTTP 200 port 8084, idempotency changed=0 |
 
 
 

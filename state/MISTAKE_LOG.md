@@ -428,6 +428,26 @@
     - **Kiểm soát tải nhận thức:** Giảm tốc độ giảng dạy và giảm số lượng khái niệm mới trong mỗi buổi.
     - **Khởi động Buổi 34:** Dành riêng 15–20 phút đầu Buổi 34 để giảng sâu và củng cố vững chắc 5 nội dung trọng tâm của S33: (1) `handlers & notify`, (2) `register`, (3) `failed_when`, (4) `block / rescue / always`, (5) `Safe Nginx deployment pipeline`.
 
+## [2026-10-02] Sự cố và Bài học về Ansible Roles, Modular Architecture & Defense Mode S34
+- **Ngày:** 2026-10-02
+- **Bối cảnh:** Lab 34 — Refactor monolithic playbook S33 sang Ansible Role `nginx`, quản lý variable precedence, phát hiện hidden dependency, failure injection và hoàn thành Defense Mode.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Phụ thuộc ngầm biến trong Role (Hidden Dependency in Jinja2 Templates):**
+    - *Triệu chứng:* Khi di chuyển template `nginx-demo.conf.j2` vào thư mục `roles/nginx/templates/`, template tham chiếu tới biến `app_environment`. Nếu playbook gọi role mà quên truyền biến này, role sẽ gặp lỗi hoặc render cấu hình không hoàn chỉnh.
+    - *Nguyên nhân gốc:* Role chưa đạt tính tự trị (autonomy), phụ thuộc ngầm vào biến môi trường toàn cục (global variables) bên ngoài.
+    - *Cách khắc phục & Best Practice:* Mọi biến được template hoặc task của role sử dụng bắt buộc phải có giá trị mặc định an toàn được khai báo trong `roles/<role_name>/defaults/main.yml` (ví dụ `app_environment: staging`). Điều này đảm bảo role tự chạy được độc lập mà vẫn cho phép caller override khi cần thiết.
+  - **Nhầm lẫn giữa `defaults/main.yml` và `vars/main.yml` trong Role:**
+    - *Triệu chứng:* Đặt biến cấu hình có thể điều chỉnh (như `app_port`) vào `vars/main.yml`. Khi playbook gọi role và truyền `vars: app_port: 8084`, biến không bị ghi đè hoặc gây xung đột logic do mức ưu tiên của `vars/` trong role quá cao.
+    - *Bài học:*
+      - `defaults/main.yml`: Ưu tiên thấp nhất (Precedence Level 1), sinh ra để người dùng playbook ghi đè.
+      - `vars/main.yml`: Ưu tiên rất cao (Precedence Level 16), chỉ dùng cho các hằng số hoặc biến nội bộ bất biến mà người gọi role không được phép can thiệp.
+  - **Failure Injection: Lỗi Role Path / Role Name Resolution:**
+    - *Triệu chứng:* Đặt sai tên role trong playbook báo lỗi: `ERROR! the role 'nginx_wrong' was not found in /mnt/d/Devops/labs/lab-34-ansible-roles/roles:...`.
+    - *Bài học:* Ansible tìm kiếm role theo đường dẫn tương đối từ playbook (`./roles/`), trong cấu hình `roles_path` của `ansible.cfg`, hoặc trong thư mục hệ thống mặc định (`/etc/ansible/roles`). Cần kiểm tra kỹ tên thư mục role và vị trí đặt file playbook.
+  - **Tiến bộ vượt bậc trong Defense Mode (Chinh phục Timed Challenge):**
+    - *Kết quả:* Khắc phục hoàn toàn điểm yếu về thời gian ở các buổi trước (S31: 19m26s, S32: 19m49s, S33: 13m40s). Ở S34, học viên hoàn thành xuất sắc toàn bộ yêu cầu kỹ thuật và kiểm chứng Idempotency chỉ trong **~4m02s** (so với hạn mức 10m), đạt **Technical PASS** và **Timed PASS**.
+
+
 
 
 
