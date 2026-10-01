@@ -685,6 +685,54 @@
   - Xác nhận file cấu hình đã xóa và curl 8082 báo `Failed to connect`. Nginx được giữ nguyên vì đã có sẵn từ trước lab. Không có tài nguyên cloud phát sinh chi phí.
 - Kết quả: **ĐẠT BUỔI 33 (Technical PASS / Timed FAIL Defense Mode; Reinforcement Required for Core Concepts)**.
 
+## [2026-10-02] Session 34: Ansible Roles & Modular Playbooks
+- Tiếp tục lộ trình Configuration Management: Nâng cấp kiến trúc playbook từ dạng monolithic (toàn bộ task/handler/template gom vào một file) sang cấu trúc Role-Based Modular Architecture.
+- Ngày học: 2026-10-02.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-34-ansible-roles`
+  - WSL: `/mnt/d/Devops/labs/lab-34-ansible-roles`
+  - Phiên bản: Ubuntu 24.04 WSL, `ansible-core 2.16.3`, Python 3.12.3, Nginx service.
+- Refactor Kiến trúc Monolithic sang Role `nginx`:
+  - Khởi tạo cấu trúc thư mục role chuẩn bằng `ansible-galaxy init roles/nginx` (hoặc khởi tạo thủ công).
+  - Phân tách các thành phần chức năng:
+    - `roles/nginx/tasks/main.yml`: Chứa toàn bộ chuỗi tác vụ triển khai (render candidate `/tmp`, validate `nginx -t -c`, copy atomic vào `/etc/nginx/conf.d/`, verify service và telemetry).
+    - `roles/nginx/handlers/main.yml`: Chứa handler `Reload Nginx`.
+    - `roles/nginx/templates/nginx-demo.conf.j2`: Chứa template Jinja2 động.
+    - `roles/nginx/defaults/main.yml`: Định nghĩa các biến mặc định (`app_port: 8082`, `app_environment: staging`).
+    - `roles/nginx/vars/main.yml`: Chứa các biến nội bộ role không muốn bị ghi đè.
+    - `roles/nginx/meta/main.yml`: Khai báo metadata và dependencies của role.
+- Quản trị Thứ bậc Ưu tiên Biến (Variable Precedence):
+  - Phân tích sự khác biệt cốt lõi giữa `defaults/main.yml` và `vars/main.yml`:
+    - `defaults`: Mức ưu tiên thấp nhất trong 22 cấp độ biến của Ansible, sinh ra để làm fallback an toàn và dễ dàng bị override bởi playbook/inventory.
+    - `vars`: Mức ưu tiên rất cao (mức 16/22), dùng cho các biến cố định nội bộ của role mà người gọi không nên can thiệp.
+- Cơ chế Triệu gọi Role (`roles:` vs `include_role`):
+  - Khai báo tĩnh qua khối `roles:` ở cấp play: nạp role và thực thi tuần tự trước các task trong `tasks:`.
+  - Hiểu cơ chế nạp động qua module `ansible.builtin.include_role`: cho phép nạp role có điều kiện (`when`), lặp qua role (`loop`), hoặc gọi lồng nhau linh hoạt tại runtime.
+- Phát hiện & Khắc phục Phụ thuộc Ngầm (Hidden Dependency Isolation):
+  - Triệu chứng: Template `nginx-demo.conf.j2` sử dụng biến `app_environment`. Nếu playbook bên ngoài không định nghĩa biến này, role sẽ bị vỡ.
+  - Giải pháp: Khai báo fallback `app_environment: staging` trong `roles/nginx/defaults/main.yml`. Role trở nên khép kín, tự trị (autonomous) và an toàn tuyệt đối khi được tái sử dụng trong các playbook khác.
+- Kiểm chứng Tính Lũy Thừa (Idempotency):
+  - Chạy lại playbook lần 2: Toàn bộ task kiểm tra candidate, validate, copy, và handler đều báo `ok` hoặc không thay đổi (`changed=0`).
+- Thực hành Failure Injection:
+  - Cố tình đặt sai tên role hoặc sai đường dẫn role trong playbook: Ansible parser lập tức ngắt lệnh với `ERROR! the role '...' was not found in ...`.
+  - Phân tích cơ chế Ansible tìm kiếm role tại thư mục `./roles/` tương đối với playbook hoặc qua biến cấu hình `roles_path`.
+- Thử thách Defense Mode (Bắt đầu 04:28 UTC+7 ngày 2026-10-02):
+  - Nhiệm vụ: Viết `playbook-defense.yml` tái sử dụng role `nginx` deploy trên port mới 8084, duy trì safe deployment pipeline, reload Nginx và xác minh HTTP 200.
+  - Triển khai:
+    - Gọi role `nginx` kèm biến override `vars: app_port: 8084`.
+    - Apply playbook: Nginx validate cú pháp thành công, flush handlers reload dịch vụ.
+    - HTTP health check: `curl http://localhost:8084` phản hồi HTTP 200.
+    - Idempotency test: Chạy lại lượt 2 ghi nhận `changed=0`.
+  - Kết quả Defense:
+    - Technical Defense: **PASS**.
+    - Safe Deployment & Idempotency: **PASS**.
+    - Timed Requirement: **PASS** (Hoàn thành trong ~4 phút 02 giây / 10 phút hạn mức — Đạt chuẩn xuất sắc cả kỹ thuật và thời gian).
+- Active Recall & Ôn tập:
+  - Trả lời xuất sắc 7/7 câu hỏi về cấu trúc role, precedence của `defaults` vs `vars`, `roles:` vs `include_role`, hidden dependency, idempotency và quy trình troubleshooting.
+- Dọn dẹp Tài nguyên (Cleanup PASS):
+  - Thu hồi các file cấu hình port thử nghiệm trong `/etc/nginx/conf.d/` và file tạm trong `/tmp/`. Dịch vụ Nginx giữ nguyên ở trạng thái gốc, không tạo tài nguyên cloud, chi phí $0.
+- Kết quả: **ĐẠT BUỔI 34 (Technical PASS / Timed PASS Defense Mode: ~4m02s)**.
+
 
 
 
