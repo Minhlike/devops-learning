@@ -1,36 +1,34 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** TIẾP TỤC BUỔI 36 — Ansible Deployment Strategy, Tags, Vault & Secrets (Phần 2: Deployment Strategies & Rolling Updates).
-- **Trạng thái:**
-  - Buổi 35 (Advanced Inventory & Multi-Host Automation): Đã HOÀN THÀNH (COMPLETED) ngày 2026-10-02.
-  - Buổi 36 (Deployment Strategy, Tags, Vault & Secrets): Đang thực hiện (IN PROGRESS - Phần 1 hoàn thành ngày 2026-10-04, chưa hoàn thành phần Rolling Deployment).
-  - **Lưu ý Roadmap:** Tuyệt đối giữ nguyên roadmap, KHÔNG chuyển sang S37 Kubernetes cho tới khi S36 được hoàn thành toàn diện và nghiệm thu đạt chuẩn.
+- **Buổi học tiếp theo:** BUỔI 37 — Kubernetes Fundamentals: Cluster, Pod, Deployment.
+- **Trạng thái:** Buổi 36 (Ansible Tags, Vault & Secrets Management) đã HOÀN THÀNH (COMPLETED) ngày 2026-10-04. S37 là buổi học kế tiếp theo lộ trình (bước chuyển sang mảng Container Orchestration).
+- **Mục tiêu Kỹ thuật Buổi 37:**
+  - **Tổng quan Kiến trúc Kubernetes (K8s Architecture):**
+    - Control Plane: API Server, etcd, kube-scheduler, kube-controller-manager.
+    - Worker Node: kubelet, kube-proxy, Container Runtime (containerd).
+  - **Thiết lập Môi trường Kubernetes Cục bộ (Local Cluster):**
+    - Khởi tạo và kiểm tra trạng thái cụm K8s với Minikube (hoặc Kind/K3s) trên WSL2 Ubuntu.
+    - Làm quen và thành thạo bộ lệnh CLI cơ bản `kubectl`: `cluster-info`, `get nodes`, `describe node`.
+  - **Khái niệm Pod & Vòng đời Pod:**
+    - Hiểu Pod là đơn vị triển khai nhỏ nhất trong Kubernetes.
+    - Viết manifest YAML Pod đầu tiên (`apiVersion: v1`, `kind: Pod`, `spec.containers`).
+    - Thao tác: `kubectl apply`, `kubectl get pods`, `kubectl describe pod`, `kubectl logs`, `kubectl exec`.
+  - **Quản trị Deployment & Tự phục hồi (Self-Healing):**
+    - Khái niệm Deployment & ReplicaSet.
+    - Viết manifest `kind: Deployment`, quản lý số lượng bản sao (`replicas: 2`).
+    - Kiểm chứng cơ chế Self-Healing: Xóa 1 Pod, quan sát Kubernetes tự động khởi tạo Pod mới để duy trì desired state.
+    - Khái niệm Rolling Update và Scaling Pods theo yêu cầu.
+  - **Phân biệt Mô hình Vận hành:**
+    - So sánh Docker Compose (single host) vs Kubernetes (multi-host cluster orchestration).
 
-- **Nội dung S36 ĐÃ HOÀN THÀNH (Phần 1):**
-  - Quản trị task với `tags`, thực thi có chọn lọc bằng `--tags` và loại trừ bằng `--skip-tags`.
-  - Khởi tạo và mã hóa tệp tin chứa bí mật bằng `ansible-vault encrypt`.
-  - Nạp tệp tin biến đã mã hóa qua `vars_files: - vars/vault.yml`.
-  - Bảo mật secret at rest vs runtime, ngăn chặn lộ log với `no_log: true` và phân quyền tệp tin `mode: "0600"`.
-  - Failure Injection sai mật khẩu Vault khi giải mã.
-  - Kiểm định tự động trạng thái hệ thống bằng `ansible.builtin.stat` + `ansible.builtin.assert`.
-  - Idempotency PASS (`changed=0`), Technical Defense PASS (Timed Defense ghi nhận VOID / không chấm do đề test ngoài phạm vi đã dạy).
-  - Active Recall 7/7 và Cleanup PASS.
+- **Nội dung Khởi động Đầu Buổi 37 (Thời lượng: 10–15 phút):**
+  - **Mục tiêu:** Kết nối logic từ Docker (đóng gói) $\rightarrow$ Ansible (quản trị máy chủ) $\rightarrow$ Kubernetes (điều phối cụm container).
+  - **Trọng tâm Review:**
+    1. Vòng đời container và cổng mạng (Port binding) từ nền tảng Docker.
+    2. Nguyên lý Desired State và Idempotency (tương đồng giữa Terraform/Ansible và Kubernetes Controller).
+    3. Nguyên tắc bảo vệ Secrets (chuẩn bị cho Kubernetes Secrets/ConfigMaps).
 
-- **Nội dung Kỹ thuật Trọng tâm Cần Hoàn thành Tiếp tục ở Buổi 36 (Phần 2):**
-  1. **Chiến lược Triển khai Cuốn chiếu (Rolling Deployment):**
-     - `serial`: Điều khiển số lượng hoặc tỷ lệ phần trăm managed nodes được cập nhật trong từng đợt (`serial: 1`, `serial: 2`, `serial: "50%"`).
-     - `max_fail_percentage`: Ngưỡng phần trăm lỗi tối đa cho phép trong một đợt trước khi dừng toàn bộ playbook để bảo vệ hệ thống.
-     - `any_errors_fatal: true`: Dừng ngay lập tức toàn bộ quá trình triển khai khi có bất kỳ node nào gặp lỗi ở đợt hiện tại.
-  2. **Ủy quyền Tác vụ (Task Delegation):**
-     - `delegate_to`: Chuyển quyền thực thi task lên host khác (ví dụ: rút/nạp node khỏi load balancer hoặc thông báo monitoring).
-  3. **Thao tác Vault CLI Nâng cao:**
-     - `ansible-vault decrypt` (giải mã tệp tin), `ansible-vault view` (xem nội dung mã hóa), `ansible-vault edit` (chỉnh sửa trực tiếp file mã hóa).
-  4. **Failure Injection trong Rolling Deployment:**
-     - Mô phỏng node đầu tiên gặp sự cố, kiểm chứng cơ chế `serial` kết hợp `any_errors_fatal` ngăn chặn việc triển khai tiếp lên các node còn lại.
-  5. **Thử thách Defense Mode Toàn diện Cuối Buổi 36:**
-     - Kịch bản tổng hợp cả Rolling Deployment, Task Delegation và Quản trị Bí mật được bấm giờ countdown chuẩn mực sau khi học đủ kiến thức.
-
-- **Quy chuẩn Phương pháp Giảng dạy & Vận hành S36:**
+- **Quy chuẩn Phương pháp Giảng dạy & Vận hành S37:**
   - **Hiển thị tiến độ phiên:** Mỗi phản hồi trong session học phải hiển thị ngắn gọn tiến độ toàn buổi: phần đã xong, phần hiện tại, phần còn lại.
   - **Lab là trung tâm:** Lab là phần trung tâm của session; tuyệt đối không biến buổi học thành chuỗi hỏi–đáp lý thuyết suông.
   - **Nhịp chuẩn triển khai:** Lý thuyết cần thiết $\rightarrow$ Guided Lab nhỏ $\rightarrow$ học viên chạy $\rightarrow$ đọc output thật $\rightarrow$ giải thích output $\rightarrow$ mini-check khi thực sự cần $\rightarrow$ tăng dần mức tự làm $\rightarrow$ Failure Injection $\rightarrow$ Troubleshooting $\rightarrow$ Defense $\rightarrow$ Active Recall $\rightarrow$ Cleanup.

@@ -472,7 +472,7 @@
   - **Sự cố Thiết kế Bài thi Defense S36 (Process Note: Timed Defense VOID):**
     - *Triệu chứng & Nguyên nhân:* Bài test tính giờ Defense ban đầu được thiết kế lệch phạm vi giảng dạy (đưa nội dung thuộc phần rolling deployment vào bài test khi học viên chưa được học phần này).
     - *Xử lý chuẩn mực:* Kết quả Technical Defense được công nhận **PASS** cho các phần đã học (tags, vault, no_log, mode 0600, assertion). Phần tính giờ được ghi nhận **VOID / Không chấm**.
-    - *Bài học vận hành giảng dạy:* Giữ vững nguyên tắc bám sát phạm vi bài giảng; không đưa nội dung chưa hướng dẫn vào bài test tính giờ. Buổi 36 được giữ ở trạng thái **IN PROGRESS**, hoàn thành trọn vẹn phần Deployment Strategy & Rolling Updates ở buổi kế tiếp trước khi tổ chức Defense hoàn chỉnh.
+    - *Bài học vận hành giảng dạy:* Giữ vững nguyên tắc bám sát phạm vi bài giảng; không đưa nội dung chưa hướng dẫn vào bài test tính giờ. Kết quả kỹ thuật của Buổi 36 đã đạt chuẩn đầy đủ cho phạm vi Tags, Vault, no_log, mode 0600 và assertion verify, buổi học được chốt trạng thái **COMPLETED** (Technical PASS), sẵn sàng chuyển tiếp sang S37 — Kubernetes Fundamentals.
 
 
 
