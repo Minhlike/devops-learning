@@ -1,23 +1,36 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 35 — Advanced Inventory & Multi-Host Automation.
-- **Trạng thái:** S34 đã HOÀN THÀNH (COMPLETED) ngày 2026-10-02. S35 là buổi học kế tiếp theo lộ trình.
-- **Mục tiêu Kỹ thuật Buổi 35:**
-  - Nâng cấp Ansible Inventory từ single host/localhost sang kiến trúc Multi-Host và Dynamic/Advanced Grouping.
-  - Quản lý cấu trúc `inventory/` đa file hoặc chia nhóm logic (`[web]`, `[db]`, `[loadbalancer]`, parent-child groups `[all:children]`).
-  - Quản trị biến môi trường theo nhóm (`group_vars/`) và theo host (`host_vars/`).
-  - Tự động hóa điều khiển song song (`forks`, `serial` execution) và rolling updates an toàn.
-  - Tích hợp kỹ năng role đã xây dựng từ S34 để triển khai đồng bộ trên nhiều target hosts.
+- **Buổi học tiếp theo:** TIẾP TỤC BUỔI 36 — Ansible Deployment Strategy, Tags, Vault & Secrets (Phần 2: Deployment Strategies & Rolling Updates).
+- **Trạng thái:**
+  - Buổi 35 (Advanced Inventory & Multi-Host Automation): Đã HOÀN THÀNH (COMPLETED) ngày 2026-10-02.
+  - Buổi 36 (Deployment Strategy, Tags, Vault & Secrets): Đang thực hiện (IN PROGRESS - Phần 1 hoàn thành ngày 2026-10-04, chưa hoàn thành phần Rolling Deployment).
+  - **Lưu ý Roadmap:** Tuyệt đối giữ nguyên roadmap, KHÔNG chuyển sang S37 Kubernetes cho tới khi S36 được hoàn thành toàn diện và nghiệm thu đạt chuẩn.
 
-- **Nội dung Khởi động Đầu Buổi 35 (Thời lượng: 10–15 phút):**
-  - **Mục tiêu:** Củng cố nhanh kiến trúc role và nguyên lý phân tầng biến trước khi mở rộng quy mô multi-host.
-  - **Trọng tâm Review:**
-    1. Cấu trúc thư mục role chuẩn và chức năng từng phân tầng (`tasks`, `handlers`, `templates`, `defaults`, `vars`, `meta`).
-    2. Độ ưu tiên biến: `defaults/main.yml` vs `vars/main.yml` vs `vars:` tại playbook call site.
-    3. Tránh hidden dependency trong role bằng cách thiết lập fallback an toàn trong `defaults`.
-    4. Kỹ thuật `flush_handlers` và kiểm chứng Idempotency (`changed=0`).
+- **Nội dung S36 ĐÃ HOÀN THÀNH (Phần 1):**
+  - Quản trị task với `tags`, thực thi có chọn lọc bằng `--tags` và loại trừ bằng `--skip-tags`.
+  - Khởi tạo và mã hóa tệp tin chứa bí mật bằng `ansible-vault encrypt`.
+  - Nạp tệp tin biến đã mã hóa qua `vars_files: - vars/vault.yml`.
+  - Bảo mật secret at rest vs runtime, ngăn chặn lộ log với `no_log: true` và phân quyền tệp tin `mode: "0600"`.
+  - Failure Injection sai mật khẩu Vault khi giải mã.
+  - Kiểm định tự động trạng thái hệ thống bằng `ansible.builtin.stat` + `ansible.builtin.assert`.
+  - Idempotency PASS (`changed=0`), Technical Defense PASS (Timed Defense ghi nhận VOID / không chấm do đề test ngoài phạm vi đã dạy).
+  - Active Recall 7/7 và Cleanup PASS.
 
-- **Quy chuẩn Phương pháp Giảng dạy & Vận hành S35:**
+- **Nội dung Kỹ thuật Trọng tâm Cần Hoàn thành Tiếp tục ở Buổi 36 (Phần 2):**
+  1. **Chiến lược Triển khai Cuốn chiếu (Rolling Deployment):**
+     - `serial`: Điều khiển số lượng hoặc tỷ lệ phần trăm managed nodes được cập nhật trong từng đợt (`serial: 1`, `serial: 2`, `serial: "50%"`).
+     - `max_fail_percentage`: Ngưỡng phần trăm lỗi tối đa cho phép trong một đợt trước khi dừng toàn bộ playbook để bảo vệ hệ thống.
+     - `any_errors_fatal: true`: Dừng ngay lập tức toàn bộ quá trình triển khai khi có bất kỳ node nào gặp lỗi ở đợt hiện tại.
+  2. **Ủy quyền Tác vụ (Task Delegation):**
+     - `delegate_to`: Chuyển quyền thực thi task lên host khác (ví dụ: rút/nạp node khỏi load balancer hoặc thông báo monitoring).
+  3. **Thao tác Vault CLI Nâng cao:**
+     - `ansible-vault decrypt` (giải mã tệp tin), `ansible-vault view` (xem nội dung mã hóa), `ansible-vault edit` (chỉnh sửa trực tiếp file mã hóa).
+  4. **Failure Injection trong Rolling Deployment:**
+     - Mô phỏng node đầu tiên gặp sự cố, kiểm chứng cơ chế `serial` kết hợp `any_errors_fatal` ngăn chặn việc triển khai tiếp lên các node còn lại.
+  5. **Thử thách Defense Mode Toàn diện Cuối Buổi 36:**
+     - Kịch bản tổng hợp cả Rolling Deployment, Task Delegation và Quản trị Bí mật được bấm giờ countdown chuẩn mực sau khi học đủ kiến thức.
+
+- **Quy chuẩn Phương pháp Giảng dạy & Vận hành S36:**
   - **Hiển thị tiến độ phiên:** Mỗi phản hồi trong session học phải hiển thị ngắn gọn tiến độ toàn buổi: phần đã xong, phần hiện tại, phần còn lại.
   - **Lab là trung tâm:** Lab là phần trung tâm của session; tuyệt đối không biến buổi học thành chuỗi hỏi–đáp lý thuyết suông.
   - **Nhịp chuẩn triển khai:** Lý thuyết cần thiết $\rightarrow$ Guided Lab nhỏ $\rightarrow$ học viên chạy $\rightarrow$ đọc output thật $\rightarrow$ giải thích output $\rightarrow$ mini-check khi thực sự cần $\rightarrow$ tăng dần mức tự làm $\rightarrow$ Failure Injection $\rightarrow$ Troubleshooting $\rightarrow$ Defense $\rightarrow$ Active Recall $\rightarrow$ Cleanup.

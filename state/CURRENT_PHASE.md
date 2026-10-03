@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 34 — Ansible Roles & Modular Playbooks. Chuẩn bị Buổi 35 — Advanced Inventory & Multi-Host Automation.
+- **Current Status:** Hoàn thành Buổi 35 — Advanced Inventory & Multi-Host Automation. Đang thực hiện Buổi 36 — Ansible Deployment Strategy, Tags, Vault & Secrets (IN PROGRESS - Đã hoàn thành phần Tags & Vault, cần tiếp tục hoàn thành phần Deployment Strategy & Rolling Updates trước khi sang S37).
 - **Current Week:** Tuần 8
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -474,6 +474,56 @@
         - Cleanup PASS: Thu hồi các cấu hình thử nghiệm và file tạm trên disk an toàn.
       - Đánh giá Năng lực: Trả lời chính xác 7/7 câu hỏi Active Recall, nắm chắc bản chất phân tầng của Ansible Role.
       - Kết quả: **ĐẠT BUỔI 34 (Technical PASS / Timed PASS Defense Mode: ~4m02s)**.
+  22. **Buổi 35 — Advanced Inventory & Multi-Host Automation:**
+      - Khởi dựng môi trường Multi-Host cục bộ:
+        - Dựng 2 managed nodes độc lập qua Docker container (`web1`, `web2`) tích hợp OpenSSH Server, SSH key authentication (`s35_key`) và ánh xạ custom ports (`2221`, `2222`).
+      - Cấu hình Inventory phân cấp nâng cao:
+        - Gom nhóm hosts vào group `[web]`.
+        - Cấu hình biến kết nối tập trung ở cấp group `[web:vars]`: `ansible_user=ansible`, `ansible_ssh_private_key_file`, `ansible_python_interpreter`, và SSH flags `StrictHostKeyChecking=accept-new`.
+      - Quản trị biến phân tầng (`group_vars/` vs `host_vars/`):
+        - Cấu hình chung cho toàn bộ group tại `group_vars/web.yml` (`http_port: 8080`, `app_env: staging`).
+        - Cấu hình override đặc thù cho từng máy tại `host_vars/web2.yml` (`http_port: 8085`).
+        - Xác minh quy tắc Variable Precedence: `host_vars` có độ ưu tiên cao hơn và ghi đè thành công giá trị từ `group_vars`.
+      - Kiểm tra kết nối song song & Điều hướng Host:
+        - Sử dụng module `ansible.builtin.ping` kiểm tra kết nối song song tới toàn bộ target nodes (`all`).
+        - Sử dụng Host Patterns và cờ `--limit` để giới hạn phạm vi thực thi trên từng node mục tiêu (`--limit web1`).
+      - Triển khai Cấu hình Jinja2 Đa máy (Multi-host Template Deployment):
+        - Deploy cấu hình động đồng thời trên cả `web1` và `web2`.
+      - Kiểm chứng Tính Lũy Thừa (Idempotency):
+        - Chạy lại playbook lần 2: Đạt `changed=0` trên cả `web1` và `web2` (toàn bộ tasks ở trạng thái `ok`).
+      - Thực hành Failure Injection & Phân biệt Trạng thái Lỗi:
+        - Dừng container `web2` để mô phỏng sự cố mạng/máy chủ chết:
+          - `web2` rơi vào trạng thái `UNREACHABLE`.
+          - `web1` vẫn tiếp tục thực thi thành công (`SUCCESS`).
+        - Phân biệt bản chất kỹ thuật:
+          - `UNREACHABLE`: Lỗi ở tầng transport / kết nối (SSH/Network không thể thiết lập), Ansible loại bỏ host này khỏi các task còn lại của play.
+          - `FAILED`: Kết nối thành công nhưng task thực thi gặp lỗi hoặc không thỏa mãn điều kiện logic (`rc != 0` hoặc vi phạm `failed_when`).
+      - Thử thách Defense Mode (Hạn mức 10 phút):
+        - Nhiệm vụ: Viết playbook triển khai file cấu hình multi-host với port override, kiểm tra trạng thái và xác minh idempotency.
+        - Kết quả: Vượt qua xuất sắc cả mặt kỹ thuật và tốc độ (Technical PASS / Timed PASS: hoàn thành trong ~5m34s / 10m).
+      - Đánh giá Năng lực & Dọn dẹp:
+        - Trả lời đúng 7/7 câu hỏi Active Recall.
+        - Cleanup PASS: Dọn dẹp an toàn các container và file cấu hình thử nghiệm.
+      - Kết quả: **ĐẠT BUỔI 35 (COMPLETED - Technical PASS / Timed PASS Defense Mode: ~5m34s)**.
+  23. **Buổi 36 — Ansible Deployment Strategy, Tags, Vault & Secrets (IN PROGRESS - CHƯA HOÀN THÀNH):**
+      - Các nội dung ĐÃ HOÀN THÀNH:
+        - Task Tagging & Selective Execution: Cấu hình `tags`, chạy có chọn lọc bằng `--tags` và loại trừ bằng `--skip-tags`.
+        - Ansible Vault Fundamentals: Khởi tạo và mã hóa tệp tin chứa bí mật bằng `ansible-vault encrypt`.
+        - Vault Variable File Integration: Nạp tệp tin biến bí mật đã mã hóa qua chỉ thị `vars_files` (`vars/vault.yml`).
+        - Quản trị bảo mật bí mật: Phân biệt secret at rest vs runtime; ngăn chặn rò rỉ secret ra log/console bằng thuộc tính `no_log: true`; phân quyền bảo vệ tệp tin bí mật trên disk với `mode: "0600"`.
+        - Failure Injection: Nhập sai mật khẩu Vault khi chạy playbook khiến Ansible dừng ngay lập tức với lỗi xác thực mật mã.
+        - Trạng thái kiểm định hệ thống: Sử dụng `ansible.builtin.stat` kết hợp `ansible.builtin.assert` để kiểm tra sự tồn tại của file và xác thực quyền bảo mật `0600`.
+        - Kiểm chứng Idempotency: Lần chạy thứ 2 đạt `changed=0`.
+        - Thử thách Defense: Technical PASS (cấu hình tags, vault, no_log, permission 0600 và assert); Timed Defense ghi nhận **VOID / không chấm** do phạm vi bài test không hợp lệ (mismatch scope).
+        - Đánh giá Năng lực & Dọn dẹp: Trả lời chính xác 7/7 câu hỏi Active Recall; hoàn thành dọn dẹp tệp tin thử nghiệm (Cleanup PASS).
+      - Các nội dung CHƯA HỌC (phải giữ lại bắt buộc cho buổi tiếp theo):
+        - Triển khai cuốn chiếu: `serial` (theo batch số lượng/tỷ lệ phần trăm).
+        - Cơ chế an toàn triển khai: `max_fail_percentage` và `any_errors_fatal`.
+        - Ủy quyền tác vụ qua `delegate_to` (ví dụ: thao tác Load Balancer / Health Check Controller).
+        - Thao tác Vault nâng cao: `ansible-vault decrypt`, `ansible-vault view`, `ansible-vault edit`.
+        - Failure Injection trong kịch bản rolling deployment (mô phỏng node chết ngắt chuỗi deploy).
+        - Thử thách Defense Mode toàn diện cuối Buổi 36 sau khi hoàn tất các phần còn thiếu.
+      - Trạng thái: **IN PROGRESS (Chưa hoàn thành, tiếp tục hoàn thiện ở buổi học kế tiếp; chưa chuyển sang S37 Kubernetes)**.
 
 
 

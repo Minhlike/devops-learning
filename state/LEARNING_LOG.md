@@ -733,6 +733,91 @@
   - Thu hồi các file cấu hình port thử nghiệm trong `/etc/nginx/conf.d/` và file tạm trong `/tmp/`. Dịch vụ Nginx giữ nguyên ở trạng thái gốc, không tạo tài nguyên cloud, chi phí $0.
 - Kết quả: **ĐẠT BUỔI 34 (Technical PASS / Timed PASS Defense Mode: ~4m02s)**.
 
+## [2026-10-02] Session 35: Advanced Inventory & Multi-Host Automation
+- Tiến độ lộ trình: Nâng cấp kiến trúc quản trị tự động hóa từ single host / localhost sang môi trường Multi-Host phân tán.
+- Ngày học: 2026-10-02.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-35-ansible-multihost`
+  - WSL: `/mnt/d/Devops/labs/lab-35-ansible-multihost`
+  - Managed Nodes: 2 Docker containers chạy Ubuntu SSH server (`web1` port 2221, `web2` port 2222), xác thực qua SSH key (`s35_key`).
+- Dựng Môi trường Multi-Node Cục bộ với Docker & OpenSSH:
+  - Viết `Dockerfile` tích hợp OpenSSH Server, tạo user `ansible` có quyền sudo không cần mật khẩu, cấu hình public key `s35_key.pub`.
+  - Khởi chạy 2 container `web1` và `web2` với port mapping `2221:22` và `2222:22`.
+- Thiết kế Cấu trúc Inventory Phân cấp Nâng cao:
+  - Soạn thảo `inventory.ini`:
+    - Nhóm hosts `[web]` gồm `web1 ansible_host=127.0.0.1 ansible_port=2221` và `web2 ansible_host=127.0.0.1 ansible_port=2222`.
+    - Nhóm biến chung `[web:vars]`: `ansible_user=ansible`, `ansible_ssh_private_key_file=/home/minh123/.ssh/s35_key`, `ansible_python_interpreter=/usr/bin/python3`, và `ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'`.
+- Quản trị Biến Phân tầng (`group_vars` vs `host_vars`):
+  - Tạo `group_vars/web.yml`: Định nghĩa cấu hình chung cho cả nhóm (`http_port: 8080`, `app_env: staging`).
+  - Tạo `host_vars/web2.yml`: Định nghĩa cấu hình ghi đè đặc thù cho máy 2 (`http_port: 8085`).
+  - Xác minh quy tắc Variable Precedence: `host_vars` có mức ưu tiên cao hơn `group_vars`; khi chạy `playbook-vars.yml`, `web1` nhận port 8080 còn `web2` nhận port 8085 chính xác theo thiết kế.
+- Kiểm tra Kết nối Đa máy & Điều hướng Host:
+  - Chạy ad-hoc ping: `ansible -i inventory.ini all -m ping` nhận `SUCCESS` đồng thời trên cả `web1` và `web2`.
+  - Sử dụng Host Patterns và `--limit`: Chạy `--limit web1` chỉ tác động lên máy `web1` mà không ảnh hưởng tới `web2`.
+- Triển khai Cấu hình Đa máy & Kiểm chứng Lũy thừa (Idempotency):
+  - Chạy `playbook-multihost.yml` triển khai Jinja2 template cho cả cụm: Lần đầu `changed=1`, lần hai chạy lại đạt `changed=0` trên cả 2 nodes.
+- Thực hành Failure Injection & Phân biệt Bản chất Lỗi:
+  - Dừng container `web2` (`docker stop web2`), chạy playbook kiểm tra:
+    - `web2` báo lỗi `UNREACHABLE` (Connection refused trên port 2222).
+    - `web1` vẫn tiếp tục thực thi thành công (`ok`, `SUCCESS`).
+  - Phân tích sâu sự khác biệt:
+    - `UNREACHABLE`: Lỗi tầng transport / hạ tầng mạng / SSH, Ansible lập tức loại bỏ node đó khỏi toàn bộ play.
+    - `FAILED`: Kết nối thành công nhưng task thực thi bị lỗi hoặc vi phạm điều kiện logic nghiệp vụ.
+- Thử thách Defense Mode (Hạn mức 10 phút):
+  - Nhiệm vụ: Viết `playbook-defense.yml` triển khai file cấu hình multi-host với port override, kiểm tra trạng thái và xác minh tính lũy thừa.
+  - Kết quả Defense:
+    - Technical Defense: **PASS**.
+    - Idempotency: **PASS** (`changed=0`).
+    - Timed Requirement: **PASS** (Hoàn thành trong ~5 phút 34 giây / 10 phút hạn mức).
+- Active Recall & Ôn tập:
+  - Trả lời đúng 7/7 câu hỏi về multi-host inventory, group_vars vs host_vars precedence, --limit, idempotency, UNREACHABLE vs FAILED.
+- Dọn dẹp Tài nguyên (Cleanup PASS):
+  - Dừng và gỡ bỏ các container Docker `web1`, `web2`, xóa các file tạm.
+- Kết quả: **ĐẠT BUỔI 35 (COMPLETED - Technical PASS / Timed PASS Defense Mode: ~5m34s)**.
+
+## [2026-10-04] Session 36: Ansible Deployment Strategy, Tags, Vault & Secrets (Part 1 - IN PROGRESS)
+- Tiếp tục lộ trình Configuration Management: Nghiên cứu các chiến lược triển khai (Deployment Strategies), kỹ thuật gắn nhãn tác vụ (Tags) và quản trị dữ liệu mật (Vault & Secrets).
+- Ngày học: 2026-10-03 và tiếp tục ngày 2026-10-04.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-36-ansible-tags-vault`
+  - WSL: `/mnt/d/Devops/labs/lab-36-ansible-tags-vault`
+  - Ansible Core 2.16.3, Python 3.12.3.
+- Các Nội dung ĐÃ HOÀN THÀNH:
+  - Quản trị Tác vụ với Ansible Tags (`tags`):
+    - Khai báo nhãn `tags: [deploy]`, `tags: [secret]`, `tags: [verify]` trên từng task.
+    - Thực thi chọn lọc với `--tags`: Chỉ chạy các task được gắn tag mong muốn (ví dụ `--tags deploy`).
+    - Loại trừ task với `--skip-tags`: Bỏ qua các task nặng hoặc nhạy cảm khi debug.
+  - Mã hóa Bí mật với Ansible Vault cơ bản:
+    - Khởi tạo file biến chứa mật khẩu `vars/vault.yml` (`db_user: db_admin`, `db_password: SuperSecretPassword123!`).
+    - Mã hóa tệp tin bằng lệnh `ansible-vault encrypt vars/vault.yml` với mật khẩu an toàn.
+    - Kiểm tra tệp tin trên disk: Nội dung đã chuyển thành định dạng mã hóa `$ANSIBLE_VAULT;1.1;AES256`.
+  - Tích hợp Tệp tin Biến Mã hóa (`vars_files`):
+    - Khai báo `vars_files: - vars/vault.yml` trong playbook.
+    - Thực thi playbook kèm cờ giải mã `--ask-vault-pass` (hoặc `--vault-password-file`).
+  - Quản trị An toàn Bí mật (Secret at Rest vs Runtime):
+    - Bảo vệ at rest: File mã hóa an toàn trên disk và an toàn khi commit lên Git.
+    - Bảo vệ runtime & Chống rò rỉ log: Bắt buộc sử dụng `no_log: true` trên mọi task thao tác trực tiếp với secret để ngăn Ansible in giá trị biến ra console output hoặc ghi vào file log hệ thống.
+    - Phân quyền tệp tin bí mật trên filesystem máy đích: Luôn gán `mode: "0600"` (chỉ owner có quyền đọc/ghi, chặn toàn bộ group và others).
+  - Failure Injection:
+    - Cố tình nhập sai mật khẩu Vault khi chạy `ansible-playbook`: Ansible lập tức ngắt lệnh với lỗi xác thực mật mã (`Decryption failed`), không thể đọc biến mật.
+  - Kiểm định Tự động với Assertion:
+    - Sử dụng `ansible.builtin.stat` kết hợp `ansible.builtin.assert` kiểm tra tự động sự tồn tại của file và kiểm chứng chính xác `stat.mode == "0600"`.
+  - Kiểm chứng Tính Lũy Thừa (Idempotency):
+    - Chạy lại playbook lần 2: Đạt `changed=0`.
+  - Thử thách Defense S36 (Phần 1):
+    - Technical Defense: **PASS** (Viết `playbook-defense.yml` kết hợp tags deploy/secret/verify, vars_files mã hóa vault, no_log: true, mode 0600 và stat+assert kiểm định).
+    - Timed Defense: **VOID / Không chấm** do sự cố thiết kế đề bài kiểm tra không đúng phạm vi giảng dạy (đề ra lệch sang phần rolling deployment chưa được học).
+  - Active Recall & Dọn dẹp:
+    - Trả lời chính xác 7/7 câu hỏi về tags, vault encrypt, no_log, 0600 và stat/assert.
+    - Dọn dẹp an toàn các file tạm trên disk (`/tmp/s36-defense-*.txt`), Cleanup PASS.
+- Các Nội dung CHƯA HỌC (Bảo lưu cho Phần 2 ở buổi học tiếp theo):
+  - Deployment Strategies: `serial` (triển khai theo batch), `max_fail_percentage`, `any_errors_fatal: true`.
+  - Task Delegation: `delegate_to` (ví dụ: điều khiển load balancer rút/nạp node).
+  - Vault CLI operations nâng cao: `ansible-vault decrypt`, `ansible-vault view`, `ansible-vault edit`.
+  - Failure Injection kịch bản Rolling Update.
+  - Defense Mode tổng hợp cuối Buổi 36.
+- Kết quả: **ĐANG THỰC HIỆN BUỔI 36 (IN PROGRESS - KHÔNG ĐÁNH DẤU COMPLETED; CHƯA CHUYỂN SANG S37 KUBERNETES)**.
+
 
 
 
