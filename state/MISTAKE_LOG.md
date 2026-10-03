@@ -447,6 +447,33 @@
   - **Tiến bộ vượt bậc trong Defense Mode (Chinh phục Timed Challenge):**
     - *Kết quả:* Khắc phục hoàn toàn điểm yếu về thời gian ở các buổi trước (S31: 19m26s, S32: 19m49s, S33: 13m40s). Ở S34, học viên hoàn thành xuất sắc toàn bộ yêu cầu kỹ thuật và kiểm chứng Idempotency chỉ trong **~4m02s** (so với hạn mức 10m), đạt **Technical PASS** và **Timed PASS**.
 
+## [2026-10-02] Sự cố và Bài học về Multi-Host Inventory, Variable Precedence & Phân loại Lỗi S35
+- **Ngày:** 2026-10-02
+- **Bối cảnh:** Lab 35 — Triển khai cụm multi-host qua Docker SSH (`web1`, `web2`), cấu hình `group_vars` / `host_vars`, phân định lỗi `UNREACHABLE` vs `FAILED` và Defense Mode.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Phân biệt rạch ròi trạng thái `UNREACHABLE` vs `FAILED` trong Ansible:**
+    - *Triệu chứng:* Khi dừng container `web2`, playbook dừng tương tác với `web2` và thông báo `fatal: [web2]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: connect to host 127.0.0.1 port 2222: Connection refused"}`. Trong khi đó, `web1` vẫn chạy bình thường.
+    - *Bản chất kỹ thuật:*
+      - `UNREACHABLE`: Lỗi thuộc về tầng kết nối/transport (SSH failure, timeout, auth error, port đóng). Ansible lập tức loại bỏ host đó ra khỏi danh sách managed hosts trong toàn bộ phần còn lại của play. Khối `rescue` thông thường không thể bắt lỗi `UNREACHABLE` trừ khi sử dụng cơ chế xử lý lỗi kết nối chuyên biệt.
+      - `FAILED`: Kết nối thành công, lệnh được gửi tới managed node nhưng lệnh trả về exit code khác 0 hoặc vi phạm điều kiện logic `failed_when`. Trạng thái này có thể được bắt và xử lý an toàn bằng `block/rescue` hoặc `ignore_errors: true`.
+  - **Hiểu đúng thứ tự ưu tiên giữa `host_vars` và `group_vars`:**
+    - *Nguyên tắc:* `host_vars` luôn có độ ưu tiên cao hơn `group_vars`. Khi cấu hình cổng `http_port: 8080` ở `group_vars/web.yml` và `http_port: 8085` ở `host_vars/web2.yml`, node `web2` sẽ nhận giá trị 8085. Cần kiểm tra kỹ các file trong thư mục `host_vars/` khi muốn đồng bộ toàn diện cấu hình cả cluster để tránh bị ghi đè cục bộ ngoài ý muốn.
+
+## [2026-10-04] Sự cố và Bài học về Quản trị Secret, File Permissions và Vận hành Đánh giá S36
+- **Ngày:** 2026-10-04
+- **Bối cảnh:** Lab 36 (Phần 1) — Ansible Tags, Ansible Vault encryption, tích hợp qua vars_files, bảo mật runtime no_log và đánh giá Defense.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Rủi ro lộ Secret qua Console/Log khi chạy Playbook (Secret Masking with `no_log: true`):**
+    - *Triệu chứng:* Dù file chứa mật khẩu đã được mã hóa bằng `ansible-vault encrypt` (bảo vệ an toàn at rest), nhưng khi task `copy` hoặc `template` sử dụng biến `{{ db_password }}`, Ansible mặc định in chi tiết nội dung thay đổi hoặc đối số lệnh ra màn hình terminal và file log.
+    - *Cách khắc phục & Bắt buộc tuân thủ:* Luôn khai báo `no_log: true` cho bất kỳ task nào xử lý biến nhạy cảm. Điều này yêu cầu Ansible ẩn toàn bộ dữ liệu đầu vào và kết quả thực thi khỏi log/stdout.
+  - **Quyền hạn truy cập tệp tin bí mật trên Disk (Least Privilege Filesystem Permissions):**
+    - *Triệu chứng:* Khi deploy secret ra tệp tin trên máy đích mà không chỉ định `mode`, file có thể nhận permission mặc định `0644` (cho phép bất kỳ user nào trên hệ thống đều đọc được mật khẩu).
+    - *Cách khắc phục:* Luôn thiết lập `mode: "0600"` (chỉ owner có quyền đọc và ghi) và kiểm định lại bằng `ansible.builtin.stat` + `ansible.builtin.assert`.
+  - **Sự cố Thiết kế Bài thi Defense S36 (Process Note: Timed Defense VOID):**
+    - *Triệu chứng & Nguyên nhân:* Bài test tính giờ Defense ban đầu được thiết kế lệch phạm vi giảng dạy (đưa nội dung thuộc phần rolling deployment vào bài test khi học viên chưa được học phần này).
+    - *Xử lý chuẩn mực:* Kết quả Technical Defense được công nhận **PASS** cho các phần đã học (tags, vault, no_log, mode 0600, assertion). Phần tính giờ được ghi nhận **VOID / Không chấm**.
+    - *Bài học vận hành giảng dạy:* Giữ vững nguyên tắc bám sát phạm vi bài giảng; không đưa nội dung chưa hướng dẫn vào bài test tính giờ. Buổi 36 được giữ ở trạng thái **IN PROGRESS**, hoàn thành trọn vẹn phần Deployment Strategy & Rolling Updates ở buổi kế tiếp trước khi tổ chức Defense hoàn chỉnh.
+
 
 
 

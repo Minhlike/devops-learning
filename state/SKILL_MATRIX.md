@@ -205,6 +205,19 @@
 | Configuration Management | Ansible Hidden Dependency Detection & Isolation (`defaults fallback`) | Troubleshoot được | 2026-10-02 | Lab 34: Phát hiện và xử lý phụ thuộc ngầm app_environment trong template Jinja2 |
 | Configuration Management | Ansible Role Failure Injection & Path Resolution | Troubleshoot được | 2026-10-02 | Lab 34: Xử lý lỗi sai role name / missing role path từ parser phase |
 | Configuration Management | Ansible Role Idempotency & Defense Automation | Làm được độc lập | 2026-10-02 | Lab 34: Technical PASS + Timed PASS ~4m02s/10m, verify HTTP 200 port 8084, idempotency changed=0 |
+| Multi-Host Automation | Local Multi-Host Orchestration with Docker & SSH (`web1`, `web2`) | Làm được độc lập | 2026-10-02 | Lab 35: Dựng cụm 2 managed nodes qua Docker container, SSH keys và ánh xạ custom ports |
+| Multi-Host Automation | Advanced Inventory Grouping & Group Variables (`[web]`, `[web:vars]`) | Làm được độc lập | 2026-10-02 | Lab 35: Quản trị biến kết nối và cờ SSH tập trung ở cấp group trong inventory.ini |
+| Configuration Management | Ansible Variable Precedence: `host_vars` vs `group_vars` | Làm được độc lập | 2026-10-02 | Lab 35: Kiểm chứng host_vars ghi đè thành công giá trị group_vars theo thứ bậc ưu tiên |
+| Multi-Host Automation | Host Patterns & Execution Limiting (`--limit`) | Làm được độc lập | 2026-10-02 | Lab 35: Định tuyến tác vụ tới toàn bộ cluster hoặc giới hạn trên từng host cụ thể |
+| Multi-Host Automation | Multi-Host Jinja2 Template Deployment & Idempotency | Làm được độc lập | 2026-10-02 | Lab 35: Triển khai đồng thời cấu hình trên cụm máy và xác minh changed=0 ở lần chạy thứ hai |
+| Multi-Host Automation | Transport vs Task Failure Diagnosis (`UNREACHABLE` vs `FAILED`) | Troubleshoot được | 2026-10-02 | Lab 35: Phân biệt bản chất lỗi kết nối hạ tầng (unreachable) vs lỗi logic tác vụ (failed) khi node chết |
+| Multi-Host Automation | Multi-Host Configuration Defense Automation | Làm được độc lập | 2026-10-02 | Lab 35: Technical PASS + Timed PASS ~5m34s/10m trong bài test triển khai multi-host override |
+| Configuration Management | Ansible Task Tagging & Selective Execution (`tags`, `--tags`, `--skip-tags`) | Làm được độc lập | 2026-10-04 | Lab 36: Gắn nhãn tác vụ và điều khiển chạy/bỏ qua từng phần của playbook |
+| Security & Secrets | Ansible Vault File Encryption (`ansible-vault encrypt`) | Làm được độc lập | 2026-10-04 | Lab 36: Mã hóa tệp tin biến bí mật tại chỗ (at rest) bằng mật mã Vault |
+| Security & Secrets | Encrypted Variable File Integration (`vars_files`) | Làm được độc lập | 2026-10-04 | Lab 36: Nạp tệp tin biến đã mã hóa Vault vào playbook an toàn khi runtime |
+| Security & Secrets | Secrets Masking & Least Privilege Filesystem Permissions (`no_log: true`, `0600`) | Làm được độc lập | 2026-10-04 | Lab 36: Ngăn chặn rò rỉ secret ra log bằng no_log và thiết lập quyền nghiêm ngặt 0600 trên disk |
+| Security & Secrets | Vault Password Failure Injection & Cryptographic Authentication | Troubleshoot được | 2026-10-04 | Lab 36: Xử lý và phân tích lỗi sai mật khẩu Vault khi giải mã playbook |
+| Quality Assurance | Automated State Verification via Assertions (`ansible.builtin.stat` & `assert`) | Làm được độc lập | 2026-10-04 | Lab 36: Kiểm định tự động sự tồn tại và thuộc tính bảo mật của tệp tin sau deploy |
 
 
 
