@@ -218,6 +218,7 @@
 | Security & Secrets | Secrets Masking & Least Privilege Filesystem Permissions (`no_log: true`, `0600`) | Làm được độc lập | 2026-10-04 | Lab 36: Ngăn chặn rò rỉ secret ra log bằng no_log và thiết lập quyền nghiêm ngặt 0600 trên disk |
 | Security & Secrets | Vault Password Failure Injection & Cryptographic Authentication | Troubleshoot được | 2026-10-04 | Lab 36: Xử lý và phân tích lỗi sai mật khẩu Vault khi giải mã playbook |
 | Quality Assurance | Automated State Verification via Assertions (`ansible.builtin.stat` & `assert`) | Làm được độc lập | 2026-10-04 | Lab 36: Kiểm định tự động sự tồn tại và thuộc tính bảo mật của tệp tin sau deploy |
+| Security & Secrets | Ansible Vault & Secrets Defense Automation | Làm được độc lập | 2026-10-04 | Lab 36: Technical PASS triển khai tích hợp tags, encrypted vault vars, no_log, mode 0600 và assertion verify |
 
 
 

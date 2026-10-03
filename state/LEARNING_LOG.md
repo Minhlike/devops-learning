@@ -775,48 +775,40 @@
   - Dừng và gỡ bỏ các container Docker `web1`, `web2`, xóa các file tạm.
 - Kết quả: **ĐẠT BUỔI 35 (COMPLETED - Technical PASS / Timed PASS Defense Mode: ~5m34s)**.
 
-## [2026-10-04] Session 36: Ansible Deployment Strategy, Tags, Vault & Secrets (Part 1 - IN PROGRESS)
-- Tiếp tục lộ trình Configuration Management: Nghiên cứu các chiến lược triển khai (Deployment Strategies), kỹ thuật gắn nhãn tác vụ (Tags) và quản trị dữ liệu mật (Vault & Secrets).
-- Ngày học: 2026-10-03 và tiếp tục ngày 2026-10-04.
+## [2026-10-04] Session 36: Ansible Tags, Vault & Secrets Management
+- Tiếp tục lộ trình Configuration Management: Hoàn thành chuyên đề về kỹ thuật gắn nhãn tác vụ (Tags), mã hóa và quản trị dữ liệu mật (Vault & Secrets) và kiểm định bảo mật hệ thống.
+- Ngày học: 2026-10-03 và hoàn thành ngày 2026-10-04.
 - Môi trường & Không gian làm việc:
   - Workspace: `D:\Devops\labs\lab-36-ansible-tags-vault`
   - WSL: `/mnt/d/Devops/labs/lab-36-ansible-tags-vault`
   - Ansible Core 2.16.3, Python 3.12.3.
-- Các Nội dung ĐÃ HOÀN THÀNH:
-  - Quản trị Tác vụ với Ansible Tags (`tags`):
-    - Khai báo nhãn `tags: [deploy]`, `tags: [secret]`, `tags: [verify]` trên từng task.
-    - Thực thi chọn lọc với `--tags`: Chỉ chạy các task được gắn tag mong muốn (ví dụ `--tags deploy`).
-    - Loại trừ task với `--skip-tags`: Bỏ qua các task nặng hoặc nhạy cảm khi debug.
-  - Mã hóa Bí mật với Ansible Vault cơ bản:
-    - Khởi tạo file biến chứa mật khẩu `vars/vault.yml` (`db_user: db_admin`, `db_password: SuperSecretPassword123!`).
-    - Mã hóa tệp tin bằng lệnh `ansible-vault encrypt vars/vault.yml` với mật khẩu an toàn.
-    - Kiểm tra tệp tin trên disk: Nội dung đã chuyển thành định dạng mã hóa `$ANSIBLE_VAULT;1.1;AES256`.
-  - Tích hợp Tệp tin Biến Mã hóa (`vars_files`):
-    - Khai báo `vars_files: - vars/vault.yml` trong playbook.
-    - Thực thi playbook kèm cờ giải mã `--ask-vault-pass` (hoặc `--vault-password-file`).
-  - Quản trị An toàn Bí mật (Secret at Rest vs Runtime):
-    - Bảo vệ at rest: File mã hóa an toàn trên disk và an toàn khi commit lên Git.
-    - Bảo vệ runtime & Chống rò rỉ log: Bắt buộc sử dụng `no_log: true` trên mọi task thao tác trực tiếp với secret để ngăn Ansible in giá trị biến ra console output hoặc ghi vào file log hệ thống.
-    - Phân quyền tệp tin bí mật trên filesystem máy đích: Luôn gán `mode: "0600"` (chỉ owner có quyền đọc/ghi, chặn toàn bộ group và others).
-  - Failure Injection:
-    - Cố tình nhập sai mật khẩu Vault khi chạy `ansible-playbook`: Ansible lập tức ngắt lệnh với lỗi xác thực mật mã (`Decryption failed`), không thể đọc biến mật.
-  - Kiểm định Tự động với Assertion:
-    - Sử dụng `ansible.builtin.stat` kết hợp `ansible.builtin.assert` kiểm tra tự động sự tồn tại của file và kiểm chứng chính xác `stat.mode == "0600"`.
-  - Kiểm chứng Tính Lũy Thừa (Idempotency):
-    - Chạy lại playbook lần 2: Đạt `changed=0`.
-  - Thử thách Defense S36 (Phần 1):
-    - Technical Defense: **PASS** (Viết `playbook-defense.yml` kết hợp tags deploy/secret/verify, vars_files mã hóa vault, no_log: true, mode 0600 và stat+assert kiểm định).
-    - Timed Defense: **VOID / Không chấm** do sự cố thiết kế đề bài kiểm tra không đúng phạm vi giảng dạy (đề ra lệch sang phần rolling deployment chưa được học).
-  - Active Recall & Dọn dẹp:
-    - Trả lời chính xác 7/7 câu hỏi về tags, vault encrypt, no_log, 0600 và stat/assert.
-    - Dọn dẹp an toàn các file tạm trên disk (`/tmp/s36-defense-*.txt`), Cleanup PASS.
-- Các Nội dung CHƯA HỌC (Bảo lưu cho Phần 2 ở buổi học tiếp theo):
-  - Deployment Strategies: `serial` (triển khai theo batch), `max_fail_percentage`, `any_errors_fatal: true`.
-  - Task Delegation: `delegate_to` (ví dụ: điều khiển load balancer rút/nạp node).
-  - Vault CLI operations nâng cao: `ansible-vault decrypt`, `ansible-vault view`, `ansible-vault edit`.
-  - Failure Injection kịch bản Rolling Update.
-  - Defense Mode tổng hợp cuối Buổi 36.
-- Kết quả: **ĐANG THỰC HIỆN BUỔI 36 (IN PROGRESS - KHÔNG ĐÁNH DẤU COMPLETED; CHƯA CHUYỂN SANG S37 KUBERNETES)**.
+- Quản trị Tác vụ với Ansible Tags (`tags`):
+  - Khai báo nhãn `tags: [deploy]`, `tags: [secret]`, `tags: [verify]` trên từng task.
+  - Thực thi chọn lọc với `--tags`: Chỉ chạy các task được gắn tag mong muốn (ví dụ `--tags deploy`).
+  - Loại trừ task với `--skip-tags`: Bỏ qua các task nặng hoặc nhạy cảm khi debug.
+- Mã hóa Bí mật với Ansible Vault cơ bản:
+  - Khởi tạo file biến chứa mật khẩu `vars/vault.yml` (`db_user: db_admin`, `db_password: SuperSecretPassword123!`).
+  - Mã hóa tệp tin bằng lệnh `ansible-vault encrypt vars/vault.yml` với mật khẩu an toàn.
+  - Kiểm tra tệp tin trên disk: Nội dung đã chuyển thành định dạng mã hóa `$ANSIBLE_VAULT;1.1;AES256`.
+- Tích hợp Tệp tin Biến Mã hóa (`vars_files`):
+  - Khai báo `vars_files: - vars/vault.yml` trong playbook.
+  - Thực thi playbook kèm cờ giải mã `--ask-vault-pass` (hoặc `--vault-password-file`).
+- Quản trị An toàn Bí mật (Secret at Rest vs Runtime):
+  - Bảo vệ at rest: File mã hóa an toàn trên disk và an toàn khi commit lên Git.
+  - Bảo vệ runtime & Chống rò rỉ log: Bắt buộc sử dụng `no_log: true` trên mọi task thao tác trực tiếp với secret để ngăn Ansible in giá trị biến ra console output hoặc ghi vào file log hệ thống.
+  - Phân quyền tệp tin bí mật trên filesystem máy đích: Luôn gán `mode: "0600"` (chỉ owner có quyền đọc/ghi, chặn toàn bộ group và others).
+- Failure Injection:
+  - Cố tình nhập sai mật khẩu Vault khi chạy `ansible-playbook`: Ansible lập tức ngắt lệnh với lỗi xác thực mật mã (`Decryption failed`), không thể đọc biến mật.
+- Kiểm định Tự động với Assertion:
+  - Sử dụng `ansible.builtin.stat` kết hợp `ansible.builtin.assert` kiểm tra tự động sự tồn tại của file và kiểm chứng chính xác `stat.mode == "0600"`.
+- Kiểm chứng Tính Lũy Thừa (Idempotency):
+  - Chạy lại playbook lần 2: Đạt `changed=0`.
+- Thử thách Defense S36:
+  - Technical Defense: **PASS** (Viết `playbook-defense.yml` kết hợp tags deploy/secret/verify, vars_files mã hóa vault, no_log: true, mode 0600 và stat+assert kiểm định).
+- Active Recall & Dọn dẹp:
+  - Trả lời chính xác 7/7 câu hỏi về tags, vault encrypt, no_log, 0600 và stat/assert.
+  - Dọn dẹp an toàn các file tạm trên disk (`/tmp/s36-defense-*.txt`), Cleanup PASS.
+- Kết quả: **ĐẠT BUỔI 36 (COMPLETED - Technical PASS Defense Mode)**.
 
 
 
