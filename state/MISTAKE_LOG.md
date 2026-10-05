@@ -474,6 +474,42 @@
     - *Xử lý chuẩn mực:* Kết quả Technical Defense được công nhận **PASS** cho các phần đã học (tags, vault, no_log, mode 0600, assertion). Phần tính giờ được ghi nhận **VOID / Không chấm**.
     - *Bài học vận hành giảng dạy:* Giữ vững nguyên tắc bám sát phạm vi bài giảng; không đưa nội dung chưa hướng dẫn vào bài test tính giờ. Kết quả kỹ thuật của Buổi 36 đã đạt chuẩn đầy đủ cho phạm vi Tags, Vault, no_log, mode 0600 và assertion verify, buổi học được chốt trạng thái **COMPLETED** (Technical PASS), sẵn sàng chuyển tiếp sang S37 — Kubernetes Fundamentals.
 
+## [2026-10-04] Sự cố và Bài học về Kubernetes 1.37 Bootstrap, Cgroup v2 và Cú pháp Manifest S37
+- **Ngày:** 2026-10-04
+- **Bối cảnh:** Lab 37 — Kubernetes Fundamentals: Cluster, Pod, Deployment. Dựng cụm Kind, xử lý lỗi kubelet bootstrap và viết declarative manifest.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Kubernetes 1.37 yêu cầu Cgroup v2 làm Kubelet fail bootstrap (`failCgroupV1=true`):**
+    - *Triệu chứng:* Lệnh `kind create cluster` bị treo tại bước chờ control-plane ready, sau đó fail timeout. Kiểm tra log kubelet bên trong container node ghi nhận thông báo lỗi kiểm tra nhân Linux: `failCgroupV1=true`.
+    - *Nguyên nhân gốc:* Kể từ các phiên bản Kubernetes mới (v1.37), kubelet mặc định từ chối khởi động trên cgroup v1. Trong khi đó môi trường WSL2 và Docker Engine trên máy local vẫn đang chạy cgroup v1 cũ.
+    - *Cách chẩn đoán & khắc phục:*
+      1. Đọc trực tiếp log kubelet từ container Kind (`docker logs <node-container>` hoặc kiểm tra log trong `/var/log/`).
+      2. Xác minh phiên bản cgroup trên host: WSL và Docker daemon đều hiển thị cgroup v1.
+      3. Cấu hình file `C:\Users\<User>\.wslconfig` bật cgroup v2 (`systemd=true`), khởi động lại WSL (`wsl --shutdown`) và Docker daemon.
+      4. Xác minh lại: WSL báo mount `cgroup2fs` và Docker báo `CgroupVersion: 2`.
+      5. Tạo lại cụm Kind thành công với toàn bộ các node chuyển sang trạng thái `Ready`.
+  - **Lỗi thụt lề cú pháp YAML trong Manifest Deployment (`spec.template.spec.containers`):**
+    - *Triệu chứng:* Khi chạy `kubectl apply -f deployment-nginx.yaml`, API server trả về lỗi schema validation: `error: error validating "deployment-nginx.yaml": error validating data: ValidationError(Deployment.spec.template.spec): missing required field "containers" in io.k8s.api.core.v1.PodSpec` hoặc `spec.template.spec.containers: Required value`.
+    - *Nguyên nhân gốc:* Thụt lề sai khoảng trắng (indentation) khiến trường `containers` bị đặt cùng cấp với `spec` hoặc thụt lề lệch so với cấp cha `template.spec`.
+    - *Cách khắc phục:* Đối soát cấu trúc phân cấp YAML chuẩn: `spec` (Deployment) $\rightarrow$ `template` $\rightarrow$ `spec` (PodSpec) $\rightarrow$ `containers` (danh sách container bắt đầu bằng `- name:`).
+
+## [2026-10-05] Sự cố và Bài học về Kubernetes Service Routing, EndpointSlice và Vòng đời Pod S38
+- **Ngày:** 2026-10-05
+- **Bối cảnh:** Lab 38 — Kubernetes Service & Networking. Cấu hình ClusterIP, NodePort, chẩn đoán lệch selector và phân biệt trạng thái tiến trình Pod.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Service tồn tại không đồng nghĩa với việc có Backend sẵn sàng (Service vs EndpointSlice):**
+    - *Triệu chứng:* Khởi tạo Service thành công (`kubectl get svc` hiển thị ClusterIP bình thường), nhưng request tới Service bị timeout hoặc connection refused.
+    - *Nguyên nhân gốc:* Khối `selector` của Service không khớp hoàn toàn với nhãn `labels` trên các Pods (ví dụ Service selector tìm `app: s38-backend-broken` trong khi Pod mang nhãn `app: s38-backend`).
+    - *Quy trình chẩn đoán chuẩn:*
+      1. Không chỉ nhìn `kubectl get svc`.
+      2. Kiểm tra `kubectl get endpointslices` (hoặc `kubectl describe svc <name>`): Nếu trường `Endpoints` / `EndpointSlice` rỗng (0 targets), Service không có Pod backend nào nhận traffic.
+      3. Đối chiếu trực tiếp `spec.selector` của Service với `metadata.labels` của Pods (`kubectl get pods --show-labels`).
+      4. Sửa selector cho khớp chính xác -> EndpointSlice tự động cập nhật IP của các Pod backend ngay lập tức -> traffic phục hồi.
+  - **Phân biệt rạch ròi Pod phase Succeeded/Completed vs Container Crash/Network Failure:**
+    - *Triệu chứng:* Client Pod BusyBox (`s38-client`) chuyển trạng thái sang `Completed` hoặc `Succeeded`, khiến câu lệnh `kubectl exec` tới Pod bị từ chối với lỗi container không chạy.
+    - *Bản chất kỹ thuật:* Đây không phải lỗi sập mạng hay container crash, mà do tiến trình chính (PID 1) trong container (lệnh `sleep 3600`) đã hoàn thành chu kỳ thời gian và thoát an toàn với exit code 0.
+    - *Cách xử lý:* Hiểu đúng vòng đời Pod; nếu cần client Pod tồn tại lâu dài làm công cụ debug liên tục trong lab, thiết lập thời gian sleep đủ dài (ví dụ `sleep 86400` - 24 giờ) hoặc sử dụng Deployment để duy trì Pod.
+
+
 
 
 

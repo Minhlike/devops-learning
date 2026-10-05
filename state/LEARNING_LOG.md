@@ -810,6 +810,83 @@
   - Dọn dẹp an toàn các file tạm trên disk (`/tmp/s36-defense-*.txt`), Cleanup PASS.
 - Kết quả: **ĐẠT BUỔI 36 (COMPLETED - Technical PASS Defense Mode)**.
 
+## [2026-10-04] Session 37: Kubernetes Fundamentals: Cluster, Pod, Deployment
+- Tiến độ lộ trình: Bước chuyển sang mảng Container Orchestration với Kubernetes, thiết lập cụm cục bộ, vòng đời Pod và quản trị Deployment tự phục hồi.
+- Ngày học: 2026-10-04.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-37-kubernetes-fundamentals`
+  - WSL: `/mnt/d/Devops/labs/lab-37-kubernetes-fundamentals`
+  - Công cụ: `kubectl v1.37.0`, `kind v0.33.0`, WSL2 Ubuntu 24.04, Docker Engine 28.0.1.
+- Dựng cụm Kubernetes cục bộ với Kind:
+  - Cấu hình topology cụm `s37` qua `kind-config.yaml` gồm 1 Control-Plane (`s37-control-plane`) và 2 Worker nodes (`s37-worker`, `s37-worker2`).
+- Xử lý sự cố hạ tầng Bootstrap cụm (Troubleshoot Cluster Bootstrap Failure):
+  - Kubelet fail bootstrap khi khởi động container node, kiểm tra log phát hiện cờ kiểm tra kernel: `failCgroupV1=true`.
+  - Chẩn đoán nguyên nhân: Kubernetes 1.37 yêu cầu cgroup v2, trong khi WSL2, Docker daemon và kind node container đều đang chạy cgroup v1.
+  - Xử lý: Cập nhật cấu hình `.wslconfig` trên host Windows để kích hoạt cgroup v2 cho WSL2 (`systemd=true`), khởi động lại WSL và Docker.
+  - Xác minh thành công: WSL hiển thị `cgroup2fs` và Docker đạt `CgroupVersion=2`.
+  - Khởi tạo lại cụm bằng `kind create cluster --config kind-config.yaml --name s37`: Cả 3 node đều đạt trạng thái `Ready`.
+- Kiến trúc nền tảng Kubernetes:
+  - Nắm vững và thực hành tương tác với Control Plane (API Server, etcd, Scheduler, Controller Manager) và Worker Node (kubelet, containerd).
+- Triển khai Standalone Pod:
+  - Viết manifest khai báo `pod-nginx.yaml` (`apiVersion: v1`, `kind: Pod`).
+  - Vận hành thành thạo bộ lệnh `kubectl`: `apply`, `get`, `describe`, `logs`, `exec`.
+  - Quan sát kube-scheduler tự động đặt Pod lên worker node.
+  - Phân tích chuỗi sự kiện vòng đời (Events): `Scheduled` -> `Pulling` -> `Pulled` -> `Created` -> `Started`.
+  - Chứng minh tính chất phù du (Ephemeral): Khi xóa standalone Pod bằng `kubectl delete pod`, Pod bị hủy hoàn toàn và không được tự động tạo lại.
+- Quản trị Deployment & Tính tự phục hồi (Self-Healing):
+  - Viết manifest `deployment-nginx.yaml` với `replicas: 3`.
+  - Phân tích cấu trúc phân cấp: `Deployment` -> `ReplicaSet` -> `Pods`.
+  - Kiểm tra quan hệ sở hữu (`ownerReferences`): Pod trỏ owner về ReplicaSet; ReplicaSet trỏ owner về Deployment.
+  - Failure Injection: Xóa 1 Pod thuộc ReplicaSet, ReplicaSet controller lập tức phát hiện lệch desired state và khởi tạo Pod mới thay thế (Self-healing PASS).
+  - Điều chỉnh quy mô (Scaling): Dùng `kubectl scale` nâng 3 -> 5 replicas; sau đó re-apply manifest `replicas: 3`, quan sát Declarative Reconciliation tự động thu hồi 2 Pod dư thừa để đưa hệ thống về đúng 3 Pods.
+- Xử lý sự cố cú pháp Manifest (YAML Troubleshooting):
+  - Bắt lỗi cú pháp thụt lề: `spec.template.spec.containers: Required value` do đặt sai cấp indentation trong spec template; chẩn đoán và sửa đúng cấu trúc YAML.
+- Đánh giá năng lực & Defense Mode:
+  - Checkpoint: 6/6 PASS.
+  - Defense Mode S37: Tự viết `deployment-defense.yaml` (`s37-defense`, 2 replicas), xóa 1 Pod, quan sát Pod mới được ReplicaSet tạo và Deployment trở lại 2/2 Ready. Đạt **Technical PASS** (không chấm giờ).
+  - Active Recall: 5/5 PASS.
+  - Dọn dẹp tài nguyên (Cleanup PASS): Cụm cluster `s37` đã được xóa sạch sau buổi học (`kind delete cluster --name s37`), manifest YAML được lưu trữ tại `labs/lab-37-kubernetes-fundamentals` làm bằng chứng.
+- Kết quả: **ĐẠT BUỔI 37 (COMPLETED - Technical PASS Defense Mode)**.
+
+## [2026-10-05] Session 38: Kubernetes Service & Networking
+- Tiếp tục lộ trình Container Orchestration: Tìm hiểu cơ chế mạng dịch vụ trong Kubernetes, giải quyết bài toán Pod IP phù du bằng Service, phân giải DNS nội bộ, định tuyến ClusterIP và NodePort.
+- Ngày học: 2026-10-05.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-38-kubernetes-service-networking`
+  - WSL: `/mnt/d/Devops/labs/lab-38-kubernetes-service-networking`
+  - Cluster: Cụm Kind riêng biệt `s38` (1 Control-Plane + 2 Worker nodes).
+- Khởi tạo cụm và Backend Deployment:
+  - Dựng cụm kind `s38` với 1 Control-Plane và 2 Worker nodes, kiểm tra cả 3 nodes đều `Ready`.
+  - Triển khai backend Deployment Nginx 3 replicas mang nhãn `app: s38-backend`.
+  - Nhận thức vấn đề: Địa chỉ Pod IP có tính chất phù du (thay đổi khi recreate/reschedule); ứng dụng client không thể kết nối trực tiếp qua Pod IP mà cần một tầng trừu tượng ổn định là Kubernetes Service.
+- Cấu hình ClusterIP Service & Label Selector:
+  - Khởi tạo Service loại `ClusterIP` (`s38-service`) sử dụng `selector: app: s38-backend`.
+  - Khám phá `EndpointSlice`: Trên Kubernetes v1.37, EndpointSlice thay thế Endpoints legacy để theo dõi danh sách IP backend có khả năng mở rộng cao; xác nhận EndpointSlice tự động thu nạp 3 IP của 3 backend Pods.
+- Khám phá Dịch vụ & Phân giải Tên miền Nội bộ (Service Discovery / CoreDNS):
+  - Khởi tạo client Pod BusyBox (`s38-client`).
+  - Gửi HTTP request tới DNS service name nội bộ (`http://s38-service:8080`), nhận phản hồi trang chào Nginx thành công.
+- Phân biệt Rạch ròi Cổng Mạng:
+  - Ánh xạ rõ ràng qua manifest: `port: 8080` (cổng dịch vụ mở trên ClusterIP/NodePort) vs `targetPort: 80` (cổng thực tế mà container Nginx trong Pod lắng nghe).
+- Mở rộng Truy cập với NodePort Service:
+  - Nâng cấp Service sang kiểu `NodePort` với `port: 8080`, `targetPort: 80`, `nodePort: 30080`.
+  - Kiểm tra truy cập đa node: Gửi curl tới IP của node worker 1 (`172.22.0.3:30080`) và node worker 2 (`172.22.0.2:30080`), cả hai đều trả về Nginx thành công nhờ cơ chế chuyển tiếp traffic của kube-proxy.
+  - Nắm vững khái niệm LoadBalancer ở tầng cloud provider; hiểu lý do không giả lập cloud LB trong môi trường Kind local.
+- Thực hành Failure Injection & Quy trình Xử lý Sự cố Mạng:
+  - Cố tình sửa selector của Service thành `app: s38-backend-broken`.
+  - Quan sát triệu chứng: Service object vẫn tồn tại bình thường nhưng `EndpointSlice` bị xóa sạch (0 endpoints), request tới NodePort lập tức bị từ chối/timeout.
+  - Khắc phục sự cố: Đối chiếu selector của Service với labels của Pods và EndpointSlice; sửa selector về đúng `app: s38-backend` -> EndpointSlice lập tức phục hồi 3 backend IP -> traffic thông suốt trở lại.
+  - Xử lý sự cố Pod phase: Client Pod chuyển sang trạng thái `Completed/Succeeded` do lệnh `sleep 3600` đã chạy hết thời gian; chẩn đoán chính xác đây là hành vi kết thúc bình thường của tiến trình Linux, không phải lỗi mạng hay crash, tạo lại client Pod với `sleep 86400`.
+- Thử thách Defense S38:
+  - Tự viết ClusterIP Service `s38-defense-service` với selector `app: s38-backend`, map `port: 8081` -> `targetPort: 80`.
+  - Kiểm tra EndpointSlice ghi nhận đủ 3 endpoints backend.
+  - Gửi request từ `s38-client` qua DNS `curl http://s38-defense-service:8081` nhận trang chào Nginx thành công.
+  - Kết quả Defense: Đạt **Technical PASS** (không chấm giờ).
+- Đánh giá Năng lực: Trả lời chính xác 6/6 câu hỏi Active Recall.
+- Dọn dẹp Tài nguyên (Cleanup PASS):
+  - Đã xác minh bằng chứng: Lệnh `kind delete cluster --name s38` đã được thực thi; `kind get clusters` và `docker ps -a` xác nhận cụm s38 và các container đã được dọn sạch hoàn toàn; lưu trữ manifest YAML tại `labs/lab-38-kubernetes-service-networking` làm bằng chứng.
+- Kết quả: **ĐẠT BUỔI 38 (COMPLETED - Technical PASS Defense Mode)**.
+
+
 
 
 

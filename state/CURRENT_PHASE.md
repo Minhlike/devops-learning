@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 36 — Ansible Tags, Vault & Secrets Management. Chuẩn bị Buổi 37 — Kubernetes Fundamentals: Cluster, Pod, Deployment.
-- **Current Week:** Tuần 8
+- **Current Status:** Hoàn thành Buổi 38 — Kubernetes Service & Networking. Chuẩn bị Buổi 39 — Kubernetes ConfigMap, Secret, Environment & Probes.
+- **Current Week:** Tuần 9
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -528,6 +528,69 @@
         - Trả lời chính xác 7/7 câu hỏi Active Recall.
         - Cleanup PASS: Thu hồi và dọn dẹp an toàn các tệp tin thử nghiệm trên disk.
       - Kết quả: **ĐẠT BUỔI 36 (COMPLETED - Technical PASS Defense Mode)**.
+  24. **Buổi 37 — Kubernetes Fundamentals: Cluster, Pod, Deployment:**
+      - Thiết lập và Quản trị Môi trường Kubernetes Cục bộ:
+        - Cài đặt và sử dụng `kubectl v1.37.0` và `kind v0.33.0`.
+        - Dựng cụm Kubernetes local `s37` bằng Kind với mô hình 1 Control-Plane + 2 Worker nodes (`kind-config.yaml`).
+      - Xử lý Sự cố Hạ tầng Bootstrap Cụm (Troubleshoot Cluster Bootstrap Failure):
+        - Phát hiện kubelet fail bootstrap do cgroup v1, log container ghi nhận `failCgroupV1=true`.
+        - Xác minh thực tế: WSL2, Docker daemon và kind node container đều đang sử dụng cgroup v1.
+        - Chuyển đổi môi trường WSL2/Docker sang cgroup v2 bằng `.wslconfig`.
+        - Kiểm tra xác nhận: WSL đạt `cgroup2fs` và Docker đạt `CgroupVersion=2`.
+        - Khởi tạo lại cluster thành công: cả 3 node (`s37-control-plane`, `s37-worker`, `s37-worker2`) chuyển trạng thái `Ready`.
+      - Kiến trúc Nền tảng Kubernetes:
+        - Nắm vững vai trò và luồng tương tác giữa Control Plane (API Server, etcd, Scheduler, Controller Manager) và Worker Node (kubelet, containerd runtime).
+      - Triển khai Standalone Pod:
+        - Viết manifest khai báo `pod-nginx.yaml` (`apiVersion: v1`, `kind: Pod`).
+        - Vận hành thành thạo bộ lệnh `kubectl`: `apply`, `get`, `describe`, `logs`, `exec`.
+        - Quan sát kube-scheduler tự động đặt Pod lên worker node.
+        - Đọc hiểu chuỗi vòng đời Events: `Scheduled` -> `Pulling` -> `Pulled` -> `Created` -> `Started`.
+        - Chứng minh tính phù du (Ephemeral nature): Xóa standalone Pod, Pod bị tiêu hủy vĩnh viễn và không tự động tái tạo.
+      - Quản trị Deployment & Tính Tự Phục Hồi (Self-Healing):
+        - Viết manifest `deployment-nginx.yaml` với `replicas: 3`.
+        - Phân tích chuỗi phân cấp điều khiển: `Deployment` -> `ReplicaSet` -> `Pods`.
+        - Xác minh quan hệ sở hữu `ownerReferences`: Pod owner là `ReplicaSet`, ReplicaSet owner là `Deployment`.
+        - Failure Injection: Xóa 1 Pod bất kỳ thuộc ReplicaSet; quan sát ReplicaSet controller tự động tạo Pod thay thế ngay lập tức để duy trì đúng desired state (Self-healing PASS).
+        - Thực hành điều chỉnh số lượng bản sao: Scale Deployment 3 -> 5 qua `kubectl scale`; sau đó re-apply manifest `replicas: 3` để kiểm chứng Declarative Reconciliation tự động thu hồi 5 -> 3 Pods.
+      - Xử lý Lỗi Cú pháp Manifest (YAML Troubleshooting):
+        - Bắt lỗi cú pháp thụt lề: `spec.template.spec.containers: Required value` do đặt sai cấp indentation trong spec template; chẩn đoán và sửa đúng cấu trúc YAML.
+      - Đánh giá Năng lực:
+        - Checkpoint: 6/6 PASS.
+        - Defense Mode: Tự viết `deployment-defense.yaml` (`s37-defense`, 2 replicas), xóa 1 Pod, quan sát Pod mới được sinh ra và Deployment trở lại trạng thái 2/2 Ready. Đạt **Technical PASS** (không chấm giờ).
+        - Active Recall: 5/5 PASS.
+        - Cleanup PASS: Xóa toàn bộ cluster `s37` an toàn sau buổi học; lưu trữ đầy đủ manifest YAML trong `labs/lab-37-kubernetes-fundamentals` làm bằng chứng.
+      - Kết quả: **ĐẠT BUỔI 37 (COMPLETED - Technical PASS Defense Mode)**.
+  25. **Buổi 38 — Kubernetes Service & Networking:**
+      - Khởi tạo Hạ tầng Mạng Đa Node:
+        - Dựng cluster Kind riêng biệt `s38` gồm 1 Control-Plane + 2 Worker nodes (`kind-config.yaml`), cả 3 nodes đều ở trạng thái `Ready`.
+      - Backend Deployment & Vấn đề Địa chỉ IP Pod:
+        - Triển khai backend Deployment Nginx 3 replicas với label `app: s38-backend`.
+        - Nhận diện rủi ro: Pod IP có tính phù du, bị thay đổi khi Pod khởi động lại/thay thế -> cần tầng trừu tượng ổn định là Kubernetes Service.
+      - Cấu hình ClusterIP Service & Label Selector:
+        - Khởi tạo Service loại ClusterIP chọn backend qua `selector: app: s38-backend`.
+        - Kiểm tra cơ chế định tuyến Endpoint: Khám phá `EndpointSlice` thay cho `Endpoints` legacy trên Kubernetes v1.37.
+      - Khám phá Dịch vụ & Phân giải Tên miền Nội bộ (Service Discovery / DNS):
+        - Dựng client Pod BusyBox (`s38-client`).
+        - Gửi HTTP request qua DNS service name nội bộ (`http://s38-service:8080`), nhận phản hồi HTTP 200 trang chào Nginx từ các backend Pods.
+      - Phân biệt Rạch ròi Cổng Mạng:
+        - Phân biệt `port: 8080` (cổng lắng nghe trên Service) vs `targetPort: 80` (cổng container ứng dụng trong Pod tiếp nhận request).
+      - Mở rộng Truy cập với NodePort Service:
+        - Chuyển đổi Service sang kiểu `NodePort` với cấu hình: `port: 8080`, `targetPort: 80`, `nodePort: 30080`.
+        - Xác minh NodePort truy cập thành công qua nhiều địa chỉ IP node khác nhau (`172.22.0.3:30080` và `172.22.0.2:30080`), chứng minh kube-proxy định tuyến traffic qua các node trong cụm.
+        - Nắm vững khái niệm LoadBalancer ở tầng cloud provider; hiểu lý do không giả lập cloud LB trong môi trường Kind local.
+      - Thực hành Failure Injection & Quy trình Xử lý Sự cố Mạng:
+        - Cố tình sửa selector trong Service từ `app: s38-backend` thành `app: s38-backend-broken`.
+        - Hiện tượng: Service object vẫn tồn tại bình thường nhưng `EndpointSlice` trống (0 endpoints), request tới NodePort lập tức bị từ chối/timeout.
+        - Troubleshooting: Đối chiếu Service selector với Pod labels và EndpointSlice; khôi phục selector về `app: s38-backend` -> EndpointSlice phục hồi 3 backend IP -> traffic thông suốt trở lại.
+        - Xử lý sự cố Pod phase: Client Pod chuyển sang `Completed/Succeeded` do lệnh `sleep 3600` đã kết thúc chu kỳ; chẩn đoán chính xác đây là hành vi bình thường của process chính kết thúc (không phải lỗi crash/mạng), tạo lại client với `sleep 86400`.
+      - Thử thách Defense S38:
+        - Tự viết ClusterIP Service `s38-defense-service` với selector `app: s38-backend`, ánh xạ `port: 8081` -> `targetPort: 80`.
+        - Xác nhận EndpointSlice nhận đủ 3 backend IPs.
+        - Gửi request từ client Pod `curl http://s38-defense-service:8081` nhận trang Nginx thành công.
+        - Đạt **Technical PASS** (không chấm giờ).
+      - Đánh giá Năng lực: Trả lời đúng 6/6 câu hỏi Active Recall.
+      - Cleanup: **PASS** (Đã xác minh bằng chứng: lệnh `kind delete cluster --name s38` đã được thực thi, `kind get clusters` và `docker ps -a` xác nhận cluster và container đã được dọn sạch hoàn toàn, lưu giữ manifest YAML tại `labs/lab-38-kubernetes-service-networking`).
+      - Kết quả: **ĐẠT BUỔI 38 (COMPLETED - Technical PASS Defense Mode)**.
 
 
 
