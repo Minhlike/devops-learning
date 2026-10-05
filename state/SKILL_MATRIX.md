@@ -219,6 +219,22 @@
 | Security & Secrets | Vault Password Failure Injection & Cryptographic Authentication | Troubleshoot được | 2026-10-04 | Lab 36: Xử lý và phân tích lỗi sai mật khẩu Vault khi giải mã playbook |
 | Quality Assurance | Automated State Verification via Assertions (`ansible.builtin.stat` & `assert`) | Làm được độc lập | 2026-10-04 | Lab 36: Kiểm định tự động sự tồn tại và thuộc tính bảo mật của tệp tin sau deploy |
 | Security & Secrets | Ansible Vault & Secrets Defense Automation | Làm được độc lập | 2026-10-04 | Lab 36: Technical PASS triển khai tích hợp tags, encrypted vault vars, no_log, mode 0600 và assertion verify |
+| Container Orchestration | Local Multi-Node Cluster Provisioning with Kind & kubectl | Làm được độc lập | 2026-10-04 | Lab 37: Cài kubectl v1.37.0, kind v0.33.0, khởi tạo cụm s37 1 CP + 2 Workers |
+| Container Orchestration | Host Kernel & Cgroup v2 Migration for Kubernetes 1.37 | Troubleshoot được | 2026-10-04 | Lab 37: Chẩn đoán kubelet failCgroupV1=true, chuyển đổi WSL2/Docker sang cgroup v2 và đưa 3 nodes về Ready |
+| Container Orchestration | Kubernetes Core Architecture & Declarative Pod Lifecycle | Làm được độc lập | 2026-10-04 | Lab 37: Vận hành Control Plane/Worker, apply standalone Pod, theo dõi Scheduler và chuỗi Events |
+| Container Orchestration | Kubernetes Deployment Hierarchy & Self-Healing Automation | Làm được độc lập | 2026-10-04 | Lab 37: Phân tích Deployment -> ReplicaSet -> Pods qua ownerReferences, kiểm chứng tự tạo Pod mới khi xóa Pod |
+| Container Orchestration | Kubernetes Scaling & Declarative State Reconciliation | Làm được độc lập | 2026-10-04 | Lab 37: Scale 3 -> 5 qua kubectl scale, re-apply manifest thu hồi tự động 5 -> 3 |
+| Container Orchestration | Kubernetes Manifest Syntax & YAML Indentation Troubleshooting | Troubleshoot được | 2026-10-04 | Lab 37: Bắt và sửa lỗi spec.template.spec.containers: Required value do thụt lề sai cấu trúc YAML |
+| Container Orchestration | Kubernetes Deployment Self-Healing Defense Automation | Làm được độc lập | 2026-10-04 | Lab 37: Technical PASS (không chấm giờ), tự viết deployment s37-defense 2 replicas, xác minh tự phục hồi 2/2 |
+| Container Orchestration | Multi-Node Cluster Deployment with Dedicated Kind Topology | Làm được độc lập | 2026-10-05 | Lab 38: Dựng cụm kind s38 độc lập gồm 1 CP + 2 Workers, cả 3 node Ready |
+| Container Orchestration | Kubernetes Service Abstraction & ClusterIP Routing | Làm được độc lập | 2026-10-05 | Lab 38: Triển khai ClusterIP Service giải quyết tính phù du của Pod IP, định tuyến traffic tới backend Pods |
+| Container Orchestration | Kubernetes Service Discovery & Modern EndpointSlice Tracking | Làm được độc lập | 2026-10-05 | Lab 38: Khám phá EndpointSlice trên K8s 1.37, gửi request qua CoreDNS service name từ BusyBox client Pod |
+| Container Orchestration | Kubernetes Port Mapping Architecture (Service Port vs TargetPort) | Làm được độc lập | 2026-10-05 | Lab 38: Phân biệt và ánh xạ chuẩn xác Service port 8080 sang Pod targetPort 80 |
+| Container Orchestration | Kubernetes NodePort Service & Cross-Node Traffic Routing | Làm được độc lập | 2026-10-05 | Lab 38: Cấu hình NodePort 30080, truy cập thành công qua nhiều địa chỉ IP node khác nhau |
+| Container Orchestration | Service Label Selector Failure Injection & EndpointSlice Troubleshooting | Troubleshoot được | 2026-10-05 | Lab 38: Chẩn đoán lỗi lệch selector dẫn tới EndpointSlice trống (0 backends) và phục hồi traffic |
+| Container Orchestration | Kubernetes Pod Lifecycle Phase Diagnostics (Succeeded vs Crash) | Troubleshoot được | 2026-10-05 | Lab 38: Phân biệt Pod Succeeded do process sleep kết thúc vs network/container failure thực sự |
+| Container Orchestration | Kubernetes Service & Networking Defense Automation | Làm được độc lập | 2026-10-05 | Lab 38: Technical PASS (không chấm giờ), tự viết ClusterIP s38-defense-service 8081->80, 3 backends, DNS curl test PASS |
+
 
 
 
