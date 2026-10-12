@@ -234,14 +234,13 @@
 | Container Orchestration | Service Label Selector Failure Injection & EndpointSlice Troubleshooting | Troubleshoot được | 2026-10-05 | Lab 38: Chẩn đoán lỗi lệch selector dẫn tới EndpointSlice trống (0 backends) và phục hồi traffic |
 | Container Orchestration | Kubernetes Pod Lifecycle Phase Diagnostics (Succeeded vs Crash) | Troubleshoot được | 2026-10-05 | Lab 38: Phân biệt Pod Succeeded do process sleep kết thúc vs network/container failure thực sự |
 | Container Orchestration | Kubernetes Service & Networking Defense Automation | Làm được độc lập | 2026-10-05 | Lab 38: Technical PASS (không chấm giờ), tự viết ClusterIP s38-defense-service 8081->80, 3 backends, DNS curl test PASS |
-
-
-
-
-
-
-
-
-
-
-
+| Container Orchestration | Kubernetes Application Configuration via ConfigMap (`configMapKeyRef`, `envFrom`, `volumeMounts`) | Làm được độc lập | 2026-10-06 | Lab 39: Truyền ConfigMap qua biến môi trường đơn lẻ, envFrom và mount file cấu hình `/etc/app-config/app.conf` |
+| Security & Secrets | Kubernetes Opaque Secrets & Volume Permission Hardening (`defaultMode: 0400`) | Làm được độc lập | 2026-10-06 | Lab 39: Mount Secret Opaque qua env/volume với quyền 0400, phân biệt rạch ròi Base64 encoding vs encryption |
+| Container Orchestration | Kubernetes Container Health Probes (`readinessProbe`, `livenessProbe`, `startupProbe`) | Làm được độc lập | 2026-10-06 | Lab 39: Kiểm chứng Readiness 404 gỡ EndpointSlice (`ready=false`), Liveness 404 restart container, Startup bảo vệ app khởi động chậm |
+| Container Orchestration | Kubernetes Config, Secret & Probes Defense Automation | Làm được độc lập | 2026-10-06 | Lab 39: Technical Defense PASS, tự viết Pod s39-defense tích hợp ConfigMap, Secret volume 0400 và bộ 3 Probes |
+| Container Orchestration | Kubernetes Compute Resource Management (`requests`, `limits`, `FailedScheduling`) | Làm được độc lập | 2026-10-12 | Lab 40: Cấu hình CPU/Memory requests & limits, kiểm chứng Pod Pending khi request vượt tài nguyên node |
+| Container Orchestration | Container Resource Enforcement Diagnostics (`OOMKilled` Exit 137 & `cpu.stat` Throttling) | Troubleshoot được | 2026-10-12 | Lab 40: Kiểm chứng Memory OOMKilled (exit code 137) và CPU Throttling qua `/sys/fs/cgroup/cpu.stat` |
+| Container Orchestration | Kubernetes Quality of Service (QoS) Classes (`Guaranteed`, `Burstable`, `BestEffort`) | Làm được độc lập | 2026-10-12 | Lab 40: Triển khai và xác minh 3 lớp QoS theo cấu hình requests/limits |
+| Container Orchestration | Advanced Pod Scheduling (`nodeSelector`, `Taints` & `Tolerations`) | Làm được độc lập | 2026-10-12 | Lab 40: Điều hướng Pod qua nodeSelector `disk=ssd` và vượt taint `NoSchedule` bằng tolerations |
+| Container Orchestration | Kubernetes Resources & Scheduling Defense Automation | Làm được độc lập | 2026-10-12 | Lab 40: Technical Defense PASS, tự viết Deployment s40-defense 2 replicas chạy trên s40-worker2 với requests/limits, nodeSelector và toleration |
+| Container Orchestration | Kubernetes Horizontal Pod Autoscaler (HPA) & Metrics Server | Cần hướng dẫn thêm | 2026-10-12 | Lab 40: Đã cài Metrics Server trên Kind nhưng s40-scaling-hpa bị lỗi `CPU: <unknown>/50%` chưa rõ root cause; chưa kiểm chứng scale up/down |

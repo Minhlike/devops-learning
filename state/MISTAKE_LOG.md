@@ -509,14 +509,33 @@
     - *Bản chất kỹ thuật:* Đây không phải lỗi sập mạng hay container crash, mà do tiến trình chính (PID 1) trong container (lệnh `sleep 3600`) đã hoàn thành chu kỳ thời gian và thoát an toàn với exit code 0.
     - *Cách xử lý:* Hiểu đúng vòng đời Pod; nếu cần client Pod tồn tại lâu dài làm công cụ debug liên tục trong lab, thiết lập thời gian sleep đủ dài (ví dụ `sleep 86400` - 24 giờ) hoặc sử dụng Deployment để duy trì Pod.
 
+## [2026-10-06] Bài học về Kubernetes Secrets (Base64 vs Encryption) và Phối hợp Ba loại Probes S39
+- **Ngày:** 2026-10-06
+- **Bối cảnh:** Lab 39 — Kubernetes ConfigMap, Secret, Environment & Probes.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Nhận thức đúng bản chất Base64 trong Kubernetes Secret:**
+    - *Bản chất:* Trường `data` trong Kubernetes Secret lưu chuỗi Base64. Base64 hoàn toàn chỉ là cơ chế biểu diễn dữ liệu nhị phân sang ASCII (encoding), không phải là mã hóa bảo mật (encryption). Bất kỳ ai có quyền `get secret` hoặc truy cập etcd chưa mã hóa đều có thể giải mã ngay lập tức bằng `base64 -d`.
+    - *Thực hành bảo mật:* Không bao giờ commit file Secret chứa mật khẩu thật lên Git dưới dạng plain text hay base64; khi mount Secret vào Pod dưới dạng volume, luôn giới hạn quyền truy cập tệp tin bằng `defaultMode: 0400` và `readOnly: true`.
+  - **Phân biệt tác động của Readiness, Liveness và Startup Probe:**
+    - *Readiness Probe fail (HTTP 404):* Kubelet đánh dấu Pod `NotReady` (`0/1 Ready`), controller cập nhật `EndpointSlice` thành `ready=false` để ngắt traffic từ Service tới Pod đó, nhưng **không** giết hay khởi động lại container.
+    - *Liveness Probe fail (HTTP 404):* Kubelet coi tiến trình bị treo/deadlock và chủ động giết container để restart theo `restartPolicy`.
+    - *Startup Probe:* Nếu ứng dụng cần thời gian khởi tạo lâu (ví dụ `sleep 20`), cấu hình Liveness Probe chạy ngay sẽ giết container liên tục (CrashLoopBackOff) trước khi ứng dụng kịp mở cổng. Startup Probe giữ vai trò hoãn Liveness và Readiness cho đến khi ứng dụng khởi động hoàn tất lần đầu tiên.
 
-
-
-
-
-
-
-
-
-
-
+## [2026-10-12] Sự cố Chưa Khắc Phục HPA `<unknown>/50%` và Bài học Quản trị Tài nguyên S40
+- **Ngày:** 2026-10-12
+- **Bối cảnh:** Lab 40 — Kubernetes Resources, Scheduling & Scaling.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Phân biệt bản chất vượt ngưỡng Memory (`OOMKilled`) vs vượt ngưỡng CPU (`Throttling`):**
+    - *Memory là tài nguyên không thể nén (Incompressible resource):* Khi container cấp phát bộ nhớ vượt quá `limits.memory` (ví dụ cấp phát 128Mi khi limit là 64Mi), Linux kernel OOM Killer lập tức tiêu diệt tiến trình với tín hiệu SIGKILL, trả về trạng thái `OOMKilled` và `exit code 137`.
+    - *CPU là tài nguyên có thể nén (Compressible resource):* Khi container tiêu thụ CPU vượt quá `limits.cpu`, tiến trình **không** bị giết mà bị Linux CFS scheduler bóp băng thông trong các chu kỳ tiếp theo (`nr_throttled` và `throttled_usec` tăng lên trong `/sys/fs/cgroup/cpu.stat`).
+  - **Sự cố Tồn đọng (Unresolved Incident): Horizontal Pod Autoscaler liên tục báo `CPU: <unknown>/50%`:**
+    - *Triệu chứng:* Đối tượng `s40-scaling-hpa` liên tục hiển thị `TARGETS: <unknown>/50%`, không thể thực hiện tính toán mở rộng quy mô.
+    - *Dữ liệu đã kiểm tra:*
+      1. Cả 3 Pod thuộc Deployment mục tiêu đều ở trạng thái `Running`, `Ready` và đều đã khai báo `requests.cpu: 100m`.
+      2. Metrics API `v1beta1` trả về số liệu CPU hợp lệ; đã từng tạo tải CPU lên xấp xỉ `1000m`.
+      3. Tuy nhiên, Pod `metrics-server` trong cụm Kind có lịch sử hoạt động bất ổn định: đã từng restart 17 lần, ghi nhận sự kiện liveness probe timeout, `SandboxChanged` và lỗi thoát `Error exit=2`.
+      4. Đã thử thực hiện `kubectl rollout restart deployment` và khởi động lại container `control-plane` nhưng vẫn không khắc phục được hiện tượng `<unknown>/50%`.
+    - *Trạng thái hiện tại:*
+      - **Root cause: CHƯA XÁC ĐỊNH.**
+      - Chưa chứng minh được autoscaling tăng/giảm số lượng replicas thành công.
+      - Chưa thực hiện cleanup cụm S40 để giữ nguyên hiện trường phục vụ điều tra và xử lý dứt điểm ở đầu buổi học tiếp theo.

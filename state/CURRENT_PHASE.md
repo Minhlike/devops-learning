@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 38 — Kubernetes Service & Networking. Chuẩn bị Buổi 39 — Kubernetes ConfigMap, Secret, Environment & Probes.
-- **Current Week:** Tuần 9
+- **Current Status:** Hoàn thành Buổi 39 — Kubernetes ConfigMap, Secret, Environment & Probes. Đang thực hiện Buổi 40 — Kubernetes Resources, Scheduling & Scaling (IN PROGRESS / PARTIALLY VERIFIED: Đã hoàn thành Resources, QoS, Scheduling, Manual Scaling, Technical Defense PASS & Active Recall 7/7 PASS; tồn đọng sự cố HPA `<unknown>/50%` và chưa Cleanup).
+- **Current Week:** Tuần 10
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -591,12 +591,46 @@
       - Đánh giá Năng lực: Trả lời đúng 6/6 câu hỏi Active Recall.
       - Cleanup: **PASS** (Đã xác minh bằng chứng: lệnh `kind delete cluster --name s38` đã được thực thi, `kind get clusters` và `docker ps -a` xác nhận cluster và container đã được dọn sạch hoàn toàn, lưu giữ manifest YAML tại `labs/lab-38-kubernetes-service-networking`).
       - Kết quả: **ĐẠT BUỔI 38 (COMPLETED - Technical PASS Defense Mode)**.
-
-
-
-
-
-
-
-
-
+  26. **Buổi 39 — Kubernetes ConfigMap, Secret, Environment & Probes:**
+      - Quản trị Cấu hình Ứng dụng với ConfigMap:
+        - Triển khai `configmap-app.yaml` (`s39-app-config`) và `configmap-file.yaml` (`s39-file-config`).
+        - Truyền ConfigMap vào Pod qua 3 cơ chế chuẩn: biến môi trường đơn lẻ (`valueFrom.configMapKeyRef` trong `pod-config-env.yaml`), nạp toàn bộ key-value làm biến môi trường (`envFrom.configMapRef` trong `pod-config-envfrom.yaml`), và mount thành file cấu hình (`volumes` / `volumeMounts` tại `/etc/app-config/app.conf` trong `pod-config-volume.yaml`).
+      - Quản trị Dữ liệu Mật với Kubernetes Secret:
+        - Khởi tạo Secret loại `Opaque` (`s39-app-secret` trong `secret-app.yaml`) với dữ liệu mẫu an toàn.
+        - Truyền Secret vào Pod qua biến môi trường (`secretKeyRef` trong `pod-secret-env.yaml`) và volume mount (`pod-secret-volume.yaml`).
+        - Thiết lập và kiểm chứng phân quyền tệp tin chặt chẽ `defaultMode: 0400` (chỉ read-only cho owner).
+        - Phân biệt rạch ròi bản chất: Base64 trong Kubernetes Secret chỉ là encoding (mã hóa biểu diễn dữ liệu), hoàn toàn không phải encryption (mã hóa bảo mật như Ansible Vault AES-256).
+      - Giám sát Sức khỏe & Điều phối Vòng đời Container với Probes:
+        - **Readiness Probe (`deployment-readiness.yaml`, `service-readiness.yaml`):** Khi ứng dụng trả về lỗi HTTP 404, Pod chuyển sang trạng thái `NotReady` (`0/1 Ready`), `EndpointSlice` tự động đánh dấu endpoint `ready=false` để ngắt định tuyến traffic tới Pod lỗi mà không giết Pod.
+        - **Liveness Probe (`pod-liveness.yaml`):** Khi health check trả về lỗi HTTP 404 vượt ngưỡng `failureThreshold`, kubelet tự động tiêu diệt và khởi động lại (restart) container để phục hồi trạng thái treo.
+        - **Startup Probe (`pod-startup.yaml`):** Bảo vệ ứng dụng khởi động chậm (`sleep 20` trước khi mở cổng 8080); chặn Liveness Probe can thiệp sớm cho đến khi Startup Probe thành công.
+      - Đánh giá Năng lực & Defense S39:
+        - Defense Mode (`pod-defense.yaml`): Tự viết Pod `s39-defense` tích hợp đồng bộ ConfigMap (`configMapKeyRef`), Secret volume (`defaultMode: 0400` tại `/etc/secrets`), cùng bộ 3 Startup Probe, Readiness Probe và Liveness Probe cho ứng dụng khởi động trễ 10s trên cổng 8080; kiểm chứng hoạt động thành công. Đạt **Technical Defense PASS**.
+        - Active Recall: **7/7 PASS**.
+      - Kết quả: **ĐẠT BUỔI 39 (COMPLETED - Technical PASS Defense Mode)**.
+  27. **Buổi 40 — Kubernetes Resources, Scheduling & Scaling (IN PROGRESS / PARTIALLY VERIFIED):**
+      - Quản trị Tài nguyên Compute (Requests & Limits):
+        - Cấu hình CPU và Memory `requests` / `limits` cho container (`pod-resources.yaml`).
+        - Kiểm chứng giới hạn lập lịch (`pod-unschedulable.yaml`): Yêu cầu `memory: 100Gi` vượt khả năng đáp ứng của node khiến Pod kẹt ở trạng thái `Pending` với sự kiện `FailedScheduling` (`Insufficient memory`).
+      - Kiểm chứng Hành vi Vượt ngưỡng Tài nguyên (OOMKilled vs CPU Throttling):
+        - **Memory OOMKilled (`pod-memory-oom.yaml`):** Tiến trình Python cấp phát 128Mi vượt `limits.memory: 64Mi` lập tức bị Linux kernel OOM Killer tiêu diệt với trạng thái `OOMKilled` và mã thoát `exit code 137` (SIGKILL).
+        - **CPU Throttling (`pod-cpu-throttle.yaml`):** Vòng lặp tiêu thụ CPU vượt `limits.cpu: 250m` không bị giết mà bị giới hạn chu kỳ xung nhịp bởi CFS quota; kiểm chứng trực tiếp các chỉ số `nr_periods`, `nr_throttled`, `throttled_usec` qua `/sys/fs/cgroup/cpu.stat`.
+      - Phân loại Chất lượng Dịch vụ (3 QoS Classes):
+        - Triển khai và xác minh 3 lớp QoS (`pods-qos.yaml`): `Guaranteed` (`requests == limits` cho mọi tài nguyên), `Burstable` (`requests < limits` hoặc chỉ khai báo một phần), và `BestEffort` (không khai báo requests/limits, ưu tiên thấp nhất, bị evict đầu tiên khi node thiếu RAM).
+      - Điều khiển Lập lịch Nâng cao (`nodeSelector`, `Taints` & `Tolerations`):
+        - Gán nhãn node (`disk=ssd`) và điều hướng Pod vào đúng worker bằng `nodeSelector` (`pod-node-selector.yaml`).
+        - Đánh dấu taint `workload=special:NoSchedule` lên node để chặn các Pod thông thường; cấu hình `tolerations` khớp key/operator/value/effect (`pod-toleration.yaml`) để cho phép Pod vượt rào cản taint và được schedule thành công.
+      - Mở rộng Quy mô Thủ công & Triển khai Metrics Server:
+        - Thực hành manual scaling cho Deployment (`deployment-scaling.yaml`).
+        - Triển khai thành công `metrics-server` trên cụm Kind (cấu hình `--kubelet-insecure-tls`) và xác nhận API `metrics.k8s.io/v1beta1` trả về số liệu CPU/Memory hợp lệ.
+      - Đánh giá Năng lực (Phần đã hoàn thành):
+        - **Technical Defense PASS (`deployment-defense.yaml`):** Tự viết Deployment `s40-defense` với 2 replicas, cả 2 Pods đều `Running` trên đúng node `s40-worker2`, thỏa mãn chính xác cấu hình `requests`/`limits`, `nodeSelector` (`disk: ssd`) và `tolerations` (`workload=special:NoSchedule`).
+        - **Active Recall:** **7/7 PASS** (Hoàn thành ngày 12/10/2026).
+      - **Phần Chưa Hoàn Thành & Sự cố Tồn đọng (Unresolved HPA Incident):**
+        - Chưa hoàn thành kiểm chứng **Horizontal Pod Autoscaler (HPA)** (`hpa.yaml`).
+        - Hiện tượng sự cố: Đối tượng `s40-scaling-hpa` liên tục hiển thị `CPU: <unknown>/50%` mặc dù cả 3 Pod mục tiêu đều đang `Running`, `Ready` và đã khai báo đầy đủ `requests.cpu: 100m`.
+        - Dữ liệu quan sát: Metrics API `v1beta1` vẫn trả về CPU metrics hợp lệ (đã từng tạo tải CPU xấp xỉ `1000m`), nhưng `metrics-server` ghi nhận lịch sử không ổn định (từng restart 17 lần, xuất hiện lỗi liveness timeout, `SandboxChanged`, `Error exit=2`).
+        - Các bước đã thử: Thực hiện `kubectl rollout restart deployment` và khởi động lại `control-plane` nhưng vẫn chưa khắc phục được lỗi `<unknown>/50%`.
+        - **Root cause:** **CHƯA XÁC ĐỊNH**; chưa chứng minh được hành vi tự động tăng/giảm (scale up/down) số lượng replicas của HPA.
+        - **Cleanup S40:** **CHƯA THỰC HIỆN** (Giữ nguyên cụm cluster S40 để tiếp tục điều tra xử lý sự cố ở đầu phiên tiếp theo).
+      - Kết quả tạm thời: **IN PROGRESS / PARTIALLY VERIFIED (Technical Defense PASS, Active Recall 7/7 PASS — Pending HPA Resolution & Cleanup)**.

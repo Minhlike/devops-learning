@@ -886,13 +886,74 @@
   - Đã xác minh bằng chứng: Lệnh `kind delete cluster --name s38` đã được thực thi; `kind get clusters` và `docker ps -a` xác nhận cụm s38 và các container đã được dọn sạch hoàn toàn; lưu trữ manifest YAML tại `labs/lab-38-kubernetes-service-networking` làm bằng chứng.
 - Kết quả: **ĐẠT BUỔI 38 (COMPLETED - Technical PASS Defense Mode)**.
 
+## [2026-10-06] Session 39: Kubernetes ConfigMap, Secret, Environment & Probes
+- Tiến độ lộ trình: Quản trị cấu hình ứng dụng, phân tách code và cấu hình theo The Twelve-Factor App, bảo vệ dữ liệu nhạy cảm với Secret và điều phối vòng đời ứng dụng bằng Probes.
+- Ngày học: 2026-10-05 và hoàn thành ngày 2026-10-06.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-39-kubernetes-config-secret-probes`
+  - WSL: `/mnt/d/Devops/labs/lab-39-kubernetes-config-secret-probes`
+  - Cluster: Cụm Kind `s39` (1 Control-Plane + 2 Worker nodes).
+- Quản trị Cấu hình với Kubernetes ConfigMap:
+  - Khởi tạo ConfigMap từ key-value (`configmap-app.yaml`) và từ nội dung tệp tin cấu hình (`configmap-file.yaml`).
+  - Thực hành 3 phương thức inject ConfigMap vào Pod:
+    1. Biến môi trường đơn lẻ qua `configMapKeyRef` (`pod-config-env.yaml`).
+    2. Nạp toàn bộ key-value thành biến môi trường qua `envFrom.configMapRef` (`pod-config-envfrom.yaml`).
+    3. Mount ConfigMap thành tệp tin cấu hình qua `volumes` và `volumeMounts` (`pod-config-volume.yaml`).
+- Quản trị Dữ liệu Mật với Kubernetes Secret:
+  - Khởi tạo Secret kiểu `Opaque` (`secret-app.yaml`) với dữ liệu mẫu an toàn (`appuser` / `supersecret123`).
+  - Truyền Secret vào Pod qua biến môi trường (`secretKeyRef` trong `pod-secret-env.yaml`) và volume mount (`pod-secret-volume.yaml`).
+  - Thực hành nguyên tắc đặc quyền tối thiểu trên filesystem: Thiết lập `defaultMode: 0400` cho volume secret, kiểm chứng file chỉ có quyền đọc bởi owner (`-r--------`).
+  - Phân tích bản chất: Base64 chỉ là hình thức mã hóa định dạng dữ liệu (encoding), không mang tính bảo mật mật mã (encryption) như Ansible Vault AES-256; trong môi trường sản xuất cần kết hợp KMS/Secrets Manager chuyên dụng.
+- Điều phối Sức khỏe Ứng dụng với Container Probes:
+  - **Readiness Probe (`deployment-readiness.yaml`, `service-readiness.yaml`):** Cố tình giả lập lỗi HTTP 404, Pod chuyển sang trạng thái `NotReady` (`0/1 Ready`), `EndpointSlice` lập tức đánh dấu endpoint `ready=false`, lưu lượng người dùng không bị điều hướng vào Pod lỗi.
+  - **Liveness Probe (`pod-liveness.yaml`):** Giả lập lỗi HTTP 404 vượt ngưỡng `failureThreshold: 3`, kubelet tự động restart container để tự phục hồi dịch vụ.
+  - **Startup Probe (`pod-startup.yaml`):** Cấu hình bảo vệ ứng dụng khởi động chậm (`sleep 20` trước khi mở cổng); Startup Probe ngăn chặn Liveness Probe giết sớm container trong giai đoạn khởi tạo.
+- Thử thách Defense S39:
+  - Tự viết manifest Pod `s39-defense` (`pod-defense.yaml`) phối hợp toàn diện: nạp `APP_ENV` từ ConfigMap, mount Secret tại `/etc/secrets` với `defaultMode: 0400`, thiết lập Startup Probe (TCP 8080, failureThreshold: 30), Readiness Probe (HTTP GET `/`), và Liveness Probe (TCP 8080) cho ứng dụng khởi động trễ 10 giây.
+  - Kết quả kiểm chứng: Pod khởi động thành công, vượt qua Startup Probe sau 10s, chuyển sang Ready và duy trì hoạt động ổn định.
+  - Kết quả Defense: **Technical Defense PASS**.
+- Đánh giá Năng lực: Trả lời chính xác **7/7 câu hỏi Active Recall**.
+- Dọn dẹp Tài nguyên: Cụm cluster s39 đã được dọn dẹp sau buổi học, manifest được lưu trữ tại `labs/lab-39-kubernetes-config-secret-probes`.
+- Kết quả: **ĐẠT BUỔI 39 (COMPLETED - Technical PASS Defense Mode)**.
 
-
-
-
-
-
-
-
-
-
+## [2026-10-12] Session 40: Kubernetes Resources, Scheduling & Scaling
+- Tiến độ lộ trình: Quản trị tài nguyên tính toán (Compute Resources), cơ chế giới hạn và lập lịch (Scheduling, QoS, Taints/Tolerations) và mở rộng quy mô (Scaling & HPA).
+- Ngày học: Bắt đầu từ 2026-10-07, tiếp tục thực hành và đánh giá ngày 2026-10-12.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-40-kubernetes-resources-scheduling-scaling`
+  - WSL: `/mnt/d/Devops/labs/lab-40-kubernetes-resources-scheduling-scaling`
+  - Cluster: Cụm Kind `s40` (1 Control-Plane + 2 Worker nodes).
+- Quản trị Tài nguyên & Giới hạn Lập lịch (Compute Resources & Scheduling):
+  - Khai báo CPU và Memory `requests` và `limits` (`pod-resources.yaml`).
+  - Kiểm chứng lỗi vượt ngưỡng tài nguyên node (`pod-unschedulable.yaml`): Yêu cầu `memory: 100Gi` vượt quá khả năng của cụm, kube-scheduler từ chối lập lịch, Pod kẹt ở trạng thái `Pending` với sự kiện `FailedScheduling` (`Insufficient memory`).
+- Kiểm chứng Vượt ngưỡng Tài nguyên (OOMKilled vs CPU Throttling):
+  - **Memory OOMKilled (`pod-memory-oom.yaml`):** Chạy script Python cấp phát mảng byte 128Mi vượt `limits.memory: 64Mi`; kernel OOM killer lập tức tiêu diệt container với lý do `OOMKilled` và mã thoát `exit code 137`.
+  - **CPU Throttling (`pod-cpu-throttle.yaml`):** Chạy vòng lặp vô tận tiêu thụ 100% CPU trên container có `limits.cpu: 250m`; tiến trình không bị giết mà bị bóp băng thông CPU (CFS quota); kiểm chứng chỉ số bóp băng thông tăng lên trong `/sys/fs/cgroup/cpu.stat`.
+- Phân loại Chất lượng Dịch vụ (Quality of Service - QoS Classes):
+  - Khởi tạo và xác minh 3 lớp QoS (`pods-qos.yaml`):
+    - `Guaranteed`: Cấu hình CPU/RAM có `requests == limits` cho tất cả container.
+    - `Burstable`: Cấu hình có `requests < limits` hoặc chỉ khai báo một trong hai.
+    - `BestEffort`: Không cấu hình requests hay limits; ưu tiên thấp nhất khi node cạn kiệt tài nguyên.
+- Điều khiển Lập lịch Nâng cao (`nodeSelector`, `Taints` & `Tolerations`):
+  - Gán nhãn node `disk=ssd` và định tuyến Pod bằng `nodeSelector` (`pod-node-selector.yaml`).
+  - Gán taint `workload=special:NoSchedule` lên node worker để chặn Pod thông thường.
+  - Cấu hình `tolerations` (`pod-toleration.yaml`) với `key: workload`, `operator: Equal`, `value: special`, `effect: NoSchedule` cho phép Pod vượt qua rào cản taint và lập lịch thành công lên worker node được chỉ định.
+- Manual Scaling & Cài đặt Metrics Server:
+  - Thực hành điều chỉnh số lượng bản sao bằng lệnh `kubectl scale` cho Deployment (`deployment-scaling.yaml`).
+  - Cài đặt `metrics-server` trên cụm Kind (bổ sung tham số `--kubelet-insecure-tls` trong Deployment args).
+  - Xác nhận API `metrics.k8s.io/v1beta1` hoạt động và trả về số liệu CPU/Memory của các Pod.
+- Đánh giá Năng lực Đã Kiểm Chứng:
+  - **Technical Defense PASS (`deployment-defense.yaml`):** Tự viết Deployment `s40-defense` gồm 2 replicas; cả hai Pod đều chạy (`Running`) trên đúng node `s40-worker2`, cấu hình chuẩn xác `requests` (`cpu: 100m`, `memory: 64Mi`), `limits` (`cpu: 250m`, `memory: 128Mi`), `nodeSelector` (`disk: ssd`) và `tolerations` (`workload=special:NoSchedule`).
+  - **Active Recall:** Đạt **7/7 PASS** trong phần đánh giá lý thuyết và tư duy kiến trúc ngày 12/10/2026.
+- Sự cố Chưa Khắc Phục (Unresolved Incident - Horizontal Pod Autoscaler):
+  - **Triệu chứng sự cố:** Cấu hình HPA `s40-scaling-hpa` (`hpa.yaml`) mục tiêu scale 1 đến 5 replicas dựa trên CPU utilization 50%. Tuy nhiên HPA liên tục báo `CPU: <unknown>/50%`.
+  - **Điều kiện đối soát:**
+    - Cả 3 Pod của Deployment `s40-scaling` đều ở trạng thái `Running`, `Ready` và có khai báo `requests.cpu: 100m` đầy đủ.
+    - Metrics API `v1beta1` trả CPU metrics hợp lệ; đã từng tạo tải CPU thực tế xấp xỉ `1000m`.
+    - `metrics-server` gặp hiện tượng không ổn định: ghi nhận 17 lần restart, xuất hiện sự kiện liveness timeout, `SandboxChanged` và lỗi thoát tiến trình `Error exit=2`.
+  - **Biện pháp cứu hộ đã thử:** Đã thử `kubectl rollout restart deployment` và khởi động lại `control-plane` nhưng không khắc phục được.
+  - **Hiện trạng:**
+    - **Root cause: CHƯA XÁC ĐỊNH.**
+    - Chưa chứng minh được hành vi tự động tăng/giảm số lượng replicas của HPA.
+    - **Cleanup S40: CHƯA THỰC HIỆN** (Cụm cluster và các tài nguyên S40 vẫn được giữ nguyên trên hệ thống để tiếp tục xử lý).
+- Kết quả: **IN PROGRESS / PARTIALLY VERIFIED (Technical Defense PASS, Active Recall 7/7 PASS — Tồn đọng Incident HPA & Chưa Cleanup)**.
