@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: s40-scaling
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: s40-scaling
+
+  template:
+    metadata:
+      labels:
+        app: s40-scaling
+
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "32Mi"

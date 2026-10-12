@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: s39-config-volume
+
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "cat /etc/app-config/app.conf && sleep 3600"]
+
+    volumeMounts:
+      - name: config-volume
+        mountPath: /etc/app-config
+        readOnly: true
+
+  volumes:
+    - name: config-volume
+      configMap:
+        name: s39-file-config

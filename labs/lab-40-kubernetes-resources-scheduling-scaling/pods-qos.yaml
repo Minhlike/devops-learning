@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s40-best-effort
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s40-burstable
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "32Mi"
+        limits:
+          cpu: "200m"
+          memory: "64Mi"
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s40-guaranteed
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "32Mi"
+        limits:
+          cpu: "100m"
+          memory: "32Mi"
