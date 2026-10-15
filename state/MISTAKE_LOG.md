@@ -539,3 +539,16 @@
       - **Root cause: CHƯA XÁC ĐỊNH.**
       - Chưa chứng minh được autoscaling tăng/giảm số lượng replicas thành công.
       - Chưa thực hiện cleanup cụm S40 để giữ nguyên hiện trường phục vụ điều tra và xử lý dứt điểm ở đầu buổi học tiếp theo.
+
+## [2026-10-15] Sự cố Giới hạn Inotify CRI khi Khởi tạo Cụm Kind và Bài học Nội tại Lưu trữ PostgreSQL S41
+- **Ngày:** 2026-10-15
+- **Bối cảnh:** Lab 41 — Kubernetes Storage (Container Root FS, emptyDir, PV/PVC, StorageClass, StatefulSet, PostgreSQL 16 Persistence).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Sự cố Bootstrap Cụm Kind do Giới hạn Nhân Linux (`fs.inotify.max_user_instances`):**
+    - *Triệu chứng:* Lệnh khởi tạo cụm Kind `s41` thất bại, containerd bên trong node container không khởi động được CRI runtime, control-plane không thể đạt trạng thái Ready.
+    - *Nguyên nhân gốc:* WSL Linux host có giới hạn theo dõi tệp tin `fs.inotify.max_user_instances = 128` quá thấp so với nhu cầu của containerd/kubelet khi chạy môi trường Kind nhiều node.
+    - *Khắc phục:* Nâng tạm thời giới hạn inotify trên WSL host bằng lệnh `sudo sysctl fs.inotify.max_user_instances=1024`. Sau đó khởi tạo lại cụm Kind thành công, toàn bộ control-plane và worker nodes đạt trạng thái `Ready`.
+  - **Bản chất Lưu trữ Bền vững & Cơ chế Đảm bảo Dữ liệu của Cơ sở Dữ liệu (PostgreSQL Storage Internals):**
+    - *Vai trò của Write-Ahead Logging (WAL) và `fsync`:* Khi thực thi transaction (INSERT/UPDATE), PostgreSQL ghi nhật ký vào WAL trước khi ghi vào data pages trên disk. Lệnh hệ thống `fsync()` bắt buộc OS flush dữ liệu từ page cache xuống ổ cứng vật lý. Nếu container hoặc node bị sập nguồn đột ngột, PostgreSQL sử dụng WAL để thực hiện Crash Recovery (REDO các transaction đã commit).
+    - *Rủi ro hiệu năng vs an toàn dữ liệu (`synchronous_commit`):* Mặc định `synchronous_commit = on` đảm bảo mỗi commit phải đợi `fsync` hoàn tất trên WAL disk. Nếu tắt (`off`), hệ thống tăng tốc throughput nhưng chấp nhận cửa sổ mất dữ liệu tối đa vài lần chu kỳ `wal_writer_delay` khi crash.
+    - *Rủi ro sao chép không đồng bộ (Asynchronous Replication Gap):* Trong kiến trúc PostgreSQL Primary - Replica bất đối xứng (asynchronous), transaction được commit thành công trên Primary mà không cần chờ Replica xác nhận. Nếu node Primary gặp sự cố phần cứng vĩnh viễn, các transaction nằm trong replication lag chưa kịp truyền sang Replica sẽ bị mất hoàn toàn (RPO > 0), ngay cả khi Kubernetes StatefulSet tự động tái tạo lại Pod.
