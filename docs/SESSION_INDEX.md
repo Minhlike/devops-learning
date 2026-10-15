@@ -78,8 +78,8 @@
 | **S39** | Kubernetes Config & Probes | **COMPLETED** | [`labs/s39-kubernetes-config/`](../labs/s39-kubernetes-config/) | ConfigMap, Secret `0400`, Startup/Readiness/Liveness | Readiness 404 gỡ Pod khỏi service; Liveness restart |
 | **S40** | Kubernetes Resources & Scaling | **PARTIALLY VERIFIED** | [`labs/s40-kubernetes-resources/`](../labs/s40-kubernetes-resources/) | `requests/limits`, OOMKilled exit 137, QoS, Taints/Tolerations | **Incident tồn đọng:** HPA báo `CPU: <unknown>/50%` |
 | **S41** | Kubernetes Storage & Persistence | **COMPLETED / PASS** | [`labs/s41-kubernetes-storage/`](../labs/s41-kubernetes-storage/) | emptyDir, PV/PVC dynamic, StatefulSet, PostgreSQL 16 | Dữ liệu SQL bảo toàn sau khi Pod DB bị xóa và tái tạo |
-| **S42** | Ingress & Application Exposure | **NEXT SESSION** | Chuẩn bị triển khai | L7 Ingress, Ingress NGINX, host/path routing | **Áp dụng chính sách kiểm tra mới: 7 trắc nghiệm + 2 tự luận** |
-| **S43** | Helm Fundamentals | **UPCOMING** | Lộ trình chuẩn | Helm Charts, Values, Release Lifecycle | Chuẩn hóa đóng gói ứng dụng Kubernetes |
+| **S42** | Kubernetes Gateway API & Application Exposure | **COMPLETED** | [`labs/s42-kubernetes-gateway-api/`](../labs/s42-kubernetes-gateway-api/) | Gateway API, Envoy Gateway, GatewayClass, HTTPRoute, Host/Path routing | Đạt 7,7/10; AddressNotAssigned bảo lưu; 503 recovery |
+| **S43** | Helm Fundamentals | **NEXT SESSION** | Chuẩn bị triển khai | Helm Charts, Values, Templates, Release Lifecycle | Chuẩn hóa đóng gói và quản lý release ứng dụng K8s |
 | **S44** | K8s Troubleshooting & Defense | **UPCOMING** | Lộ trình chuẩn | Chẩn đoán cluster & phục hồi sự cố toàn diện | Mốc kết thúc Phase 9 trước khi sang Observability |
 
 ---

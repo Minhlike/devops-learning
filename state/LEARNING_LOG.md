@@ -997,3 +997,81 @@
   - Lịch sử đánh giá ban đầu được giữ nguyên trung thực (5 PASS, 2 PARTIAL củng cố bổ sung đạt).
   - Trạng thái cluster: Cụm cluster `s41` và `s40` được giữ nguyên tài nguyên (chưa cleanup).
 - Kết quả: **ĐẠT BUỔI 41 (COMPLETED / PASS — Ngày 15/10/2026)**.
+
+## [2026-10-15] Session 42: Kubernetes Gateway API & Application Exposure
+- Tiến độ lộ trình: Tiếp nhận và định tuyến lưu lượng Lớp 7 (Application Layer) vào cụm Kubernetes bằng Kubernetes Gateway API thế hệ mới, thay thế Ingress truyền thống.
+- Ngày học: 2026-10-15.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\s42-kubernetes-gateway-api`
+  - WSL: `/mnt/d/Devops/labs/s42-kubernetes-gateway-api`
+  - Nền tảng: Windows + WSL2 Ubuntu 24.04, Docker Engine 28.0.1, Kubernetes v1.37.0 trên Kind cluster `s41`.
+  - Namespace: `s42`.
+  - Công nghệ chính: Kubernetes Gateway API (Standard CRDs v1.2.0), Envoy Gateway Controller v1.9.2, `hashicorp/http-echo:1.0.0`.
+- Chuyển dịch Kiến trúc: Từ Ingress sang Gateway API:
+  - Nắm vững hạn chế của Ingress truyền thống: Single monolithic resource trộn lẫn quyền hạn cluster admin và app developer; phụ thuộc nặng vào annotation phi chuẩn của từng controller vendor; Ingress-NGINX đã chính thức ngừng phát triển tích cực.
+  - Kiến trúc phân quyền của Gateway API:
+    - Infrastructure Provider quản lý `GatewayClass`.
+    - Cluster Operator / Platform Engineer quản lý `Gateway` (listeners, ports, TLS).
+    - Application Developer quản lý `HTTPRoute` (path, header, hostname routing gắn vào Service).
+- Chuỗi Bài Lab Thực hành & Bằng chứng Kỹ thuật:
+  - **Lab A — Gateway API CRDs & Envoy Controller:**
+    - Cài đặt bộ Custom Resource Definitions chính thức của Gateway API (`gateway.networking.k8s.io`).
+    - Cài đặt Envoy Gateway Controller v1.9.2 trong namespace `envoy-gateway-system`. Deployment `envoy-gateway` rollout thành công (PASS).
+  - **Lab B — GatewayClass (`gatewayclass.yaml`):**
+    - Khai báo `GatewayClass` `s42-envoy` với `controllerName: gateway.envoyproxy.io/gatewayclass-controller`.
+    - Kiểm tra trạng thái: `Accepted=True` (PASS).
+  - **Lab C — Gateway (`gateway.yaml`):**
+    - Khởi tạo `Gateway` `s42-gateway` trong namespace `s42`, gán `gatewayClassName: s42-envoy`.
+    - Listener: HTTP cổng 80, `allowedRoutes.namespaces.from: Same`.
+    - Trạng thái điều kiện: Gateway `Accepted=True`, Listener `Accepted=True`, `Programmed=True`, `ResolvedRefs=True`.
+    - **Tồn đọng kỹ thuật bảo lưu (Unresolved Gateway External IP):** Gateway tổng thể báo `Programmed=False` (`Reason: AddressNotAssigned`, `Message: No addresses have been assigned to the Gateway`). Lý do: Envoy Proxy Service loại `LoadBalancer` nhận `EXTERNAL-IP=<pending>` do môi trường Kind không có Cloud LoadBalancer controller.
+  - **Lab D — Backend API (`backend.yaml`):**
+    - Triển khai Deployment `s42-api` (1 replica, image `hashicorp/http-echo:1.0.0`, args `-text="Hello from S42 API"`).
+    - Khởi tạo Service ClusterIP `s42-api` (port 80 -> targetPort 5678). Pod Ready 1/1 (PASS).
+  - **Lab E — HTTPRoute (`httproute.yaml`):**
+    - Khởi tạo `s42-api-route` trong namespace `s42`, tham chiếu `parentRefs: s42-gateway`.
+    - Cấu hình hostname `api.s42.local`, quy tắc PathPrefix `/api` trỏ `backendRefs: s42-api:80`.
+    - Trạng thái: `Accepted=True`, `ResolvedRefs=True` (PASS).
+  - **Lab F — Kiểm thử HTTP End-to-End:**
+    - Thiết lập port-forward từ Service của Envoy Gateway sang cổng 18080 của WSL:
+      `kubectl port-forward svc/envoy-s42-s42-gateway-... 18080:80 -n envoy-gateway-system`
+    - Gửi request: `curl -H "Host: api.s42.local" http://localhost:18080/api`
+    - Nhận phản hồi: `HTTP/1.1 200 OK`, `Hello from S42 API` (PASS).
+  - **Lab G — Kiểm chứng Hostname & Path Routing:**
+    - Kiểm thử 1: `curl -H "Host: api.s42.local" http://localhost:18080/apix` -> nhận `HTTP 404 Not Found` (Path mismatch).
+    - Kiểm thử 2: `curl -H "Host: wrong.s42.local" http://localhost:18080/api` -> nhận `HTTP 404 Not Found` (Host mismatch).
+    - Kiểm thử 3: `curl -H "Host: api.s42.local" http://localhost:18080/api/customers` -> nhận `HTTP 200 OK`, `Hello from S42 API` (Khớp PathPrefix theo ranh giới đoạn đường dẫn).
+    - Kết quả: PASS.
+  - **Lab H — Failure Injection HTTP 503 & Phục hồi:**
+    - Scale Deployment `s42-api` xuống 0 replicas (`kubectl scale deployment s42-api --replicas=0 -n s42`).
+    - Gửi lại request: Envoy trả về ngay `HTTP/1.1 503 Service Unavailable`, kiểm tra `kubectl get endpointslices` thấy danh sách endpoints rỗng.
+    - Khôi phục: Scale lại `replicas=1`, rollout hoàn tất, request lập tức trả về `HTTP 200 OK` (PASS).
+  - **Lab I — Multi-backend Routing:**
+    - Triển khai thêm frontend service: Deployment `s42-web` và Service `s42-web` (`frontend.yaml` - `hashicorp/http-echo:1.0.0` với `-text="Hello from S42 WEBSITE"`).
+    - Cập nhật `httproute.yaml` với hostname `shop.s42.local` gồm 2 quy tắc:
+      - Tuyến `/api` (PathPrefix) trỏ `s42-api`.
+      - Tuyến `/` (PathPrefix) trỏ `s42-web`.
+    - Kiểm chứng:
+      - `curl -H "Host: shop.s42.local" http://localhost:18080/` -> `HTTP 200`, `Hello from S42 WEBSITE`.
+      - `curl -H "Host: shop.s42.local" http://localhost:18080/api` -> `HTTP 200`, `Hello from S42 API`.
+    - Kết quả: PASS.
+- Sự cố Hạ tầng WSL/Kind sau Reset:
+  - Terminal và WSL bị khởi động lại giữa buổi học.
+  - Quan sát: `kind get clusters` vẫn thấy `s40`, `s41`. Container `s41-control-plane` dừng với `ExitCode=128`, Docker/runc báo lỗi khởi tạo systemd cgroup scope (`OOMKilled=false`).
+  - Giá trị `fs.inotify.max_user_instances` bị reset về `128`.
+  - Học viên nâng lại giá trị thành `1024` (`sudo sysctl fs.inotify.max_user_instances=1024`), chạy `docker start s41-control-plane` thành công.
+  - Kubernetes API Server phục hồi, `/readyz?verbose` trả `readyz check passed`, node `s41-control-plane` trở lại `Ready`.
+- Đánh giá Năng lực Cuối Buổi (Áp dụng Chính sách Đánh giá Mới S42+):
+  - Hình thức: Duy nhất 1 bài kiểm tra cuối buổi gồm 7 câu trắc nghiệm (MCQ) và 2 câu tự luận (Essay). Bãi bỏ Technical Defense, Active Recall và Timed Defense riêng biệt.
+  - Kết quả Trắc nghiệm:
+    - Câu 1: B (PASS) | Câu 2: D (PASS) | Câu 3: A (PASS) | Câu 4: A (Sai - đáp án đúng là C) | Câu 5: A (PASS) | Câu 6: C (PASS) | Câu 7: B (PASS).
+    - Trắc nghiệm: **6/7 câu đúng**.
+    - Phân tích lỗi Câu 4: Nhầm rằng khi có cả `/` và `/api`, request `/api/customers` sẽ được nhân đôi gửi tới cả 2 Service; kiến thức chuẩn: Gateway API ưu tiên tuyến cụ thể hơn (`/api`), request chỉ tới `s42-api`.
+  - Kết quả Tự luận:
+    - Câu 8 (Cơ chế GatewayClass, Gateway, HTTPRoute, Service): Đạt `1,5/2` điểm. Hiểu đúng luồng, nhưng còn nhầm GatewayClass trực tiếp khởi tạo Gateway vật lý và nhầm Gateway bắt buộc phải có LoadBalancer IP để test qua port-forward.
+    - Câu 9 (HTTP 404, 503 và quy trình khôi phục): Đạt `1/2` điểm. Giải thích đúng 404 và 503; phần troubleshooting đề xuất restart theo thói quen thay vì đối chiếu bằng chứng replicas=0 để scale up.
+    - Tự luận: **2,5/4 điểm**.
+  - Tổng kết Đánh giá: **8,5/11 điểm** $\rightarrow$ Quy đổi: **7,7/10 — ĐẠT (PASS)**.
+  - Điểm cần củng cố: Nguyên tắc ưu tiên tuyến cụ thể hơn, chẩn đoán dựa trên bằng chứng (evidence-based troubleshooting), phân biệt Gateway hợp lệ về cấu hình vs Gateway có External IP.
+  - Trạng thái cluster: Cụm Kind `s40`, `s41`, namespace `s42` và các container DB được giữ nguyên tài nguyên.
+- Kết quả: **ĐẠT BUỔI 42 (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10 — Ngày 15/10/2026)**.

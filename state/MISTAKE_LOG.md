@@ -552,3 +552,24 @@
     - *Vai trò của Write-Ahead Logging (WAL) và `fsync`:* Khi thực thi transaction (INSERT/UPDATE), PostgreSQL ghi nhật ký vào WAL trước khi ghi vào data pages trên disk. Lệnh hệ thống `fsync()` bắt buộc OS flush dữ liệu từ page cache xuống ổ cứng vật lý. Nếu container hoặc node bị sập nguồn đột ngột, PostgreSQL sử dụng WAL để thực hiện Crash Recovery (REDO các transaction đã commit).
     - *Rủi ro hiệu năng vs an toàn dữ liệu (`synchronous_commit`):* Mặc định `synchronous_commit = on` đảm bảo mỗi commit phải đợi `fsync` hoàn tất trên WAL disk. Nếu tắt (`off`), hệ thống tăng tốc throughput nhưng chấp nhận cửa sổ mất dữ liệu tối đa vài lần chu kỳ `wal_writer_delay` khi crash.
     - *Rủi ro sao chép không đồng bộ (Asynchronous Replication Gap):* Trong kiến trúc PostgreSQL Primary - Replica bất đối xứng (asynchronous), transaction được commit thành công trên Primary mà không cần chờ Replica xác nhận. Nếu node Primary gặp sự cố phần cứng vĩnh viễn, các transaction nằm trong replication lag chưa kịp truyền sang Replica sẽ bị mất hoàn toàn (RPO > 0), ngay cả khi Kubernetes StatefulSet tự động tái tạo lại Pod.
+
+## [2026-10-15] Sự cố Khởi động lại Cụm Kind và Bài học Đánh giá Gateway API S42
+- **Ngày:** 2026-10-15
+- **Bối cảnh:** Lab 42 — Kubernetes Gateway API & Application Exposure (Envoy Gateway, GatewayClass, Gateway, HTTPRoute, Path/Host Routing).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Sự cố Node Control-Plane Dừng (ExitCode 128) sau khi WSL/Terminal Reset:**
+    - *Triệu chứng:* Khi terminal/WSL bị khởi động lại giữa buổi học, container `s41-control-plane` bị dừng với `ExitCode: 128`. Lệnh `kubectl` không kết nối được tới API Server (`connection refused`).
+    - *Quan sát kỹ thuật:* Docker/runc báo lỗi liên quan đến việc khởi tạo systemd cgroup scope (`OOMKilled=false`). Giá trị nhân Linux `fs.inotify.max_user_instances` trên WSL host bị reset về mức mặc định `128`.
+    - *Xử lý khôi phục:* Học viên nâng lại giới hạn inotify lên `1024` (`sudo sysctl fs.inotify.max_user_instances=1024`), sau đó thực thi `docker start s41-control-plane`. API Server khôi phục thành công, endpoint `/readyz?verbose` trả về check passed và node chuyển lại trạng thái `Ready`.
+    - *Ghi nhận khách quan:* Đây là sự cố khởi động container/control-plane sau khi WSL reset; không khẳng định inotify là nguyên nhân duy nhất được chứng minh của lỗi cgroup scope.
+  - **Nhầm lẫn về Quy tắc Ưu tiên Tuyến trong HTTPRoute (Route Precedence):**
+    - *Hiểu lầm:* Khi tồn tại hai quy tắc cùng tiền tố (ví dụ `/` trỏ `s42-web` và `/api` trỏ `s42-api`), học viên nhầm rằng request gửi tới `/api/customers` sẽ được nhân đôi và gửi tới cả hai Service.
+    - *Bản chất chuẩn xác:* Gateway API áp dụng nguyên tắc khớp tuyến cụ thể nhất (Longest / Most Specific Prefix Match). Do `/api` có độ dài tiền tố khớp cụ thể hơn `/`, request `/api/customers` sẽ chỉ được định tuyến duy nhất tới Service `s42-api`; hoàn toàn không có cơ chế nhân đôi traffic tới cả hai backend nếu không cấu hình filter đặc biệt.
+  - **Thói quen Khắc phục Sự cố bằng Restart thay vì Dựa trên Bằng chứng Thực tế (Evidence-Based Troubleshooting):**
+    - *Triệu chứng trong bài kiểm tra tự luận:* Khi giải thích xử lý lỗi HTTP 503 do Deployment bị scale về `replicas=0`, học viên đề xuất kiểm tra CrashLoopBackOff và chạy lệnh `kubectl rollout restart deployment`.
+    - *Bản chất:* Lỗi 503 phát sinh do `replicas=0` khiến EndpointSlice trống rỗng (0 endpoints). Việc `rollout restart` một Deployment có 0 replicas không sinh ra Pod nào và không giải quyết được vấn đề. Biện pháp đúng là kiểm tra số lượng replica khả dụng (`kubectl get deployment` / `kubectl get endpointslices`) và scale lại `replicas=1`. Cần rèn luyện phản xạ đọc bằng chứng thực tế thay vì áp dụng máy móc thao tác restart.
+  - **Phân biệt Rạch ròi Vai trò GatewayClass và Ràng buộc LoadBalancer External IP trong Môi trường Kind:**
+    - *Hiểu lầm:* Nhầm rằng GatewayClass trực tiếp khởi tạo Gateway vật lý, và ngộ nhận Gateway bắt buộc phải có External LoadBalancer IP mới có thể kiểm thử.
+    - *Bản chất kỹ thuật:*
+      1. `GatewayClass` chỉ là định nghĩa trừu tượng cấp cluster khai báo Controller chịu trách nhiệm (template/class), không trực tiếp spawn tài nguyên hạ tầng.
+      2. Trong môi trường Kind local, Service của Envoy Gateway có loại `LoadBalancer` nhưng kẹt ở trạng thái `EXTERNAL-IP: <pending>` (Gateway tổng thể mang điều kiện `Programmed=False`, `Reason: AddressNotAssigned`) do Kind không có Cloud LoadBalancer controller. Tuy nhiên, cấu hình Gateway và HTTPRoute vẫn hoàn toàn hợp lệ và hoàn toàn có thể kiểm thử routing thông suốt bằng phương pháp `kubectl port-forward` từ Service ra cổng local.

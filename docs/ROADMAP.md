@@ -84,11 +84,11 @@ flowchart LR
 - **S39:** Kubernetes Configuration & Probes: ConfigMap, Secret (`0400`), Startup/Readiness/Liveness — **COMPLETED**
 - **S40:** Kubernetes Resources, Scheduling & Scaling: requests/limits, QoS, Taints/Tolerations — **IN PROGRESS / PARTIALLY VERIFIED** *(Tồn đọng sự cố HPA CPU `<unknown>/50%` được quản lý độc lập trong backlog; cụm Kind `s40` giữ nguyên)*
 - **S41:** Kubernetes Storage: Volumes, emptyDir, PV, Dynamic PVC, StorageClass, StatefulSet & PostgreSQL 16 Persistence — **COMPLETED / PASS** (15/10/2026)
-- **S42:** Ingress & Application Exposure (Ingress Controller, Host/Path Routing, Default Backend) — **NEXT SESSION** *(Bắt buộc áp dụng chính sách kiểm tra mới: 7 trắc nghiệm + 2 tự luận)*
-- **S43:** Helm Fundamentals (Charts, Values, Templates, Release Lifecycle & Helm Upgrades) — **UPCOMING**
+- **S42:** Kubernetes Gateway API & Application Exposure (Envoy Gateway, GatewayClass, HTTPRoute, Path/Host Routing, 503 Failure Injection) — **COMPLETED — LEARNING & ASSESSMENT PASS (7,7/10)** (15/10/2026)
+- **S43:** Helm Fundamentals (Charts, Values, Templates, Release Lifecycle & Helm Upgrades) — **NEXT SESSION**
 - **S44:** Kubernetes Troubleshooting & Cluster Defense (Cluster & Workload Recovery Simulation) — **UPCOMING**
 
-> **Mốc quan trọng (Milestone):** Còn đúng 3 buổi (**S42, S43, S44**) thuộc mảng Kubernetes & Helm trước khi chuyển tiếp sang mảng Observability. Không chèn thêm các buổi Kubernetes phát sinh.
+> **Mốc quan trọng (Milestone):** Còn đúng 2 buổi (**S43, S44**) thuộc mảng Kubernetes & Helm trước khi chuyển tiếp sang mảng Observability. Không chèn thêm các buổi Kubernetes phát sinh. S45 bắt đầu học Prometheus. S46 bắt đầu học Grafana.
 
 ### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — UPCOMING
 - **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model)

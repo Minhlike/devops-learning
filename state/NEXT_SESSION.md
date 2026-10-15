@@ -1,10 +1,11 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 42 — Ingress & Application Exposure (Tiến hành trực tiếp theo Roadmap, không bị chặn bởi sự cố S40).
+- **Buổi học tiếp theo:** BUỔI 43 — Helm Fundamentals (Tiến hành trực tiếp theo Roadmap, không bị chặn bởi sự cố S40).
 - **Trạng thái Tiền đề (Prerequisites & State Confirmation):**
+  - Buổi 42 (Kubernetes Gateway API & Application Exposure) đã **HOÀN THÀNH (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10)** ngày 15/10/2026. Local HTTP routing PASS, Gateway External LoadBalancer provisioning UNRESOLVED (bảo lưu tồn đọng).
   - Buổi 41 (Kubernetes Storage: Volumes, emptyDir, PV, PVC, StorageClass, StatefulSet, PostgreSQL 16 Persistence) đã **HOÀN THÀNH (COMPLETED / PASS)** ngày 15/10/2026.
-  - Buổi 40 (Kubernetes Resources, Scheduling & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do tồn đọng sự cố HPA CPU: `<unknown>/50%`. Cụm Kind `s40` và `s41` được giữ nguyên tài nguyên; sự cố S40 được quản lý như một backlog incident độc lập, không cản trở việc bắt đầu S42.
-  - Lộ trình Roadmap chính thức: Tiếp tục 3 buổi Kubernetes (**S42 Ingress, S43 Helm, S44 K8s Defense**) trước khi bước sang Observability (**S45 Prometheus, S46 Grafana**).
+  - Buổi 40 (Kubernetes Resources, Scheduling & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do tồn đọng sự cố HPA CPU: `<unknown>/50%`. Cụm Kind `s40` và `s41` được giữ nguyên tài nguyên; sự cố S40 được quản lý như một backlog incident độc lập, không cản trở việc bắt đầu S43.
+  - Lộ trình Roadmap chính thức: Tiếp tục 2 buổi Kubernetes & Helm (**S43 Helm, S44 K8s Troubleshooting & Defense**) trước khi bước sang Observability (**S45 Prometheus, S46 Grafana**).
 
 ---
 
@@ -21,21 +22,21 @@
 
 ---
 
-## 2. Kế hoạch Nội dung Buổi 42 (Ingress & Application Exposure)
+## 2. Kế hoạch Nội dung Buổi 43 (Helm Fundamentals)
 
-- **Mục tiêu:** Nắm vững cơ chế tiếp nhận và định tuyến lưu lượng HTTP/HTTPS từ bên ngoài cụm Kubernetes vào các dịch vụ nội bộ (Services) ở Lớp 7 (Application Layer).
+- **Mục tiêu:** Nắm vững nguyên lý và vận hành Helm Package Manager để đóng gói, cấu hình tham số hóa và quản trị vòng đời ứng dụng Kubernetes (install, upgrade, rollback) một cách chuẩn hóa.
 - **Môi trường & Công cụ:**
-  - WSL Ubuntu, Docker daemon, Kind cluster hoặc cấu hình Kind port mapping (extraPortMappings 80/443).
-  - Ingress Controller (Ingress NGINX Controller for Kind).
-  - `kubectl`, `curl`.
+  - WSL2 Ubuntu 24.04, Docker daemon, Kind cluster (`s41` hoặc cụm mới nếu cần).
+  - Helm CLI v3, `kubectl`.
 - **Nội dung Lab Trọng tâm:**
-  1. Phân biệt ClusterIP vs NodePort vs LoadBalancer vs Ingress (L4 vs L7 Routing).
-  2. Cài đặt và cấu hình Ingress NGINX Controller trên Kind cluster.
-  3. Khởi tạo Ingress Resource định tuyến theo Host-based (`foo.local`, `bar.local`).
-  4. Khởi tạo Ingress Resource định tuyến theo Path-based (`/api`, `/web`).
-  5. Default Backend và xử lý mã lỗi HTTP 404/503.
-  6. Failure Injection & Troubleshooting: Sai Service name, sai target port, controller ingress class (`spec.ingressClassName: nginx`).
-  7. Bài kiểm tra cuối buổi chuẩn hóa: 7 câu trắc nghiệm + 2 câu tự luận về Ingress.
+  1. Vì sao nhiều Kubernetes YAML rời rạc trở nên khó quản lý (YAML sprawl, thiếu versioning, khó quản lý đa môi trường).
+  2. Kiến trúc Helm: Chart, Release, Repository; phân biệt Helm client vs Kubernetes API Server.
+  3. Cấu trúc Chart chuẩn: `Chart.yaml`, `values.yaml`, `templates/`, `charts/`, `.helmignore`.
+  4. Templating cơ bản: `{{ .Values... }}`, `{{ .Release.Name }}`, built-in objects, template helpers.
+  5. Vòng đời Release: `helm install`, `helm upgrade`, `helm rollback`, `helm list`, `helm history`, `helm uninstall`, `helm status`.
+  6. Quản lý cấu hình đa môi trường bằng values override (`-f values-prod.yaml`, `--set`).
+  7. Failure Injection & Rollback: Cố tình cấu hình sai template hoặc values gây rollout fail $\rightarrow$ sử dụng `helm rollback` để khôi phục về release ổn định trước đó một cách an toàn.
+  8. Bài kiểm tra cuối buổi chuẩn hóa: 7 câu trắc nghiệm + 2 câu tự luận về Helm (chỉ trong phạm vi lý thuyết và lab đã thực hành).
 
 ---
 

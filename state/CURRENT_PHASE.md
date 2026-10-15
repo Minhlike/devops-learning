@@ -1,7 +1,7 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 41 — Kubernetes Storage (COMPLETED / PASS). Chuẩn bị Buổi 42 — Ingress & Application Exposure. (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên).
+- **Current Status:** Hoàn thành Buổi 42 — Kubernetes Gateway API & Application Exposure (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10). Chuẩn bị Buổi 43 — Helm Fundamentals. (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller).
 - **Current Week:** Tuần 10 (Nghiệm thu ngày 15/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
@@ -654,3 +654,38 @@
         - Active Recall: Đạt 5 câu PASS trực tiếp, 2 câu ban đầu PARTIAL; cả 2 nội dung còn thiếu đã được giải thích chính xác và củng cố toàn diện trong bài kiểm tra bổ sung về cơ chế nội tại PostgreSQL (Write-Ahead Logging - WAL, `fsync`, `synchronous_commit`, Crash Recovery và rủi ro Asynchronous Replication).
         - Trạng thái cluster: Cụm cluster `s41` và `s40` được giữ nguyên tài nguyên (chưa cleanup để tránh gián đoạn).
       - Kết quả: **ĐẠT BUỔI 41 (COMPLETED / PASS — Ngày 15/10/2026)**.
+  29. **Buổi 42 — Kubernetes Gateway API & Application Exposure:**
+      - Định hướng Thực hành Hiện đại:
+        - Giới thiệu khái niệm Ingress truyền thống ở mức nền tảng (L7 routing, Ingress Controller).
+        - Tập trung thực hành chuyên sâu Kubernetes Gateway API (chuẩn thế hệ mới của Kubernetes SIG Network).
+        - Sử dụng Envoy Gateway (v1.9.2) làm Gateway Controller hiện đại thay cho Ingress-NGINX đã ngừng được duy trì.
+      - Môi trường & Triển khai Hạ tầng:
+        - Môi trường: Windows + WSL2 Ubuntu 24.04, Docker Engine, Kubernetes v1.37.0 trên Kind cluster `s41`.
+        - Namespace riêng biệt: `s42`.
+        - Cài đặt Gateway API CRDs chính thức và cài đặt Envoy Gateway Controller thành công (rollout PASS).
+      - Quản trị Cấu hình Gateway API (CRD Objects):
+        - **GatewayClass (`gatewayclass.yaml`):** Khởi tạo `GatewayClass` `s42-envoy` với controller `gateway.envoyproxy.io/gatewayclass-controller`, trạng thái `Accepted=True` (PASS).
+        - **Gateway (`gateway.yaml`):** Khởi tạo `Gateway` `s42-gateway` trong namespace `s42`, listener HTTP port 80, `allowedRoutes.namespaces.from: Same`. Gateway `Accepted=True`, Listener `Accepted=True`, `Programmed=True`, `ResolvedRefs=True`.
+        - **Bảo lưu Tồn đọng Kỹ thuật (Unresolved Gateway External IP):** Gateway tổng thể có trạng thái `Programmed=False` (`Reason: AddressNotAssigned`, `Message: No addresses have been assigned to the Gateway`) do Service Envoy Proxy loại `LoadBalancer` mang `EXTERNAL-IP=<pending>` trong môi trường Kind (không có Cloud LoadBalancer controller cấp IP ngoài). Đây là tồn đọng kỹ thuật được bảo lưu trung thực, không giả mạo kết quả.
+      - Triển khai Dịch vụ Ứng dụng Backend & HTTPRoute:
+        - **Backend API (`backend.yaml`):** Deployment `s42-api` chạy image `hashicorp/http-echo:1.0.0` (`-text="Hello from S42 API"`), Service ClusterIP `s42-api` cổng 80 -> targetPort 5678 (PASS).
+        - **HTTPRoute (`httproute.yaml`):** Khởi tạo `s42-api-route` gắn với Gateway `s42-gateway`, trỏ backend `s42-api`, trạng thái `Accepted=True`, `ResolvedRefs=True` (PASS).
+      - Kiểm thử Mạng End-to-End & Routing Rules:
+        - Kiểm thử qua port-forward từ Envoy Service ra cổng `18080` của WSL.
+        - Request hợp lệ: `Host: api.s42.local`, `Path: /api` -> nhận `HTTP/1.1 200 OK`, `Hello from S42 API` (PASS).
+        - Hostname & Path matching: Kiểm chứng `api.s42.local/apix` -> HTTP 404, `wrong.s42.local/api` -> HTTP 404, `api.s42.local/api/customers` -> HTTP 200 (kiểm chứng nguyên lý tiền tố theo ranh giới đường dẫn PathPrefix) (PASS).
+      - Failure Injection & Khôi phục Tự động:
+        - Scale Deployment `s42-api` xuống `replicas=0`: Request hợp lệ lập tức trả về `HTTP 503 Service Unavailable`, `EndpointSlice` ghi nhận 0 endpoints (PASS).
+        - Scale Deployment trở lại `replicas=1`: Rollout thành công, request phục hồi `HTTP 200 OK` (PASS).
+      - Đa Tuyến Backend (Multi-backend Routing):
+        - Triển khai thêm `s42-web` (`frontend.yaml` - `hashicorp/http-echo:1.0.0` với `-text="Hello from S42 WEBSITE"`).
+        - Cập nhật HTTPRoute với hostname `shop.s42.local`: Tuyến `/` trỏ `s42-web`, tuyến `/api` trỏ `s42-api`.
+        - Kiểm chứng: `shop.s42.local/` -> HTTP 200 `Hello from S42 WEBSITE`; `shop.s42.local/api` -> HTTP 200 `Hello from S42 API` (PASS).
+      - Sự cố Hạ tầng WSL/Kind:
+        - WSL/terminal reset, container `s41-control-plane` dừng với `ExitCode=128` (lỗi khởi tạo systemd cgroup scope từ docker/runc, `OOMKilled=false`). Học viên nâng lại `fs.inotify.max_user_instances=1024`, chạy `docker start s41-control-plane` thành công, Kubernetes API Server phục hồi, `/readyz?verbose` pass, node trở lại Ready.
+      - Đánh giá Năng lực Cuối Buổi (Áp dụng chính sách kiểm tra mới S42+):
+        - Trắc nghiệm: 6/7 câu đúng (sai câu 4 do nhầm lẫn request `/api/customers` gửi vào cả hai backend; kiến thức chuẩn: Gateway API ưu tiên tuyến cụ thể hơn `/api`).
+        - Tự luận: 2,5/4 điểm (Câu 8: 1,5/2; Câu 9: 1/2 do đề xuất restart thay vì scale up từ replicas=0).
+        - Tổng kết bài kiểm tra: 8,5/11 quy đổi **7,7/10 — ĐẠT (PASS)**.
+        - Điểm cần củng cố: Nguyên tắc ưu tiên tuyến cụ thể hơn, chẩn đoán dựa trên bằng chứng (evidence-based troubleshooting), phân biệt Gateway hợp lệ về cấu hình vs Gateway có External IP.
+      - Kết quả: **COMPLETED — LEARNING & ASSESSMENT PASS (7,7/10 — Ngày 15/10/2026)**.
