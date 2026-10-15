@@ -1,0 +1,20 @@
+---
+- name: Defense S35 Playbook
+  hosts: web
+
+  tasks:
+    - name: Deploy node info using template
+      ansible.builtin.template:
+        src: templates/node-info.j2
+        dest: /tmp/s35-defense.txt
+        mode: '0644'
+
+    - name: Doc file vua tao tren tung host
+      ansible.builtin.command:
+        cmd: cat /tmp/s35-defense.txt
+      register: defense_file
+      changed_when: false
+
+    - name: Hien thi noi dung file
+      ansible.builtin.debug:
+        var: defense_file.stdout_lines

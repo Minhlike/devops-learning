@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: s38-backend
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: s38-backend
+
+  template:
+    metadata:
+      labels:
+        app: s38-backend
+
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine

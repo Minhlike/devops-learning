@@ -1,0 +1,9 @@
+---
+- name: Kiem tra bien multi-host
+  hosts: web
+  gather_facts: false
+
+  tasks:
+    - name: Hien thi bien cua tung host
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} | env={{ app_environment }} | port={{ app_port }}"

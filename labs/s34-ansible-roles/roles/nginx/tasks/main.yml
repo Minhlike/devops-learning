@@ -1,0 +1,77 @@
+---
+- name: Cai dat Nginx tren Ubuntu
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+  become: true
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: Dam bao Nginx dang chay va tu khoi dong
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+  become: true
+
+- name: Render cau hinh Nginx tam thoi
+  ansible.builtin.template:
+    src: nginx-demo.conf.j2
+    dest: /tmp/ansible-nginx-demo.conf
+    mode: "0644"
+
+- name: Tao file kiem tra Nginx tam thoi
+  ansible.builtin.copy:
+    dest: /tmp/ansible-nginx-test.conf
+    mode: "0644"
+    content: |
+      events {}
+
+      http {
+        include /etc/nginx/mime.types;
+        include /tmp/ansible-nginx-demo.conf;
+      }
+
+- name: Kiem tra cau hinh Nginx truoc khi trien khai
+  ansible.builtin.command:
+    cmd: nginx -t -c /tmp/ansible-nginx-test.conf
+  become: true
+  changed_when: false
+
+- name: Trien khai cau hinh Nginx da kiem tra
+  ansible.builtin.copy:
+    src: /tmp/ansible-nginx-demo.conf
+    dest: /etc/nginx/conf.d/ansible-demo.conf
+    remote_src: true
+    mode: "0644"
+  become: true
+  notify: Reload Nginx
+
+- name: Ap dung cau hinh Nginx ngay lap tuc
+  ansible.builtin.meta: flush_handlers
+
+- name: Kiem tra trang thai Nginx
+  ansible.builtin.command:
+    cmd: systemctl is-active nginx
+  register: nginx_status
+  changed_when: false
+
+- name: Kiem tra HTTP status cua ung dung
+  ansible.builtin.command:
+    cmd: curl -s -o /dev/null -w "%{http_code}" http://localhost:{{ app_port }}
+  register: http_check
+  changed_when: false
+  failed_when: http_check.stdout != "200"
+
+- name: Hien thi HTTP status
+  ansible.builtin.debug:
+    msg: "HTTP status hien tai: {{ http_check.stdout }}"
+
+- name: Hien thi trang thai Nginx
+  ansible.builtin.debug:
+    msg: "Trang thai Nginx hien tai: {{ nginx_status.stdout }}"
+
+- name: Xac nhan Nginx dang hoat dong
+  ansible.builtin.debug:
+    msg: "Nginx dang hoat dong binh thuong."
+  when: nginx_status.stdout == "active"

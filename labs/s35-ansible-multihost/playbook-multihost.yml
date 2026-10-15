@@ -1,0 +1,21 @@
+---
+- name: Cau hinh nhieu managed nodes
+  hosts: web
+  gather_facts: false
+
+  tasks:
+    - name: Tao file cau hinh rieng cho tung host
+      ansible.builtin.template:
+        src: templates/node-info.j2
+        dest: /tmp/s35-node-info.txt
+        mode: "0644"
+
+    - name: Doc file vua tao
+      ansible.builtin.command:
+        cmd: cat /tmp/s35-node-info.txt
+      register: node_info
+      changed_when: false
+
+    - name: Hien thi ket qua tung host
+      ansible.builtin.debug:
+        var: node_info.stdout_lines
