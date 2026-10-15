@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/Minhlike/devops-learning/compare/v1.2.0...v1.3.0) (2026-10-15)
+
+
+### Features
+
+* **learning:** complete S41 storage and update roadmap and assessment policy ([#28](https://github.com/Minhlike/devops-learning/issues/28)) ([48c2b80](https://github.com/Minhlike/devops-learning/commit/48c2b808dfbedb16d8c08dc8af72ccce4c186cbe))
+
 ## [1.2.0](https://github.com/Minhlike/devops-learning/compare/v1.1.0...v1.2.0) (2026-10-12)
 
 
