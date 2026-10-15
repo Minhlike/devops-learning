@@ -957,3 +957,43 @@
     - Chưa chứng minh được hành vi tự động tăng/giảm số lượng replicas của HPA.
     - **Cleanup S40: CHƯA THỰC HIỆN** (Cụm cluster và các tài nguyên S40 vẫn được giữ nguyên trên hệ thống để tiếp tục xử lý).
 - Kết quả: **IN PROGRESS / PARTIALLY VERIFIED (Technical Defense PASS, Active Recall 7/7 PASS — Tồn đọng Incident HPA & Chưa Cleanup)**.
+
+## [2026-10-15] Session 41: Kubernetes Storage
+- Tiến độ lộ trình: Quản trị Lưu trữ Vùng chứa & Dữ liệu Bền vững (Container Filesystem, emptyDir, PV/PVC, Dynamic Provisioning, StatefulSet, PostgreSQL 16 Persistence).
+- Ngày hoàn thành: 2026-10-15.
+- Môi trường & Không gian làm việc:
+  - Workspace: `D:\Devops\labs\lab-41-kubernetes-storage`
+  - WSL: `/mnt/d/Devops/labs/lab-41-kubernetes-storage`
+  - Cluster: Cụm Kind `s41` (1 Control-Plane + 2 Worker nodes).
+- Quản trị Lưu trữ Vùng chứa & Tính Phù du (Container Filesystem vs emptyDir Volume):
+  - **Lab 41.1 (Container Filesystem - `pod-ephemeral.yaml`):** Tạo standalone Pod `s41-ephemeral`, ghi `customer_id=1001` vào `/tmp/customer.txt`. Xóa Pod và tạo lại từ manifest cũ. Kiểm tra xác nhận file không còn tồn tại. Chứng minh tính phù du (ephemeral) của container root filesystem (PASS).
+  - **Lab 41.2 (emptyDir Volume - `pod-emptydir.yaml`):** Tạo Pod `s41-emptydir` với `emptyDir` mount tại `/data`, ghi `customer_id=1001`. Dừng container bằng lệnh `crictl stop`. Kubelet tự khởi động lại container, `RESTARTS` tăng từ 0 lên 1. Pod không bị xóa và dữ liệu vẫn tồn tại nguyên vẹn qua container restart (PASS).
+- Quản trị Lưu trữ Bền vững & Cấp phát Động (PersistentVolume, PVC & Dynamic Provisioning):
+  - **Lab 41.3 (PV/PVC & Dynamic Provisioning - `pvc.yaml`, `pod-pvc.yaml`):**
+    - Khảo sát StorageClass mặc định `standard` trên Kind (provisioner: `rancher.io/local-path`, Reclaim Policy: `Delete`, Volume Binding Mode: `WaitForFirstConsumer`).
+    - Tạo PVC `s41-data` dung lượng 1Gi (`pvc.yaml`), trạng thái ban đầu là `Pending`.
+    - Khi Pod `s41-persistent` (`pod-pvc.yaml`) sử dụng PVC, Kubernetes tự động cấp phát PV và PVC chuyển sang trạng thái `Bound`.
+    - Ghi `customer_id=1001` vào `/data/customer.txt`.
+    - Xóa Pod, tạo lại Pod nhưng giữ nguyên PVC; kiểm chứng dữ liệu tồn tại sau khi Pod bị thay thế (PASS).
+- Quản trị Ứng dụng có Trạng thái (StatefulSet & Stable Identity):
+  - **Lab 41.4 (StatefulSet - `statefulset.yaml`):**
+    - Tạo StatefulSet `s41-stateful` kết hợp Headless Service `s41-stateful-headless` và `volumeClaimTemplates`.
+    - Pod `s41-stateful-0` và PVC `data-s41-stateful-0` được tạo tự động.
+    - Ghi `database_record=2026`.
+    - Xóa Pod; StatefulSet tự động tạo lại Pod mới có cùng danh tính cố định và gắn lại PVC cũ; dữ liệu trong PVC vẫn tồn tại (PASS).
+- Lưu trữ Cơ sở Dữ liệu Bền vững trên Kubernetes (PostgreSQL 16 Persistence):
+  - **Lab 41.5 (PostgreSQL Database Persistence - `postgres-statefulset.yaml`):**
+    - Triển khai PostgreSQL 16 bằng StatefulSet `s41-postgres`. Secret `s41-pg-auth` được tạo trực tiếp trên cluster, không lưu mật khẩu vào Git.
+    - Pod `s41-postgres-0` sử dụng PVC `pgdata-s41-postgres-0`, dung lượng 1Gi gắn tại `/var/lib/postgresql/data`.
+    - Kết nối cơ sở dữ liệu, tạo bảng `customers`, thực thi lệnh `INSERT` và `SELECT` thành công bản ghi `(1001, 'Minh')`.
+    - Xóa Pod PostgreSQL; StatefulSet tự tạo lại Pod và tiếp tục sử dụng PVC cũ.
+    - Truy vấn `SELECT` sau khi Pod được thay thế vẫn trả về `(1001, 'Minh')` nguyên vẹn (PASS).
+- Sự cố trong quá trình tạo Môi trường (Environment Bootstrap):
+  - Cụm Kind cluster `s41` ban đầu khởi tạo thất bại vì containerd không khởi tạo được CRI do giới hạn nhân Linux `fs.inotify.max_user_instances=128`.
+  - Khắc phục nhanh bằng cách nâng tạm thời giới hạn lên 1024 trong phiên WSL (`sudo sysctl fs.inotify.max_user_instances=1024`), sau đó cluster được tạo lại thành công với CNI, StorageClass và control-plane Ready.
+- Đánh giá Kiến thức & Nghiệm thu S41:
+  - Technical Defense: **2/2 PASS**.
+  - Active Recall: Đạt 5 câu PASS trực tiếp, 2 câu ban đầu PARTIAL. Cả 2 nội dung còn thiếu đã được giải thích chính xác và củng cố toàn diện trong bài kiểm tra bổ sung về cơ chế nội tại PostgreSQL (Write-Ahead Logging - WAL, `fsync`, `synchronous_commit`, Crash Recovery và Asynchronous replication gap).
+  - Lịch sử đánh giá ban đầu được giữ nguyên trung thực (5 PASS, 2 PARTIAL củng cố bổ sung đạt).
+  - Trạng thái cluster: Cụm cluster `s41` và `s40` được giữ nguyên tài nguyên (chưa cleanup).
+- Kết quả: **ĐẠT BUỔI 41 (COMPLETED / PASS — Ngày 15/10/2026)**.

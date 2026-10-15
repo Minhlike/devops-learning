@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 39 — Kubernetes ConfigMap, Secret, Environment & Probes. Đang thực hiện Buổi 40 — Kubernetes Resources, Scheduling & Scaling (IN PROGRESS / PARTIALLY VERIFIED: Đã hoàn thành Resources, QoS, Scheduling, Manual Scaling, Technical Defense PASS & Active Recall 7/7 PASS; tồn đọng sự cố HPA `<unknown>/50%` và chưa Cleanup).
-- **Current Week:** Tuần 10
+- **Current Status:** Hoàn thành Buổi 41 — Kubernetes Storage (COMPLETED / PASS). Chuẩn bị Buổi 42 — Ingress & Application Exposure. (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên).
+- **Current Week:** Tuần 10 (Nghiệm thu ngày 15/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -634,3 +634,23 @@
         - **Root cause:** **CHƯA XÁC ĐỊNH**; chưa chứng minh được hành vi tự động tăng/giảm (scale up/down) số lượng replicas của HPA.
         - **Cleanup S40:** **CHƯA THỰC HIỆN** (Giữ nguyên cụm cluster S40 để tiếp tục điều tra xử lý sự cố ở đầu phiên tiếp theo).
       - Kết quả tạm thời: **IN PROGRESS / PARTIALLY VERIFIED (Technical Defense PASS, Active Recall 7/7 PASS — Pending HPA Resolution & Cleanup)**.
+  28. **Buổi 41 — Kubernetes Storage:**
+      - Quản trị Lưu trữ Vùng chứa & Tính Phù du (Container Filesystem vs emptyDir Volume):
+        - **Lab 41.1 (Container Filesystem):** Triển khai standalone Pod `s41-ephemeral` (`pod-ephemeral.yaml`), ghi dữ liệu `customer_id=1001` vào `/tmp/customer.txt`. Xóa và tạo lại Pod từ manifest; kiểm chứng file biến mất hoàn toàn, chứng minh tính phù du (ephemeral) của container root filesystem (PASS).
+        - **Lab 41.2 (emptyDir Volume):** Triển khai Pod `s41-emptydir` (`pod-emptydir.yaml`) mount volume `emptyDir` tại `/data`, ghi `customer_id=1001`. Tiêu diệt tiến trình container bằng `crictl stop`; kubelet tự restart container (`RESTARTS: 1`). Pod không bị xóa và dữ liệu trong `emptyDir` vẫn tồn tại nguyên vẹn qua container restart/crash (PASS).
+      - Quản trị Lưu trữ Bền vững & Cấp phát Động (PersistentVolume, PVC & Dynamic Provisioning):
+        - **Lab 41.3 (PV/PVC):** Khảo sát StorageClass mặc định `standard` trên Kind (provisioner `rancher.io/local-path`, Reclaim Policy `Delete`, Volume Binding Mode `WaitForFirstConsumer`). Khởi tạo PVC `s41-data` 1Gi (`pvc.yaml`), trạng thái ban đầu là `Pending`. Khi Pod `s41-persistent` (`pod-pvc.yaml`) tham chiếu claim, provisioner tự động cấp phát PersistentVolume và PVC chuyển sang `Bound`. Ghi `customer_id=1001` vào `/data/customer.txt`. Xóa Pod và tạo lại Pod mới giữ nguyên PVC; kiểm chứng dữ liệu tồn tại sau Pod replacement (PASS).
+      - Quản trị Ứng dụng có Trạng thái (StatefulSet & Stable Identity):
+        - **Lab 41.4 (StatefulSet):** Triển khai StatefulSet `s41-stateful` (`statefulset.yaml`) kết hợp Headless Service `s41-stateful-headless` và `volumeClaimTemplates`. Kubernetes tự động sinh Pod `s41-stateful-0` và PVC `data-s41-stateful-0`. Ghi `database_record=2026`. Xóa Pod; StatefulSet tự động tái tạo Pod mới có cùng danh tính cố định và gắn lại PVC cũ; dữ liệu được bảo toàn (PASS).
+      - Lưu trữ Cơ sở Dữ liệu Bền vững trên Kubernetes (PostgreSQL 16 Persistence):
+        - **Lab 41.5 (PostgreSQL Database Persistence):** Triển khai PostgreSQL 16 bằng StatefulSet `s41-postgres` (`postgres-statefulset.yaml`), sử dụng Secret `s41-pg-auth` được khởi tạo trực tiếp trên cluster (không lưu mật khẩu vào Git), gắn PVC `pgdata-s41-postgres-0` dung lượng 1Gi vào `/var/lib/postgresql/data`.
+        - Kết nối DB, tạo bảng `customers`, thực thi lệnh `INSERT` và `SELECT` thành công bản ghi `(1001, 'Minh')`.
+        - Xóa Pod `s41-postgres-0`; StatefulSet tự động tái tạo Pod và gắn lại PVC cũ. Lệnh `SELECT` sau khi Pod phục hồi vẫn trả về chính xác `(1001, 'Minh')` nguyên vẹn (PASS).
+      - Xử lý Sự cố Bootstrap Môi trường (Environment Bootstrap):
+        - Kind cluster `s41` ban đầu khởi tạo thất bại do containerd không khởi tạo được CRI vì giới hạn nhân Linux `fs.inotify.max_user_instances=128`.
+        - Khắc phục nhanh trong phiên WSL bằng lệnh `sudo sysctl fs.inotify.max_user_instances=1024`, sau đó khởi tạo lại cluster thành công với CNI, StorageClass `standard` và control-plane `Ready`.
+      - Đánh giá Kiến thức & Nghiệm thu S41:
+        - Technical Defense: **2/2 PASS**.
+        - Active Recall: Đạt 5 câu PASS trực tiếp, 2 câu ban đầu PARTIAL; cả 2 nội dung còn thiếu đã được giải thích chính xác và củng cố toàn diện trong bài kiểm tra bổ sung về cơ chế nội tại PostgreSQL (Write-Ahead Logging - WAL, `fsync`, `synchronous_commit`, Crash Recovery và rủi ro Asynchronous Replication).
+        - Trạng thái cluster: Cụm cluster `s41` và `s40` được giữ nguyên tài nguyên (chưa cleanup để tránh gián đoạn).
+      - Kết quả: **ĐẠT BUỔI 41 (COMPLETED / PASS — Ngày 15/10/2026)**.

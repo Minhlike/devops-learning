@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: s41-postgres
+spec:
+  clusterIP: None
+  selector:
+    app: s41-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: s41-postgres
+spec:
+  serviceName: s41-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s41-postgres
+  template:
+    metadata:
+      labels:
+        app: s41-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: s41user
+            - name: POSTGRES_DB
+              value: s41db
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: s41-pg-auth
+                  key: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 1Gi

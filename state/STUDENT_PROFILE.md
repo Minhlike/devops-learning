@@ -29,7 +29,13 @@
 - **Mục tiêu 9 tháng (Hết Phase 11-12):** Hoàn thành Kubernetes, Helm, Observability, DevSecOps và Capstone 3. Đạt mức **Competitive Junior Candidate**.
 
 ## Lịch học đề xuất
-- **Phân bổ 4h/ngày:** 
+- **Phân bổ 4h/ngày:**
   - 45 phút: Lý thuyết trực giác + Đọc tài liệu tiếng Anh chính thức.
   - 2 tiếng 30 phút: Thực hành Lab (Guided + Independent + Troubleshooting).
   - 45 phút: Viết document/LAB_LOG, giải thích lại (Explain-back) và commit code.
+
+## Quy chuẩn Đánh giá & Sở thích Học tập (Bắt buộc áp dụng từ S42)
+- **Hình thức kiểm tra duy nhất:** Mỗi buổi học chỉ có đúng MỘT bài kiểm tra chính thức cuối buổi (gồm 7 câu trắc nghiệm khách quan 4 lựa chọn + 2 câu tự luận giải thích bản chất/cơ chế vận hành).
+- **Tuyệt đối bám sát phạm vi bài giảng:** Toàn bộ câu hỏi phải truy ngược được về nội dung lý thuyết và bài lab thực tế đã học trong chính buổi đó. Nghiêm cấm đưa câu hỏi phỏng vấn Senior, bẫy ngoài lề hoặc kiến thức chưa được dạy.
+- **Bãi bỏ các hình thức kiểm tra phát sinh:** Kể từ S42, bãi bỏ hoàn toàn các bài test riêng biệt như Technical Defense, Active Recall, Timed Defense hoặc các bài quiz phát sinh trong buổi.
+- **Quy định chi tiết:** Được lưu vết chính thức tại [docs/ASSESSMENT_POLICY.md](file:///D:/Devops/docs/ASSESSMENT_POLICY.md).
