@@ -1,0 +1,24 @@
+client -> proxy (HTTP inside TLS)
+GET /orders/42 HTTP/1.1
+Host: api.example.test
+Accept: application/json
+
+proxy -> upstream (HTTP, illustrative)
+GET /orders/42 HTTP/1.1
+Host: orders.internal.test
+X-Forwarded-Host: api.example.test
+X-Forwarded-Proto: https
+
+upstream -> proxy
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 9
+
+{"id":42}
+
+proxy -> client (HTTP inside TLS)
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 9
+
+{"id":42}

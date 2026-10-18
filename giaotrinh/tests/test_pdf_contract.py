@@ -18,6 +18,17 @@ class SourceFreePdfTests(unittest.TestCase):
             self.assertEqual(build.source_free_pdf_issues(doc), [])
             self.assertGreaterEqual(len(doc), 8)
 
+    def test_http_trace_stays_on_one_page(self):
+        with pymupdf.open(build.OUTPUT) as doc:
+            pages = [number for number, page in enumerate(doc)
+                     if "client -> proxy (HTTP inside TLS)" in page.get_text()]
+            self.assertEqual(len(pages), 1)
+            text = doc[pages[0]].get_text()
+            self.assertIn("proxy -> upstream (HTTP, illustrative)", text)
+            self.assertIn("upstream -> proxy", text)
+            self.assertIn("proxy -> client (HTTP inside TLS)", text)
+            self.assertGreaterEqual(text.count("Content-Length: 9"), 2)
+
     def make_pdf(self, root: Path, *, body="", title="", bookmark="", link="") -> Path:
         path = root / "probe.pdf"
         doc = pymupdf.open()

@@ -17,7 +17,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     BaseDocTemplate, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
-    Preformatted, Spacer, LongTable, TableStyle,
+    Preformatted, Spacer, LongTable, TableStyle, KeepTogether,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
@@ -216,7 +216,7 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
             for line in code.splitlines():
                 if pdfmetrics.stringWidth(line, "Mono", 8.7) > PAGE_W - LEFT - RIGHT - 18:
                     raise ValueError(f"Dòng code quá rộng: {code_path}: {line}")
-            story.append(Preformatted(code, styles["code"]))
+            story.append(KeepTogether([Preformatted(code, styles["code"])]))
         elif block.startswith("|"):
             lines = block.splitlines()
             if len(lines) < 3 or not re.fullmatch(r"\|[\s:|-]+\|", lines[1]):
