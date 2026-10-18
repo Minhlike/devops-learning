@@ -16,19 +16,23 @@ Python `subprocess.run` nhận danh sách đối số; Go `exec.CommandContext` 
 
 ## 8.3. Một lỗi được quan sát qua Python và Go
 
-Helper sau là tác vụ giả. Nó chỉ hoạt động khi thư mục đích có file `.demo-only`. `apply_fail` ghi `partial` rồi trả 7. `apply_slow` ghi `partial`, ngủ lâu hơn hạn 0,3 giây, rồi mới định ghi `ready`. `verify` chỉ trả 0 nếu trạng thái là `ready`. Như vậy một lỗi hoặc timeout có thể để lại dấu vết của tác dụng phụ trước khi tiến trình con dừng. Không suy từ timeout rằng không có gì đã xảy ra.
+Helper sau là tác vụ giả. Nó chỉ hoạt động khi thư mục đích có file `.demo-only`. Sau khi khởi tạo, nó phát `READY` rồi chờ lệnh `go`: nhờ vậy hạn tác vụ chỉ bắt đầu khi cả hai phía đã sẵn sàng. Biến `DEMO_STARTUP_DELAY` chỉ dùng trong kiểm thử để mô phỏng máy khởi tạo chậm. `apply_fail` ghi `partial` rồi trả 7. `apply_slow` ghi `partial`, ngủ hai giây, rồi mới định ghi `ready`. `verify` chỉ trả 0 nếu trạng thái là `ready`. Như vậy một lỗi hoặc timeout có thể để lại dấu vết của tác dụng phụ trước khi tiến trình con dừng. Không suy từ timeout rằng không có gì đã xảy ra.
 
 {{code:examples/orchestration_probe.py}}
 
-Chương trình Python gọi cùng helper theo thứ tự `precheck → apply → verify`. `subprocess.run` với `check=False` trả `CompletedProcess` khi con kết thúc bình thường, kể cả status 7 hoặc 8; người gọi phải đọc `returncode`. Nếu hết thời gian, API kết thúc và chờ tiến trình con trực tiếp rồi ném `TimeoutExpired`; nếu không khởi chạy được hoặc lời gọi I/O lỗi, có thể ném `OSError`. Trong demo, `124` và `125` chỉ là nhãn do chương trình điều phối tự chọn, không phải exit status do helper trả. Nhánh `bad` ghi nhận lỗi nhưng vẫn chạy bước sau và in `DEPLOY_OK`; nhánh `checked` dừng khác 0 ngay ở lỗi đầu. Cả hai nhánh cố ý để lại `partial` để người học thấy kết luận sai và giới hạn của việc dừng sớm.
+Chương trình Python gọi cùng helper theo thứ tự `precheck → apply → verify`. Với lệnh đơn giản, `subprocess.run(check=False)` trả `CompletedProcess` khi con kết thúc, kể cả status 7 hoặc 8; người gọi phải đọc `returncode`. Ở đây ta dùng `Popen` để đợi `READY` riêng, rồi mới gửi `go` và gọi `communicate(timeout=0.5)`. Quá hạn tác vụ, chương trình kill và reap con trực tiếp; lỗi khởi chạy hoặc mất tín hiệu sẵn sàng được gắn nhãn khác với lỗi bước. Nhãn `TIMEOUT` không phải exit status của helper. Nhánh `bad` ghi nhận lỗi nhưng vẫn chạy bước sau và in `DEPLOY_OK`; nhánh `checked` dừng khác 0 ngay ở lỗi đầu. Cả hai nhánh cố ý để lại `partial` để người học thấy kết luận sai và giới hạn của việc dừng sớm.
 
 {{code:examples/orchestrate_python.py}}
 
-Go dùng `exec.CommandContext` để liên kết lệnh con với deadline. `Run` trả `nil` khi lệnh chạy và kết thúc thành công; status khác 0 thường cho `*exec.ExitError`, còn lỗi tìm executable hoặc I/O là loại lỗi khác. Khi context hết hạn, `CommandContext` mặc định yêu cầu kill tiến trình con trực tiếp; `ctx.Err()` giúp nhận biết deadline trong ví dụ. Mã phải kiểm tra `err`, không được chỉ ghi log rồi bỏ qua. Nhánh `bad` dưới đây mắc đúng lỗi quyết định đó; nhánh `checked` dừng. `io.Discard` giữ output con ngoài log demo, không phải mẫu quan sát phù hợp cho mọi dịch vụ.
+Go dùng `exec.CommandContext` nhưng chưa hủy context trong giai đoạn đợi `READY`. Sau tín hiệu đó, hàm gửi `go`, bắt đầu bộ đếm 0,5 giây và đợi `Wait`; nếu hết hạn, nó hủy context để kill con trực tiếp rồi reap. Với API ngắn hơn, `Run` trả `nil` khi lệnh chạy và kết thúc thành công; ở đây `Wait` có cùng ranh giới lỗi sau `Start`. Status khác 0 thường cho `*exec.ExitError`, còn lỗi tìm executable hoặc I/O là loại lỗi khác. Mã phải kiểm tra kết quả, không chỉ ghi log rồi bỏ qua. Nhánh `bad` dưới đây mắc đúng lỗi quyết định đó; nhánh `checked` dừng. Output con ngoài tín hiệu đồng bộ bị bỏ khỏi log demo, không phải mẫu quan sát phù hợp cho mọi dịch vụ.
 
 {{code:examples/orchestrate_go.go}}
 
-Trong phép thử có kiểm soát trên Python 3.12 và Go 1.27.1, cả hai bản điều phối đều cho cùng bốn loại kết quả: chế độ `ok` in `DEPLOY_OK` và thoát 0; `bad fail` in `DEPLOY_OK` dù `apply` trả 7 và `verify` trả 8; `checked fail` thoát 1 ở `apply`; `checked slow` thoát 1 vì timeout. Sau các nhánh lỗi, file trạng thái vẫn là `partial`. Đây là output được đo cho chương trình demo, không phải dự đoán cho một quy trình triển khai thật. Thứ tự và tốc độ khởi tạo tiến trình có thể làm hạn 0,3 giây quá ngắn trên máy rất chậm; muốn kiểm thử ổn định hơn cần đồng bộ điểm bắt đầu hoặc tăng khoảng cách giữa thời gian tác vụ và deadline.
+Hàm chạy từng bước tách rời chính sách `bad/checked`: nó chỉ trả loại kết quả quan sát được. Cờ `TIMEOUT` do bộ đếm của cha xác định; lỗi trả về từ `Wait` sau khi kill không phải exit status nghiệp vụ của helper.
+
+{{code:examples/orchestrate_go_step.go}}
+
+Ma trận kiểm thử có kiểm soát phải đối chiếu cả status lẫn file trạng thái: `ok` in `DEPLOY_OK`, thoát 0 và có `ready`; `bad fail` in `DEPLOY_OK` dù `apply` trả 7, `verify` trả 8 và file còn `partial`; `checked fail` thoát 1 trước `verify`; `checked slow` thoát 1 vì timeout sau khi đã ghi `partial`. `bad slow` vẫn in thành công giả. Ca `checked ok` còn ép khởi tạo helper chậm hơn hạn cũ 0,3 giây để chứng minh đồng hồ tác vụ chưa chạy trong lúc khởi tạo. Đây là phép thử của demo, không phải chứng nhận cho quy trình triển khai thật.
 
 ## 8.4. Timeout, cancellation và thất bại từng phần
 
@@ -44,7 +48,7 @@ Hai ví dụ chỉ dùng thư viện chuẩn. Với Python, ghi rõ phiên bản
 
 C8.1. Với `orchestrate_python.py bad fail`, dự đoán thứ tự các bước, status của helper ở từng bước, output cuối và nội dung `state.txt`. Vì sao `check=False` tự nó không phải lỗi, nhưng bỏ qua `returncode` là lỗi? Chế độ `checked` khác ở đâu?
 
-C8.2. Với `orchestrate_go.go checked slow`, `ctx.Err()` và `err` cho biết những gì? Vì sao file vẫn có thể chứa `partial` dù điều phối đã thoát 1? Nêu điều gì không thể kết luận về tiến trình cháu hoặc dịch vụ từ xa.
+C8.2. Với bản Go `checked slow`, hãy lần theo `READY`, `go`, lúc bắt đầu bộ đếm và kết quả `Wait`. Vì sao `TIMEOUT` khác exit status của helper, còn file vẫn chứa `partial` dù điều phối thoát 1? Nêu điều gì không thể kết luận về tiến trình cháu hoặc dịch vụ từ xa.
 
 C8.3. Một tên môi trường do người dùng nhập là `prod; echo LEAK`. So sánh truyền nó như một phần tử argv với ghép vào chuỗi `sh -c`. Vì sao argv tách rời vẫn phải kiểm tra schema và quy tắc tùy chọn của utility? Nêu một nơi có thể làm lộ secret dù không dùng shell.
 

@@ -29,6 +29,12 @@ class SourceFreePdfTests(unittest.TestCase):
             self.assertIn("proxy -> client (HTTP inside TLS)", text)
             self.assertGreaterEqual(text.count("Content-Length: 9"), 2)
 
+    def test_long_go_example_reaches_its_last_branch(self):
+        with pymupdf.open(build.OUTPUT) as doc:
+            text = "\n".join(page.get_text().replace("\x00", "") for page in doc)
+            self.assertIn('return fmt.Sprintf("EXIT %d", exit.ExitCode())', text)
+            self.assertIn('return "TIMEOUT"', text)
+
     def make_pdf(self, root: Path, *, body="", title="", bookmark="", link="") -> Path:
         path = root / "probe.pdf"
         doc = pymupdf.open()

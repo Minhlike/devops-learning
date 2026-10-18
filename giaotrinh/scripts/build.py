@@ -216,7 +216,13 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
             for line in code.splitlines():
                 if pdfmetrics.stringWidth(line, "Mono", 8.7) > PAGE_W - LEFT - RIGHT - 18:
                     raise ValueError(f"Dòng code quá rộng: {code_path}: {line}")
-            story.append(KeepTogether([Preformatted(code, styles["code"])]))
+            # A single oversize Preformatted can be clipped without a build error.
+            # Keep each chunk within the printable height and allow page breaks.
+            lines = code.splitlines()
+            for start in range(0, len(lines), 42):
+                story.append(KeepTogether([
+                    Preformatted("\n".join(lines[start:start + 42]), styles["code"])
+                ]))
         elif block.startswith("|"):
             lines = block.splitlines()
             if len(lines) < 3 or not re.fullmatch(r"\|[\s:|-]+\|", lines[1]):
