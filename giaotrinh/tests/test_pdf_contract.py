@@ -43,6 +43,8 @@ class SourceFreePdfTests(unittest.TestCase):
                 {"body": "An inline marker [R1]"},
                 {"body": "An inline marker [S1]"},
                 {"body": "An inline marker [N4]"},
+                {"body": "An inline marker [D1]"},
+                {"body": "An inline marker [T1]"},
                 {"body": "Nguồn chương"},
                 {"body": "Linux man-pages 6.19"},
                 {"body": "RFC 9293"},

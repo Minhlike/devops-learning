@@ -31,7 +31,7 @@ LEFT = RIGHT = 62
 TOP = 65
 BOTTOM = 62
 URL_RE = re.compile(r"https?://[^\s|)]+")
-MARKER_RE = re.compile(r"\[(?:R|B|K|P|S|N|I)\d+\]")
+MARKER_RE = re.compile(r"\[[A-Z]{1,3}\d+\]")
 SOURCE_HEADING_RE = re.compile(
     r"(?i)\b(?:nguồn chương|tài liệu tham khảo|danh mục tài liệu|bibliography|references)\b"
 )
@@ -85,11 +85,12 @@ def style() -> dict[str, ParagraphStyle]:
 
 class Heading(Paragraph):
     def __init__(self, text: str, level: int, key: str,
-                 styles: dict[str, ParagraphStyle]):
+                 styles: dict[str, ParagraphStyle], include_in_toc: bool = True):
         super().__init__(html.escape(text), styles[f"h{level}"])
         self.heading_text = text
         self.level = level
         self.bookmark_key = key
+        self.include_in_toc = include_in_toc
 
 
 class Book(BaseDocTemplate):
@@ -122,8 +123,9 @@ class Book(BaseDocTemplate):
         self.canv.bookmarkPage(key)
         self.canv.addOutlineEntry(flowable.heading_text, key,
                                   level=flowable.level - 1, closed=False)
-        self.notify("TOCEntry", (flowable.level - 1,
-                                  flowable.heading_text, self.page, key))
+        if flowable.include_in_toc:
+            self.notify("TOCEntry", (flowable.level - 1,
+                                      flowable.heading_text, self.page, key))
 
 
 def paragraph_markup(text: str) -> str:
@@ -204,7 +206,8 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
         if block.startswith("# "):
             story.append(Heading(block[2:].strip(), 1, key, styles))
         elif block.startswith("## "):
-            story.append(Heading(block[3:].strip(), 2, key, styles))
+            story.append(Heading(block[3:].strip(), 2, key, styles,
+                                 include_in_toc=path.name != "answers.md"))
         elif block.startswith("{{code:") and block.endswith("}}"):
             code_path = (ROOT / block[7:-2]).resolve()
             if not code_path.is_relative_to(ROOT / "examples") or not code_path.is_file():
@@ -306,7 +309,7 @@ def audit_document(doc: pymupdf.Document) -> None:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "C2.1.", "C3.1.", "C4.1.", "Lời giải", "Chưa phải bản phát hành"):
+                   "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     toc_entries = doc.get_toc()
