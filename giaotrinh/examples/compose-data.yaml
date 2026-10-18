@@ -1,0 +1,11 @@
+name: orders-case
+services:
+  orders:
+    image: orders:2.1
+    ports:
+      - "127.0.0.1:18080:8080"
+    volumes:
+      - orders_data:/var/lib/orders
+      - ./config:/etc/orders:ro
+volumes:
+  orders_data:

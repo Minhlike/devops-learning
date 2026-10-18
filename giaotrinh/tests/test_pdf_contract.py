@@ -1,6 +1,7 @@
 """Regression tests for evidence separation and the generated PDF."""
 
 import copy
+import hashlib
 import json
 import tempfile
 import unittest
@@ -12,6 +13,22 @@ from giaotrinh.scripts import build
 
 
 class SourceFreePdfTests(unittest.TestCase):
+    def test_published_source_ids_keep_their_urls(self):
+        lock = json.loads((build.ROOT / "source_ids.lock.json").read_text(encoding="utf-8"))
+        frozen = {source_id: lock["urls"][source_id] for source_id in lock["frozen_ids"]}
+        payload = json.dumps(frozen, ensure_ascii=False, sort_keys=True,
+                             separators=(",", ":")).encode("utf-8")
+        self.assertEqual(hashlib.sha256(payload).hexdigest(),
+                         "494380bc53f98517067dfc6d460f3cebd59314c3bb7068b48042fd51d56bdbc9")
+        self.assertEqual(lock["urls"]["R9"], "https://man7.org/linux/man-pages/man2/connect.2.html")
+        self.assertEqual(lock["urls"]["R10"], "https://man7.org/linux/man-pages/man7/ip.7.html")
+        registry = json.loads((build.ROOT / "source_map.json").read_text(encoding="utf-8"))
+        altered = copy.deepcopy(registry)
+        altered["sources"]["R9"]["url"] = "https://man7.org/linux/man-pages/man7/pid_namespaces.7.html"
+        with self.assertRaisesRegex(ValueError, "Định danh nguồn đã đổi URL: R9"):
+            build.check_source_map(altered)
+        build.check_source_map(registry)
+
     def test_candidate_and_claim_map(self):
         build.check_source_map()
         with pymupdf.open(build.OUTPUT) as doc:
