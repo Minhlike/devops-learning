@@ -46,7 +46,7 @@ Hai ví dụ chỉ dùng thư viện chuẩn. Với Python, ghi rõ phiên bản
 
 ## Bài tập
 
-C8.1. Với `orchestrate_python.py bad fail`, dự đoán thứ tự các bước, status của helper ở từng bước, output cuối và nội dung `state.txt`. Vì sao `check=False` tự nó không phải lỗi, nhưng bỏ qua `returncode` là lỗi? Chế độ `checked` khác ở đâu?
+C8.1. Với `orchestrate_python.py bad fail`, dự đoán thứ tự các bước, status của helper ở từng bước, output cuối và nội dung `state.txt`. Sau `Popen` và `communicate`, chương trình lấy kết quả thực thi từ đâu? Vì sao nhánh `bad` vẫn báo thành công dù đã nhận kết quả lỗi, còn nhánh `checked` dừng?
 
 C8.2. Với bản Go `checked slow`, hãy lần theo `READY`, `go`, lúc bắt đầu bộ đếm và kết quả `Wait`. Vì sao `TIMEOUT` khác exit status của helper, còn file vẫn chứa `partial` dù điều phối thoát 1? Nêu điều gì không thể kết luận về tiến trình cháu hoặc dịch vụ từ xa.
 

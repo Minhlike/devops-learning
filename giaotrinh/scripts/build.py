@@ -315,7 +315,7 @@ def audit_document(doc: pymupdf.Document) -> None:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "Lời giải", "Chưa phải bản phát hành"):
+                   "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "C10.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     toc_entries = doc.get_toc()
