@@ -1,0 +1,31 @@
+{
+  "checked_on": "2026-10-18",
+  "purpose": "Editorial evidence only; never render this file in the PDF",
+  "sources": {
+    "B2": {"type": "pedagogical benchmark", "version": "OSTEP 1.10 (2023-11)", "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/"},
+    "R1": {"type": "official technical manual", "version": "Linux man-pages 6.19", "url": "https://man7.org/linux/man-pages/man2/fork.2.html"},
+    "R2": {"type": "official technical manual", "version": "Linux man-pages online, checked 2026-10-18", "url": "https://man7.org/linux/man-pages/man2/execve.2.html"},
+    "R3": {"type": "official technical manual", "version": "Linux man-pages online, checked 2026-10-18", "url": "https://man7.org/linux/man-pages/man2/open.2.html"},
+    "R4": {"type": "official technical manual", "version": "Linux man-pages online, checked 2026-10-18", "url": "https://man7.org/linux/man-pages/man7/namespaces.7.html"},
+    "R5": {"type": "official technical manual", "version": "Linux man-pages online, checked 2026-10-18", "url": "https://man7.org/linux/man-pages/man2/waitpid.2.html"},
+    "P1": {"type": "official API documentation", "version": "Python 3.12", "url": "https://docs.python.org/3.12/library/os.html"},
+    "K1": {"type": "official kernel documentation", "version": "Linux kernel docs latest, checked 2026-10-18", "url": "https://docs.kernel.org/scheduler/sched-eevdf.html"},
+    "K2": {"type": "official kernel documentation", "version": "Linux kernel docs latest, checked 2026-10-18", "url": "https://docs.kernel.org/admin-guide/mm/concepts.html"},
+    "K3": {"type": "official kernel documentation", "version": "Linux kernel docs latest, checked 2026-10-18", "url": "https://docs.kernel.org/admin-guide/cgroup-v2.html"},
+    "R6": {"type": "official technical manual", "version": "Linux man-pages online, checked 2026-10-18", "url": "https://man7.org/linux/man-pages/man2/fsync.2.html"}
+  },
+  "claims": [
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.1", "anchor": "một tiến trình có thể thay chương trình đang thực thi mà vẫn giữ định danh tiến trình", "sources": ["R2"], "evidence": "documented behavior"},
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.2", "anchor": "Tiến trình cha nhận PID của con, còn con nhận số 0", "sources": ["R1"], "evidence": "documented return values"},
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.2", "anchor": "triển khai Linux dùng các trang copy-on-write", "sources": ["R1"], "evidence": "Linux implementation note"},
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.2", "anchor": "Nếu lỗi, lời gọi trả về `-1`, đặt `errno`", "sources": ["R2"], "evidence": "documented return values"},
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.2", "anchor": "Nhánh lỗi khiến lời gọi Python ném `OSError`", "sources": ["P1", "R2", "R5"], "evidence": "API contract and local Ubuntu 24.04 execution, both branches"},
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.3", "anchor": "Nó tham chiếu tới một open file description do nhân quản lý", "sources": ["R3"], "evidence": "documented behavior"},
+    {"chapter": "chapters/01-tu-chuong-trinh-den-tien-trinh.md", "section": "1.4", "anchor": "Một namespace có thể cho tiến trình một góc nhìn riêng", "sources": ["R4"], "evidence": "documented mechanism"},
+    {"chapter": "chapters/02-cpu-bo-nho-io.md", "section": "2.1", "anchor": "Tài liệu Linux mô tả quá trình chuyển từ CFS sang EEVDF", "sources": ["K1"], "evidence": "version-sensitive kernel documentation"},
+    {"chapter": "chapters/02-cpu-bo-nho-io.md", "section": "2.2", "anchor": "vùng ánh xạ ẩn danh có thể được tạo trước", "sources": ["K2"], "evidence": "kernel memory concepts"},
+    {"chapter": "chapters/02-cpu-bo-nho-io.md", "section": "2.3", "anchor": "Đọc một tệp thường đi qua page cache", "sources": ["K2"], "evidence": "kernel memory concepts"},
+    {"chapter": "chapters/02-cpu-bo-nho-io.md", "section": "2.3", "anchor": "`fsync` yêu cầu đồng bộ dữ liệu cùng metadata của tệp", "sources": ["R6"], "evidence": "documented system call contract"},
+    {"chapter": "chapters/02-cpu-bo-nho-io.md", "section": "2.4", "anchor": "cgroup là một cơ chế Linux dùng để tổ chức và kiểm soát tài nguyên", "sources": ["K3"], "evidence": "official kernel documentation"}
+  ]
+}

@@ -4,16 +4,16 @@ Sách đi từ mô hình máy tính đến vận hành một dịch vụ có ng�
 
 | Phần | Chương dự kiến | Tiên quyết | Liên hệ repo | Trạng thái nguồn |
 | --- | --- | --- | --- | --- |
-| I. Máy và hệ điều hành | 1. Từ chương trình đến tiến trình; 2. CPU, bộ nhớ và I/O; 3. Nhân Linux, file, quyền và systemd | Không | S01–S06 | Ch1 đang biên soạn; phần còn lại mở rộng |
+| I. Máy và hệ điều hành | 1. Từ chương trình đến tiến trình; 2. CPU, bộ nhớ và I/O; 3. Nhân Linux, file, quyền và systemd | Không | S01–S06 | Ch1–2 đang biên soạn; phần còn lại mở rộng |
 | II. Truyền thông | 4. Địa chỉ, định tuyến và TCP; 5. DNS, HTTP, TLS và reverse proxy | I | S07–S09, S27 | Đã học cơ bản, mở rộng giao thức |
 | III. Thay đổi có kiểm soát | 6. Git như đồ thị lịch sử; 7. Bash và ranh giới lỗi; 8. Python, Go cho tự động hóa nhỏ; 9. Build, test, phát hành và rollback | I–II | S10–S13, S18–S21 | Go ứng dụng và lý thuyết phát hành mở rộng |
 | IV. Môi trường chạy | 10. Namespace, cgroup và container; 11. Image, registry, Compose và dữ liệu | I–III | S14–S17 | Cơ chế kernel mở rộng |
 | V. Hạ tầng và đám mây | 12. Hạ tầng AWS, IAM, mạng và lưu trữ; 13. Terraform: đồ thị phụ thuộc và state; 14. Ansible: hội tụ cấu hình | I–IV | S22–S36 | Đã học các lab, phân tích cơ chế mở rộng |
-| VI. Điều phối | 15. Kubernetes: desired state và reconciliation; 16. Mạng, storage, scheduling và tài nguyên; 17. Gateway API và Helm | I–V | S37–S44 | S40 một phần; S43–S44 chưa học |
-| VII. Đo và điều hành | 18. Metrics, Prometheus, Grafana; 19. Logs, traces và OpenTelemetry; 20. SLI, SLO và error budget; 21. Incident response và phục hồi | I–VI | S45–S50 chỉ là roadmap | Mở rộng, chưa học |
+| VI. Điều phối | 15. Kubernetes: desired state và reconciliation; 16. Mạng, storage, scheduling, tài nguyên, metric CPU tối thiểu rồi mới HPA; 17. Gateway API và Helm | I–V; mô hình CPU ở Ch2 | S37–S44 | S40 một phần; S43–S44 chưa học |
+| VII. Đo và điều hành | 18. Metrics chuyên sâu, Prometheus, Grafana; 19. Logs, traces và OpenTelemetry; 20. SLI, SLO và error budget; 21. Incident response và phục hồi | I–VI | S45–S50 chỉ là roadmap | Mở rộng, chưa học |
 | VIII. Tin cậy và an toàn | 22. Threat model, IAM, secrets; 23. Supply chain, ký và provenance; 24. Kiến trúc production, năng lực, chi phí, DR | I–VII | S51–S66 chỉ là roadmap | Mở rộng, chưa học |
 
-Các phần phụ lục cuối sách sẽ gồm bảng thuật ngữ, nguồn tham khảo theo chương và lời giải có mã câu hỏi. Thứ tự này theo phụ thuộc khái niệm: không thể giải thích giới hạn container nếu chưa có tiến trình và tài nguyên; không thể hiểu HPA nếu chưa hiểu metric và vòng điều hòa; không thể bàn rollback nếu chưa có artifact bất biến và mô hình triển khai.
+Phụ lục cuối sách sẽ gồm bảng thuật ngữ và lời giải có mã câu hỏi. Nguồn và ánh xạ chứng cứ chỉ ở hồ sơ biên tập ngoài PDF. Thứ tự này theo phụ thuộc khái niệm: không thể giải thích giới hạn container nếu chưa có tiến trình và tài nguyên; không thể bàn rollback nếu chưa có artifact bất biến và mô hình triển khai. Ngay trước HPA ở Chương 16 phải giải thích metric là phép đo theo thời gian, mức dùng CPU so với request, chu kỳ lấy mẫu, giá trị thiếu và độ trễ của phép đo; sau đó mới trình bày vòng điều khiển và giới hạn quyết định mở rộng. Chương 18 đào sâu mô hình metric và hệ thống quan sát, không là tiên quyết bị giấu của HPA.
 
 ## Dấu vết khảo sát repo
 

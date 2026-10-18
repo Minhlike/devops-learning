@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -16,19 +17,24 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     BaseDocTemplate, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
-    Spacer,
+    Preformatted, Spacer,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "Cam_nang_devops.candidate.pdf"
+NEXT = ROOT / "Cam_nang_devops.candidate.next.pdf"
 FONT_DIR = Path("C:/Windows/Fonts")
 PAGE_W, PAGE_H = A4
 LEFT = RIGHT = 62
 TOP = 65
 BOTTOM = 62
-URL_RE = re.compile(r"https?://[^\s]+")
+URL_RE = re.compile(r"https?://[^\s|)]+")
+MARKER_RE = re.compile(r"\[(?:R|B|K|P)\d+\]")
+SOURCE_HEADING_RE = re.compile(
+    r"(?i)\b(?:nguồn chương|tài liệu tham khảo|danh mục tài liệu|bibliography|references)\b"
+)
 
 
 def register_fonts() -> None:
@@ -58,13 +64,15 @@ def style() -> dict[str, ParagraphStyle]:
                              leading=18, spaceBefore=14, spaceAfter=8,
                              keepWithNext=True),
         "body": ParagraphStyle("body", fontName="Body", fontSize=11.7,
-                               leading=18, alignment=TA_LEFT, spaceAfter=9),
+                               leading=17.5, alignment=TA_LEFT, spaceAfter=7.5),
         "toc": ParagraphStyle("toc-title", fontName="BodyBold", fontSize=19,
                               leading=24, spaceAfter=20),
         "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=11.5,
                                    leading=16, leftIndent=8, firstLineIndent=-8),
-        "source": ParagraphStyle("source", fontName="Body", fontSize=10.5,
-                                 leading=15, spaceAfter=7),
+        "code": ParagraphStyle("code", fontName="Mono", fontSize=8.7,
+                               leading=12.3, leftIndent=9, rightIndent=9,
+                               backColor=colors.HexColor("#f5f5f5"),
+                               spaceBefore=5, spaceAfter=11),
     }
 
 
@@ -81,7 +89,7 @@ class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
                          rightMargin=RIGHT, topMargin=TOP, bottomMargin=BOTTOM,
-                         title="Cẩm nang ngành DevOps — bản đọc thử chương 1",
+                         title="Cẩm nang ngành DevOps — bản đọc thử phần nền tảng",
                          author="Dự án devops-learning")
         frame = Frame(LEFT, BOTTOM, PAGE_W - LEFT - RIGHT,
                       PAGE_H - TOP - BOTTOM, leftPadding=0, rightPadding=0,
@@ -114,15 +122,57 @@ class Book(BaseDocTemplate):
 def paragraph_markup(text: str) -> str:
     escaped = html.escape(text)
     escaped = re.sub(r"`([^`]+)`", r'<font name="Mono">\1</font>', escaped)
-    escaped = URL_RE.sub(lambda m: f'<link href="{m.group(0)}" color="#222222">'
-                                 f'{m.group(0)}</link>', escaped)
     return escaped
+
+
+def reference_urls() -> set[str]:
+    registry = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))
+    markdown = (ROOT / "references.md").read_text(encoding="utf-8")
+    urls = {source["url"] for source in registry["sources"].values()}
+    urls.update(match.group(0).rstrip(".,;") for match in URL_RE.finditer(markdown))
+    return urls
+
+
+def check_source_map() -> None:
+    registry = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))
+    sources = registry["sources"]
+    if not registry.get("checked_on") or not registry.get("claims"):
+        raise ValueError("Source map thiếu ngày kiểm chứng hoặc claim")
+    for source in sources.values():
+        if not all(source.get(key) for key in ("type", "version", "url")):
+            raise ValueError(f"Source map thiếu metadata: {source}")
+    for claim in registry["claims"]:
+        path = (ROOT / claim["chapter"]).resolve()
+        if not path.is_relative_to(ROOT) or not path.is_file():
+            raise ValueError(f"Claim trỏ ngoài bản thảo: {claim}")
+        if claim["anchor"] not in path.read_text(encoding="utf-8"):
+            raise ValueError(f"Claim không còn trong bản thảo: {claim['anchor']}")
+        if not claim.get("section") or not claim.get("evidence"):
+            raise ValueError(f"Claim thiếu vị trí hoặc loại chứng cứ: {claim}")
+        if not claim.get("sources") or any(source not in sources for source in claim["sources"]):
+            raise ValueError(f"Claim thiếu nguồn hợp lệ: {claim}")
+
+
+def source_free_issues(text: str) -> list[str]:
+    issues: list[str] = []
+    if MARKER_RE.search(text):
+        issues.append("citation marker")
+    if SOURCE_HEADING_RE.search(text):
+        issues.append("source heading")
+    compact = re.sub(r"\s+", "", text.replace("\u00ad", "-"))
+    for url in reference_urls():
+        if url in compact:
+            issues.append(f"reference URL: {url}")
+    return issues
 
 
 def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowable]:
     if not path.is_file():
         raise FileNotFoundError(path)
     blocks = re.split(r"\n\s*\n", path.read_text(encoding="utf-8").strip())
+    issues = source_free_issues(path.read_text(encoding="utf-8"))
+    if issues:
+        raise ValueError(f"Nguồn tham khảo lọt vào bản thảo PDF {path}: {issues}")
     story: list[Flowable] = []
     for index, block in enumerate(blocks):
         block = block.strip()
@@ -131,17 +181,29 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
             story.append(Heading(block[2:].strip(), 1, key, styles))
         elif block.startswith("## "):
             story.append(Heading(block[3:].strip(), 2, key, styles))
+        elif block.startswith("{{code:") and block.endswith("}}"):
+            code_path = (ROOT / block[7:-2]).resolve()
+            if not code_path.is_relative_to(ROOT / "examples") or not code_path.is_file():
+                raise ValueError(f"Code example ngoài phạm vi hoặc thiếu: {code_path}")
+            code = code_path.read_text(encoding="utf-8").rstrip()
+            for line in code.splitlines():
+                if pdfmetrics.stringWidth(line, "Mono", 8.7) > PAGE_W - LEFT - RIGHT - 18:
+                    raise ValueError(f"Dòng code quá rộng: {code_path}: {line}")
+            story.append(Preformatted(code, styles["code"]))
         else:
             if block.startswith("|") or block.startswith("-"):
                 raise ValueError(f"Chưa hỗ trợ bảng hoặc list trong PDF: {path}")
             paragraph = " ".join(line.strip() for line in block.splitlines())
-            pstyle = styles["source"] if paragraph.startswith("[") else styles["body"]
-            story.append(Paragraph(paragraph_markup(paragraph), pstyle))
+            story.append(Paragraph(paragraph_markup(paragraph), styles["body"]))
     return story
 
 
 def build() -> None:
+    check_source_map()
     register_fonts()
+    chapters = sorted((ROOT / "chapters").glob("[0-9][0-9]-*.md"))
+    if not chapters:
+        raise RuntimeError("Không có chương bản thảo")
     styles = style()
     toc = TableOfContents()
     toc.levelStyles = [styles["tocentry"], styles["tocentry"]]
@@ -149,7 +211,7 @@ def build() -> None:
         Spacer(1, 170),
         Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
         Spacer(1, 26),
-        Paragraph("Giáo trình kỹ thuật · bản đọc thử Chương 1", styles["subtitle"]),
+        Paragraph(f"Giáo trình kỹ thuật · bản đọc thử {len(chapters)} chương", styles["subtitle"]),
         Spacer(1, 10),
         Paragraph("Chưa phải bản phát hành hoàn chỉnh", styles["subtitle"]),
         PageBreak(),
@@ -157,20 +219,43 @@ def build() -> None:
         toc,
         PageBreak(),
     ]
-    story.extend(read_markdown(ROOT / "chapters" / "01-tu-chuong-trinh-den-tien-trinh.md", styles))
-    story.append(PageBreak())
+    for chapter in chapters:
+        story.extend(read_markdown(chapter, styles))
+        story.append(PageBreak())
     story.extend(read_markdown(ROOT / "answers.md", styles))
-    Book(OUTPUT).multiBuild(story)
-    audit(OUTPUT)
+    try:
+        Book(NEXT).multiBuild(story)
+        audit(NEXT)
+        NEXT.replace(OUTPUT)
+        print(f"OUTPUT {OUTPUT}")
+    finally:
+        NEXT.unlink(missing_ok=True)
+
+
+def source_free_pdf_issues(doc: pymupdf.Document) -> list[str]:
+    text_parts = [page.get_text(sort=True) for page in doc]
+    text_parts.extend(item[1] for item in doc.get_toc())
+    text_parts.extend(str(value) for value in doc.metadata.values() if value)
+    issues = source_free_issues("\n".join(text_parts))
+    references = {url.rstrip("/") for url in reference_urls()}
+    for page_number, page in enumerate(doc, 1):
+        for link in page.get_links():
+            if link["kind"] == pymupdf.LINK_URI and link.get("uri", "").rstrip("/") in references:
+                issues.append(f"reference hyperlink on page {page_number}")
+    return issues
 
 
 def audit(path: Path) -> None:
-    doc = pymupdf.open(path)
-    if len(doc) < 5:
+    with pymupdf.open(path) as doc:
+        audit_document(doc)
+
+
+def audit_document(doc: pymupdf.Document) -> None:
+    if len(doc) < 8:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "Lời giải", "Chưa phải bản phát hành"):
+                   "C1.1.", "C2.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     toc_entries = doc.get_toc()
@@ -178,7 +263,9 @@ def audit(path: Path) -> None:
         raise RuntimeError("Bookmark chưa đủ")
     if toc_entries[0][2] != 3 or any(a[2] > b[2] for a, b in zip(toc_entries, toc_entries[1:])):
         raise RuntimeError(f"Bookmark trỏ sai trang hoặc sai thứ tự: {toc_entries}")
-    url_count = 0
+    issues = source_free_pdf_issues(doc)
+    if issues:
+        raise RuntimeError(f"Nguồn tham khảo lọt vào PDF: {issues}")
     for number, page in enumerate(doc, 1):
         if abs(page.rect.width - PAGE_W) > 0.1 or abs(page.rect.height - PAGE_H) > 0.1:
             raise RuntimeError(f"Trang {number} không đúng A4")
@@ -190,15 +277,17 @@ def audit(path: Path) -> None:
                     x0, y0, x1, y1 = span["bbox"]
                     if x0 < 25 or x1 > PAGE_W - 25 or y0 < 20 or y1 > PAGE_H - 20:
                         raise RuntimeError(f"Text ra ngoài vùng an toàn trang {number}: {span['text']}")
-        url_count += sum(1 for link in page.get_links() if link["kind"] == pymupdf.LINK_URI)
-    font_names = {font[3] for page in doc for font in page.get_fonts(full=True)}
+    fonts = {font[0]: font[3] for page in doc for font in page.get_fonts(full=True)}
+    font_names = set(fonts.values())
     if not any("TimesNewRoman" in name.replace(" ", "") for name in font_names):
         raise RuntimeError(f"Times New Roman chưa được nhúng: {font_names}")
-    if url_count < 4:
-        raise RuntimeError("Thiếu hyperlink tới nguồn")
-    print(f"CANDIDATE_OK pages={len(doc)} bookmarks={len(doc.get_toc())} links={url_count}")
+    for xref, name in fonts.items():
+        if ("TimesNewRoman" in name or "Consolas" in name) and not doc.extract_font(xref)[3]:
+            raise RuntimeError(f"Font chưa được nhúng: {name}")
+    pages = len(doc)
+    bookmarks = len(toc_entries)
+    print(f"CANDIDATE_OK pages={pages} bookmarks={bookmarks} source_leaks=0")
     print(f"FONTS {sorted(font_names)}")
-    print(f"OUTPUT {path}")
 
 
 if __name__ == "__main__":
