@@ -18,4 +18,4 @@ Chạy `python giaotrinh/scripts/build.py` từ gốc repo. Cần Python với `
 
 ## Trạng thái mốc 1
 
-Đã có kiến trúc sách, khảo sát roadmap S01–S66 và chỉ mục học/lab hiện có, bộ benchmark được xác minh, ba chương nền tảng và lời giải. Chương 2 có ví dụ tính toán được gắn nhãn giả định; Chương 3 có unit minh họa. Chưa có nội dung cho các chương còn lại; PDF hiện là candidate, chưa được phát hành dưới tên cuối.
+Đã có kiến trúc sách, khảo sát roadmap S01–S66 và chỉ mục học/lab hiện có, bộ benchmark được xác minh, bốn chương nền tảng và lời giải. Chương 2 có ví dụ tính toán được gắn nhãn giả định; Chương 3 có unit minh họa; Chương 4 lần theo một kết nối IPv4/TCP qua gateway và NAT. Chưa có nội dung cho các chương còn lại; PDF hiện là candidate, chưa được phát hành dưới tên cuối.

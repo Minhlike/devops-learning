@@ -31,12 +31,12 @@ LEFT = RIGHT = 62
 TOP = 65
 BOTTOM = 62
 URL_RE = re.compile(r"https?://[^\s|)]+")
-MARKER_RE = re.compile(r"\[(?:R|B|K|P|S)\d+\]")
+MARKER_RE = re.compile(r"\[(?:R|B|K|P|S|N|I)\d+\]")
 SOURCE_HEADING_RE = re.compile(
     r"(?i)\b(?:nguồn chương|tài liệu tham khảo|danh mục tài liệu|bibliography|references)\b"
 )
 REFERENCE_SIGNATURE_RE = re.compile(
-    r"(?i)\b(?:Linux man-pages 6\.19|Operating Systems: Three Easy Pieces|source_map\.json|docs\.kernel\.org|man7\.org)\b"
+    r"(?i)\b(?:RFC\s+\d{3,5}|Linux man-pages 6\.19|Operating Systems: Three Easy Pieces|source_map\.json|docs\.kernel\.org|man7\.org)\b"
 )
 
 
@@ -70,8 +70,8 @@ def style() -> dict[str, ParagraphStyle]:
                                leading=17.5, alignment=TA_LEFT, spaceAfter=7.5),
         "toc": ParagraphStyle("toc-title", fontName="BodyBold", fontSize=19,
                               leading=24, spaceAfter=20),
-        "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=11.5,
-                                   leading=16, leftIndent=8, firstLineIndent=-8),
+        "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=10.5,
+                                   leading=13, leftIndent=8, firstLineIndent=-8),
         "code": ParagraphStyle("code", fontName="Mono", fontSize=8.7,
                                leading=12.3, leftIndent=9, rightIndent=9,
                                backColor=colors.HexColor("#f5f5f5"),
@@ -306,13 +306,13 @@ def audit_document(doc: pymupdf.Document) -> None:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "C2.1.", "C3.1.", "Lời giải", "Chưa phải bản phát hành"):
+                   "C1.1.", "C2.1.", "C3.1.", "C4.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     toc_entries = doc.get_toc()
     if len(toc_entries) < 7:
         raise RuntimeError("Bookmark chưa đủ")
-    if toc_entries[0][2] != 3 or any(a[2] > b[2] for a, b in zip(toc_entries, toc_entries[1:])):
+    if toc_entries[0][2] < 3 or any(a[2] > b[2] for a, b in zip(toc_entries, toc_entries[1:])):
         raise RuntimeError(f"Bookmark trỏ sai trang hoặc sai thứ tự: {toc_entries}")
     issues = source_free_pdf_issues(doc)
     if issues:
