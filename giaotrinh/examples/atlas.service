@@ -1,0 +1,15 @@
+[Unit]
+Description=Atlas example service
+After=network.target
+
+[Service]
+Type=exec
+User=atlas
+Group=atlas
+WorkingDirectory=/opt/atlas
+ExecStart=/opt/atlas/bin/atlas --config /srv/atlas/config/app.toml
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

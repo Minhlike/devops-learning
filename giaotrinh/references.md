@@ -8,10 +8,10 @@ Ngày truy cập: 18-10-2026. Các đường dẫn là nguồn tham khảo, khô
 | B2 | Benchmark sư phạm | Remzi H. Arpaci-Dusseau, Andrea C. Arpaci-Dusseau, *Operating Systems: Three Easy Pieces*, v1.10, 11-2023: https://pages.cs.wisc.edu/~remzi/OSTEP/ | Học cách dựng mô hình tiến trình, ảo hóa, đồng thời, lưu trữ từ nguyên lý; liên kết đến sách thay vì sao chép |
 | B3 | Benchmark nghề nghiệp | Google, *Site Reliability Engineering* (bản gốc 2016, https://sre.google/sre-book/preface/) và *The Site Reliability Workbook* (2018, https://sre.google/workbook/preface/) | Khung suy nghĩ về độ tin cậy, SLO và vận hành; không coi ví dụ Google là mặc định cho mọi tổ chức |
 | R1 | Tài liệu kỹ thuật | Linux man-pages 6.19, `fork(2)`: https://man7.org/linux/man-pages/man2/fork.2.html | Tiến trình con, copy-on-write, kế thừa tài nguyên |
-| R2 | Tài liệu kỹ thuật | Linux man-pages, `execve(2)`: https://man7.org/linux/man-pages/man2/execve.2.html | Thay process image và quy tắc file descriptor |
-| R3 | Tài liệu kỹ thuật | Linux man-pages, `open(2)`: https://man7.org/linux/man-pages/man2/open.2.html | Phân biệt file descriptor với open file description |
-| R4 | Tài liệu kỹ thuật | Linux man-pages, `namespaces(7)`: https://man7.org/linux/man-pages/man7/namespaces.7.html | Ranh giới hiển thị tài nguyên của tiến trình |
+| R2 | Tài liệu kỹ thuật | Linux man-pages 6.19, `execve(2)`: https://man7.org/linux/man-pages/man2/execve.2.html | Thay process image và quy tắc file descriptor |
+| R3 | Tài liệu kỹ thuật | Linux man-pages 6.19, `open(2)`: https://man7.org/linux/man-pages/man2/open.2.html | Phân biệt file descriptor với open file description |
+| R4 | Tài liệu kỹ thuật | Linux man-pages 6.19, `namespaces(7)`: https://man7.org/linux/man-pages/man7/namespaces.7.html | Ranh giới hiển thị tài nguyên của tiến trình |
 
-Nguồn B1–B3 dùng để kiểm tra cấu trúc và mức sâu. R1–R5 và P1 hỗ trợ các phát biểu cơ chế của Chương 1; K1–K3 và R6 hỗ trợ Chương 2. Những phần về công nghệ khác chỉ được gắn nguồn chính thức khi biên soạn chương tương ứng; chưa ngầm coi toàn bộ roadmap là đã kiểm chứng kỹ thuật.
+Nguồn B1–B3 dùng để kiểm tra cấu trúc và mức sâu. R1–R5 và P1 hỗ trợ các phát biểu cơ chế của Chương 1; K1–K4 và R6 hỗ trợ Chương 2; R7–R8 cùng tài liệu systemd 257 hỗ trợ Chương 3. Những phần về công nghệ khác chỉ được gắn nguồn chính thức khi biên soạn chương tương ứng; chưa ngầm coi toàn bộ roadmap là đã kiểm chứng kỹ thuật.
 
-Ánh xạ từng khẳng định kỹ thuật quan trọng nằm trong `source_map.json`: mã nguồn, phiên bản, ngày kiểm chứng, loại chứng cứ, chương/mục và câu neo nguyên văn. Đây là hồ sơ biên tập; `build.py` không đưa bảng này hoặc tệp này vào PDF. Các nguồn mới của Chương 2 được ghi trong bản đồ đó, chưa nhân đôi ở bảng benchmark trên.
+Ánh xạ từng khẳng định kỹ thuật quan trọng nằm trong `source_map.json`: mã nguồn, phiên bản, ngày kiểm chứng, loại chứng cứ, chương/mục, câu neo, vị trí trong nguồn, nội dung hỗ trợ và giới hạn kết luận. Đối chiếu ngữ nghĩa là thao tác biên tập thủ công; validator chỉ buộc hồ sơ đối chiếu đầy đủ và ngăn trạng thái chưa xác minh được dựng PDF. Đây là hồ sơ biên tập; `build.py` không đưa bảng này hoặc tệp này vào PDF.

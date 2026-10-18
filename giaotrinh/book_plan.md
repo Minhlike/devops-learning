@@ -4,7 +4,7 @@ Sách đi từ mô hình máy tính đến vận hành một dịch vụ có ng�
 
 | Phần | Chương dự kiến | Tiên quyết | Liên hệ repo | Trạng thái nguồn |
 | --- | --- | --- | --- | --- |
-| I. Máy và hệ điều hành | 1. Từ chương trình đến tiến trình; 2. CPU, bộ nhớ và I/O; 3. Nhân Linux, file, quyền và systemd | Không | S01–S06 | Ch1–2 đang biên soạn; phần còn lại mở rộng |
+| I. Máy và hệ điều hành | 1. Từ chương trình đến tiến trình; 2. CPU, bộ nhớ và I/O; 3. Nhân Linux, file, quyền và systemd | Không | S01–S06 | Ch1–3 đang biên soạn; phần cơ chế mở rộng |
 | II. Truyền thông | 4. Địa chỉ, định tuyến và TCP; 5. DNS, HTTP, TLS và reverse proxy | I | S07–S09, S27 | Đã học cơ bản, mở rộng giao thức |
 | III. Thay đổi có kiểm soát | 6. Git như đồ thị lịch sử; 7. Bash và ranh giới lỗi; 8. Python, Go cho tự động hóa nhỏ; 9. Build, test, phát hành và rollback | I–II | S10–S13, S18–S21 | Go ứng dụng và lý thuyết phát hành mở rộng |
 | IV. Môi trường chạy | 10. Namespace, cgroup và container; 11. Image, registry, Compose và dữ liệu | I–III | S14–S17 | Cơ chế kernel mở rộng |

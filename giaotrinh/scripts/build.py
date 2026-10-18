@@ -17,7 +17,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     BaseDocTemplate, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
-    Preformatted, Spacer,
+    Preformatted, Spacer, LongTable, TableStyle,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
@@ -31,9 +31,12 @@ LEFT = RIGHT = 62
 TOP = 65
 BOTTOM = 62
 URL_RE = re.compile(r"https?://[^\s|)]+")
-MARKER_RE = re.compile(r"\[(?:R|B|K|P)\d+\]")
+MARKER_RE = re.compile(r"\[(?:R|B|K|P|S)\d+\]")
 SOURCE_HEADING_RE = re.compile(
     r"(?i)\b(?:nguồn chương|tài liệu tham khảo|danh mục tài liệu|bibliography|references)\b"
+)
+REFERENCE_SIGNATURE_RE = re.compile(
+    r"(?i)\b(?:Linux man-pages 6\.19|Operating Systems: Three Easy Pieces|source_map\.json|docs\.kernel\.org|man7\.org)\b"
 )
 
 
@@ -73,6 +76,10 @@ def style() -> dict[str, ParagraphStyle]:
                                leading=12.3, leftIndent=9, rightIndent=9,
                                backColor=colors.HexColor("#f5f5f5"),
                                spaceBefore=5, spaceAfter=11),
+        "cell": ParagraphStyle("cell", fontName="Body", fontSize=9.5,
+                               leading=12.5),
+        "cellhead": ParagraphStyle("cellhead", fontName="BodyBold", fontSize=9.5,
+                                   leading=12.5),
     }
 
 
@@ -133,33 +140,50 @@ def reference_urls() -> set[str]:
     return urls
 
 
-def check_source_map() -> None:
-    registry = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))
+def check_source_map(registry: dict | None = None) -> None:
+    if registry is None:
+        registry = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))
     sources = registry["sources"]
     if not registry.get("checked_on") or not registry.get("claims"):
         raise ValueError("Source map thiếu ngày kiểm chứng hoặc claim")
     for source in sources.values():
         if not all(source.get(key) for key in ("type", "version", "url")):
             raise ValueError(f"Source map thiếu metadata: {source}")
+        if re.search(r"(?i)\b(?:latest|online)\b", source["version"]):
+            raise ValueError(f"Nguồn chưa khóa phiên bản: {source}")
     for claim in registry["claims"]:
         path = (ROOT / claim["chapter"]).resolve()
         if not path.is_relative_to(ROOT) or not path.is_file():
             raise ValueError(f"Claim trỏ ngoài bản thảo: {claim}")
-        if claim["anchor"] not in path.read_text(encoding="utf-8"):
-            raise ValueError(f"Claim không còn trong bản thảo: {claim['anchor']}")
         if not claim.get("section") or not claim.get("evidence"):
             raise ValueError(f"Claim thiếu vị trí hoặc loại chứng cứ: {claim}")
         if not claim.get("sources") or any(source not in sources for source in claim["sources"]):
             raise ValueError(f"Claim thiếu nguồn hợp lệ: {claim}")
+        if not all(claim.get(key) for key in ("source_location", "support", "limits")):
+            raise ValueError(f"Claim thiếu biên bản đối chiếu ngữ nghĩa: {claim}")
+        if claim.get("review_status") != "verified":
+            raise ValueError(f"Claim chưa được đối chiếu nguồn: {claim}")
+        chapter_text = path.read_text(encoding="utf-8")
+        section = re.search(
+            rf"(?ms)^## {re.escape(claim['section'])}\. .*?(?=^## |\Z)",
+            chapter_text,
+        )
+        if not section:
+            raise ValueError(f"Claim trỏ tới mục không có thật: {claim}")
+        if claim["anchor"] not in section.group(0):
+            raise ValueError(f"Claim không nằm trong mục đã khai báo: {claim['anchor']}")
 
 
 def source_free_issues(text: str) -> list[str]:
     issues: list[str] = []
+    text = text.replace("\u00ad", "-").replace("\u00a0", " ")
     if MARKER_RE.search(text):
         issues.append("citation marker")
     if SOURCE_HEADING_RE.search(text):
         issues.append("source heading")
-    compact = re.sub(r"\s+", "", text.replace("\u00ad", "-"))
+    if REFERENCE_SIGNATURE_RE.search(text):
+        issues.append("reference signature")
+    compact = re.sub(r"\s+", "", text)
     for url in reference_urls():
         if url in compact:
             issues.append(f"reference URL: {url}")
@@ -190,8 +214,35 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
                 if pdfmetrics.stringWidth(line, "Mono", 8.7) > PAGE_W - LEFT - RIGHT - 18:
                     raise ValueError(f"Dòng code quá rộng: {code_path}: {line}")
             story.append(Preformatted(code, styles["code"]))
+        elif block.startswith("|"):
+            lines = block.splitlines()
+            if len(lines) < 3 or not re.fullmatch(r"\|[\s:|-]+\|", lines[1]):
+                raise ValueError(f"Bảng Markdown không hợp lệ: {path}")
+            rows = [[part.strip() for part in line.strip().strip("|").split("|")]
+                    for line in [lines[0], *lines[2:]]]
+            columns = len(rows[0])
+            if columns != 3 or any(len(row) != columns for row in rows):
+                raise ValueError(f"Bảng này cần đúng ba cột: {path}")
+            cells = [[Paragraph(paragraph_markup(item),
+                                styles["cellhead"] if row_index == 0 else styles["cell"])
+                      for item in row]
+                     for row_index, row in enumerate(rows)]
+            table = LongTable(cells, colWidths=[251, 110, 110], repeatRows=1,
+                              hAlign="LEFT")
+            table.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#eeeeee")),
+                ("LINEBELOW", (0, 0), (-1, 0), 0.5, colors.black),
+                ("LINEBELOW", (0, 1), (-1, -1), 0.2, colors.HexColor("#dddddd")),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 5),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 5),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]))
+            story.append(table)
+            story.append(Spacer(1, 10))
         else:
-            if block.startswith("|") or block.startswith("-"):
+            if block.startswith("-"):
                 raise ValueError(f"Chưa hỗ trợ bảng hoặc list trong PDF: {path}")
             paragraph = " ".join(line.strip() for line in block.splitlines())
             story.append(Paragraph(paragraph_markup(paragraph), styles["body"]))
@@ -255,7 +306,7 @@ def audit_document(doc: pymupdf.Document) -> None:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "C2.1.", "Lời giải", "Chưa phải bản phát hành"):
+                   "C1.1.", "C2.1.", "C3.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     toc_entries = doc.get_toc()

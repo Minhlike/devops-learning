@@ -1,5 +1,7 @@
 """Regression tests for evidence separation and the generated PDF."""
 
+import copy
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -39,7 +41,9 @@ class SourceFreePdfTests(unittest.TestCase):
             root = Path(temp)
             cases = [
                 {"body": "An inline marker [R1]"},
+                {"body": "An inline marker [S1]"},
                 {"body": "Nguồn chương"},
+                {"body": "Linux man-pages 6.19"},
                 {"body": reference},
                 {"title": "Bibliography [B2]"},
                 {"bookmark": "Tài liệu tham khảo"},
@@ -58,6 +62,25 @@ class SourceFreePdfTests(unittest.TestCase):
             path = self.make_pdf(Path(temp), body=url, link=url)
             with pymupdf.open(path) as doc:
                 self.assertEqual(build.source_free_pdf_issues(doc), [])
+
+    def test_unreviewed_claim_with_real_anchor_is_rejected(self):
+        registry = json.loads((build.ROOT / "source_map.json").read_text(encoding="utf-8"))
+        altered = copy.deepcopy(registry)
+        altered["claims"][0]["review_status"] = "pending"
+        with self.assertRaisesRegex(ValueError, "chưa được đối chiếu"):
+            build.check_source_map(altered)
+        altered = copy.deepcopy(registry)
+        altered["claims"][0]["support"] = ""
+        with self.assertRaisesRegex(ValueError, "biên bản đối chiếu"):
+            build.check_source_map(altered)
+        altered = copy.deepcopy(registry)
+        altered["sources"]["K1"]["version"] = "latest"
+        with self.assertRaisesRegex(ValueError, "chưa khóa phiên bản"):
+            build.check_source_map(altered)
+        altered = copy.deepcopy(registry)
+        altered["claims"][0]["section"] = "1.2"
+        with self.assertRaisesRegex(ValueError, "không nằm trong mục"):
+            build.check_source_map(altered)
 
 
 if __name__ == "__main__":
