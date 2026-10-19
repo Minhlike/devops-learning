@@ -1,13 +1,15 @@
 # Cây tri thức đề xuất — Cẩm nang ngành DevOps
 
 **Trạng thái:** đề xuất A1 để Reviewer nghiệm thu; chưa thay bản thảo hoặc PDF.
-**Cách đọc:** ID ổn định; cạnh `A → B` nghĩa học A trước B. `reviewed_draft` chỉ nói bản thảo đã qua review milestone, không xác nhận mọi claim hay lab. Nội dung mới mang `planned_new`.
+**Cách đọc:** ID ổn định; cạnh `A → B` nghĩa học A trước B. `reviewed_draft` chỉ nói bản thảo đã qua review milestone, không xác nhận mọi claim hay lab. `needs_extension` là bài chưa có mục cũ trực tiếp; `planned_new` cần biên soạn và nguồn mới.
+**Chủ chứng cứ:** `evidence_ownership.csv` gán một primary lesson cho từng claim/ví dụ/cặp đề–đáp án; `legacy_content_units.csv` gán chủ đoạn ở mục split; `legacy_migration.csv` ghi liên kết cũ–mới. Nguồn liệt kê trong JSON chỉ đến từ claim thuộc bài, không là xác nhận ngữ nghĩa mới.
+**Phạm vi đã chốt:** Go là CLI DevOps nhỏ; UDP/IPv6/MTU ở mức chẩn đoán nền; AWS-first với nguyên lý cloud-neutral; capstone theo `capstone_contract.md` có bản local không phí.
 
-Tổng: 15 Phần, 58 Chương, 174 Bài/Mục. Cấu trúc phản ánh ranh giới cơ chế và tiên quyết, không phải quota.
+Tổng: 15 Phần, 58 Chương, 178 Bài/Mục. Cấu trúc phản ánh ranh giới cơ chế và tiên quyết, không phải quota.
 
 ## Đồ thị tiên quyết đọc nhanh
 
-Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh hữu ích và 8 đường đào sâu. Chỉ cạnh bắt buộc tạo trật tự học; mọi cạnh đi từ bài xuất hiện trước tới bài xuất hiện sau. Các chuỗi minh họa dưới đây có thể bỏ qua nút trung gian; cạnh chính xác nằm trong JSON.
+Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh hữu ích và 8 đường đào sâu. Chỉ cạnh bắt buộc tạo trật tự học; mọi cạnh đi từ bài xuất hiện trước tới bài xuất hiện sau. Các chuỗi minh họa dưới đây có thể bỏ qua nút trung gian; cạnh chính xác nằm trong JSON.
 
 - `P01.C02.L03` (process/FD) → `P07.C01.L01` (namespace) → `P07.C03.L01` (container là lần chạy).
 - `P03.C02.L03` (đường TCP/NAT) → `P08.C02.L01` (VPC route) → `P11.C04.L02` (Service dataplane áp dụng mạng gốc).
@@ -38,9 +40,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P01.C02, P02.C03, P12.C01.
 - **Nguồn cũ:** Ch02.
 - **Cây bài:**
-  - `P01.C01.L01` **Máy thực thi** — lõi logic, bộ nhớ, thiết bị và đồng hồ
-  - `P01.C01.L02` **Đường thời gian** — running, runnable, blocked, wall time và CPU time
-  - `P01.C01.L03` **Dữ liệu đi qua I/O** — buffer, cache, thiết bị và ranh giới bền vững
+  - `P01.C01.L01` **Máy thực thi** [needs_extension; 0 mục cũ; 0 claim] — lõi logic, bộ nhớ, thiết bị và đồng hồ
+  - `P01.C01.L02` **Đường thời gian** [needs_extension; 1 mục cũ; 0 claim] — running, runnable, blocked, wall time và CPU time
+  - `P01.C01.L03` **Dữ liệu đi qua I/O** [needs_extension; 0 mục cũ; 0 claim] — buffer, cache, thiết bị và ranh giới bền vững
 
 ### P01.C02 — Chương trình, tiến trình và ranh giới nhân [reviewed_draft]
 
@@ -54,9 +56,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P02.C01, P02.C04, P03.C01, P05.C01, P05.C02, P07.C01.
 - **Nguồn cũ:** Ch01.
 - **Cây bài:**
-  - `P01.C02.L01` **Ba dạng ứng dụng** — source, executable và process instance
-  - `P01.C02.L02` **Tạo và thay process** — fork, execve, wait, exit và copy-on-write
-  - `P01.C02.L03` **Descriptor và identity** — open file description, UID/GID và giới hạn
+  - `P01.C02.L01` **Ba dạng ứng dụng** [reviewed_draft; 1 mục cũ; 1 claim] — source, executable và process instance
+  - `P01.C02.L02` **Tạo và thay process** [reviewed_draft; 1 mục cũ; 5 claim] — fork, execve, wait, exit và copy-on-write
+  - `P01.C02.L03` **Descriptor và identity** [reviewed_draft; 3 mục cũ; 1 claim] — open file description, UID/GID và giới hạn
 
 ## P02 — Linux và vận hành máy chủ
 
@@ -80,9 +82,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P02.C02, P02.C03, P02.C05, P04.C01, P05.C01, P07.C03, P08.C04.
 - **Nguồn cũ:** Ch01, Ch02, Ch03.
 - **Cây bài:**
-  - `P02.C01.L01` **Vào nhân** — syscall, wrapper, errno và thao tác thật
-  - `P02.C01.L02` **Phân giải tên** — directory traversal, inode, hard/symlink
-  - `P02.C01.L03` **Ghi và bền vững** — page cache, rename, fsync file/thư mục
+  - `P02.C01.L01` **Vào nhân** [reviewed_draft; 2 mục cũ; 1 claim] — syscall, wrapper, errno và thao tác thật
+  - `P02.C01.L02` **Phân giải tên** [reviewed_draft; 1 mục cũ; 1 claim] — directory traversal, inode, hard/symlink
+  - `P02.C01.L03` **Ghi và bền vững** [reviewed_draft; 1 mục cũ; 2 claim] — page cache, rename, fsync file/thư mục
 
 ### P02.C02 — Danh tính và quyền Linux [reviewed_draft]
 
@@ -96,9 +98,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P02.C04, P08.C01.
 - **Nguồn cũ:** Ch01, Ch03.
 - **Cây bài:**
-  - `P02.C02.L01` **Danh tính tiến trình** — real/effective ID, group và capability ở mức giới thiệu
-  - `P02.C02.L02` **Bước đi qua thư mục** — execute/search permission, owner/group/mode, ACL khi có
-  - `P02.C02.L03` **Điều tra và sửa** — đúng UID, đường dẫn, least privilege, không chmod 777
+  - `P02.C02.L01` **Danh tính tiến trình** [reviewed_draft; 1 mục cũ; 1 claim] — real/effective ID, group và capability ở mức giới thiệu
+  - `P02.C02.L02` **Bước đi qua thư mục** [reviewed_draft; 1 mục cũ; 1 claim] — execute/search permission, owner/group/mode, ACL khi có
+  - `P02.C02.L03` **Điều tra và sửa** [needs_extension; 0 mục cũ; 0 claim] — đúng UID, đường dẫn, least privilege, không chmod 777
 
 ### P02.C03 — Tài nguyên và chẩn đoán hiệu năng Linux [reviewed_draft]
 
@@ -112,9 +114,10 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P07.C01, P11.C03, P13.C04.
 - **Nguồn cũ:** Ch02, Ch10.
 - **Cây bài:**
-  - `P02.C03.L01` **CPU và scheduler** — runnable, usage, quota và PSI
-  - `P02.C03.L02` **Memory** — virtual/resident, reclaim, page cache, OOM
-  - `P02.C03.L03` **I/O và chẩn đoán** — dirty/writeback, fsync, latency cửa sổ, counter đối chiếu
+  - `P02.C03.L01` **CPU và scheduler** [reviewed_draft; 2 mục cũ; 1 claim] — runnable, usage, quota và PSI
+  - `P02.C03.L02` **Memory** [reviewed_draft; 1 mục cũ; 1 claim] — virtual/resident, reclaim, page cache, OOM
+  - `P02.C03.L03` **I/O và độ bền** [reviewed_draft; 1 mục cũ; 0 claim] — dirty/writeback, fsync và thiết bị
+  - `P02.C03.L04` **Điều tra đa tín hiệu** [reviewed_draft; 1 mục cũ; 3 claim] — lấy hiệu counter CPU, memory, I/O cùng cửa sổ, đối chiếu latency và phép đo thiếu
 
 ### P02.C04 — systemd và vòng đời dịch vụ [reviewed_draft]
 
@@ -128,9 +131,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P02.C05, P08.C03, P10.C01.
 - **Nguồn cũ:** Ch01, Ch03.
 - **Cây bài:**
-  - `P02.C04.L01` **Unit graph** — After, Wants, Requires, network-online
-  - `P02.C04.L02` **Process lifecycle** — Type, ExecStart, signal, restart
-  - `P02.C04.L03` **Quan sát dịch vụ** — MainPID, journal, socket, readiness và hậu điều kiện
+  - `P02.C04.L01` **Unit graph** [reviewed_draft; 2 mục cũ; 2 claim] — After, Wants, Requires, network-online
+  - `P02.C04.L02` **Process lifecycle** [reviewed_draft; 1 mục cũ; 3 claim] — Type, ExecStart, signal, restart
+  - `P02.C04.L03` **Quan sát dịch vụ** [reviewed_draft; 2 mục cũ; 0 claim] — MainPID, journal, socket, readiness và hậu điều kiện
 
 ### P02.C05 — Vận hành host và phục hồi có kiểm chứng [planned_new]
 
@@ -144,9 +147,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P05.C03, P06.C04.
 - **Nguồn cũ:** Ch02, Ch03, Ch07.
 - **Cây bài:**
-  - `P02.C05.L01` **Thay đổi host** — dịch vụ, quyền, config và cửa sổ bảo trì
-  - `P02.C05.L02` **Dữ liệu host** — backup nhất quán, restore thử và log rotation
-  - `P02.C05.L03` **Phục hồi** — chứng cứ trước/sau, rollback config, request và dữ liệu
+  - `P02.C05.L01` **Thay đổi host** [planned_new; 0 mục cũ; 0 claim] — dịch vụ, quyền, config và cửa sổ bảo trì
+  - `P02.C05.L02` **Dữ liệu host** [planned_new; 0 mục cũ; 0 claim] — backup nhất quán, restore thử và log rotation
+  - `P02.C05.L03` **Phục hồi** [planned_new; 0 mục cũ; 0 claim] — chứng cứ trước/sau, rollback config, request và dữ liệu
 
 ## P03 — Mạng và giao thức ứng dụng
 
@@ -158,7 +161,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 **Ngộ nhận cần sửa:** Một status hoặc TCP established tự nó chỉ ra nguyên nhân gốc.
 **Chuyển tiếp:** Cho cloud network, container publishing, Service/Gateway và tracing.
 
-### P03.C01 — Địa chỉ, subnet và đường đi gói IP [reviewed_draft]
+### P03.C01 — Địa chỉ, subnet và đường đi gói IP [mixed]
 
 - **Đích học:** Từ đích IP tìm route và địa chỉ chặng kế tiếp.
 - **Mô hình nối bài:** Prefix quyết định on-link; routing chọn next hop; neighbor resolution tìm địa chỉ link cục bộ.
@@ -167,34 +170,36 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Ngộ nhận:** ARP hỏi MAC của server ở mạng xa.
 - **Cách dạy:** Vẽ từng hop và xác nhận bằng route get từ đúng namespace.
 - **Đánh giá:** Chọn next hop cho route /24 và /0, nêu điều policy routing thay đổi.
-- **Nối tới:** P03.C02, P07.C01.
+- **Nối tới:** P03.C02, P07.C01, P08.C02, P11.C04.
 - **Nguồn cũ:** Ch04.
 - **Cây bài:**
-  - `P03.C01.L01` **Định danh logic** — IP, prefix, subnet
-  - `P03.C01.L02` **Chọn chặng** — longest prefix, policy route, source address
-  - `P03.C01.L03` **Đóng frame** — ARP/neighbor, link address, hop và đường về
+  - `P03.C01.L01` **Định danh logic** [reviewed_draft; 1 mục cũ; 1 claim] — IPv4/IPv6, prefix, subnet và địa chỉ nguồn
+  - `P03.C01.L02` **Chọn chặng** [reviewed_draft; 1 mục cũ; 2 claim] — longest prefix, policy route, source address
+  - `P03.C01.L03` **Đóng frame** [reviewed_draft; 1 mục cũ; 1 claim] — ARP/IPv6 Neighbor Discovery, link address, hop và đường về
+  - `P03.C01.L04` **Kích thước đường** [planned_new; 0 mục cũ; 0 claim] — MTU, fragmentation và Path MTU Discovery, triệu chứng black hole
 
-### P03.C02 — TCP, NAT và trạng thái kết nối [reviewed_draft]
+### P03.C02 — Transport, TCP, UDP và NAT [mixed]
 
-- **Đích học:** Lần theo SYN, seq/ack, retransmission và dịch tuple hai chiều.
-- **Mô hình nối bài:** TCP endpoint giữ luồng byte; NAT giữ ánh xạ packet độc lập với socket ứng dụng.
+- **Đích học:** Lần theo SYN, seq/ack, retransmission, datagram UDP và dịch tuple hai chiều.
+- **Mô hình nối bài:** TCP endpoint giữ luồng byte; UDP giữ datagram và không tự bảo đảm giao hàng; NAT giữ ánh xạ packet độc lập với socket ứng dụng.
 - **Tiên quyết bắt buộc:** P03.C01.L03.
-- **Ranh giới:** TLS/HTTP ở P03.C03.
-- **Ngộ nhận:** TCP established chứng minh HTTP hoạt động; 80% retransmit là 80% tải.
-- **Cách dạy:** Dùng trace số RFC 9293 và tình huống SYN-ACK mất chiều về.
-- **Đánh giá:** Tính ACK cộng dồn và kiểm tra mapping NAPT khi đường về đổi.
+- **Ranh giới:** TLS/HTTP ở P03.C03; không mở rộng thành giáo trình định tuyến chuyên sâu.
+- **Ngộ nhận:** TCP established chứng minh HTTP hoạt động; UDP timeout chứng minh server không nhận gói.
+- **Cách dạy:** Dùng trace số RFC 9293, datagram DNS/QUIC cơ sở và tình huống đường về mất.
+- **Đánh giá:** Tính ACK cộng dồn, kiểm mapping NAPT và nêu chứng cứ phân biệt UDP loss.
 - **Nối tới:** P03.C03, P08.C02, P11.C04.
 - **Nguồn cũ:** Ch04.
 - **Cây bài:**
-  - `P03.C02.L01` **Bắt tay và byte stream** — SYN, seq, ack, retransmission
-  - `P03.C02.L02` **Socket và lỗi** — LISTEN, connect, ECONNREFUSED, timeout
-  - `P03.C02.L03` **NAT và đối xứng đường** — tuple, state timeout, return path
+  - `P03.C02.L01` **Bắt tay và byte stream** [reviewed_draft; 1 mục cũ; 3 claim] — SYN, seq, ack, retransmission
+  - `P03.C02.L02` **Socket và lỗi** [reviewed_draft; 2 mục cũ; 3 claim] — LISTEN, connect, ECONNREFUSED, timeout
+  - `P03.C02.L03` **NAT và đối xứng đường** [reviewed_draft; 1 mục cũ; 2 claim] — tuple, state timeout, return path
+  - `P03.C02.L04` **UDP có điều kiện** [planned_new; 0 mục cũ; 0 claim] — datagram, port, checksum, timeout, DNS/QUIC và quan sát hai phía
 
 ### P03.C03 — Tên, TLS và ngữ nghĩa HTTP [reviewed_draft]
 
 - **Đích học:** Tách lỗi DNS, TCP, chứng chỉ và HTTP bằng dữ kiện tối thiểu.
 - **Mô hình nối bài:** Tên chọn địa chỉ; TLS xác minh peer; HTTP đặt phương thức, header, status và body.
-- **Tiên quyết bắt buộc:** P03.C02.L02.
+- **Tiên quyết bắt buộc:** P03.C02.L02, P03.C02.L04.
 - **Ranh giới:** Proxy hop ở P03.C04; cloud DNS ở P08.
 - **Ngộ nhận:** DNS trả IP nghĩa là service chạy; 502 luôn do upstream chết.
 - **Cách dạy:** Lần theo request client với SNI/Host và kết quả từng tầng.
@@ -202,9 +207,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P03.C04, P08.C01, P14.C01.
 - **Nguồn cũ:** Ch05.
 - **Cây bài:**
-  - `P03.C03.L01` **DNS và cache** — stub, recursive, authoritative, TTL, A/AAAA
-  - `P03.C03.L02` **TLS** — SNI, chứng chỉ, tên, trust, timeout
-  - `P03.C03.L03` **HTTP** — request/response, Host, method, status, cache và body
+  - `P03.C03.L01` **DNS và cache** [reviewed_draft; 1 mục cũ; 3 claim] — stub, recursive, authoritative, TTL, A/AAAA, UDP/TCP transport
+  - `P03.C03.L02` **TLS** [reviewed_draft; 1 mục cũ; 3 claim] — SNI, chứng chỉ, tên, trust, timeout
+  - `P03.C03.L03` **HTTP** [reviewed_draft; 1 mục cũ; 2 claim] — request/response, Host, method, status, cache và body
 
 ### P03.C04 — Reverse proxy và điều tra request hai chặng [reviewed_draft]
 
@@ -218,9 +223,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P06.C03, P07.C04, P11.C07, P12.C03.
 - **Nguồn cũ:** Ch05.
 - **Cây bài:**
-  - `P03.C04.L01` **Chọn upstream** — virtual host, route, pool, cache
-  - `P03.C04.L02` **Hai chặng** — client–proxy và proxy–upstream, header chuyển tiếp
-  - `P03.C04.L03` **Đường lỗi** — 502/504, retry an toàn, log và hậu điều kiện
+  - `P03.C04.L01` **Chọn upstream** [reviewed_draft; 1 mục cũ; 1 claim] — virtual host, route, pool, cache
+  - `P03.C04.L02` **Hai chặng** [reviewed_draft; 1 mục cũ; 2 claim] — client–proxy và proxy–upstream, header chuyển tiếp
+  - `P03.C04.L03` **Đường lỗi** [reviewed_draft; 3 mục cũ; 2 claim] — 502/504, retry an toàn, log và hậu điều kiện
 
 ## P04 — Git và lịch sử thay đổi
 
@@ -244,9 +249,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P04.C02, P06.C01, P09.C01, P11.C08, P14.C03.
 - **Nguồn cũ:** Ch06.
 - **Cây bài:**
-  - `P04.C01.L01` **Object graph** — blob, tree, commit, SHA
-  - `P04.C01.L02` **Trạng thái cục bộ** — HEAD, ref, index, working tree
-  - `P04.C01.L03` **Danh tính thay đổi** — tag, branch, remote, object reachability
+  - `P04.C01.L01` **Object graph** [reviewed_draft; 1 mục cũ; 2 claim] — blob, tree, commit, SHA
+  - `P04.C01.L02` **Trạng thái cục bộ** [reviewed_draft; 1 mục cũ; 2 claim] — HEAD, ref, index, working tree
+  - `P04.C01.L03` **Danh tính thay đổi** [needs_extension; 0 mục cũ; 0 claim] — tag, branch, remote, object reachability
 
 ### P04.C02 — Tích hợp và sửa lịch sử [reviewed_draft]
 
@@ -260,9 +265,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P06.C02.
 - **Nguồn cũ:** Ch06.
 - **Cây bài:**
-  - `P04.C02.L01` **Merge** — merge base, conflict stages, hai cha
-  - `P04.C02.L02` **Rebase** — commit mới, xung đột và lịch sử chia sẻ
-  - `P04.C02.L03` **Phục hồi** — revert, reset, reflog có giới hạn, kiểm thử
+  - `P04.C02.L01` **Merge** [reviewed_draft; 1 mục cũ; 2 claim] — merge base, conflict stages, hai cha
+  - `P04.C02.L02` **Rebase** [reviewed_draft; 1 mục cũ; 1 claim] — commit mới, xung đột và lịch sử chia sẻ
+  - `P04.C02.L03` **Phục hồi** [reviewed_draft; 2 mục cũ; 2 claim] — revert, reset, reflog có giới hạn, kiểm thử
 
 ## P05 — Tự động hóa hệ thống
 
@@ -286,25 +291,25 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P05.C02.
 - **Nguồn cũ:** Ch07.
 - **Cây bài:**
-  - `P05.C01.L01` **Parsing** — quote, expansion, splitting, globbing
-  - `P05.C01.L02` **I/O và status** — descriptor, redirect, pipe, PIPESTATUS
-  - `P05.C01.L03` **Control flow** — errexit exception, signal, trap, cleanup
+  - `P05.C01.L01` **Parsing** [reviewed_draft; 1 mục cũ; 3 claim] — quote, expansion, splitting, globbing
+  - `P05.C01.L02` **I/O và status** [reviewed_draft; 1 mục cũ; 3 claim] — descriptor, redirect, pipe, PIPESTATUS
+  - `P05.C01.L03` **Control flow** [reviewed_draft; 2 mục cũ; 3 claim] — errexit exception, signal, trap, cleanup
 
 ### P05.C02 — Python và Go điều phối tiến trình [reviewed_draft]
 
-- **Đích học:** So sánh xử lý argv, timeout và kết quả con theo hai runtime.
+- **Đích học:** Đọc/viết CLI DevOps nhỏ bằng Python hoặc Go, xử lý argv, lỗi, timeout và test nhánh.
 - **Mô hình nối bài:** Parent quan sát startup và task deadline khác nhau; cancellation không rollback tác dụng phụ.
 - **Tiên quyết bắt buộc:** P05.C01.L03, P01.C02.L02.
-- **Ranh giới:** Đóng gói artifact ở P06.
+- **Ranh giới:** Đóng gói artifact ở P06; không dạy Go như một giáo trình ngôn ngữ riêng.
 - **Ngộ nhận:** Không dùng shell thì input tự an toàn; timeout đã dừng dịch vụ từ xa.
 - **Cách dạy:** Đọc ba chương trình orchestration và kiểm thử success/fail/slow.
-- **Đánh giá:** Phân biệt START_ERROR, EXIT 7, TIMEOUT và partial state.
+- **Đánh giá:** Phân biệt START_ERROR, EXIT 7, TIMEOUT, partial state và dependency môi trường.
 - **Nối tới:** P05.C03.
 - **Nguồn cũ:** Ch08.
 - **Cây bài:**
-  - `P05.C02.L01` **Chọn ngôn ngữ** — Bash đủ dùng vs Python/Go
-  - `P05.C02.L02` **Subprocess** — argv, env, status, startup readiness
-  - `P05.C02.L03` **Timeout** — communicate, CommandContext, child/grandchild và cleanup
+  - `P05.C02.L01` **Chọn ngôn ngữ** [reviewed_draft; 2 mục cũ; 1 claim] — Bash đủ dùng vs Python/Go CLI nhỏ, module/dependency
+  - `P05.C02.L02` **Subprocess** [reviewed_draft; 2 mục cũ; 4 claim] — argv, env, status, Python exception/Go error, startup readiness, test nhánh
+  - `P05.C02.L03` **Timeout** [reviewed_draft; 2 mục cũ; 3 claim] — communicate, context cancellation/CommandContext, child/grandchild và cleanup
 
 ### P05.C03 — Workflow an toàn và chạy lại [mixed]
 
@@ -318,9 +323,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P06.C01, P10.C02.
 - **Nguồn cũ:** Ch07, Ch08.
 - **Cây bài:**
-  - `P05.C03.L01` **Hợp đồng bước** — input, output, error class, secret
-  - `P05.C03.L02` **Retry** — idempotency, deduplication, backoff, concurrency
-  - `P05.C03.L03` **Phục hồi** — durable marker, compensation, cleanup và chứng minh hậu điều kiện
+  - `P05.C03.L01` **Hợp đồng bước** [needs_extension; 2 mục cũ; 2 claim] — input, output, error class, secret
+  - `P05.C03.L02` **Retry** [needs_extension; 1 mục cũ; 0 claim] — idempotency, deduplication, backoff, concurrency
+  - `P05.C03.L03` **Phục hồi** [needs_extension; 2 mục cũ; 3 claim] — durable marker, compensation, cleanup và chứng minh hậu điều kiện
 
 ## P06 — Build, kiểm thử và phát hành
 
@@ -344,9 +349,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P06.C02, P07.C02.
 - **Nguồn cũ:** Ch09.
 - **Cây bài:**
-  - `P06.C01.L01` **Đầu vào build** — source, dependency, compiler, môi trường
-  - `P06.C01.L02` **Artifact** — digest, tag, immutable promotion
-  - `P06.C01.L03` **Tái lập** — so byte độc lập, giới hạn cache và timestamp
+  - `P06.C01.L01` **Đầu vào build** [reviewed_draft; 2 mục cũ; 2 claim] — source, dependency, compiler, môi trường
+  - `P06.C01.L02` **Artifact** [reviewed_draft; 1 mục cũ; 2 claim] — digest, tag, immutable promotion
+  - `P06.C01.L03` **Tái lập** [needs_extension; 0 mục cũ; 0 claim] — so byte độc lập, giới hạn cache và timestamp
 
 ### P06.C02 — Test gates và CI/CD [mixed]
 
@@ -360,9 +365,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P06.C03, P09.C04, P14.C03.
 - **Nguồn cũ:** Ch09.
 - **Cây bài:**
-  - `P06.C02.L01` **CI vs CD** — build, test, delivery, deployment
-  - `P06.C02.L02` **Test model** — pyramid, contract, data fixtures, false confidence
-  - `P06.C02.L03` **Gate** — secret, approval, concurrency và evidence
+  - `P06.C02.L01` **CI vs CD** [needs_extension; 1 mục cũ; 1 claim] — build, test, delivery, deployment
+  - `P06.C02.L02` **Test model** [needs_extension; 0 mục cũ; 0 claim] — pyramid, contract, data fixtures, false confidence
+  - `P06.C02.L03` **Gate** [needs_extension; 1 mục cũ; 1 claim] — secret, approval, concurrency và evidence
 
 ### P06.C03 — Rollout và quyết định dừng [reviewed_draft]
 
@@ -376,9 +381,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P06.C04, P08.C03, P10.C03, P11.C01, P13.C01.
 - **Nguồn cũ:** Ch09.
 - **Cây bài:**
-  - `P06.C03.L01` **Chiến lược** — rolling, blue-green, canary
-  - `P06.C03.L02` **Readiness** — process vs dependency vs request
-  - `P06.C03.L03` **Điều phối** — serial release, approval, rollback trigger
+  - `P06.C03.L01` **Chiến lược** [reviewed_draft; 1 mục cũ; 4 claim] — rolling, blue-green, canary
+  - `P06.C03.L02` **Readiness** [reviewed_draft; 1 mục cũ; 1 claim] — process vs dependency vs request
+  - `P06.C03.L03` **Điều phối** [needs_extension; 0 mục cũ; 0 claim] — serial release, approval, rollback trigger
 
 ### P06.C04 — Rollback và tương thích dữ liệu [reviewed_draft]
 
@@ -392,9 +397,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P09.C02, P11.C08, P13.C02, P13.C03.
 - **Nguồn cũ:** Ch09.
 - **Cây bài:**
-  - `P06.C04.L01` **Dữ liệu qua bản phát hành** — migration, back/forward compatibility
-  - `P06.C04.L02` **Partial deployment** — identity hiện chạy, request và dữ liệu
-  - `P06.C04.L03` **Phục hồi** — snapshot, compensating action, hậu điều kiện
+  - `P06.C04.L01` **Dữ liệu qua bản phát hành** [reviewed_draft; 2 mục cũ; 2 claim] — migration, back/forward compatibility
+  - `P06.C04.L02` **Partial deployment** [reviewed_draft; 1 mục cũ; 1 claim] — identity hiện chạy, request và dữ liệu
+  - `P06.C04.L03` **Phục hồi** [reviewed_draft; 1 mục cũ; 1 claim] — snapshot, compensating action, hậu điều kiện
 
 ## P07 — Container và OCI
 
@@ -418,9 +423,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P07.C02, P11.C01, P11.C03.
 - **Nguồn cũ:** Ch10, Ch02.
 - **Cây bài:**
-  - `P07.C01.L01` **Tạo/tham gia** — clone, unshare, setns, fork/exec, quyền
-  - `P07.C01.L02` **View** — PID/net/mount/user và quan sát host/container
-  - `P07.C01.L03` **Limit** — cpu.max, memory.max, OOM và pressure
+  - `P07.C01.L01` **Tạo/tham gia** [reviewed_draft; 1 mục cũ; 5 claim] — clone, unshare, setns, fork/exec, quyền
+  - `P07.C01.L02` **View** [reviewed_draft; 1 mục cũ; 3 claim] — PID/net/mount/user và quan sát host/container
+  - `P07.C01.L03` **Limit** [reviewed_draft; 4 mục cũ; 7 claim] — cpu.max, memory.max, OOM và pressure
 
 ### P07.C02 — OCI image, build và registry [reviewed_draft]
 
@@ -434,9 +439,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P07.C03, P14.C03.
 - **Nguồn cũ:** Ch10, Ch11.
 - **Cây bài:**
-  - `P07.C02.L01` **Build** — context, Dockerfile, layer cache, secret mount
-  - `P07.C02.L02` **OCI** — config, manifest/index, descriptor và digest
-  - `P07.C02.L03` **Distribution** — push/pull, tag, platform và kiểm byte
+  - `P07.C02.L01` **Build** [reviewed_draft; 1 mục cũ; 1 claim] — context, Dockerfile, layer cache, secret mount
+  - `P07.C02.L02` **OCI** [reviewed_draft; 2 mục cũ; 3 claim] — config, manifest/index, descriptor và digest
+  - `P07.C02.L03` **Distribution** [reviewed_draft; 1 mục cũ; 1 claim] — push/pull, tag, platform và kiểm byte
 
 ### P07.C03 — Container lifecycle và dữ liệu [reviewed_draft]
 
@@ -450,9 +455,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P07.C04, P11.C02, P11.C05.
 - **Nguồn cũ:** Ch10, Ch11.
 - **Cây bài:**
-  - `P07.C03.L01` **Lần chạy** — create, start, stop, exit, health
-  - `P07.C03.L02` **Filesystem** — read-only layers, writable layer, whiteout
-  - `P07.C03.L03` **Mount** — volume, bind, ownership, backup và restore
+  - `P07.C03.L01` **Lần chạy** [reviewed_draft; 3 mục cũ; 2 claim] — create, start, stop, exit, health
+  - `P07.C03.L02` **Filesystem** [reviewed_draft; 1 mục cũ; 0 claim] — read-only layers, writable layer, whiteout
+  - `P07.C03.L03` **Mount** [reviewed_draft; 2 mục cũ; 3 claim] — volume, bind, ownership, backup và restore
 
 ### P07.C04 — Compose và ứng dụng nhiều service [reviewed_draft]
 
@@ -466,9 +471,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch11.
 - **Cây bài:**
-  - `P07.C04.L01` **Mô hình project** — services, network, DNS, port
-  - `P07.C04.L02` **Khởi động** — dependency, healthcheck, restart và giới hạn
-  - `P07.C04.L03` **Dữ liệu** — named/external volume, bind, recreate và cleanup
+  - `P07.C04.L01` **Mô hình project** [reviewed_draft; 1 mục cũ; 2 claim] — services, network, DNS, port
+  - `P07.C04.L02` **Khởi động** [reviewed_draft; 1 mục cũ; 2 claim] — dependency, healthcheck, restart và giới hạn
+  - `P07.C04.L03` **Dữ liệu** [reviewed_draft; 2 mục cũ; 2 claim] — named/external volume, bind, recreate và cleanup
 
 ## P08 — Cloud và AWS
 
@@ -492,15 +497,15 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P08.C02, P14.C01.
 - **Nguồn cũ:** Ch12.
 - **Cây bài:**
-  - `P08.C01.L01` **Danh tính** — user, role, session, trust, IMDS, STS
-  - `P08.C01.L02` **Quyết định** — Allow, explicit Deny, boundaries/SCP/resource policy theo scope
-  - `P08.C01.L03` **Điều tra** — principal, action, resource, context và audit event
+  - `P08.C01.L01` **Danh tính** [reviewed_draft; 1 mục cũ; 2 claim] — user, role, session, trust, IMDS, STS
+  - `P08.C01.L02` **Quyết định** [reviewed_draft; 1 mục cũ; 2 claim] — Allow, explicit Deny, boundaries/SCP/resource policy theo scope
+  - `P08.C01.L03` **Điều tra** [reviewed_draft; 1 mục cũ; 1 claim] — principal, action, resource, context và audit event
 
 ### P08.C02 — VPC, subnet và đường đi AWS [reviewed_draft]
 
 - **Đích học:** Chứng minh private workload có hoặc không có đường tới S3/STS.
 - **Mô hình nối bài:** Route quyết định target; SG stateful và NACL stateless lọc gói; endpoint thay loại đường, không cấp quyền IAM.
-- **Tiên quyết bắt buộc:** P03.C02.L03, P08.C01.L03.
+- **Tiên quyết bắt buộc:** P03.C02.L03, P03.C01.L04, P08.C01.L03.
 - **Ranh giới:** K8s Service/Gateway ở P11 dùng control plane khác.
 - **Ngộ nhận:** Private subnet có NAT Gateway thì mọi AWS API đều dùng cùng đường an toàn.
 - **Cách dạy:** Tách timeout DNS/route/SG/NACL/endpoint theo vị trí nguồn.
@@ -508,9 +513,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P08.C03, P14.C04.
 - **Nguồn cũ:** Ch12, Ch04.
 - **Cây bài:**
-  - `P08.C02.L01` **Topology** — VPC, subnet/AZ, route table, IGW, NAT
-  - `P08.C02.L02` **Chính sách gói** — SG, NACL, state và ephemeral port
-  - `P08.C02.L03` **Private access** — gateway/interface endpoint, DNS, route và điều kiện
+  - `P08.C02.L01` **Topology** [reviewed_draft; 1 mục cũ; 3 claim] — VPC, subnet/AZ, route table, IGW, NAT
+  - `P08.C02.L02` **Chính sách gói** [reviewed_draft; 1 mục cũ; 2 claim] — SG, NACL, state và ephemeral port
+  - `P08.C02.L03` **Private access** [reviewed_draft; 2 mục cũ; 5 claim] — gateway/interface endpoint, DNS, route và điều kiện
 
 ### P08.C03 — EC2, load balancer và miền lỗi [mixed]
 
@@ -524,9 +529,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P08.C04.
 - **Nguồn cũ:** Ch12.
 - **Cây bài:**
-  - `P08.C03.L01` **Compute** — instance, image, boot, instance profile
-  - `P08.C03.L02` **Traffic** — ALB listener, target group, health và timeout
-  - `P08.C03.L03` **Failure domain** — AZ, capacity, replace và state ngoài instance
+  - `P08.C03.L01` **Compute** [needs_extension; 1 mục cũ; 0 claim] — instance, image, boot, instance profile
+  - `P08.C03.L02` **Traffic** [needs_extension; 1 mục cũ; 0 claim] — ALB listener, target group, health và timeout
+  - `P08.C03.L03` **Failure domain** [needs_extension; 0 mục cũ; 0 claim] — AZ, capacity, replace và state ngoài instance
 
 ### P08.C04 — Block, file và object storage [reviewed_draft]
 
@@ -540,9 +545,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P09.C01, P09.C04, P11.C05, P13.C03, P15.C02.
 - **Nguồn cũ:** Ch12, Ch11.
 - **Cây bài:**
-  - `P08.C04.L01` **Block** — EBS attach, snapshot, delete_on_termination
-  - `P08.C04.L02` **File** — EFS mount, đồng thời, quyền
-  - `P08.C04.L03` **Object** — S3 API, versioning, lifecycle, restore và chi phí
+  - `P08.C04.L01` **Block** [reviewed_draft; 1 mục cũ; 2 claim] — EBS attach, snapshot, delete_on_termination
+  - `P08.C04.L02` **File** [reviewed_draft; 1 mục cũ; 1 claim] — EFS mount, đồng thời, quyền
+  - `P08.C04.L03` **Object** [reviewed_draft; 1 mục cũ; 2 claim] — S3 API, versioning, lifecycle, restore và chi phí
 
 ## P09 — Terraform và trạng thái hạ tầng
 
@@ -566,9 +571,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P09.C02.
 - **Nguồn cũ:** Ch13.
 - **Cây bài:**
-  - `P09.C01.L01` **Ngôn ngữ** — variable, resource, data, output, expression
-  - `P09.C01.L02` **Provider** — schema, CRUD, version pin
-  - `P09.C01.L03` **DAG** — implicit refs, depends_on, cycle và parallelism
+  - `P09.C01.L01` **Ngôn ngữ** [reviewed_draft; 1 mục cũ; 1 claim] — variable, resource, data, output, expression
+  - `P09.C01.L02` **Provider** [reviewed_draft; 1 mục cũ; 0 claim] — schema, CRUD, version pin
+  - `P09.C01.L03` **DAG** [reviewed_draft; 1 mục cũ; 3 claim] — implicit refs, depends_on, cycle và parallelism
 
 ### P09.C02 — Plan, state và backend [reviewed_draft]
 
@@ -582,9 +587,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P09.C03, P10.C01, P14.C02.
 - **Nguồn cũ:** Ch13.
 - **Cây bài:**
-  - `P09.C02.L01` **Ba trạng thái** — config, state binding, real object
-  - `P09.C02.L02` **Plan/apply** — refresh, unknown value, provider failure
-  - `P09.C02.L03` **Backend** — locking, versioning, access, encryption, restore
+  - `P09.C02.L01` **Ba trạng thái** [reviewed_draft; 1 mục cũ; 1 claim] — config, state binding, real object
+  - `P09.C02.L02` **Plan/apply** [reviewed_draft; 1 mục cũ; 4 claim] — refresh, unknown value, provider failure
+  - `P09.C02.L03` **Backend** [reviewed_draft; 1 mục cũ; 3 claim] — locking, versioning, access, encryption, restore
 
 ### P09.C03 — Drift, import và refactor [mixed]
 
@@ -598,9 +603,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P09.C04.
 - **Nguồn cũ:** Ch13.
 - **Cây bài:**
-  - `P09.C03.L01` **Drift** — refresh, -refresh=false, refresh-only
-  - `P09.C03.L02` **Ánh xạ** — import, moved, state mv có kiểm soát
-  - `P09.C03.L03` **Refactor** — count/for_each/module address và chống destroy
+  - `P09.C03.L01` **Drift** [needs_extension; 1 mục cũ; 1 claim] — refresh, -refresh=false, refresh-only
+  - `P09.C03.L02` **Ánh xạ** [needs_extension; 0 mục cũ; 0 claim] — import, moved, state mv có kiểm soát
+  - `P09.C03.L03` **Refactor** [needs_extension; 0 mục cũ; 0 claim] — count/for_each/module address và chống destroy
 
 ### P09.C04 — Thay đổi hạ tầng có dữ liệu [reviewed_draft]
 
@@ -614,9 +619,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch13.
 - **Cây bài:**
-  - `P09.C04.L01` **Replacement** — ForceNew/provider schema và data risk
-  - `P09.C04.L02` **Điều phối** — approval, lock, concurrent actor, saved plan
-  - `P09.C04.L03` **Hậu kiểm** — ID object, dữ liệu, request, state backup và rollback
+  - `P09.C04.L01` **Replacement** [reviewed_draft; 1 mục cũ; 2 claim] — ForceNew/provider schema và data risk
+  - `P09.C04.L02` **Điều phối** [needs_extension; 0 mục cũ; 0 claim] — approval, lock, concurrent actor, saved plan
+  - `P09.C04.L03` **Hậu kiểm** [reviewed_draft; 1 mục cũ; 0 claim] — ID object, dữ liệu, request, state backup và rollback
 
 ## P10 — Ansible và hội tụ cấu hình
 
@@ -640,9 +645,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P10.C02.
 - **Nguồn cũ:** Ch14.
 - **Cây bài:**
-  - `P10.C01.L01` **Topology** — inventory, host/group, SSH/local
-  - `P10.C01.L02` **Đơn vị chạy** — play, task, module, facts
-  - `P10.C01.L03` **Quyền/biến** — become, precedence, secret boundary
+  - `P10.C01.L01` **Topology** [reviewed_draft; 1 mục cũ; 2 claim] — inventory, host/group, SSH/local
+  - `P10.C01.L02` **Đơn vị chạy** [reviewed_draft; 1 mục cũ; 1 claim] — play, task, module, facts
+  - `P10.C01.L03` **Quyền/biến** [reviewed_draft; 1 mục cũ; 1 claim] — become, precedence, secret boundary
 
 ### P10.C02 — Hội tụ, handler và thất bại từng host [reviewed_draft]
 
@@ -656,9 +661,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P10.C03.
 - **Nguồn cũ:** Ch14.
 - **Cây bài:**
-  - `P10.C02.L01` **Idempotency** — ok/changed/failed và module contract
-  - `P10.C02.L02` **Handler** — notify, thứ tự, restart đúng lúc
-  - `P10.C02.L03` **Failure** — check/diff, partial host, hậu điều kiện
+  - `P10.C02.L01` **Idempotency** [reviewed_draft; 2 mục cũ; 4 claim] — ok/changed/failed và module contract
+  - `P10.C02.L02` **Handler** [reviewed_draft; 2 mục cũ; 3 claim] — notify, thứ tự, restart đúng lúc
+  - `P10.C02.L03` **Failure** [reviewed_draft; 2 mục cũ; 3 claim] — check/diff, partial host, hậu điều kiện
 
 ### P10.C03 — Vai trò, secrets và triển khai theo đợt [planned_new]
 
@@ -672,9 +677,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch14.
 - **Cây bài:**
-  - `P10.C03.L01` **Tái sử dụng** — role, defaults/vars, tags
-  - `P10.C03.L02` **Phân đợt** — serial, max_fail_percentage, handler và health
-  - `P10.C03.L03` **Secret** — Vault, key custody, log redaction, rotation
+  - `P10.C03.L01` **Tái sử dụng** [planned_new; 1 mục cũ; 1 claim] — role, defaults/vars, tags
+  - `P10.C03.L02` **Phân đợt** [planned_new; 1 mục cũ; 2 claim] — serial, max_fail_percentage, handler và health
+  - `P10.C03.L03` **Secret** [planned_new; 0 mục cũ; 0 claim] — Vault, key custody, log redaction, rotation
 
 ## P11 — Kubernetes và cloud native
 
@@ -698,9 +703,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P11.C02, P11.C06, P11.C07, P12.C03, P14.C01.
 - **Nguồn cũ:** Ch15.
 - **Cây bài:**
-  - `P11.C01.L01` **Control plane** — API/admission, etcd, controller manager
-  - `P11.C01.L02` **Reconciliation** — spec/status, watch, retry, generation
-  - `P11.C01.L03` **Node boundary** — scheduler, kubelet, runtime và đường dữ liệu
+  - `P11.C01.L01` **Control plane** [reviewed_draft; 1 mục cũ; 3 claim] — API/admission, etcd, controller manager
+  - `P11.C01.L02` **Reconciliation** [reviewed_draft; 1 mục cũ; 2 claim] — spec/status, watch, retry, generation
+  - `P11.C01.L03` **Node boundary** [reviewed_draft; 1 mục cũ; 2 claim] — scheduler, kubelet, runtime và đường dữ liệu
 
 ### P11.C02 — Pod, Deployment và readiness [reviewed_draft]
 
@@ -711,12 +716,12 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Ngộ nhận:** Restart tự phục hồi dữ liệu trong emptyDir.
 - **Cách dạy:** Sửa readiness sai trong k8s-ch15-incident.yaml rồi kiểm status từng cấp.
 - **Đánh giá:** Chỉ ra vì sao Available không chứng minh request nghiệp vụ.
-- **Nối tới:** P11.C03, P11.C04, P11.C05.
+- **Nối tới:** P11.C03, P11.C04, P11.C05, P11.C08.
 - **Nguồn cũ:** Ch15, Ch09.
 - **Cây bài:**
-  - `P11.C02.L01` **Workload objects** — Pod, ReplicaSet, Deployment, owner/selector
-  - `P11.C02.L02` **Probe** — startup, liveness, readiness và failure mode
-  - `P11.C02.L03` **Rollout** — revision, surge/unavailable, progress deadline và dừng
+  - `P11.C02.L01` **Workload objects** [reviewed_draft; 1 mục cũ; 3 claim] — Pod, ReplicaSet, Deployment, owner/selector
+  - `P11.C02.L02` **Probe** [reviewed_draft; 2 mục cũ; 1 claim] — startup, liveness, readiness và failure mode
+  - `P11.C02.L03` **Rollout** [reviewed_draft; 2 mục cũ; 2 claim] — revision, surge/unavailable, progress deadline và dừng
 
 ### P11.C03 — Scheduler và ngân sách tài nguyên [reviewed_draft]
 
@@ -730,15 +735,15 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P11.C06, P12.C01.
 - **Nguồn cũ:** Ch16, Ch10, Ch02.
 - **Cây bài:**
-  - `P11.C03.L01` **Placement** — requests, allocatable, taint/toleration, affinity
-  - `P11.C03.L02` **Runtime budget** — CPU/memory limits, QoS, OOM/throttle
-  - `P11.C03.L03` **Resource metric tối thiểu** — CPU time per window, metrics.k8s.io, timestamp/missing sample
+  - `P11.C03.L01` **Placement** [reviewed_draft; 2 mục cũ; 3 claim] — requests, allocatable, taint/toleration, affinity
+  - `P11.C03.L02` **Runtime budget** [reviewed_draft; 1 mục cũ; 4 claim] — CPU/memory limits, QoS, OOM/throttle
+  - `P11.C03.L03` **Resource metric tối thiểu** [reviewed_draft; 1 mục cũ; 2 claim] — CPU time per window, metrics.k8s.io, timestamp/missing sample
 
 ### P11.C04 — Service, EndpointSlice và NetworkPolicy [reviewed_draft]
 
 - **Đích học:** Lần theo tên Service tới Pod socket và policy chặn.
 - **Mô hình nối bài:** DNS chỉ trả tên; selector tạo endpoint; node dataplane và policy xử lý packet.
-- **Tiên quyết bắt buộc:** P11.C02.L02, P03.C02.L03.
+- **Tiên quyết bắt buộc:** P11.C02.L02, P03.C02.L03, P03.C01.L04.
 - **Ranh giới:** Gateway edge ở P11.C07.
 - **Ngộ nhận:** Service có IP nghĩa là có backend; Pod Ready đảm bảo mọi namespace nối được.
 - **Cách dạy:** Chẩn đoán typo app=atals cùng probe sai và một client khác namespace.
@@ -746,9 +751,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P11.C07, P14.C04.
 - **Nguồn cũ:** Ch15, Ch16.
 - **Cây bài:**
-  - `P11.C04.L01` **Discovery** — DNS, Service selector, EndpointSlice
-  - `P11.C04.L02` **Dataplane** — ClusterIP, kube-proxy/CNI theo triển khai, targetPort
-  - `P11.C04.L03` **Policy** — ingress/egress, scope và thử từ đúng nguồn
+  - `P11.C04.L01` **Discovery** [reviewed_draft; 2 mục cũ; 3 claim] — DNS, Service selector, EndpointSlice
+  - `P11.C04.L02` **Dataplane** [reviewed_draft; 1 mục cũ; 1 claim] — ClusterIP, kube-proxy/CNI theo triển khai, targetPort/MTU
+  - `P11.C04.L03` **Policy** [reviewed_draft; 2 mục cũ; 1 claim] — ingress/egress, scope và thử từ đúng nguồn
 
 ### P11.C05 — PVC, CSI và dữ liệu workload [reviewed_draft]
 
@@ -762,9 +767,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P13.C03.
 - **Nguồn cũ:** Ch15, Ch16.
 - **Cây bài:**
-  - `P11.C05.L01` **Tài nguyên** — PV, PVC, StorageClass, access mode
-  - `P11.C05.L02` **Thực thi** — CSI, topology, attach/mount, permissions
-  - `P11.C05.L03` **Vòng đời** — StatefulSet identity, reclaim, backup/restore
+  - `P11.C05.L01` **Tài nguyên** [reviewed_draft; 1 mục cũ; 3 claim] — PV, PVC, StorageClass, access mode
+  - `P11.C05.L02` **Thực thi** [reviewed_draft; 2 mục cũ; 1 claim] — CSI, topology, attach/mount, permissions
+  - `P11.C05.L03` **Vòng đời** [reviewed_draft; 2 mục cũ; 2 claim] — StatefulSet identity, reclaim, backup/restore
 
 ### P11.C06 — HPA và điều khiển mở rộng [reviewed_draft]
 
@@ -778,9 +783,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch16.
 - **Cây bài:**
-  - `P11.C06.L01` **Phép đo** — usage, request, missing/stale metric
-  - `P11.C06.L02` **Vòng tính** — average utilization, ceil, bounds/tolerance
-  - `P11.C06.L03` **Hội tụ** — scale target, scheduler, readiness, latency và giới hạn
+  - `P11.C06.L01` **Phép đo** [reviewed_draft; 1 mục cũ; 1 claim] — usage, request, missing/stale metric
+  - `P11.C06.L02` **Vòng tính** [reviewed_draft; 1 mục cũ; 3 claim] — average utilization, ceil, bounds/tolerance
+  - `P11.C06.L03` **Hội tụ** [reviewed_draft; 1 mục cũ; 0 claim] — scale target, scheduler, readiness, latency và giới hạn
 
 ### P11.C07 — Gateway API và ranh giới request ngoài cluster [reviewed_draft]
 
@@ -791,28 +796,28 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Ngộ nhận:** Programmed=True chứng minh DNS/TLS/Pod phục vụ.
 - **Cách dạy:** Điều tra revision đổi hostname nhưng DNS chưa đổi.
 - **Đánh giá:** Xác nhận Accepted/ResolvedRefs, quyền cross-namespace và request từ client.
-- **Nối tới:** P11.C08.
+- **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch17.
 - **Cây bài:**
-  - `P11.C07.L01` **API objects** — GatewayClass, Gateway, listener, HTTPRoute
-  - `P11.C07.L02` **Attachment** — allowedRoutes, parentRefs, ReferenceGrant và status
-  - `P11.C07.L03` **Request path** — DNS, Host/SNI, dataplane, Service và lỗi
+  - `P11.C07.L01` **API objects** [reviewed_draft; 2 mục cũ; 5 claim] — GatewayClass, Gateway, listener, HTTPRoute
+  - `P11.C07.L02` **Attachment** [reviewed_draft; 3 mục cũ; 3 claim] — allowedRoutes, parentRefs, ReferenceGrant và status
+  - `P11.C07.L03` **Request path** [reviewed_draft; 2 mục cũ; 1 claim] — DNS, Host/SNI, dataplane, Service và lỗi
 
 ### P11.C08 — Helm chart và vòng đời release [reviewed_draft]
 
 - **Đích học:** Theo chart/values đến manifest/revision rồi phân biệt với trạng thái thật.
 - **Mô hình nối bài:** Render là đầu vào API; release history giữ manifest/config, rollback tạo revision chứ không đảo dữ liệu.
-- **Tiên quyết bắt buộc:** P11.C07.L03, P06.C04.L03, P04.C01.L03.
-- **Ranh giới:** Không biến chart thành nguồn sự thật cho mọi object ngoài release.
+- **Tiên quyết bắt buộc:** P11.C02.L03, P06.C04.L03, P04.C01.L03.
+- **Ranh giới:** Gateway API chỉ là ví dụ chart hiện có, không là tiên quyết Helm.
 - **Ngộ nhận:** helm template chạy xong chứng minh CRD/controller tồn tại.
 - **Cách dạy:** Đọc chart atlas-gateway, upgrade/rollback giả định và kiểm request.
 - **Đánh giá:** Đề xuất hậu điều kiện cho revision, object, endpoint, dữ liệu.
 - **Nối tới:** P15.C01.
 - **Nguồn cũ:** Ch17.
 - **Cây bài:**
-  - `P11.C08.L01` **Chart** — metadata, template, values, dependency
-  - `P11.C08.L02` **Release** — install, upgrade, wait, history và revision
-  - `P11.C08.L03` **Rollback** — manifest, owner, data compatibility và request
+  - `P11.C08.L01` **Chart** [reviewed_draft; 2 mục cũ; 3 claim] — metadata, template, values, dependency
+  - `P11.C08.L02` **Release** [reviewed_draft; 1 mục cũ; 1 claim] — install, upgrade, wait, history và revision
+  - `P11.C08.L03` **Rollback** [reviewed_draft; 2 mục cũ; 3 claim] — manifest, owner, data compatibility và request
 
 ## P12 — Observability và telemetry
 
@@ -836,9 +841,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P12.C02.
 - **Nguồn cũ:** Ch18.
 - **Cây bài:**
-  - `P12.C01.L01` **Đo** — counter, gauge, histogram, units
-  - `P12.C01.L02` **Tập hợp** — labels, cardinality, identity
-  - `P12.C01.L03` **Thu thập** — scrape, target discovery, up và cửa sổ
+  - `P12.C01.L01` **Đo** [reviewed_draft; 1 mục cũ; 2 claim] — counter, gauge, histogram, units
+  - `P12.C01.L02` **Tập hợp** [reviewed_draft; 1 mục cũ; 2 claim] — labels, cardinality, identity
+  - `P12.C01.L03` **Thu thập** [reviewed_draft; 1 mục cũ; 3 claim] — scrape, target discovery, up và cửa sổ
 
 ### P12.C02 — Prometheus, PromQL và Grafana [reviewed_draft]
 
@@ -849,28 +854,28 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Ngộ nhận:** Trung bình p95 của Pod là p95 toàn dịch vụ.
 - **Cách dạy:** Tính CSV Ch18 rồi thay một target bằng up=0.
 - **Đánh giá:** Sửa query rate(sum()) và nêu bias do mất scrape.
-- **Nối tới:** P12.C03, P12.C04, P13.C01, P13.C04.
+- **Nối tới:** P12.C04, P13.C01, P13.C04.
 - **Nguồn cũ:** Ch18.
 - **Cây bài:**
-  - `P12.C02.L01` **PromQL** — rate/increase, aggregation, reset
-  - `P12.C02.L02` **Histogram** — bucket cumulative, quantile interpolation
-  - `P12.C02.L03` **Dashboard** — selector, step, data source và missing series
+  - `P12.C02.L01` **PromQL** [reviewed_draft; 2 mục cũ; 4 claim] — rate/increase, aggregation, reset
+  - `P12.C02.L02` **Histogram** [reviewed_draft; 1 mục cũ; 2 claim] — bucket cumulative, quantile interpolation
+  - `P12.C02.L03` **Dashboard** [reviewed_draft; 2 mục cũ; 3 claim] — selector, step, data source và missing series
 
 ### P12.C03 — Logs, traces và OpenTelemetry [reviewed_draft]
 
 - **Đích học:** Nối log và span của một request, kể cả khi một nhánh timeout nhưng cuối trả 200.
 - **Mô hình nối bài:** Trace mô tả quan hệ parent/child; log mô tả sự kiện; SDK/Collector/backend có đường lỗi riêng.
-- **Tiên quyết bắt buộc:** P12.C02.L03, P03.C04.L03, P11.C01.L02.
-- **Ranh giới:** Alert policy ở P12.C04; không bắt buộc chạy Collector thật ở bài này.
+- **Tiên quyết bắt buộc:** P03.C04.L03, P11.C01.L02.
+- **Ranh giới:** Grafana dashboard không là điều kiện để hiểu propagation; alert policy ở P12.C04.
 - **Ngộ nhận:** Cộng mọi span duration ra client latency; sampled=01 bảo đảm trace được lưu.
 - **Cách dạy:** Dùng trace-ch19.csv và logs-ch19.json để tính và chẩn đoán missing span.
 - **Đánh giá:** Xác định 420 ms end-to-end, chỗ thiếu span và giới hạn kết luận.
 - **Nối tới:** P12.C04, P13.C02, P14.C02.
 - **Nguồn cũ:** Ch19.
 - **Cây bài:**
-  - `P12.C03.L01` **Log** — timestamp/severity/context/PII
-  - `P12.C03.L02` **Trace** — span parent, W3C traceparent, sampling
-  - `P12.C03.L03` **Pipeline** — OTel API/SDK, OTLP, Collector queue/retry/backend
+  - `P12.C03.L01` **Log** [reviewed_draft; 2 mục cũ; 3 claim] — timestamp/severity/context/PII
+  - `P12.C03.L02` **Trace** [reviewed_draft; 2 mục cũ; 8 claim] — span parent, W3C traceparent, sampling
+  - `P12.C03.L03` **Pipeline** [reviewed_draft; 3 mục cũ; 8 claim] — OTel API/SDK, OTLP, Collector queue/retry/backend
 
 ### P12.C04 — Alerting và sức khỏe pipeline quan sát [planned_new]
 
@@ -884,9 +889,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch18, Ch19.
 - **Cây bài:**
-  - `P12.C04.L01` **Rule** — threshold, duration, missing data
-  - `P12.C04.L02` **Routing** — group, inhibit, silences, escalation
-  - `P12.C04.L03` **Pipeline** — export failure, queue/drop, retention và telemetry cost
+  - `P12.C04.L01` **Rule** [planned_new; 2 mục cũ; 1 claim] — threshold, duration, missing data
+  - `P12.C04.L02` **Routing** [planned_new; 0 mục cũ; 0 claim] — group, inhibit, silences, escalation
+  - `P12.C04.L03` **Pipeline** [planned_new; 1 mục cũ; 0 claim] — export failure, queue/drop, retention và telemetry cost
 
 ## P13 — SRE và phục hồi
 
@@ -910,9 +915,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P13.C02, P13.C04.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
-  - `P13.C01.L01` **SLI** — good/total events, latency, availability, exclusion
-  - `P13.C01.L02` **SLO** — window, target, budget
-  - `P13.C01.L03` **Burn** — rate, multi-window alert, change policy
+  - `P13.C01.L01` **SLI** [planned_new; 0 mục cũ; 0 claim] — good/total events, latency, availability, exclusion
+  - `P13.C01.L02` **SLO** [planned_new; 0 mục cũ; 0 claim] — window, target, budget
+  - `P13.C01.L03` **Burn** [planned_new; 0 mục cũ; 0 claim] — rate, multi-window alert, change policy
 
 ### P13.C02 — Incident response và postmortem [planned_new]
 
@@ -926,9 +931,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P15.C03.
 - **Nguồn cũ:** Ch09, Ch19.
 - **Cây bài:**
-  - `P13.C02.L01` **Phản ứng** — detect, triage, severity, incident command
-  - `P13.C02.L02` **Giảm tác động** — rollback/isolation, evidence preservation, status updates
-  - `P13.C02.L03` **Học lại** — timeline, contributing factors, action ownership
+  - `P13.C02.L01` **Phản ứng** [planned_new; 0 mục cũ; 0 claim] — detect, triage, severity, incident command
+  - `P13.C02.L02` **Giảm tác động** [planned_new; 0 mục cũ; 0 claim] — rollback/isolation, evidence preservation, status updates
+  - `P13.C02.L03` **Học lại** [planned_new; 0 mục cũ; 0 claim] — timeline, contributing factors, action ownership
 
 ### P13.C03 — Backup, DR và phục hồi dữ liệu [planned_new]
 
@@ -942,9 +947,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P15.C01.
 - **Nguồn cũ:** Ch11, Ch12, Ch13, Ch16.
 - **Cây bài:**
-  - `P13.C03.L01` **Mục tiêu** — RPO, RTO, failure domain
-  - `P13.C03.L02` **Bản sao** — snapshot, versioning, immutable/offsite, secret/key
-  - `P13.C03.L03` **Diễn tập** — restore, checksum, application consistency và request
+  - `P13.C03.L01` **Mục tiêu** [planned_new; 0 mục cũ; 0 claim] — RPO, RTO, failure domain
+  - `P13.C03.L02` **Bản sao** [planned_new; 0 mục cũ; 0 claim] — snapshot, versioning, immutable/offsite, secret/key
+  - `P13.C03.L03` **Diễn tập** [planned_new; 0 mục cũ; 0 claim] — restore, checksum, application consistency và request
 
 ### P13.C04 — Hiệu năng, capacity và thử giới hạn [planned_new]
 
@@ -958,9 +963,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P15.C02.
 - **Nguồn cũ:** Ch02, Ch16, Ch18.
 - **Cây bài:**
-  - `P13.C04.L01` **Workload** — arrival rate, service time, concurrency
-  - `P13.C04.L02` **Capacity** — queueing, saturation, autoscale lag
-  - `P13.C04.L03` **Experiment** — load test, fault injection, blast radius, recovery
+  - `P13.C04.L01` **Workload** [planned_new; 1 mục cũ; 0 claim] — arrival rate, service time, concurrency
+  - `P13.C04.L02` **Capacity** [planned_new; 0 mục cũ; 0 claim] — queueing, saturation, autoscale lag
+  - `P13.C04.L03` **Experiment** [planned_new; 0 mục cũ; 0 claim] — load test, fault injection, blast radius, recovery
 
 ## P14 — Security và DevSecOps
 
@@ -984,9 +989,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P14.C02.
 - **Nguồn cũ:** Ch12.
 - **Cây bài:**
-  - `P14.C01.L01` **Bề mặt** — asset, actor, entrypoint, data flow
-  - `P14.C01.L02` **Quyền** — principal, role, policy evaluation, separation
-  - `P14.C01.L03` **Bằng chứng** — audit log, negative test, review và thay đổi
+  - `P14.C01.L01` **Bề mặt** [planned_new; 0 mục cũ; 0 claim] — asset, actor, entrypoint, data flow
+  - `P14.C01.L02` **Quyền** [planned_new; 0 mục cũ; 0 claim] — principal, role, policy evaluation, separation
+  - `P14.C01.L03` **Bằng chứng** [planned_new; 0 mục cũ; 0 claim] — audit log, negative test, review và thay đổi
 
 ### P14.C02 — Secret và bảo vệ dữ liệu [planned_new]
 
@@ -1000,9 +1005,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Ch08, Ch11, Ch13, Ch14, Ch19.
 - **Cây bài:**
-  - `P14.C02.L01` **Vòng đời** — issuance, storage, use, rotate, revoke
-  - `P14.C02.L02` **Bề mặt lộ** — CI log, env, state, image layer, trace
-  - `P14.C02.L03` **Kiểm soát** — KMS/Vault, encryption, access audit, recovery
+  - `P14.C02.L01` **Vòng đời** [planned_new; 0 mục cũ; 0 claim] — issuance, storage, use, rotate, revoke
+  - `P14.C02.L02` **Bề mặt lộ** [planned_new; 2 mục cũ; 1 claim] — CI log, env, state, image layer, trace
+  - `P14.C02.L03` **Kiểm soát** [planned_new; 0 mục cũ; 0 claim] — KMS/Vault, encryption, access audit, recovery
 
 ### P14.C03 — Software supply chain [planned_new]
 
@@ -1016,9 +1021,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P14.C04, P15.C03.
 - **Nguồn cũ:** Ch09, Ch11.
 - **Cây bài:**
-  - `P14.C03.L01` **Nguồn** — dependency pin, SBOM, license/vulnerability
-  - `P14.C03.L02` **Build** — isolation, provenance, attestation, signing
-  - `P14.C03.L03` **Deploy** — digest verify, admission policy, revocation
+  - `P14.C03.L01` **Nguồn** [planned_new; 0 mục cũ; 0 claim] — dependency pin, SBOM, license/vulnerability
+  - `P14.C03.L02` **Build** [planned_new; 0 mục cũ; 0 claim] — isolation, provenance, attestation, signing
+  - `P14.C03.L03` **Deploy** [planned_new; 0 mục cũ; 0 claim] — digest verify, admission policy, revocation
 
 ### P14.C04 — Cloud/Kubernetes runtime hardening [planned_new]
 
@@ -1032,9 +1037,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P15.C01.
 - **Nguồn cũ:** Ch15, Ch16, Ch17.
 - **Cây bài:**
-  - `P14.C04.L01` **Admission** — PSS/policy engine và image policy
-  - `P14.C04.L02` **Runtime** — SA/RBAC, securityContext, seccomp, volume
-  - `P14.C04.L03` **Network/cloud** — NetworkPolicy, workload identity, SG và audit
+  - `P14.C04.L01` **Admission** [planned_new; 0 mục cũ; 0 claim] — PSS/policy engine và image policy
+  - `P14.C04.L02` **Runtime** [planned_new; 0 mục cũ; 0 claim] — SA/RBAC, securityContext, seccomp, volume
+  - `P14.C04.L03` **Network/cloud** [planned_new; 0 mục cũ; 0 claim] — NetworkPolicy, workload identity, SG và audit
 
 ## P15 — Thiết kế và vận hành production
 
@@ -1058,9 +1063,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P15.C02.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
-  - `P15.C01.L01` **Yêu cầu** — traffic, dữ liệu, compliance, budget
-  - `P15.C01.L02` **Kiến trúc** — edge, compute, data, network và control plane
-  - `P15.C01.L03` **Đánh giá** — failure domain, runbook, ownership, test plan
+  - `P15.C01.L01` **Yêu cầu** [planned_new; 0 mục cũ; 0 claim] — traffic, dữ liệu, compliance, budget
+  - `P15.C01.L02` **Kiến trúc** [planned_new; 0 mục cũ; 0 claim] — edge, compute, data, network và control plane
+  - `P15.C01.L03` **Đánh giá** [planned_new; 0 mục cũ; 0 claim] — failure domain, runbook, ownership, test plan
 
 ### P15.C02 — Mở rộng và tối ưu chi phí có ràng buộc [planned_new]
 
@@ -1074,9 +1079,9 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** P15.C03.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
-  - `P15.C02.L01` **Mô hình tải** — peak, headroom, burst, queue
-  - `P15.C02.L02` **Mô hình tiền** — compute, storage, data transfer, observability
-  - `P15.C02.L03` **Quyết định** — cost per outcome, stop rule, kiểm số liệu giá
+  - `P15.C02.L01` **Mô hình tải** [planned_new; 0 mục cũ; 0 claim] — peak, headroom, burst, queue
+  - `P15.C02.L02` **Mô hình tiền** [planned_new; 0 mục cũ; 0 claim] — compute, storage, data transfer, observability
+  - `P15.C02.L03` **Quyết định** [planned_new; 0 mục cũ; 0 claim] — cost per outcome, stop rule, kiểm số liệu giá
 
 ### P15.C03 — Capstone: thay đổi, sự cố và phục hồi [planned_new]
 
@@ -1090,6 +1095,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 238 cạnh bắt buộc, 6 cạnh 
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
-  - `P15.C03.L01` **Chuẩn bị** — source/digest, policy, state, backup, SLO
-  - `P15.C03.L02` **Thực thi** — deploy, metric/log/trace, stop/rollback
-  - `P15.C03.L03` **Bảo vệ** — restore, security check, postmortem và chi phí
+  - `P15.C03.L01` **Chuẩn bị** [planned_new; 0 mục cũ; 0 claim] — source/digest, policy, state, backup, SLO
+  - `P15.C03.L02` **Thực thi** [planned_new; 0 mục cũ; 0 claim] — deploy, metric/log/trace, stop/rollback
+  - `P15.C03.L03` **Bảo vệ** [planned_new; 0 mục cũ; 0 claim] — restore, security check, postmortem và chi phí
+  - `P15.C03.L04` **Kiểm toán** [planned_new; 0 mục cũ; 0 claim] — evidence ledger, phép kiểm âm/dương, SKIP, stop rule và quyết định vận hành

@@ -45,7 +45,11 @@
                 "required": [],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P01.C01.L02",
@@ -59,7 +63,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.1"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P01.C01.L03",
@@ -73,7 +83,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -85,13 +99,8 @@
             "P02.C03",
             "P12.C01"
           ],
-          "source_ids_to_recheck": [
-            "K1",
-            "K2",
-            "K3",
-            "K4",
-            "R6"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Phân tích một request thành tính toán, chờ và tác dụng phụ.",
             "Tính lower bound latency và nêu đại lượng còn thiếu."
@@ -125,7 +134,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-d3fbc14c5d60bcfb"
+              ],
+              "source_ids_to_recheck": [
+                "R2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P01.C02.L02",
@@ -139,7 +158,24 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-481e31d82e4549a9",
+                "CLM-c7774df642e3073c",
+                "CLM-af9e2a3dbb47cada",
+                "CLM-bf6c3817a43c3a1a",
+                "CLM-54adc836e0d8e399"
+              ],
+              "source_ids_to_recheck": [
+                "P1",
+                "R1",
+                "R2",
+                "R5"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P01.C02.L03",
@@ -153,7 +189,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.3",
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.6",
+                "chapters/02-cpu-bo-nho-io.md#2.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-e644ccfc4a53a2ea"
+              ],
+              "source_ids_to_recheck": [
+                "R3"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -173,9 +221,9 @@
             "R1",
             "R2",
             "R3",
-            "R4",
             "R5"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Lần theo một bản build đến hai tiến trình và kết quả từng nhánh.",
             "Dự đoán PID, return value, descriptor và hậu trạng thái."
@@ -223,7 +271,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.3",
+                "chapters/03-nhan-linux-tep-quyen-systemd.md#3.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-dfd98e67c5f45f47"
+              ],
+              "source_ids_to_recheck": [
+                "R7"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C01.L02",
@@ -237,7 +296,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/03-nhan-linux-tep-quyen-systemd.md#3.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c86d03f74f7662cd"
+              ],
+              "source_ids_to_recheck": [
+                "R8"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C01.L03",
@@ -251,7 +320,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1b331cb807d5db0e",
+                "CLM-6a75633721cf7c9b"
+              ],
+              "source_ids_to_recheck": [
+                "K2",
+                "R6"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -270,24 +351,12 @@
             "P08.C04"
           ],
           "source_ids_to_recheck": [
-            "K1",
             "K2",
-            "K3",
-            "K4",
-            "P1",
-            "R1",
-            "R2",
-            "R3",
-            "R4",
-            "R5",
             "R6",
             "R7",
-            "R8",
-            "S1",
-            "S2",
-            "S3",
-            "S4"
+            "R8"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Giải thích tại sao cùng tên file có thể trỏ đối tượng khác.",
             "Giải thích log vẫn ghi vào file đã đổi tên và điều kiện fsync."
@@ -321,7 +390,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-67d5ccbfa2668221"
+              ],
+              "source_ids_to_recheck": [
+                "R4"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C02.L02",
@@ -335,21 +414,35 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/03-nhan-linux-tep-quyen-systemd.md#3.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-170ef18b702e0687"
+              ],
+              "source_ids_to_recheck": [
+                "R7"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C02.L03",
               "parent": "P02.C02",
               "title": "Điều tra và sửa",
               "core": "đúng UID, đường dẫn, least privilege, không chmod 777",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P02.C02.L02"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -362,19 +455,10 @@
             "P08.C01"
           ],
           "source_ids_to_recheck": [
-            "P1",
-            "R1",
-            "R2",
-            "R3",
             "R4",
-            "R5",
-            "R7",
-            "R8",
-            "S1",
-            "S2",
-            "S3",
-            "S4"
+            "R7"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Chẩn đoán một lần mở file bị từ chối qua mọi thư mục cha.",
             "Giải thích 0640 file dưới thư mục 0700 và sửa tối thiểu."
@@ -410,7 +494,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.1",
+                "chapters/02-cpu-bo-nho-io.md#2.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-f6103c18688172e6"
+              ],
+              "source_ids_to_recheck": [
+                "K1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C03.L02",
@@ -424,13 +519,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-46ad7bc5f507182d"
+              ],
+              "source_ids_to_recheck": [
+                "K2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C03.L03",
               "parent": "P02.C03",
-              "title": "I/O và chẩn đoán",
-              "core": "dirty/writeback, fsync, latency cửa sổ, counter đối chiếu",
+              "title": "I/O và độ bền",
+              "core": "dirty/writeback, fsync và thiết bị",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -438,7 +543,40 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.3"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": false
+            },
+            {
+              "id": "P02.C03.L04",
+              "parent": "P02.C03",
+              "title": "Điều tra đa tín hiệu",
+              "core": "lấy hiệu counter CPU, memory, I/O cùng cửa sổ, đối chiếu latency và phép đo thiếu",
+              "status": "reviewed_draft",
+              "prerequisites": {
+                "required": [
+                  "P02.C03.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-ae47a99e61641d40",
+                "CLM-63be1764b0c22fa3",
+                "CLM-bd4447e61c36578c"
+              ],
+              "source_ids_to_recheck": [
+                "K3",
+                "K4"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -455,20 +593,9 @@
             "K1",
             "K2",
             "K3",
-            "K4",
-            "OCI2",
-            "OCI3",
-            "OCI4",
-            "R1",
-            "R11",
-            "R12",
-            "R13",
-            "R14",
-            "R15",
-            "R2",
-            "R4",
-            "R6"
+            "K4"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Phân biệt CPU runnable/quota, memory reclaim và I/O wait bằng counter.",
             "Tính core từ usage_usec và PSI, nêu giới hạn nhân quả."
@@ -504,7 +631,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.5",
+                "chapters/03-nhan-linux-tep-quyen-systemd.md#3.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-99cc89a49ed5bfa7",
+                "CLM-3f7e0c8b89ec7363"
+              ],
+              "source_ids_to_recheck": [
+                "S3",
+                "S4"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C04.L02",
@@ -518,7 +658,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/03-nhan-linux-tep-quyen-systemd.md#3.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-a9c99413f3873ac3",
+                "CLM-1e72f9fb0e5dc27c",
+                "CLM-9157b827c78eb9cc"
+              ],
+              "source_ids_to_recheck": [
+                "S1",
+                "S2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P02.C04.L03",
@@ -532,7 +685,14 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.6",
+                "chapters/03-nhan-linux-tep-quyen-systemd.md#3.4"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -546,19 +706,12 @@
             "P10.C01"
           ],
           "source_ids_to_recheck": [
-            "P1",
-            "R1",
-            "R2",
-            "R3",
-            "R4",
-            "R5",
-            "R7",
-            "R8",
             "S1",
             "S2",
             "S3",
             "S4"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Tách start thành công khỏi listener, readiness và dữ liệu đúng.",
             "Phân biệt Type=exec, After/Wants/Requires, active và request thật."
@@ -594,7 +747,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P02.C05.L02",
@@ -608,7 +765,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P02.C05.L03",
@@ -622,7 +783,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -635,22 +800,8 @@
             "P05.C03",
             "P06.C04"
           ],
-          "source_ids_to_recheck": [
-            "CU1",
-            "K1",
-            "K2",
-            "K3",
-            "K4",
-            "R6",
-            "R7",
-            "R8",
-            "S1",
-            "S2",
-            "S3",
-            "S4",
-            "SH1",
-            "TA1"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Đặt thay đổi cấu hình, log rotation và backup vào quy trình có hậu điều kiện.",
             "Thiết kế phép thử restore và giới hạn dữ liệu chưa được bảo đảm."
@@ -690,7 +841,7 @@
               "id": "P03.C01.L01",
               "parent": "P03.C01",
               "title": "Định danh logic",
-              "core": "IP, prefix, subnet",
+              "core": "IPv4/IPv6, prefix, subnet và địa chỉ nguồn",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -698,7 +849,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-0ed2c60c1cf141c7"
+              ],
+              "source_ids_to_recheck": [
+                "N1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C01.L02",
@@ -712,13 +873,25 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-889bf8f4d19b366f",
+                "CLM-9e1277a5f49e4561"
+              ],
+              "source_ids_to_recheck": [
+                "I1",
+                "N2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C01.L03",
               "parent": "P03.C01",
               "title": "Đóng frame",
-              "core": "ARP/neighbor, link address, hop và đường về",
+              "core": "ARP/IPv6 Neighbor Discovery, link address, hop và đường về",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -726,31 +899,56 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-3b2ec2fbdc83388b"
+              ],
+              "source_ids_to_recheck": [
+                "I2",
+                "N3"
+              ],
+              "source_research_needed": false
+            },
+            {
+              "id": "P03.C01.L04",
+              "parent": "P03.C01",
+              "title": "Kích thước đường",
+              "core": "MTU, fragmentation và Path MTU Discovery, triệu chứng black hole",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P03.C01.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
             "04"
           ],
-          "status": "reviewed_draft",
+          "status": "mixed",
           "prepares_for": [
             "P03.C02",
-            "P07.C01"
+            "P07.C01",
+            "P08.C02",
+            "P11.C04"
           ],
           "source_ids_to_recheck": [
             "I1",
             "I2",
-            "I3",
-            "K5",
             "N1",
             "N2",
-            "N3",
-            "N4",
-            "N5",
-            "N6",
-            "R10",
-            "R9"
+            "N3"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Từ đích IP tìm route và địa chỉ chặng kế tiếp.",
             "Chọn next hop cho route /24 và /0, nêu điều policy routing thay đổi."
@@ -759,9 +957,9 @@
         {
           "id": "P03.C02",
           "part": "P03",
-          "title": "TCP, NAT và trạng thái kết nối",
-          "objective": "Lần theo SYN, seq/ack, retransmission và dịch tuple hai chiều.",
-          "mental_model": "TCP endpoint giữ luồng byte; NAT giữ ánh xạ packet độc lập với socket ứng dụng.",
+          "title": "Transport, TCP, UDP và NAT",
+          "objective": "Lần theo SYN, seq/ack, retransmission, datagram UDP và dịch tuple hai chiều.",
+          "mental_model": "TCP endpoint giữ luồng byte; UDP giữ datagram và không tự bảo đảm giao hàng; NAT giữ ánh xạ packet độc lập với socket ứng dụng.",
           "required": [
             "P03.C01.L03"
           ],
@@ -769,10 +967,10 @@
           "extension": [
             "P12.C03.L02"
           ],
-          "boundary": "TLS/HTTP ở P03.C03.",
-          "misconception": "TCP established chứng minh HTTP hoạt động; 80% retransmit là 80% tải.",
-          "teaching_strategy": "Dùng trace số RFC 9293 và tình huống SYN-ACK mất chiều về.",
-          "assessment": "Tính ACK cộng dồn và kiểm tra mapping NAPT khi đường về đổi.",
+          "boundary": "TLS/HTTP ở P03.C03; không mở rộng thành giáo trình định tuyến chuyên sâu.",
+          "misconception": "TCP established chứng minh HTTP hoạt động; UDP timeout chứng minh server không nhận gói.",
+          "teaching_strategy": "Dùng trace số RFC 9293, datagram DNS/QUIC cơ sở và tình huống đường về mất.",
+          "assessment": "Tính ACK cộng dồn, kiểm mapping NAPT và nêu chứng cứ phân biệt UDP loss.",
           "lessons": [
             {
               "id": "P03.C02.L01",
@@ -786,7 +984,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-9db2588054677411",
+                "CLM-50867c17c07e05a5",
+                "CLM-153cf1dab9633cc0"
+              ],
+              "source_ids_to_recheck": [
+                "N4",
+                "N6"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C02.L02",
@@ -800,7 +1011,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.3",
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-6667f16b4f8ffb9f",
+                "CLM-7deeb753e00b7e79",
+                "CLM-7e97e71b1a35d787"
+              ],
+              "source_ids_to_recheck": [
+                "I3",
+                "R10",
+                "R9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C02.L03",
@@ -814,35 +1040,61 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-6fd0cadc697b0250",
+                "CLM-5cd4de9e236f4517"
+              ],
+              "source_ids_to_recheck": [
+                "K5",
+                "N5"
+              ],
+              "source_research_needed": false
+            },
+            {
+              "id": "P03.C02.L04",
+              "parent": "P03.C02",
+              "title": "UDP có điều kiện",
+              "core": "datagram, port, checksum, timeout, DNS/QUIC và quan sát hai phía",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P03.C02.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
             "04"
           ],
-          "status": "reviewed_draft",
+          "status": "mixed",
           "prepares_for": [
             "P03.C03",
             "P08.C02",
             "P11.C04"
           ],
           "source_ids_to_recheck": [
-            "I1",
-            "I2",
             "I3",
             "K5",
-            "N1",
-            "N2",
-            "N3",
             "N4",
             "N5",
             "N6",
             "R10",
             "R9"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
-            "Lần theo SYN, seq/ack, retransmission và dịch tuple hai chiều.",
-            "Tính ACK cộng dồn và kiểm tra mapping NAPT khi đường về đổi."
+            "Lần theo SYN, seq/ack, retransmission, datagram UDP và dịch tuple hai chiều.",
+            "Tính ACK cộng dồn, kiểm mapping NAPT và nêu chứng cứ phân biệt UDP loss."
           ]
         },
         {
@@ -852,7 +1104,8 @@
           "objective": "Tách lỗi DNS, TCP, chứng chỉ và HTTP bằng dữ kiện tối thiểu.",
           "mental_model": "Tên chọn địa chỉ; TLS xác minh peer; HTTP đặt phương thức, header, status và body.",
           "required": [
-            "P03.C02.L02"
+            "P03.C02.L02",
+            "P03.C02.L04"
           ],
           "helpful": [],
           "extension": [],
@@ -865,15 +1118,30 @@
               "id": "P03.C03.L01",
               "parent": "P03.C03",
               "title": "DNS và cache",
-              "core": "stub, recursive, authoritative, TTL, A/AAAA",
+              "core": "stub, recursive, authoritative, TTL, A/AAAA, UDP/TCP transport",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
-                  "P03.C02.L02"
+                  "P03.C02.L02",
+                  "P03.C02.L04"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-d7de3f4497ae4f53",
+                "CLM-1b51b68ba3b19784",
+                "CLM-6c4d30690d4a22af"
+              ],
+              "source_ids_to_recheck": [
+                "D1",
+                "D2",
+                "D3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C03.L02",
@@ -887,7 +1155,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-09e8b7c1face5f92",
+                "CLM-716ec0bef7300a2a",
+                "CLM-ae78805234932356"
+              ],
+              "source_ids_to_recheck": [
+                "H1",
+                "T1",
+                "T2",
+                "T3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C03.L03",
@@ -901,7 +1184,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-355cf1f8246f5ad3",
+                "CLM-96d73c6efcc61c0a"
+              ],
+              "source_ids_to_recheck": [
+                "H2",
+                "H3",
+                "H4"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -921,11 +1217,11 @@
             "H2",
             "H3",
             "H4",
-            "H5",
             "T1",
             "T2",
             "T3"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Tách lỗi DNS, TCP, chứng chỉ và HTTP bằng dữ kiện tối thiểu.",
             "Định ranh giới xa nhất đã vượt qua cho mỗi lỗi."
@@ -963,7 +1259,17 @@
                   "P02.C04.L03"
                 ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-3ba7b496d560989f"
+              ],
+              "source_ids_to_recheck": [
+                "H1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C04.L02",
@@ -977,7 +1283,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1f7a013d629afe08",
+                "CLM-565ab9bacb082296"
+              ],
+              "source_ids_to_recheck": [
+                "H1",
+                "H5",
+                "T1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P03.C04.L03",
@@ -991,7 +1310,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.5",
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.3",
+                "chapters/05-dns-http-tls-reverse-proxy.md#5.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c8016f41808d6a72",
+                "CLM-0a98ddf58ea1f21e"
+              ],
+              "source_ids_to_recheck": [
+                "H1"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -1005,18 +1337,11 @@
             "P12.C03"
           ],
           "source_ids_to_recheck": [
-            "D1",
-            "D2",
-            "D3",
             "H1",
-            "H2",
-            "H3",
-            "H4",
             "H5",
-            "T1",
-            "T2",
-            "T3"
+            "T1"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Xác định ai sinh status và chặng nào timeout.",
             "Chứng minh Host/Content-Length, TLS boundary và nơi tạo response."
@@ -1064,7 +1389,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/06-git-do-thi-lich-su.md#6.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-451eb41328e18073",
+                "CLM-adbebeb05e84effd"
+              ],
+              "source_ids_to_recheck": [
+                "G1",
+                "G3",
+                "G8"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P04.C01.L02",
@@ -1078,21 +1416,37 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/06-git-do-thi-lich-su.md#6.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1161dfd1310591ae",
+                "CLM-0f1c8f1513f2018d"
+              ],
+              "source_ids_to_recheck": [
+                "G2",
+                "G3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P04.C01.L03",
               "parent": "P04.C01",
               "title": "Danh tính thay đổi",
               "core": "tag, branch, remote, object reachability",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P04.C01.L02"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -1110,13 +1464,9 @@
             "G1",
             "G2",
             "G3",
-            "G4",
-            "G5",
-            "G6",
-            "G7",
-            "G8",
-            "G9"
+            "G8"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Dự đoán byte nào sẽ nằm trong commit kế tiếp.",
             "Tính tree của commit và chứng cứ diff staged."
@@ -1150,7 +1500,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/06-git-do-thi-lich-su.md#6.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-b363afbe5627d639",
+                "CLM-7aa7b750787577ba"
+              ],
+              "source_ids_to_recheck": [
+                "G4",
+                "G9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P04.C02.L02",
@@ -1164,7 +1526,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/06-git-do-thi-lich-su.md#6.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-a55841306e3f755c"
+              ],
+              "source_ids_to_recheck": [
+                "G5"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P04.C02.L03",
@@ -1178,7 +1550,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/06-git-do-thi-lich-su.md#6.5",
+                "chapters/06-git-do-thi-lich-su.md#6.6"
+              ],
+              "legacy_claim_ids": [
+                "CLM-adf1bb2eadd519a1",
+                "CLM-b884483513959c39"
+              ],
+              "source_ids_to_recheck": [
+                "G6",
+                "G7"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -1189,16 +1574,13 @@
             "P06.C02"
           ],
           "source_ids_to_recheck": [
-            "G1",
-            "G2",
-            "G3",
             "G4",
             "G5",
             "G6",
             "G7",
-            "G8",
             "G9"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Giải conflict mà vẫn giữ ý nghĩa thay đổi và lịch sử chia sẻ.",
             "Vẽ đồ thị sau merge/rebase/revert và quyết định an toàn cho nhánh chung."
@@ -1248,7 +1630,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/07-bash-ranh-gioi-loi.md#7.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-0e0012087420bf17",
+                "CLM-4babee446564e01c",
+                "CLM-88689658e8812793"
+              ],
+              "source_ids_to_recheck": [
+                "SH1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P05.C01.L02",
@@ -1262,7 +1656,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/07-bash-ranh-gioi-loi.md#7.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c38b8da7f992b808",
+                "CLM-af03a027f0cdc4c0",
+                "CLM-aa4aecc4e560346b"
+              ],
+              "source_ids_to_recheck": [
+                "SH1",
+                "TA1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P05.C01.L03",
@@ -1276,7 +1683,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/07-bash-ranh-gioi-loi.md#7.3",
+                "chapters/07-bash-ranh-gioi-loi.md#7.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-939bca7c882def61",
+                "CLM-ccc2f6f51c537c51",
+                "CLM-ce1506c19a3b5c0e"
+              ],
+              "source_ids_to_recheck": [
+                "SH1"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -1287,10 +1707,10 @@
             "P05.C02"
           ],
           "source_ids_to_recheck": [
-            "CU1",
             "SH1",
             "TA1"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Dự đoán argv, output và exit status trước khi chạy script.",
             "Dự đoán false success, quoting, pipefail và trap."
@@ -1300,7 +1720,7 @@
           "id": "P05.C02",
           "part": "P05",
           "title": "Python và Go điều phối tiến trình",
-          "objective": "So sánh xử lý argv, timeout và kết quả con theo hai runtime.",
+          "objective": "Đọc/viết CLI DevOps nhỏ bằng Python hoặc Go, xử lý argv, lỗi, timeout và test nhánh.",
           "mental_model": "Parent quan sát startup và task deadline khác nhau; cancellation không rollback tác dụng phụ.",
           "required": [
             "P05.C01.L03",
@@ -1310,16 +1730,16 @@
             "P04.C01.L02"
           ],
           "extension": [],
-          "boundary": "Đóng gói artifact ở P06.",
+          "boundary": "Đóng gói artifact ở P06; không dạy Go như một giáo trình ngôn ngữ riêng.",
           "misconception": "Không dùng shell thì input tự an toàn; timeout đã dừng dịch vụ từ xa.",
           "teaching_strategy": "Đọc ba chương trình orchestration và kiểm thử success/fail/slow.",
-          "assessment": "Phân biệt START_ERROR, EXIT 7, TIMEOUT và partial state.",
+          "assessment": "Phân biệt START_ERROR, EXIT 7, TIMEOUT, partial state và dependency môi trường.",
           "lessons": [
             {
               "id": "P05.C02.L01",
               "parent": "P05.C02",
               "title": "Chọn ngôn ngữ",
-              "core": "Bash đủ dùng vs Python/Go",
+              "core": "Bash đủ dùng vs Python/Go CLI nhỏ, module/dependency",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -1330,13 +1750,24 @@
                   "P04.C01.L02"
                 ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/08-python-go-tu-dong-hoa.md#8.1",
+                "chapters/08-python-go-tu-dong-hoa.md#8.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-f9dc9a51edb49249"
+              ],
+              "source_ids_to_recheck": [
+                "P3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P05.C02.L02",
               "parent": "P05.C02",
               "title": "Subprocess",
-              "core": "argv, env, status, startup readiness",
+              "core": "argv, env, status, Python exception/Go error, startup readiness, test nhánh",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -1344,13 +1775,28 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/08-python-go-tu-dong-hoa.md#8.2",
+                "chapters/08-python-go-tu-dong-hoa.md#8.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-bb46aa9751a05425",
+                "CLM-89fd9b57839e5849",
+                "CLM-c0335b2d92f6fc41",
+                "CLM-88e1ed68e9f81a70"
+              ],
+              "source_ids_to_recheck": [
+                "GO1",
+                "P2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P05.C02.L03",
               "parent": "P05.C02",
               "title": "Timeout",
-              "core": "communicate, CommandContext, child/grandchild và cleanup",
+              "core": "communicate, context cancellation/CommandContext, child/grandchild và cleanup",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -1358,7 +1804,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/08-python-go-tu-dong-hoa.md#8.3",
+                "chapters/08-python-go-tu-dong-hoa.md#8.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-ea54a2dace4146ac",
+                "CLM-5d3e11d80c334ba4",
+                "CLM-7b0d1af6adf98fd4"
+              ],
+              "source_ids_to_recheck": [
+                "GO1",
+                "GO2",
+                "GO3",
+                "P2"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -1372,13 +1834,13 @@
             "GO1",
             "GO2",
             "GO3",
-            "GO4",
             "P2",
             "P3"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
-            "So sánh xử lý argv, timeout và kết quả con theo hai runtime.",
-            "Phân biệt START_ERROR, EXIT 7, TIMEOUT và partial state."
+            "Đọc/viết CLI DevOps nhỏ bằng Python hoặc Go, xử lý argv, lỗi, timeout và test nhánh.",
+            "Phân biệt START_ERROR, EXIT 7, TIMEOUT, partial state và dependency môi trường."
           ]
         },
         {
@@ -1411,7 +1873,21 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/07-bash-ranh-gioi-loi.md#7.5",
+                "chapters/08-python-go-tu-dong-hoa.md#8.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-b1a2f6e5ea1619d6",
+                "CLM-29d13b86f7b1445e"
+              ],
+              "source_ids_to_recheck": [
+                "GO1",
+                "P2",
+                "TA1"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P05.C03.L02",
@@ -1425,7 +1901,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/07-bash-ranh-gioi-loi.md#7.4"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P05.C03.L03",
@@ -1439,7 +1921,21 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/07-bash-ranh-gioi-loi.md#7.5",
+                "chapters/08-python-go-tu-dong-hoa.md#8.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-6ae5a3c5da4e2ce3",
+                "CLM-29486c3abc2e77d3",
+                "CLM-ca69d6fc6b8d8b66"
+              ],
+              "source_ids_to_recheck": [
+                "CU1",
+                "TA1"
+              ],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -1454,14 +1950,10 @@
           "source_ids_to_recheck": [
             "CU1",
             "GO1",
-            "GO2",
-            "GO3",
-            "GO4",
             "P2",
-            "P3",
-            "SH1",
             "TA1"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Thiết kế tác vụ nhiều bước có nhận diện partial failure.",
             "Viết bảng trạng thái và phép thử chạy lại khi lỗi/timeout."
@@ -1511,7 +2003,21 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/08-python-go-tu-dong-hoa.md#8.5",
+                "chapters/09-build-test-phat-hanh-rollback.md#9.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-b0a3b62810695a66",
+                "CLM-b99e3e9f4b97ff31"
+              ],
+              "source_ids_to_recheck": [
+                "G2",
+                "GO4",
+                "SL1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P06.C01.L02",
@@ -1525,21 +2031,37 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-d4a56a2a02510d72",
+                "CLM-0ccad9deba73af93"
+              ],
+              "source_ids_to_recheck": [
+                "OCI1",
+                "SL1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P06.C01.L03",
               "parent": "P06.C01",
               "title": "Tái lập",
               "core": "so byte độc lập, giới hạn cache và timestamp",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P06.C01.L02"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -1551,17 +2073,12 @@
             "P07.C02"
           ],
           "source_ids_to_recheck": [
-            "AR1",
-            "AR2",
             "G2",
-            "GH1",
-            "KD1",
-            "KD2",
+            "GO4",
             "OCI1",
-            "PG1",
-            "PG2",
             "SL1"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Chứng minh production chạy đúng byte đã qua kiểm thử.",
             "Đề xuất provenance tối thiểu và phép build đối chiếu."
@@ -1597,7 +2114,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-2c9bcd6c338337a7"
+              ],
+              "source_ids_to_recheck": [
+                "GH1"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P06.C02.L02",
@@ -1611,7 +2138,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P06.C02.L03",
@@ -1625,7 +2156,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1e32c339f9fa2cbb"
+              ],
+              "source_ids_to_recheck": [
+                "GH1"
+              ],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -1638,17 +2179,9 @@
             "P14.C03"
           ],
           "source_ids_to_recheck": [
-            "AR1",
-            "AR2",
-            "G2",
-            "GH1",
-            "KD1",
-            "KD2",
-            "OCI1",
-            "PG1",
-            "PG2",
-            "SL1"
+            "GH1"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Thiết kế test kiểm đúng ranh giới của thay đổi và quyền release.",
             "Lập ma trận unit/integration/contract/production smoke và quyền phê duyệt."
@@ -1688,7 +2221,22 @@
                   "P05.C03.L02"
                 ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-06d95fa4a1a60e70",
+                "CLM-51dbf8ded6e633ab",
+                "CLM-fb5d67c5e26ca566",
+                "CLM-ca7ef798debd846b"
+              ],
+              "source_ids_to_recheck": [
+                "AR1",
+                "AR2",
+                "KD1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P06.C03.L02",
@@ -1702,21 +2250,35 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-55c6fd965fcc8351"
+              ],
+              "source_ids_to_recheck": [
+                "KD2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P06.C03.L03",
               "parent": "P06.C03",
               "title": "Điều phối",
               "core": "serial release, approval, rollback trigger",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P06.C03.L02"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -1733,15 +2295,10 @@
           "source_ids_to_recheck": [
             "AR1",
             "AR2",
-            "G2",
-            "GH1",
             "KD1",
-            "KD2",
-            "OCI1",
-            "PG1",
-            "PG2",
-            "SL1"
+            "KD2"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Chọn rolling, blue-green hay canary theo năng lực và khả năng quan sát.",
             "Chọn chiến lược dưới giới hạn thêm một Pod và đặt stop rule."
@@ -1777,7 +2334,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.3",
+                "chapters/09-build-test-phat-hanh-rollback.md#9.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-127cd4712e7d8737",
+                "CLM-196184886298b267"
+              ],
+              "source_ids_to_recheck": [
+                "PG1",
+                "PG2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P06.C04.L02",
@@ -1791,7 +2361,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-df853ebb4ab7f0be"
+              ],
+              "source_ids_to_recheck": [
+                "KD2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P06.C04.L03",
@@ -1805,7 +2385,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/09-build-test-phat-hanh-rollback.md#9.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1307d9ad944d8f82"
+              ],
+              "source_ids_to_recheck": [
+                "PG2"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -1819,17 +2409,11 @@
             "P13.C03"
           ],
           "source_ids_to_recheck": [
-            "AR1",
-            "AR2",
-            "G2",
-            "GH1",
-            "KD1",
             "KD2",
-            "OCI1",
             "PG1",
-            "PG2",
-            "SL1"
+            "PG2"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Chứng minh hậu điều kiện sau khi lùi ứng dụng.",
             "Nêu điều kiện expand-contract schema và kế hoạch phục hồi có thử."
@@ -1881,7 +2465,26 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/10-namespace-cgroup-container.md#10.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-e3f228821770d63c",
+                "CLM-eca21a5186fd091a",
+                "CLM-ac8bfe281f2929ac",
+                "CLM-ff55fcfe0bc56f47",
+                "CLM-ec66bcbf5b5c0ed0"
+              ],
+              "source_ids_to_recheck": [
+                "OCI2",
+                "R1",
+                "R13",
+                "R14",
+                "R15",
+                "R2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C01.L02",
@@ -1895,7 +2498,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/10-namespace-cgroup-container.md#10.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-6e0113caf6df6d1e",
+                "CLM-b90f9081f331fb96",
+                "CLM-54b7e1a8eaf6ef26"
+              ],
+              "source_ids_to_recheck": [
+                "OCI2",
+                "R11",
+                "R12",
+                "R4"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C01.L03",
@@ -1909,7 +2527,26 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.4",
+                "chapters/10-namespace-cgroup-container.md#10.2",
+                "chapters/10-namespace-cgroup-container.md#10.4",
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-dd0acbdfa4c608c2",
+                "CLM-b74115dffada2aeb",
+                "CLM-8f13d3a47d2ee31a",
+                "CLM-bf38c31390f67e1a",
+                "CLM-0d5824ebbb262e69",
+                "CLM-a59bc7d224d7df5f",
+                "CLM-760b00a7d97f391d"
+              ],
+              "source_ids_to_recheck": [
+                "K3"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -1923,13 +2560,8 @@
             "P11.C03"
           ],
           "source_ids_to_recheck": [
-            "K1",
-            "K2",
             "K3",
-            "K4",
             "OCI2",
-            "OCI3",
-            "OCI4",
             "R1",
             "R11",
             "R12",
@@ -1937,9 +2569,9 @@
             "R14",
             "R15",
             "R2",
-            "R4",
-            "R6"
+            "R4"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Chỉ ra cơ chế nào đổi góc nhìn, cơ chế nào giới hạn CPU/RAM.",
             "Phân biệt OOM, quota và lỗi config qua counter/log."
@@ -1977,7 +2609,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-a925340e7675d913"
+              ],
+              "source_ids_to_recheck": [
+                "DD9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C02.L02",
@@ -1991,7 +2633,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/10-namespace-cgroup-container.md#10.3",
+                "chapters/11-image-registry-compose-du-lieu.md#11.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-58443ef517f1a46d",
+                "CLM-187473f93715b7bc",
+                "CLM-c02f6b909375f449"
+              ],
+              "source_ids_to_recheck": [
+                "OCI4",
+                "OCI6",
+                "OCI7"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C02.L03",
@@ -2005,7 +2662,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-b64077fdcb6836b2"
+              ],
+              "source_ids_to_recheck": [
+                "OCI5"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2018,32 +2685,13 @@
             "P14.C03"
           ],
           "source_ids_to_recheck": [
-            "DD1",
-            "DD10",
-            "DD2",
-            "DD3",
-            "DD4",
-            "DD5",
-            "DD6",
-            "DD7",
-            "DD8",
             "DD9",
-            "K3",
-            "OCI2",
-            "OCI3",
             "OCI4",
             "OCI5",
             "OCI6",
-            "OCI7",
-            "R1",
-            "R11",
-            "R12",
-            "R13",
-            "R14",
-            "R15",
-            "R2",
-            "R4"
+            "OCI7"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Lần từ Dockerfile tới manifest/digest và byte đã pull.",
             "Chứng minh digest đang chạy thay vì chỉ đọc tag."
@@ -2079,7 +2727,21 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/10-namespace-cgroup-container.md#10.3",
+                "chapters/10-namespace-cgroup-container.md#10.4",
+                "chapters/11-image-registry-compose-du-lieu.md#11.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1c632a70f139d2fe",
+                "CLM-ea40878fd490188b"
+              ],
+              "source_ids_to_recheck": [
+                "DD1",
+                "OCI3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C03.L02",
@@ -2093,7 +2755,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.2"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": false
             },
             {
               "id": "P07.C03.L03",
@@ -2107,7 +2775,21 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.2",
+                "chapters/11-image-registry-compose-du-lieu.md#11.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-59a86b1926b9a516",
+                "CLM-f50193c0c6489f34",
+                "CLM-cd055b01d09abfbd"
+              ],
+              "source_ids_to_recheck": [
+                "DD2",
+                "DD3"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2122,31 +2804,11 @@
           ],
           "source_ids_to_recheck": [
             "DD1",
-            "DD10",
             "DD2",
             "DD3",
-            "DD4",
-            "DD5",
-            "DD6",
-            "DD7",
-            "DD8",
-            "DD9",
-            "K3",
-            "OCI2",
-            "OCI3",
-            "OCI4",
-            "OCI5",
-            "OCI6",
-            "OCI7",
-            "R1",
-            "R11",
-            "R12",
-            "R13",
-            "R14",
-            "R15",
-            "R2",
-            "R4"
+            "OCI3"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Dự đoán dữ liệu sau stop, recreate, remove, mount và đổi image.",
             "Phân biệt khả năng khôi phục khi container dừng và khi đã xóa."
@@ -2182,7 +2844,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-d065c5633b67a6bf",
+                "CLM-5163cf80b996b319"
+              ],
+              "source_ids_to_recheck": [
+                "DD4",
+                "DD5"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C04.L02",
@@ -2196,7 +2870,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-b135f8f8718ef470",
+                "CLM-98dd6e7eee371cc2"
+              ],
+              "source_ids_to_recheck": [
+                "DD6",
+                "DD7"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P07.C04.L03",
@@ -2210,7 +2896,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/11-image-registry-compose-du-lieu.md#11.3",
+                "chapters/11-image-registry-compose-du-lieu.md#11.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c9584c1e7643697a",
+                "CLM-f30883c384f8e62b"
+              ],
+              "source_ids_to_recheck": [
+                "DD10",
+                "DD2",
+                "DD4",
+                "DD8"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2219,22 +2920,15 @@
           "status": "reviewed_draft",
           "prepares_for": [],
           "source_ids_to_recheck": [
-            "DD1",
             "DD10",
             "DD2",
-            "DD3",
             "DD4",
             "DD5",
             "DD6",
             "DD7",
-            "DD8",
-            "DD9",
-            "OCI3",
-            "OCI4",
-            "OCI5",
-            "OCI6",
-            "OCI7"
+            "DD8"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Phân biệt cấu hình project với trạng thái service/volume thực tế.",
             "Thiết kế thao tác down/up không xóa dữ liệu và phép restore."
@@ -2284,7 +2978,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-7cb276dfe7b45dee",
+                "CLM-fbd6103ccbd04862"
+              ],
+              "source_ids_to_recheck": [
+                "AWS1",
+                "AWS3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P08.C01.L02",
@@ -2298,7 +3004,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-76498217b13042b2",
+                "CLM-c215db6dfc6e68cc"
+              ],
+              "source_ids_to_recheck": [
+                "AWS2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P08.C01.L03",
@@ -2312,7 +3029,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-4697eb783466e5c0"
+              ],
+              "source_ids_to_recheck": [
+                "AWS2"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2325,24 +3052,10 @@
           ],
           "source_ids_to_recheck": [
             "AWS1",
-            "AWS10",
-            "AWS11",
-            "AWS12",
-            "AWS13",
-            "AWS14",
-            "AWS15",
-            "AWS16",
-            "AWS18",
-            "AWS19",
             "AWS2",
-            "AWS3",
-            "AWS4",
-            "AWS5",
-            "AWS6",
-            "AWS7",
-            "AWS8",
-            "AWS9"
+            "AWS3"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Lần theo principal từ EC2 tới S3/STS và quyết định Allow/Deny.",
             "Phân biệt authn/authorization/route khi gặp AccessDenied."
@@ -2356,6 +3069,7 @@
           "mental_model": "Route quyết định target; SG stateful và NACL stateless lọc gói; endpoint thay loại đường, không cấp quyền IAM.",
           "required": [
             "P03.C02.L03",
+            "P03.C01.L04",
             "P08.C01.L03"
           ],
           "helpful": [],
@@ -2374,11 +3088,27 @@
               "prerequisites": {
                 "required": [
                   "P03.C02.L03",
+                  "P03.C01.L04",
                   "P08.C01.L03"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c039af7f38df1819",
+                "CLM-176c4b801b651fd6",
+                "CLM-f77a77e9097752f6"
+              ],
+              "source_ids_to_recheck": [
+                "AWS16",
+                "AWS4",
+                "AWS5",
+                "AWS9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P08.C02.L02",
@@ -2392,7 +3122,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-af64660252f99eaf",
+                "CLM-f6eca2b5c3480cc0"
+              ],
+              "source_ids_to_recheck": [
+                "AWS18",
+                "AWS8"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P08.C02.L03",
@@ -2406,7 +3148,25 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.2",
+                "chapters/12-aws-iam-vpc-storage.md#12.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-8f9cc0b951cd6d48",
+                "CLM-c3632d3141612221",
+                "CLM-4a1c5647511df518",
+                "CLM-be670697873fdf06",
+                "CLM-e282ee20a54906e4"
+              ],
+              "source_ids_to_recheck": [
+                "AWS4",
+                "AWS5",
+                "AWS6",
+                "AWS7"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2419,37 +3179,16 @@
             "P14.C04"
           ],
           "source_ids_to_recheck": [
-            "AWS1",
-            "AWS10",
-            "AWS11",
-            "AWS12",
-            "AWS13",
-            "AWS14",
-            "AWS15",
             "AWS16",
             "AWS18",
-            "AWS19",
-            "AWS2",
-            "AWS3",
             "AWS4",
             "AWS5",
             "AWS6",
             "AWS7",
             "AWS8",
-            "AWS9",
-            "I1",
-            "I2",
-            "I3",
-            "K5",
-            "N1",
-            "N2",
-            "N3",
-            "N4",
-            "N5",
-            "N6",
-            "R10",
-            "R9"
+            "AWS9"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Chứng minh private workload có hoặc không có đường tới S3/STS.",
             "Vẽ đường request đi và về qua ALB, IGW, NAT/endpoint."
@@ -2487,7 +3226,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.3"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P08.C03.L02",
@@ -2501,7 +3246,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.4"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P08.C03.L03",
@@ -2515,7 +3266,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -2525,26 +3280,8 @@
           "prepares_for": [
             "P08.C04"
           ],
-          "source_ids_to_recheck": [
-            "AWS1",
-            "AWS10",
-            "AWS11",
-            "AWS12",
-            "AWS13",
-            "AWS14",
-            "AWS15",
-            "AWS16",
-            "AWS18",
-            "AWS19",
-            "AWS2",
-            "AWS3",
-            "AWS4",
-            "AWS5",
-            "AWS6",
-            "AWS7",
-            "AWS8",
-            "AWS9"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Phân biệt instance running, target healthy và request nghiệp vụ đúng.",
             "Đặt phép kiểm trước/sau failover một AZ."
@@ -2582,7 +3319,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-457a391505501e28",
+                "CLM-9f4f55f54033ecc8"
+              ],
+              "source_ids_to_recheck": [
+                "AWS10",
+                "AWS11"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P08.C04.L02",
@@ -2596,7 +3345,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1c337ece99662539"
+              ],
+              "source_ids_to_recheck": [
+                "AWS12",
+                "AWS13"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P08.C04.L03",
@@ -2610,7 +3370,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/12-aws-iam-vpc-storage.md#12.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-a1c1cb6add5e45f7",
+                "CLM-49e8e505f6ebb3a0"
+              ],
+              "source_ids_to_recheck": [
+                "AWS14",
+                "AWS15",
+                "AWS19"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2626,40 +3399,15 @@
             "P15.C02"
           ],
           "source_ids_to_recheck": [
-            "AWS1",
             "AWS10",
             "AWS11",
             "AWS12",
             "AWS13",
             "AWS14",
             "AWS15",
-            "AWS16",
-            "AWS18",
-            "AWS19",
-            "AWS2",
-            "AWS3",
-            "AWS4",
-            "AWS5",
-            "AWS6",
-            "AWS7",
-            "AWS8",
-            "AWS9",
-            "DD1",
-            "DD10",
-            "DD2",
-            "DD3",
-            "DD4",
-            "DD5",
-            "DD6",
-            "DD7",
-            "DD8",
-            "DD9",
-            "OCI3",
-            "OCI4",
-            "OCI5",
-            "OCI6",
-            "OCI7"
+            "AWS19"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Chọn EBS/EFS/S3 theo cách truy cập và vòng đời dữ liệu.",
             "Đề xuất thử restore cho từng dạng dữ liệu, không suy từ SLA chung."
@@ -2709,7 +3457,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-7b1bc46f06f9c079"
+              ],
+              "source_ids_to_recheck": [
+                "TF1",
+                "TF2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P09.C01.L02",
@@ -2723,7 +3482,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.1"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": false
             },
             {
               "id": "P09.C01.L03",
@@ -2737,7 +3502,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-467a1ccc1edeb7b9",
+                "CLM-02ceb6743acb9663",
+                "CLM-87e276bbaf840100"
+              ],
+              "source_ids_to_recheck": [
+                "TF2",
+                "TF4"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2748,21 +3526,11 @@
             "P09.C02"
           ],
           "source_ids_to_recheck": [
-            "AWSTF1",
-            "AWSTF2",
-            "AWSTF3",
             "TF1",
-            "TF10",
-            "TF11",
             "TF2",
-            "TF3",
-            "TF4",
-            "TF5",
-            "TF6",
-            "TF7",
-            "TF8",
-            "TF9"
+            "TF4"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Đọc tài nguyên, data source và cạnh implicit/explicit trong plan.",
             "Tìm cạnh tham chiếu và nhận diện cạnh depends_on dư."
@@ -2800,7 +3568,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-762610b80fa539e6"
+              ],
+              "source_ids_to_recheck": [
+                "TF1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P09.C02.L02",
@@ -2814,7 +3592,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-e39f3c2f60f94b45",
+                "CLM-1e4e8ffb71b56953",
+                "CLM-608845dd706c9832",
+                "CLM-1a7c406725420560"
+              ],
+              "source_ids_to_recheck": [
+                "TF2",
+                "TF3",
+                "TF5",
+                "TF6"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P09.C02.L03",
@@ -2828,7 +3622,24 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c4152862d858bbf3",
+                "CLM-4e407f65ece11a42",
+                "CLM-9c57e23b8343974d"
+              ],
+              "source_ids_to_recheck": [
+                "TF1",
+                "TF10",
+                "TF11",
+                "TF7",
+                "TF8",
+                "TF9"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -2841,21 +3652,18 @@
             "P14.C02"
           ],
           "source_ids_to_recheck": [
-            "AWSTF1",
-            "AWSTF2",
-            "AWSTF3",
             "TF1",
             "TF10",
             "TF11",
             "TF2",
             "TF3",
-            "TF4",
             "TF5",
             "TF6",
             "TF7",
             "TF8",
             "TF9"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Giải thích tại sao một plan có thể thất bại giữa chừng và state nhạy cảm.",
             "Liệt kê object thực/state/config và bước đối chiếu trước retry."
@@ -2889,7 +3697,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-95d7464359162589"
+              ],
+              "source_ids_to_recheck": [
+                "AWSTF1",
+                "AWSTF2",
+                "AWSTF3"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P09.C03.L02",
@@ -2903,7 +3723,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P09.C03.L03",
@@ -2917,7 +3741,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -2930,19 +3758,9 @@
           "source_ids_to_recheck": [
             "AWSTF1",
             "AWSTF2",
-            "AWSTF3",
-            "TF1",
-            "TF10",
-            "TF11",
-            "TF2",
-            "TF3",
-            "TF4",
-            "TF5",
-            "TF6",
-            "TF7",
-            "TF8",
-            "TF9"
+            "AWSTF3"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Phân biệt thay đổi ngoài Terraform với đổi địa chỉ cấu hình.",
             "Chọn import, moved, sửa HCL hoặc phục hồi với điều kiện cụ thể."
@@ -2980,21 +3798,36 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-fc44f951fc7f37a7",
+                "CLM-b8fef918c4f08d44"
+              ],
+              "source_ids_to_recheck": [
+                "AWSTF1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P09.C04.L02",
               "parent": "P09.C04",
               "title": "Điều phối",
               "core": "approval, lock, concurrent actor, saved plan",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P09.C04.L01"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P09.C04.L03",
@@ -3008,7 +3841,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/13-terraform-do-thi-state-drift.md#13.4"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3017,21 +3856,9 @@
           "status": "reviewed_draft",
           "prepares_for": [],
           "source_ids_to_recheck": [
-            "AWSTF1",
-            "AWSTF2",
-            "AWSTF3",
-            "TF1",
-            "TF10",
-            "TF11",
-            "TF2",
-            "TF3",
-            "TF4",
-            "TF5",
-            "TF6",
-            "TF7",
-            "TF8",
-            "TF9"
+            "AWSTF1"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Quyết định dừng khi plan đề xuất replace instance chứa dữ liệu.",
             "Viết preflight, stop rule, apply sequencing và recovery plan."
@@ -3081,7 +3908,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-0c75d71ff94ff20f",
+                "CLM-06ee71b8f8c7873b"
+              ],
+              "source_ids_to_recheck": [
+                "AS1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P10.C01.L02",
@@ -3095,7 +3933,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-3b3f1eb3d83ffe45"
+              ],
+              "source_ids_to_recheck": [
+                "AS4"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P10.C01.L03",
@@ -3109,7 +3957,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-2f066d8c9cf0e092"
+              ],
+              "source_ids_to_recheck": [
+                "AS2"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3121,19 +3979,10 @@
           ],
           "source_ids_to_recheck": [
             "AS1",
-            "AS10",
-            "AS11",
-            "AS12",
-            "AS13",
-            "AS14",
             "AS2",
-            "AS4",
-            "AS5",
-            "AS6",
-            "AS7",
-            "AS8",
-            "AS9"
+            "AS4"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Chỉ ra ai kết nối tới ai, bằng quyền nào và biến nào được dùng.",
             "Chứng minh host pattern, variable precedence và quyền thực thi."
@@ -3169,7 +4018,24 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.2",
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-13057a5260124bf0",
+                "CLM-80c8792b52f4f452",
+                "CLM-ba00ab20f7447e2c",
+                "CLM-1dbc427b7a76cf88"
+              ],
+              "source_ids_to_recheck": [
+                "AS11",
+                "AS6",
+                "AS7",
+                "AS8"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P10.C02.L02",
@@ -3183,7 +4049,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.2",
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-82ab5a65147a8747",
+                "CLM-56c7fbebf6f7fd86",
+                "CLM-dbdd81fd0b4ae609"
+              ],
+              "source_ids_to_recheck": [
+                "AS14",
+                "AS6",
+                "AS8",
+                "AS9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P10.C02.L03",
@@ -3197,7 +4079,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.2",
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-f16f075e3e64227c",
+                "CLM-7fa55f14f2b2c99f",
+                "CLM-4ecf4dbcd31a5464"
+              ],
+              "source_ids_to_recheck": [
+                "AS10",
+                "AS8",
+                "AS9"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3208,20 +4105,15 @@
             "P10.C03"
           ],
           "source_ids_to_recheck": [
-            "AS1",
             "AS10",
             "AS11",
-            "AS12",
-            "AS13",
             "AS14",
-            "AS2",
-            "AS4",
-            "AS5",
             "AS6",
             "AS7",
             "AS8",
             "AS9"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Chứng minh lượt đầu changed, lượt hai ok và drift sửa đúng phạm vi.",
             "Đọc recap, marker handler, mode và request độc lập."
@@ -3257,7 +4149,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-22b72acdd21343c5"
+              ],
+              "source_ids_to_recheck": [
+                "AS5"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P10.C03.L02",
@@ -3271,7 +4173,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/14-ansible-hoi-tu-cau-hinh.md#14.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-ebd52a04d7a56058",
+                "CLM-aea40b1ffd338b27"
+              ],
+              "source_ids_to_recheck": [
+                "AS12",
+                "AS13"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P10.C03.L03",
@@ -3285,7 +4199,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -3294,20 +4212,11 @@
           "status": "planned_new",
           "prepares_for": [],
           "source_ids_to_recheck": [
-            "AS1",
-            "AS10",
-            "AS11",
             "AS12",
             "AS13",
-            "AS14",
-            "AS2",
-            "AS4",
-            "AS5",
-            "AS6",
-            "AS7",
-            "AS8",
-            "AS9"
+            "AS5"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Tổ chức cấu hình nhiều host với blast radius kiểm soát được.",
             "Đề xuất rollback khi một host restart lỗi và bảo toàn secret."
@@ -3359,7 +4268,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-56ce9d46b8e3832f",
+                "CLM-7486e879a9a5f109",
+                "CLM-0780cf8ce21f46ae"
+              ],
+              "source_ids_to_recheck": [
+                "KU1",
+                "KU13",
+                "KU2",
+                "KU4",
+                "KU5"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C01.L02",
@@ -3373,7 +4298,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-d0ecc24fe7497b3a",
+                "CLM-852da0365c07c326"
+              ],
+              "source_ids_to_recheck": [
+                "KU10",
+                "KU3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C01.L03",
@@ -3387,7 +4324,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-10013f41425f84cf",
+                "CLM-303e73ee8e1611fd"
+              ],
+              "source_ids_to_recheck": [
+                "KU1",
+                "KU6"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3404,18 +4353,14 @@
           "source_ids_to_recheck": [
             "KU1",
             "KU10",
-            "KU11",
-            "KU12",
             "KU13",
             "KU2",
             "KU3",
             "KU4",
             "KU5",
-            "KU6",
-            "KU7",
-            "KU8",
-            "KU9"
+            "KU6"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Theo một spec từ apply tới các controller và node.",
             "Đọc owner, selector, observedGeneration và giới hạn của snapshot."
@@ -3451,7 +4396,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-8d6fdffead3bda2e",
+                "CLM-88f1beec1eccc26b",
+                "CLM-6a2839918c3e6996"
+              ],
+              "source_ids_to_recheck": [
+                "KU12",
+                "KU5",
+                "KU6",
+                "KU7",
+                "KU9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C02.L02",
@@ -3465,7 +4426,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.2",
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-30c951498f078b4c"
+              ],
+              "source_ids_to_recheck": [
+                "KU6",
+                "KU8"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C02.L03",
@@ -3479,7 +4452,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.2",
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-af9b13a5c0ab05a4",
+                "CLM-7b1bfbbf6296c113"
+              ],
+              "source_ids_to_recheck": [
+                "KU4"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3490,33 +4475,19 @@
           "prepares_for": [
             "P11.C03",
             "P11.C04",
-            "P11.C05"
+            "P11.C05",
+            "P11.C08"
           ],
           "source_ids_to_recheck": [
-            "AR1",
-            "AR2",
-            "G2",
-            "GH1",
-            "KD1",
-            "KD2",
-            "KU1",
-            "KU10",
-            "KU11",
             "KU12",
-            "KU13",
-            "KU2",
-            "KU3",
             "KU4",
             "KU5",
             "KU6",
             "KU7",
             "KU8",
-            "KU9",
-            "OCI1",
-            "PG1",
-            "PG2",
-            "SL1"
+            "KU9"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Phân biệt Running, Ready, Available và rollout complete.",
             "Chỉ ra vì sao Available không chứng minh request nghiệp vụ."
@@ -3554,7 +4525,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.1",
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.6"
+              ],
+              "legacy_claim_ids": [
+                "CLM-905f3f7fe1f1c77a",
+                "CLM-df535e6cf02082b0",
+                "CLM-904467cf563abd36"
+              ],
+              "source_ids_to_recheck": [
+                "KU14",
+                "KU15",
+                "KU16",
+                "KU21"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C03.L02",
@@ -3568,7 +4555,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-78d7a169be6d45cb",
+                "CLM-8ce9db1c2de3971d",
+                "CLM-e7f60d32fe717660",
+                "CLM-2622822afafb7c61"
+              ],
+              "source_ids_to_recheck": [
+                "K3",
+                "KU14",
+                "KU17"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C03.L03",
@@ -3582,7 +4584,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-f59d89977c93add4",
+                "CLM-5710ccda78bbcb5a"
+              ],
+              "source_ids_to_recheck": [
+                "K3",
+                "KU24"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3596,38 +4610,15 @@
             "P12.C01"
           ],
           "source_ids_to_recheck": [
-            "CN1",
-            "K1",
-            "K2",
             "K3",
-            "K4",
-            "KU1",
             "KU14",
             "KU15",
             "KU16",
             "KU17",
-            "KU18",
-            "KU19",
-            "KU20",
             "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU7",
-            "KU8",
-            "OCI2",
-            "OCI3",
-            "OCI4",
-            "R1",
-            "R11",
-            "R12",
-            "R13",
-            "R14",
-            "R15",
-            "R2",
-            "R4",
-            "R6"
+            "KU24"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Giải thích Pending vì requests/taint dù CPU tức thời thấp.",
             "Chọn node khả thi và nêu rủi ro sửa request/limit."
@@ -3641,7 +4632,8 @@
           "mental_model": "DNS chỉ trả tên; selector tạo endpoint; node dataplane và policy xử lý packet.",
           "required": [
             "P11.C02.L02",
-            "P03.C02.L03"
+            "P03.C02.L03",
+            "P03.C01.L04"
           ],
           "helpful": [],
           "extension": [],
@@ -3659,17 +4651,33 @@
               "prerequisites": {
                 "required": [
                   "P11.C02.L02",
-                  "P03.C02.L03"
+                  "P03.C02.L03",
+                  "P03.C01.L04"
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.3",
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-58a5b0468357a826",
+                "CLM-31ef3ea0120f91cb",
+                "CLM-11bd6604eb4dbd46"
+              ],
+              "source_ids_to_recheck": [
+                "KU19",
+                "KU7",
+                "KU8"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C04.L02",
               "parent": "P11.C04",
               "title": "Dataplane",
-              "core": "ClusterIP, kube-proxy/CNI theo triển khai, targetPort",
+              "core": "ClusterIP, kube-proxy/CNI theo triển khai, targetPort/MTU",
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
@@ -3677,7 +4685,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-79605eee6bbb00bb"
+              ],
+              "source_ids_to_recheck": [
+                "CN1",
+                "KU1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C04.L03",
@@ -3691,7 +4710,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.3",
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.6"
+              ],
+              "legacy_claim_ids": [
+                "CLM-d3754b92ce88cb96"
+              ],
+              "source_ids_to_recheck": [
+                "KU18"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3705,32 +4735,13 @@
           ],
           "source_ids_to_recheck": [
             "CN1",
-            "K3",
             "KU1",
-            "KU10",
-            "KU11",
-            "KU12",
-            "KU13",
-            "KU14",
-            "KU15",
-            "KU16",
-            "KU17",
             "KU18",
             "KU19",
-            "KU2",
-            "KU20",
-            "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU3",
-            "KU4",
-            "KU5",
-            "KU6",
             "KU7",
-            "KU8",
-            "KU9"
+            "KU8"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Lần theo tên Service tới Pod socket và policy chặn.",
             "Xác định chặng DNS/selector/endpoint/port/policy/call."
@@ -3768,7 +4779,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1ec785a8d5d53a8e",
+                "CLM-2bba7b980f3eecaa",
+                "CLM-d956885544e355e6"
+              ],
+              "source_ids_to_recheck": [
+                "KU20",
+                "KU21"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C05.L02",
@@ -3782,7 +4806,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.4",
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.6"
+              ],
+              "legacy_claim_ids": [
+                "CLM-cf957a5ab18c9a0e"
+              ],
+              "source_ids_to_recheck": [
+                "KU20"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C05.L03",
@@ -3796,7 +4831,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/15-kubernetes-trang-thai-mong-muon.md#15.4",
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-8c42913c2a35a31f",
+                "CLM-f2f890a6aa128eee"
+              ],
+              "source_ids_to_recheck": [
+                "KU11",
+                "KU22"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3808,33 +4856,12 @@
             "P13.C03"
           ],
           "source_ids_to_recheck": [
-            "CN1",
-            "K3",
-            "KU1",
-            "KU10",
             "KU11",
-            "KU12",
-            "KU13",
-            "KU14",
-            "KU15",
-            "KU16",
-            "KU17",
-            "KU18",
-            "KU19",
-            "KU2",
             "KU20",
             "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU3",
-            "KU4",
-            "KU5",
-            "KU6",
-            "KU7",
-            "KU8",
-            "KU9"
+            "KU22"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Phân biệt PVC Bound với volume mount và dữ liệu phục hồi được.",
             "Đề xuất hậu điều kiện dữ liệu trước khi thay Pod."
@@ -3876,7 +4903,17 @@
                   "P02.C03.L01"
                 ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-590ed69919bb6008"
+              ],
+              "source_ids_to_recheck": [
+                "KU23"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C06.L02",
@@ -3890,7 +4927,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-f541fd5c027bf4c8",
+                "CLM-05128c68ef33ef9b",
+                "CLM-c7221f6a8358825f"
+              ],
+              "source_ids_to_recheck": [
+                "KU23"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C06.L03",
@@ -3904,7 +4953,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.6"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -3913,23 +4968,9 @@
           "status": "reviewed_draft",
           "prepares_for": [],
           "source_ids_to_recheck": [
-            "CN1",
-            "K3",
-            "KU1",
-            "KU14",
-            "KU15",
-            "KU16",
-            "KU17",
-            "KU18",
-            "KU19",
-            "KU20",
-            "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU7",
-            "KU8"
+            "KU23"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Tính replica từ CPU utilization khi biết request và chất lượng metric.",
             "Nêu quyết định cơ sở và các lý do status cuối có thể khác."
@@ -3967,7 +5008,26 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/17-gateway-api-helm.md#17.1",
+                "chapters/17-gateway-api-helm.md#17.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-774be2f30e939e2c",
+                "CLM-ef191652dc1ea7c5",
+                "CLM-a52befe25241255f",
+                "CLM-ac9f0fef9ec3adb7",
+                "CLM-eb2c7df991042987"
+              ],
+              "source_ids_to_recheck": [
+                "GW1",
+                "GW2",
+                "GW3",
+                "GW4",
+                "GW5"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C07.L02",
@@ -3981,7 +5041,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/17-gateway-api-helm.md#17.1",
+                "chapters/17-gateway-api-helm.md#17.2",
+                "chapters/17-gateway-api-helm.md#17.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-1a7043fe1788ee9d",
+                "CLM-bc44eb36251357e9",
+                "CLM-11475ad85e339cc1"
+              ],
+              "source_ids_to_recheck": [
+                "GW2",
+                "GW3",
+                "GW4"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C07.L03",
@@ -3995,29 +5071,35 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/17-gateway-api-helm.md#17.2",
+                "chapters/17-gateway-api-helm.md#17.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-5325c3385aac14a6"
+              ],
+              "source_ids_to_recheck": [
+                "GW5",
+                "KU25"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
             "17"
           ],
           "status": "reviewed_draft",
-          "prepares_for": [
-            "P11.C08"
-          ],
+          "prepares_for": [],
           "source_ids_to_recheck": [
             "GW1",
             "GW2",
             "GW3",
             "GW4",
             "GW5",
-            "HE1",
-            "HE2",
-            "HE3",
-            "HE4",
-            "HE5",
             "KU25"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Phân biệt controller conditions với đường request của client.",
             "Xác nhận Accepted/ResolvedRefs, quyền cross-namespace và request từ client."
@@ -4030,13 +5112,15 @@
           "objective": "Theo chart/values đến manifest/revision rồi phân biệt với trạng thái thật.",
           "mental_model": "Render là đầu vào API; release history giữ manifest/config, rollback tạo revision chứ không đảo dữ liệu.",
           "required": [
-            "P11.C07.L03",
+            "P11.C02.L03",
             "P06.C04.L03",
             "P04.C01.L03"
           ],
-          "helpful": [],
+          "helpful": [
+            "P11.C07.L03"
+          ],
           "extension": [],
-          "boundary": "Không biến chart thành nguồn sự thật cho mọi object ngoài release.",
+          "boundary": "Gateway API chỉ là ví dụ chart hiện có, không là tiên quyết Helm.",
           "misconception": "helm template chạy xong chứng minh CRD/controller tồn tại.",
           "teaching_strategy": "Đọc chart atlas-gateway, upgrade/rollback giả định và kiểm request.",
           "assessment": "Đề xuất hậu điều kiện cho revision, object, endpoint, dữ liệu.",
@@ -4049,13 +5133,32 @@
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
-                  "P11.C07.L03",
+                  "P11.C02.L03",
                   "P06.C04.L03",
                   "P04.C01.L03"
                 ],
-                "helpful": [],
+                "helpful": [
+                  "P11.C07.L03"
+                ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/17-gateway-api-helm.md#17.3",
+                "chapters/17-gateway-api-helm.md#17.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-554723a3f17659f5",
+                "CLM-3184b1546526f34c",
+                "CLM-122f15566ea53906"
+              ],
+              "source_ids_to_recheck": [
+                "GW2",
+                "GW3",
+                "HE1",
+                "HE2",
+                "HE3"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C08.L02",
@@ -4069,7 +5172,17 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/17-gateway-api-helm.md#17.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-76985836c4d60842"
+              ],
+              "source_ids_to_recheck": [
+                "HE4"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P11.C08.L03",
@@ -4083,7 +5196,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/17-gateway-api-helm.md#17.3",
+                "chapters/17-gateway-api-helm.md#17.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-a735cef207cf4c07",
+                "CLM-86fc4146f3f22306",
+                "CLM-41d79f8637e394a2"
+              ],
+              "source_ids_to_recheck": [
+                "GW2",
+                "GW3",
+                "HE3",
+                "HE5"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -4094,18 +5223,15 @@
             "P15.C01"
           ],
           "source_ids_to_recheck": [
-            "GW1",
             "GW2",
             "GW3",
-            "GW4",
-            "GW5",
             "HE1",
             "HE2",
             "HE3",
             "HE4",
-            "HE5",
-            "KU25"
+            "HE5"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Theo chart/values đến manifest/revision rồi phân biệt với trạng thái thật.",
             "Đề xuất hậu điều kiện cho revision, object, endpoint, dữ liệu."
@@ -4155,7 +5281,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-4640ce1d0450e1ba",
+                "CLM-35881d38ef827fa0"
+              ],
+              "source_ids_to_recheck": [
+                "PM2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P12.C01.L02",
@@ -4169,7 +5306,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-e003530f9dcc85ee",
+                "CLM-0f9f015cd2b1c8a0"
+              ],
+              "source_ids_to_recheck": [
+                "PM3",
+                "PM7"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P12.C01.L03",
@@ -4183,7 +5332,21 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.1"
+              ],
+              "legacy_claim_ids": [
+                "CLM-b4bacd2e9bcad216",
+                "CLM-11f3db4dd2745e12",
+                "CLM-3793b1c93d681492"
+              ],
+              "source_ids_to_recheck": [
+                "PM1",
+                "PM11",
+                "PM4"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -4194,20 +5357,14 @@
             "P12.C02"
           ],
           "source_ids_to_recheck": [
-            "GF1",
-            "GF2",
             "PM1",
-            "PM10",
             "PM11",
             "PM2",
             "PM3",
             "PM4",
-            "PM5",
-            "PM6",
-            "PM7",
-            "PM8",
-            "PM9"
+            "PM7"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Định nghĩa phép đo và rủi ro sai lệch trước khi xem dashboard.",
             "Phân biệt counter/gauge/histogram, reset và mẫu bị thiếu."
@@ -4241,7 +5398,23 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.1",
+                "chapters/18-metrics-prometheus-grafana.md#18.2"
+              ],
+              "legacy_claim_ids": [
+                "CLM-4694812c6561c96f",
+                "CLM-3b5684fb800bb1e8",
+                "CLM-5ba183a26df1db84",
+                "CLM-3a3637bcbbbcb8f3"
+              ],
+              "source_ids_to_recheck": [
+                "PM5",
+                "PM8",
+                "PM9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P12.C02.L02",
@@ -4255,7 +5428,20 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.3"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c0c00adc95bb4681",
+                "CLM-596fd194b8c15dcf"
+              ],
+              "source_ids_to_recheck": [
+                "PM10",
+                "PM11",
+                "PM9"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P12.C02.L03",
@@ -4269,7 +5455,22 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.1",
+                "chapters/18-metrics-prometheus-grafana.md#18.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c26960f3617dfb8d",
+                "CLM-8e4ae99ed4d5cdc3",
+                "CLM-987af60aba5f97fd"
+              ],
+              "source_ids_to_recheck": [
+                "GF1",
+                "GF2",
+                "PM8"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -4277,7 +5478,6 @@
           ],
           "status": "reviewed_draft",
           "prepares_for": [
-            "P12.C03",
             "P12.C04",
             "P13.C01",
             "P13.C04"
@@ -4285,18 +5485,13 @@
           "source_ids_to_recheck": [
             "GF1",
             "GF2",
-            "PM1",
             "PM10",
             "PM11",
-            "PM2",
-            "PM3",
-            "PM4",
             "PM5",
-            "PM6",
-            "PM7",
             "PM8",
             "PM9"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Tính rate, tỷ lệ lỗi và p95 có giới hạn từ mẫu thật/giả định.",
             "Sửa query rate(sum()) và nêu bias do mất scrape."
@@ -4309,17 +5504,17 @@
           "objective": "Nối log và span của một request, kể cả khi một nhánh timeout nhưng cuối trả 200.",
           "mental_model": "Trace mô tả quan hệ parent/child; log mô tả sự kiện; SDK/Collector/backend có đường lỗi riêng.",
           "required": [
-            "P12.C02.L03",
             "P03.C04.L03",
             "P11.C01.L02"
           ],
           "helpful": [
+            "P12.C02.L03",
             "P11.C07.L03"
           ],
           "extension": [
             "P13.C02.L01"
           ],
-          "boundary": "Alert policy ở P12.C04; không bắt buộc chạy Collector thật ở bài này.",
+          "boundary": "Grafana dashboard không là điều kiện để hiểu propagation; alert policy ở P12.C04.",
           "misconception": "Cộng mọi span duration ra client latency; sampled=01 bảo đảm trace được lưu.",
           "teaching_strategy": "Dùng trace-ch19.csv và logs-ch19.json để tính và chẩn đoán missing span.",
           "assessment": "Xác định 420 ms end-to-end, chỗ thiếu span và giới hạn kết luận.",
@@ -4332,15 +5527,29 @@
               "status": "reviewed_draft",
               "prerequisites": {
                 "required": [
-                  "P12.C02.L03",
                   "P03.C04.L03",
                   "P11.C01.L02"
                 ],
                 "helpful": [
+                  "P12.C02.L03",
                   "P11.C07.L03"
                 ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/19-logs-traces-opentelemetry.md#19.1",
+                "chapters/19-logs-traces-opentelemetry.md#19.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-dd2c7b2eb023943c",
+                "CLM-7af35d4a4c108916",
+                "CLM-45f752e0befa970e"
+              ],
+              "source_ids_to_recheck": [
+                "OT1",
+                "OT2"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P12.C03.L02",
@@ -4354,7 +5563,29 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/19-logs-traces-opentelemetry.md#19.2",
+                "chapters/19-logs-traces-opentelemetry.md#19.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-c22f6fc8c495bb8e",
+                "CLM-7f94482aed259d4f",
+                "CLM-93baeebe170b4815",
+                "CLM-ef4aab514cacc65f",
+                "CLM-25f82fdb7175550e",
+                "CLM-832dfb6fde5fae13",
+                "CLM-58e4a7990b7ee771",
+                "CLM-a7d84951682e0f10"
+              ],
+              "source_ids_to_recheck": [
+                "OT2",
+                "OT3",
+                "OT4",
+                "OT6",
+                "WC1"
+              ],
+              "source_research_needed": false
             },
             {
               "id": "P12.C03.L03",
@@ -4368,7 +5599,32 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/19-logs-traces-opentelemetry.md#19.3",
+                "chapters/19-logs-traces-opentelemetry.md#19.4",
+                "chapters/19-logs-traces-opentelemetry.md#19.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-9984f30a89995aa4",
+                "CLM-2f704ae748a26379",
+                "CLM-39f1b2fa3d190afa",
+                "CLM-7e82714205917f06",
+                "CLM-0547e1e8fa3171d2",
+                "CLM-78979b06e37fead9",
+                "CLM-ff5034b1443886f3",
+                "CLM-b96b3b52b3ed8cb5"
+              ],
+              "source_ids_to_recheck": [
+                "OT10",
+                "OT2",
+                "OT3",
+                "OT5",
+                "OT7",
+                "OT8",
+                "OT9"
+              ],
+              "source_research_needed": false
             }
           ],
           "legacy_chapters": [
@@ -4383,7 +5639,6 @@
           "source_ids_to_recheck": [
             "OT1",
             "OT10",
-            "OT11",
             "OT2",
             "OT3",
             "OT4",
@@ -4394,6 +5649,7 @@
             "OT9",
             "WC1"
           ],
+          "source_research_needed": false,
           "learning_outcomes": [
             "Nối log và span của một request, kể cả khi một nhánh timeout nhưng cuối trả 200.",
             "Xác định 420 ms end-to-end, chỗ thiếu span và giới hạn kết luận."
@@ -4429,7 +5685,18 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/18-metrics-prometheus-grafana.md#18.1",
+                "chapters/18-metrics-prometheus-grafana.md#18.4"
+              ],
+              "legacy_claim_ids": [
+                "CLM-04bb47b429753cbe"
+              ],
+              "source_ids_to_recheck": [
+                "PM6"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P12.C04.L02",
@@ -4443,7 +5710,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P12.C04.L03",
@@ -4457,7 +5728,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/19-logs-traces-opentelemetry.md#19.5"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -4467,32 +5744,9 @@
           "status": "planned_new",
           "prepares_for": [],
           "source_ids_to_recheck": [
-            "GF1",
-            "GF2",
-            "OT1",
-            "OT10",
-            "OT11",
-            "OT2",
-            "OT3",
-            "OT4",
-            "OT5",
-            "OT6",
-            "OT7",
-            "OT8",
-            "OT9",
-            "PM1",
-            "PM10",
-            "PM11",
-            "PM2",
-            "PM3",
-            "PM4",
-            "PM5",
-            "PM6",
-            "PM7",
-            "PM8",
-            "PM9",
-            "WC1"
+            "PM6"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Tạo tín hiệu hành động thay vì báo động từ một dashboard.",
             "Viết test alert rule, no-data policy và đường nhận thông báo."
@@ -4546,7 +5800,11 @@
                   "P12.C04.L01"
                 ],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C01.L02",
@@ -4560,7 +5818,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C01.L03",
@@ -4574,7 +5836,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [],
@@ -4584,6 +5850,7 @@
             "P13.C04"
           ],
           "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Chọn phép đo gần trải nghiệm người dùng và tính burn rate.",
             "Phản biện một SLI loại bỏ request thất bại do target biến mất."
@@ -4621,7 +5888,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C02.L02",
@@ -4635,7 +5906,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C02.L03",
@@ -4649,7 +5924,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -4660,30 +5939,8 @@
           "prepares_for": [
             "P15.C03"
           ],
-          "source_ids_to_recheck": [
-            "AR1",
-            "AR2",
-            "G2",
-            "GH1",
-            "KD1",
-            "KD2",
-            "OCI1",
-            "OT1",
-            "OT10",
-            "OT11",
-            "OT2",
-            "OT3",
-            "OT4",
-            "OT5",
-            "OT6",
-            "OT7",
-            "OT8",
-            "OT9",
-            "PG1",
-            "PG2",
-            "SL1",
-            "WC1"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Tổ chức phát hiện, phân vai, giảm tác động và học từ sự cố.",
             "Lập runbook với trigger, stop, verification và mốc thông báo."
@@ -4721,7 +5978,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C03.L02",
@@ -4735,7 +5996,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C03.L03",
@@ -4749,7 +6014,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -4762,71 +6031,8 @@
           "prepares_for": [
             "P15.C01"
           ],
-          "source_ids_to_recheck": [
-            "AWS1",
-            "AWS10",
-            "AWS11",
-            "AWS12",
-            "AWS13",
-            "AWS14",
-            "AWS15",
-            "AWS16",
-            "AWS18",
-            "AWS19",
-            "AWS2",
-            "AWS3",
-            "AWS4",
-            "AWS5",
-            "AWS6",
-            "AWS7",
-            "AWS8",
-            "AWS9",
-            "AWSTF1",
-            "AWSTF2",
-            "AWSTF3",
-            "CN1",
-            "DD1",
-            "DD10",
-            "DD2",
-            "DD3",
-            "DD4",
-            "DD5",
-            "DD6",
-            "DD7",
-            "DD8",
-            "DD9",
-            "K3",
-            "KU1",
-            "KU14",
-            "KU15",
-            "KU16",
-            "KU17",
-            "KU18",
-            "KU19",
-            "KU20",
-            "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU7",
-            "KU8",
-            "OCI3",
-            "OCI4",
-            "OCI5",
-            "OCI6",
-            "OCI7",
-            "TF1",
-            "TF10",
-            "TF11",
-            "TF2",
-            "TF3",
-            "TF4",
-            "TF5",
-            "TF6",
-            "TF7",
-            "TF8",
-            "TF9"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Phân biệt availability, durability, RPO, RTO và restore kiểm chứng.",
             "Đề xuất RPO/RTO thực tế và phép thử restore."
@@ -4864,7 +6070,13 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/02-cpu-bo-nho-io.md#2.5"
+              ],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C04.L02",
@@ -4878,7 +6090,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P13.C04.L03",
@@ -4892,7 +6108,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -4904,41 +6124,8 @@
           "prepares_for": [
             "P15.C02"
           ],
-          "source_ids_to_recheck": [
-            "CN1",
-            "GF1",
-            "GF2",
-            "K1",
-            "K2",
-            "K3",
-            "K4",
-            "KU1",
-            "KU14",
-            "KU15",
-            "KU16",
-            "KU17",
-            "KU18",
-            "KU19",
-            "KU20",
-            "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU7",
-            "KU8",
-            "PM1",
-            "PM10",
-            "PM11",
-            "PM2",
-            "PM3",
-            "PM4",
-            "PM5",
-            "PM6",
-            "PM7",
-            "PM8",
-            "PM9",
-            "R6"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Phân biệt nghẽn CPU, I/O, hàng đợi và giới hạn dữ liệu khi tải tăng.",
             "Chọn chỉ số để chứng minh bottleneck rồi dự báo headroom."
@@ -4990,7 +6177,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C01.L02",
@@ -5004,7 +6195,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C01.L03",
@@ -5018,7 +6213,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -5028,26 +6227,8 @@
           "prepares_for": [
             "P14.C02"
           ],
-          "source_ids_to_recheck": [
-            "AWS1",
-            "AWS10",
-            "AWS11",
-            "AWS12",
-            "AWS13",
-            "AWS14",
-            "AWS15",
-            "AWS16",
-            "AWS18",
-            "AWS19",
-            "AWS2",
-            "AWS3",
-            "AWS4",
-            "AWS5",
-            "AWS6",
-            "AWS7",
-            "AWS8",
-            "AWS9"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Nhận diện tài sản, actor, trust boundary và đường lạm dụng.",
             "Viết threat scenario và phép thử denial/allow theo least privilege."
@@ -5085,7 +6266,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C02.L02",
@@ -5099,7 +6284,19 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [
+                "chapters/08-python-go-tu-dong-hoa.md#8.2",
+                "chapters/19-logs-traces-opentelemetry.md#19.5"
+              ],
+              "legacy_claim_ids": [
+                "CLM-4eec00bfba7340ad"
+              ],
+              "source_ids_to_recheck": [
+                "OT11",
+                "WC1"
+              ],
+              "source_research_needed": true
             },
             {
               "id": "P14.C02.L03",
@@ -5113,7 +6310,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -5126,67 +6327,10 @@
           "status": "planned_new",
           "prepares_for": [],
           "source_ids_to_recheck": [
-            "AS1",
-            "AS10",
-            "AS11",
-            "AS12",
-            "AS13",
-            "AS14",
-            "AS2",
-            "AS4",
-            "AS5",
-            "AS6",
-            "AS7",
-            "AS8",
-            "AS9",
-            "AWSTF1",
-            "AWSTF2",
-            "AWSTF3",
-            "DD1",
-            "DD10",
-            "DD2",
-            "DD3",
-            "DD4",
-            "DD5",
-            "DD6",
-            "DD7",
-            "DD8",
-            "DD9",
-            "GO1",
-            "GO2",
-            "GO3",
-            "GO4",
-            "OCI3",
-            "OCI4",
-            "OCI5",
-            "OCI6",
-            "OCI7",
-            "OT1",
-            "OT10",
             "OT11",
-            "OT2",
-            "OT3",
-            "OT4",
-            "OT5",
-            "OT6",
-            "OT7",
-            "OT8",
-            "OT9",
-            "P2",
-            "P3",
-            "TF1",
-            "TF10",
-            "TF11",
-            "TF2",
-            "TF3",
-            "TF4",
-            "TF5",
-            "TF6",
-            "TF7",
-            "TF8",
-            "TF9",
             "WC1"
           ],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Lần theo secret từ tạo tới sử dụng, log, rotation và thu hồi.",
             "Đề xuất redaction, scope, rotation và bằng chứng không rò."
@@ -5226,7 +6370,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C03.L02",
@@ -5240,7 +6388,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C03.L03",
@@ -5254,7 +6406,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -5266,33 +6422,8 @@
             "P14.C04",
             "P15.C03"
           ],
-          "source_ids_to_recheck": [
-            "AR1",
-            "AR2",
-            "DD1",
-            "DD10",
-            "DD2",
-            "DD3",
-            "DD4",
-            "DD5",
-            "DD6",
-            "DD7",
-            "DD8",
-            "DD9",
-            "G2",
-            "GH1",
-            "KD1",
-            "KD2",
-            "OCI1",
-            "OCI3",
-            "OCI4",
-            "OCI5",
-            "OCI6",
-            "OCI7",
-            "PG1",
-            "PG2",
-            "SL1"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Truy vết source→dependency→build→image→deploy không đánh tráo artifact.",
             "Chỉ ra chuỗi bằng chứng và điểm còn chưa xác minh."
@@ -5330,7 +6461,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C04.L02",
@@ -5344,7 +6479,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P14.C04.L03",
@@ -5358,7 +6497,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -5370,45 +6513,8 @@
           "prepares_for": [
             "P15.C01"
           ],
-          "source_ids_to_recheck": [
-            "CN1",
-            "GW1",
-            "GW2",
-            "GW3",
-            "GW4",
-            "GW5",
-            "HE1",
-            "HE2",
-            "HE3",
-            "HE4",
-            "HE5",
-            "K3",
-            "KU1",
-            "KU10",
-            "KU11",
-            "KU12",
-            "KU13",
-            "KU14",
-            "KU15",
-            "KU16",
-            "KU17",
-            "KU18",
-            "KU19",
-            "KU2",
-            "KU20",
-            "KU21",
-            "KU22",
-            "KU23",
-            "KU24",
-            "KU25",
-            "KU3",
-            "KU4",
-            "KU5",
-            "KU6",
-            "KU7",
-            "KU8",
-            "KU9"
-          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Đặt ranh giới quyền và mạng trên workload thật.",
             "Lập ma trận kiểm soát và giới hạn thực thi của plugin/provider."
@@ -5460,7 +6566,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P15.C01.L02",
@@ -5474,7 +6584,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P15.C01.L03",
@@ -5488,7 +6602,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [],
@@ -5497,6 +6615,7 @@
             "P15.C02"
           ],
           "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Bảo vệ đường request, dữ liệu và control plane trong một kiến trúc.",
             "Lập bảng tradeoff với bằng chứng cho từng control."
@@ -5534,7 +6653,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P15.C02.L02",
@@ -5548,7 +6671,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P15.C02.L03",
@@ -5562,7 +6689,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [],
@@ -5571,6 +6702,7 @@
             "P15.C03"
           ],
           "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Chọn năng lực đủ SLO trong giới hạn tiền và vận hành.",
             "Tính điểm hòa vốn và rủi ro mất SLO/DR."
@@ -5608,7 +6740,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P15.C03.L02",
@@ -5622,7 +6758,11 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             },
             {
               "id": "P15.C03.L03",
@@ -5636,13 +6776,36 @@
                 ],
                 "helpful": [],
                 "extension": []
-              }
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C03.L04",
+              "parent": "P15.C03",
+              "title": "Kiểm toán",
+              "core": "evidence ledger, phép kiểm âm/dương, SKIP, stop rule và quyết định vận hành",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C03.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [],
           "status": "planned_new",
           "prepares_for": [],
           "source_ids_to_recheck": [],
+          "source_research_needed": true,
           "learning_outcomes": [
             "Chứng minh toàn hành trình từ commit đến phục hồi bằng artifact và phép đo.",
             "Nộp evidence ledger, kết quả âm/dương, giới hạn và quyết định vận hành."
@@ -5733,6 +6896,11 @@
       "kind": "required"
     },
     {
+      "from": "P02.C03.L03",
+      "to": "P02.C03.L04",
+      "kind": "required"
+    },
+    {
       "from": "P01.C02.L02",
       "to": "P02.C04.L01",
       "kind": "required"
@@ -5789,6 +6957,11 @@
     },
     {
       "from": "P03.C01.L03",
+      "to": "P03.C01.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P03.C01.L03",
       "to": "P03.C02.L01",
       "kind": "required"
     },
@@ -5804,11 +6977,21 @@
     },
     {
       "from": "P03.C02.L03",
+      "to": "P03.C02.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P03.C02.L04",
       "to": "P12.C03.L02",
       "kind": "extension"
     },
     {
       "from": "P03.C02.L02",
+      "to": "P03.C03.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P03.C02.L04",
       "to": "P03.C03.L01",
       "kind": "required"
     },
@@ -6138,6 +7321,11 @@
       "kind": "required"
     },
     {
+      "from": "P03.C01.L04",
+      "to": "P08.C02.L01",
+      "kind": "required"
+    },
+    {
       "from": "P08.C01.L03",
       "to": "P08.C02.L01",
       "kind": "required"
@@ -6428,6 +7616,11 @@
       "kind": "required"
     },
     {
+      "from": "P03.C01.L04",
+      "to": "P11.C04.L01",
+      "kind": "required"
+    },
+    {
       "from": "P11.C04.L01",
       "to": "P11.C04.L02",
       "kind": "required"
@@ -6518,7 +7711,7 @@
       "kind": "required"
     },
     {
-      "from": "P11.C07.L03",
+      "from": "P11.C02.L03",
       "to": "P11.C08.L01",
       "kind": "required"
     },
@@ -6531,6 +7724,11 @@
       "from": "P04.C01.L03",
       "to": "P11.C08.L01",
       "kind": "required"
+    },
+    {
+      "from": "P11.C07.L03",
+      "to": "P11.C08.L01",
+      "kind": "helpful"
     },
     {
       "from": "P11.C08.L01",
@@ -6578,11 +7776,6 @@
       "kind": "required"
     },
     {
-      "from": "P12.C02.L03",
-      "to": "P12.C03.L01",
-      "kind": "required"
-    },
-    {
       "from": "P03.C04.L03",
       "to": "P12.C03.L01",
       "kind": "required"
@@ -6591,6 +7784,11 @@
       "from": "P11.C01.L02",
       "to": "P12.C03.L01",
       "kind": "required"
+    },
+    {
+      "from": "P12.C02.L03",
+      "to": "P12.C03.L01",
+      "kind": "helpful"
     },
     {
       "from": "P11.C07.L03",
@@ -6910,6 +8108,11 @@
     {
       "from": "P15.C03.L02",
       "to": "P15.C03.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C03.L03",
+      "to": "P15.C03.L04",
       "kind": "required"
     }
   ],

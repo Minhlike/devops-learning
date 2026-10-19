@@ -1,6 +1,6 @@
 # Bản đồ trực quan hóa cho A2
 
-**Quy tắc chọn:** chỉ trực quan hóa khi vị trí, thứ tự, trạng thái, quan hệ nhân quả hoặc số liệu khó đọc hơn trong văn xuôi. Đây là 37 ứng viên: 26 sơ đồ kỹ thuật/luồng/trạng thái, 6 biểu đồ định lượng từ dữ liệu, 2 bảng hoặc bảng kết hợp sơ đồ, 3 minh họa mở Phần có thể bỏ. Đây là danh sách có hợp đồng kiểm chứng, **không phải quota**. `P0` cần trước khi di chuyển khối tương ứng; `P1` cần trước khi nghiệm thu Phần; `P2` là phương án nghệ thuật/đào sâu có thể bỏ nếu không giúp hiểu. Hình kỹ thuật xuất SVG/vector có source chỉnh được; đồ thị từ dữ liệu phải lưu dữ liệu và mã dựng; ảnh thực chỉ từ thí nghiệm được phép có metadata; nghệ thuật không được mang claim kỹ thuật. Không dùng ASCII art làm hình xuất bản. Các `source_map`/URL chỉ ở hồ sơ A2, không vào PDF.
+**Quy tắc chọn:** chỉ trực quan hóa khi vị trí, thứ tự, trạng thái, quan hệ nhân quả hoặc số liệu khó đọc hơn trong văn xuôi. Đây là 43 ứng viên: 29 sơ đồ kỹ thuật/luồng/trạng thái, 7 biểu đồ định lượng từ dữ liệu, 4 bảng hoặc bảng kết hợp sơ đồ, 3 minh họa mở Phần có thể bỏ. Đây là danh sách có hợp đồng kiểm chứng, **không phải quota**. `P0` cần trước khi di chuyển khối tương ứng; `P1` cần trước khi nghiệm thu Phần; `P2` là phương án nghệ thuật/đào sâu có thể bỏ nếu không giúp hiểu. Hình kỹ thuật xuất SVG/vector có source chỉnh được; đồ thị từ dữ liệu phải lưu dữ liệu và mã dựng; ảnh thực chỉ từ thí nghiệm được phép có metadata; nghệ thuật không được mang claim kỹ thuật. Không dùng ASCII art làm hình xuất bản. Các `source_map`/URL chỉ ở hồ sơ A2, không vào PDF.
 
 ## Máy, Linux và mạng
 
@@ -179,6 +179,38 @@
 - **Hỏi / dạng:** phương án nào vừa đủ tải/SLO với giá thấp hơn? Đường biên đánh đổi từ dữ liệu có Region/time.
 - **Bắt buộc:** peak, headroom, replica, storage backup/retention, egress, telemetry; công thức chi phí, trục đơn vị, giả định giá có ngày/Region; vùng không đạt SLO/DR.
 - **Kiểm / sai lệch:** A2 tạo dữ liệu và nguồn giá chính thức theo ngày; sai nếu một giá cố định được trình bày như phổ quát. **Medium:** chart từ dữ liệu. **P1:** không biến cost thành khẩu hiệu.
+
+## Bổ sung tại sáu cơ chế khó, theo kiểm toán A1
+
+### V38 · `P02.C03.L04` · Chẩn đoán CPU, memory và I/O trên cùng cửa sổ
+- **Hỏi / dạng:** cùng lúc latency tăng, tín hiệu nào phân biệt quota, reclaim và nghẽn thiết bị? Biểu đồ nhiều làn từ dữ liệu giả định Ch2.5, kèm bảng counter trước/sau.
+- **Bắt buộc:** cửa sổ 60 giây; usage_usec đổi ra core, nr_throttled, memory.events high/oom, io.pressure some, số request và p95; mỗi làn ghi đơn vị, timestamp, số đo vắng mặt. Chỉ gắn nguyên nhân sau khi có phép quan sát phân biệt và đối chiếu request.
+- **Kiểm / sai lệch:** Ch2.5, C2.4, Linux cgroup v2/PSI; sai nếu dùng 80/100 chu kỳ throttle làm 80% CPU hoặc gọi PSI là thời gian I/O của một request. **Medium:** biểu đồ từ dataset giả định có mã tính, vector. **P0:** là bài suy luận đa tín hiệu, văn xuôi dễ che cửa sổ đo.
+
+### V39 · `P09.C01.L03` · DAG Terraform và thứ tự không được bảo đảm
+- **Hỏi / dạng:** reference và depends_on tạo cạnh nào, hai resource không có cạnh có thể chạy song song ra sao? DAG có nhãn nguồn cạnh.
+- **Bắt buộc:** resource/data/provider node từ `examples/terraform-graph/main.tf`; cạnh suy diễn bằng tham chiếu tách màu/ký hiệu với cạnh khai báo; một cặp không có cạnh, một chu trình bị từ chối; chú thích graph là thứ tự ràng buộc, không phải giao dịch.
+- **Kiểm / sai lệch:** HCL Ch13.1, tài liệu [Terraform dependency graph](https://developer.hashicorp.com/terraform/internals/graph); sai nếu vẽ mọi block theo thứ tự tệp hoặc `depends_on` tạo rollback. **Medium:** SVG chỉnh được. **P0:** DAG là mô hình trung tâm của chương.
+
+### V40 · `P09.C03.L02` · Drift, import và moved address
+- **Hỏi / dạng:** đổi object ngoài Terraform khác đổi địa chỉ resource trong cấu hình thế nào? Ba snapshot config/state/API và hai nhánh thao tác.
+- **Bắt buộc:** ID object thực giữ nguyên khi moved/import đúng; địa chỉ state trước/sau; drift B trên API không tự chữa bằng moved; plan replace/destroy là nhánh dừng để kiểm dữ liệu. Ghi rõ thao tác nào cần backup/lock và hậu kiểm.
+- **Kiểm / sai lệch:** Ch13.2–13.4 và [Terraform refactoring](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring); sai nếu import được vẽ là tạo object mới hoặc moved là sửa drift của API. **Medium:** SVG + bảng trạng thái nhỏ. **P0:** ngăn xóa nhầm resource giữ dữ liệu.
+
+### V41 · `P11.C03.L01` · Scheduler lọc node trước khi xét CPU tức thời
+- **Hỏi / dạng:** Pod request 500m có thể lên A/B không khi A còn 300m, B còn 600m nhưng có taint? Bảng điều kiện + flow filter.
+- **Bắt buộc:** A/B allocatable trừ requests đã cấp, toleration, kết quả filter, reason FailedScheduling; CPU usage 10% đặt ở cột quan sát khác và không quyết định fit. Chỉ sau placement mới diễn giải CPU limit/throttle ở L02.
+- **Kiểm / sai lệch:** Ch16.1/C16.1, Kubernetes scheduling docs; sai nếu xem usage thấp là chỗ trống hoặc toleration là đảm bảo được xếp lên B. **Medium:** bảng vector và flow ngắn. **P0:** hai ranh giới placement/runtime dễ lẫn.
+
+### V42 · `P11.C08.L03` · Helm revision và trạng thái ứng dụng
+- **Hỏi / dạng:** `helm rollback` đã tạo revision mới nhưng dữ liệu/schema và request ở đâu? State machine ba trục.
+- **Bắt buộc:** revision 6→7→8 sau rollback, chart/values/manifest trên từng revision; API object/controller status, endpoint/request và schema/41 đơn là ba dải riêng; nhánh rollback manifest thành công nhưng app không tương thích dữ liệu. Gateway chỉ là ví dụ chart hiện có, không là tiên quyết Helm.
+- **Kiểm / sai lệch:** Ch17.3–17.5/C17.4 và [Helm rollback](https://docs.helm.sh/docs/helm/helm_rollback/); sai nếu mũi tên rollback tự đảo migration. **Medium:** SVG state timeline. **P0:** release identity khác hậu điều kiện.
+
+### V43 · `P15.C03.L04` · Evidence ledger capstone
+- **Hỏi / dạng:** thay đổi đã đủ chứng cứ để phục vụ và phục hồi chưa? Ma trận bước–artifact–phép kiểm–kết quả–stop rule, nối bằng một request ID.
+- **Bắt buộc:** commit/digest, triển khai dịch vụ có dữ liệu, request path, IAM/secret, metric/log/trace, failure injection cục bộ, stop/rollback, restore dữ liệu, SLI/SLO và SKIP có lý do. Mỗi hàng dẫn tới tệp/log/dataset tái lập; không điền PASS cho thử nghiệm chưa chạy.
+- **Kiểm / sai lệch:** `capstone_contract.md`, test/dataset A2 sẽ tạo và Reviewer kiểm; sai nếu một sơ đồ production hoặc status xanh được xem là đủ evidence. **Medium:** bảng vector dùng mã evidence ID; hồ sơ kiểm ngoài PDF, không chèn URL nguồn vào sách. **P0:** hợp đồng đầu ra, không phải hình trang trí.
 
 ## Trang mở Phần và hình mang tính khái niệm
 
