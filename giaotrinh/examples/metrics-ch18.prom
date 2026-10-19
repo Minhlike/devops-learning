@@ -1,0 +1,15 @@
+# HELP http_requests_total Completed HTTP requests.
+# TYPE http_requests_total counter
+http_requests_total{status_class="2xx"} 257
+http_requests_total{status_class="5xx"} 23
+# HELP http_request_duration_seconds Request duration in seconds.
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_bucket{le="0.1"} 90
+http_request_duration_seconds_bucket{le="0.5"} 205
+http_request_duration_seconds_bucket{le="1"} 264
+http_request_duration_seconds_bucket{le="+Inf"} 280
+http_request_duration_seconds_sum 130
+http_request_duration_seconds_count 280
+# HELP process_cpu_seconds_total CPU time consumed by the process.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 136

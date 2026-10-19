@@ -1,0 +1,7 @@
+sum(rate(http_requests_total{job="atlas",status_class="5xx"}[3m]))
+/
+sum(rate(http_requests_total{job="atlas"}[3m]))
+
+histogram_quantile(0.95,
+  sum by (le) (rate(http_request_duration_seconds_bucket{job="atlas"}[3m]))
+)

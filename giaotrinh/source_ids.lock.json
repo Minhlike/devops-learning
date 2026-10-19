@@ -173,7 +173,20 @@
     "HE2": "https://helm.sh/docs/v3/chart_template_guide/values_files/",
     "HE3": "https://helm.sh/docs/v3/intro/using_helm/",
     "HE4": "https://helm.sh/docs/v3/helm/helm_template/",
-    "HE5": "https://helm.sh/docs/v3/faq/changes_since_helm2/"
+    "HE5": "https://helm.sh/docs/v3/faq/changes_since_helm2/",
+    "PM1": "https://prometheus.io/docs/prometheus/3.7/configuration/configuration/",
+    "PM2": "https://prometheus.io/docs/concepts/metric_types/",
+    "PM3": "https://prometheus.io/docs/concepts/data_model/",
+    "PM4": "https://prometheus.io/docs/prometheus/3.7/storage/",
+    "PM5": "https://prometheus.io/docs/prometheus/3.7/configuration/recording_rules/",
+    "PM6": "https://prometheus.io/docs/prometheus/3.7/configuration/alerting_rules/",
+    "PM7": "https://prometheus.io/docs/practices/naming/",
+    "PM8": "https://prometheus.io/docs/prometheus/3.7/querying/basics/",
+    "PM9": "https://prometheus.io/docs/prometheus/3.7/querying/functions/",
+    "PM10": "https://prometheus.io/docs/instrumenting/exposition_formats/",
+    "PM11": "https://prometheus.io/docs/concepts/jobs_instances/",
+    "GF1": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/datasources/prometheus/_index.md",
+    "GF2": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/dashboards/use-dashboards/index.md"
   },
   "frozen_ids": [
     "AR1",
@@ -347,6 +360,19 @@
     "HE2",
     "HE3",
     "HE4",
-    "HE5"
+    "HE5",
+    "PM1",
+    "PM2",
+    "PM3",
+    "PM4",
+    "PM5",
+    "PM6",
+    "PM7",
+    "PM8",
+    "PM9",
+    "PM10",
+    "PM11",
+    "GF1",
+    "GF2"
   ]
 }

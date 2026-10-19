@@ -54,7 +54,7 @@ Nếu host và attachment đều đúng nhưng nhận 503, lần tiếp theo là
 
 Khi rollback, ghi rõ revision đích, manifest cũ, các object live trước/sau và thời điểm lưu lượng chuyển. Nếu revision 5 kèm migration schema hay đã ghi dữ liệu vào backend, đổi Route về host cũ không khôi phục dữ liệu. Hậu điều kiện cần có request từ client ở đúng hostname/SNI và path, response mong đợi, EndpointSlice còn backend Ready, và kiểm tra dữ liệu nếu ứng dụng có ghi. Đây là phép xác nhận một lần tại thời điểm đo, không phải bảo đảm lâu dài.
 
-Bài tập
+## Bài tập
 
 C17.1. Chart đã render Gateway và HTTPRoute hợp lệ về YAML, nhưng GatewayClass chưa tồn tại. Dự đoán thứ tự bằng chứng cần đọc trước khi chẩn đoán 404 từ client. Điều gì chưa thể kết luận từ `helm template`?
 
