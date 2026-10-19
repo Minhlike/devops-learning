@@ -1,0 +1,6 @@
+# A matching GatewayClass and the atlas Service must already exist.
+gatewayClassName: example-gateway
+hostname: atlas.example.test
+backend:
+  service: atlas
+  port: 80

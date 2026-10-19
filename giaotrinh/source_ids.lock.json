@@ -162,7 +162,18 @@
     "KU22": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/controllers/statefulset/",
     "KU23": "https://v1-34.docs.kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/",
     "KU24": "https://v1-34.docs.kubernetes.io/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/",
-    "CN1": "https://github.com/containernetworking/cni/blob/spec-v1.1.0/SPEC.md"
+    "CN1": "https://github.com/containernetworking/cni/blob/spec-v1.1.0/SPEC.md",
+    "GW1": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.3.0/site-src/api-types/gatewayclass.md",
+    "GW2": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.3.0/site-src/api-types/gateway.md",
+    "GW3": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.3.0/site-src/api-types/httproute.md",
+    "GW4": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.3.0/site-src/api-types/referencegrant.md",
+    "GW5": "https://github.com/kubernetes-sigs/gateway-api/blob/v1.3.0/site-src/concepts/api-overview.md",
+    "KU25": "https://v1-34.docs.kubernetes.io/docs/concepts/services-networking/ingress/",
+    "HE1": "https://helm.sh/docs/v3/chart_template_guide/getting_started/",
+    "HE2": "https://helm.sh/docs/v3/chart_template_guide/values_files/",
+    "HE3": "https://helm.sh/docs/v3/intro/using_helm/",
+    "HE4": "https://helm.sh/docs/v3/helm/helm_template/",
+    "HE5": "https://helm.sh/docs/v3/faq/changes_since_helm2/"
   },
   "frozen_ids": [
     "AR1",
@@ -325,6 +336,17 @@
     "KU22",
     "KU23",
     "KU24",
-    "CN1"
+    "CN1",
+    "GW1",
+    "GW2",
+    "GW3",
+    "GW4",
+    "GW5",
+    "KU25",
+    "HE1",
+    "HE2",
+    "HE3",
+    "HE4",
+    "HE5"
   ]
 }
