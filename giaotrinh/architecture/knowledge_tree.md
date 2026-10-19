@@ -116,7 +116,8 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Cây bài:**
   - `P02.C03.L01` **CPU và scheduler** [reviewed_draft; 2 mục cũ; 1 claim] — runnable, usage, quota và PSI
   - `P02.C03.L02` **Memory** [reviewed_draft; 1 mục cũ; 1 claim] — virtual/resident, reclaim, page cache, OOM
-  - `P02.C03.L03` **I/O và độ bền** [reviewed_draft; 1 mục cũ; 0 claim] — dirty/writeback, fsync và thiết bị
+  - `P02.C03.L03` **I/O và độ bền** [reviewed_draft; 1 mục cũ; 0 claim; nghiên cứu nguồn trực tiếp: cần] — dirty/writeback, fsync và thiết bị
+    - **Ranh giới bản thảo:** Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.
   - `P02.C03.L04` **Điều tra đa tín hiệu** [reviewed_draft; 1 mục cũ; 3 claim] — lấy hiệu counter CPU, memory, I/O cùng cửa sổ, đối chiếu latency và phép đo thiếu
 
 ### P02.C04 — systemd và vòng đời dịch vụ [reviewed_draft]
@@ -133,7 +134,8 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Cây bài:**
   - `P02.C04.L01` **Unit graph** [reviewed_draft; 2 mục cũ; 2 claim] — After, Wants, Requires, network-online
   - `P02.C04.L02` **Process lifecycle** [reviewed_draft; 1 mục cũ; 3 claim] — Type, ExecStart, signal, restart
-  - `P02.C04.L03` **Quan sát dịch vụ** [reviewed_draft; 2 mục cũ; 0 claim] — MainPID, journal, socket, readiness và hậu điều kiện
+  - `P02.C04.L03` **Quan sát dịch vụ** [reviewed_draft; 2 mục cũ; 0 claim; nghiên cứu nguồn trực tiếp: cần] — MainPID, journal, socket, readiness và hậu điều kiện
+    - **Ranh giới bản thảo:** Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.
 
 ### P02.C05 — Vận hành host và phục hồi có kiểm chứng [planned_new]
 
@@ -173,9 +175,11 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Nối tới:** P03.C02, P07.C01, P08.C02, P11.C04.
 - **Nguồn cũ:** Ch04.
 - **Cây bài:**
-  - `P03.C01.L01` **Định danh logic** [reviewed_draft; 1 mục cũ; 1 claim] — IPv4/IPv6, prefix, subnet và địa chỉ nguồn
+  - `P03.C01.L01` **Định danh logic** [needs_extension; 1 mục cũ; 1 claim; nghiên cứu nguồn trực tiếp: cần] — IPv4/IPv6, prefix, subnet và địa chỉ nguồn
+    - **Ranh giới bản thảo:** Ch4.1 đã viết IPv4/prefix/subnet; IPv6 addressing/prefix cần A2 biên soạn và kiểm nguồn riêng.
   - `P03.C01.L02` **Chọn chặng** [reviewed_draft; 1 mục cũ; 2 claim] — longest prefix, policy route, source address
-  - `P03.C01.L03` **Đóng frame** [reviewed_draft; 1 mục cũ; 1 claim] — ARP/IPv6 Neighbor Discovery, link address, hop và đường về
+  - `P03.C01.L03` **Đóng frame** [needs_extension; 1 mục cũ; 1 claim; nghiên cứu nguồn trực tiếp: cần] — ARP/IPv6 Neighbor Discovery, link address, hop và đường về
+    - **Ranh giới bản thảo:** Ch4.2 đã viết ARP của IPv4/Ethernet; IPv6 Neighbor Discovery cần A2 biên soạn và kiểm nguồn riêng.
   - `P03.C01.L04` **Kích thước đường** [planned_new; 0 mục cũ; 0 claim] — MTU, fragmentation và Path MTU Discovery, triệu chứng black hole
 
 ### P03.C02 — Transport, TCP, UDP và NAT [mixed]
@@ -456,7 +460,8 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Nguồn cũ:** Ch10, Ch11.
 - **Cây bài:**
   - `P07.C03.L01` **Lần chạy** [reviewed_draft; 3 mục cũ; 2 claim] — create, start, stop, exit, health
-  - `P07.C03.L02` **Filesystem** [reviewed_draft; 1 mục cũ; 0 claim] — read-only layers, writable layer, whiteout
+  - `P07.C03.L02` **Filesystem** [reviewed_draft; 1 mục cũ; 0 claim; nghiên cứu nguồn trực tiếp: cần] — read-only layers, writable layer, whiteout
+    - **Ranh giới bản thảo:** Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.
   - `P07.C03.L03` **Mount** [reviewed_draft; 2 mục cũ; 3 claim] — volume, bind, ownership, backup và restore
 
 ### P07.C04 — Compose và ứng dụng nhiều service [reviewed_draft]
@@ -572,7 +577,8 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Nguồn cũ:** Ch13.
 - **Cây bài:**
   - `P09.C01.L01` **Ngôn ngữ** [reviewed_draft; 1 mục cũ; 1 claim] — variable, resource, data, output, expression
-  - `P09.C01.L02` **Provider** [reviewed_draft; 1 mục cũ; 0 claim] — schema, CRUD, version pin
+  - `P09.C01.L02` **Provider** [reviewed_draft; 1 mục cũ; 0 claim; nghiên cứu nguồn trực tiếp: cần] — schema, CRUD, version pin
+    - **Ranh giới bản thảo:** Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.
   - `P09.C01.L03` **DAG** [reviewed_draft; 1 mục cũ; 3 claim] — implicit refs, depends_on, cycle và parallelism
 
 ### P09.C02 — Plan, state và backend [reviewed_draft]
@@ -621,7 +627,8 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Cây bài:**
   - `P09.C04.L01` **Replacement** [reviewed_draft; 1 mục cũ; 2 claim] — ForceNew/provider schema và data risk
   - `P09.C04.L02` **Điều phối** [needs_extension; 0 mục cũ; 0 claim] — approval, lock, concurrent actor, saved plan
-  - `P09.C04.L03` **Hậu kiểm** [reviewed_draft; 1 mục cũ; 0 claim] — ID object, dữ liệu, request, state backup và rollback
+  - `P09.C04.L03` **Hậu kiểm** [reviewed_draft; 1 mục cũ; 0 claim; nghiên cứu nguồn trực tiếp: cần] — ID object, dữ liệu, request, state backup và rollback
+    - **Ranh giới bản thảo:** Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.
 
 ## P10 — Ansible và hội tụ cấu hình
 
@@ -785,7 +792,8 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Cây bài:**
   - `P11.C06.L01` **Phép đo** [reviewed_draft; 1 mục cũ; 1 claim] — usage, request, missing/stale metric
   - `P11.C06.L02` **Vòng tính** [reviewed_draft; 1 mục cũ; 3 claim] — average utilization, ceil, bounds/tolerance
-  - `P11.C06.L03` **Hội tụ** [reviewed_draft; 1 mục cũ; 0 claim] — scale target, scheduler, readiness, latency và giới hạn
+  - `P11.C06.L03` **Hội tụ** [reviewed_draft; 1 mục cũ; 0 claim; nghiên cứu nguồn trực tiếp: cần] — scale target, scheduler, readiness, latency và giới hạn
+    - **Ranh giới bản thảo:** Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.
 
 ### P11.C07 — Gateway API và ranh giới request ngoài cluster [reviewed_draft]
 

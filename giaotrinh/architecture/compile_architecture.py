@@ -170,14 +170,30 @@ for chapter in CHAPTERS:
     for kind, value in OPTIONAL_LINKS.get(chapter["id"], {}).items():
         chapter[kind] = list(dict.fromkeys(chapter[kind] + value.split()))
 
-# The additional network lessons are genuinely new; the three inherited
-# lessons retain their conditional review status. A chapter status is never
-# inherited as proof for an unmapped lesson.
+# Ch4 provides an IPv4/Ethernet/ARP draft. IPv6 addressing and Neighbor
+# Discovery are new work inside two otherwise inherited lesson outlines.
+PARTIAL_NETWORK_SCOPE = {
+    "P03.C01.L01": "Ch4.1 đã viết IPv4/prefix/subnet; IPv6 addressing/prefix cần A2 biên soạn và kiểm nguồn riêng.",
+    "P03.C01.L03": "Ch4.2 đã viết ARP của IPv4/Ethernet; IPv6 Neighbor Discovery cần A2 biên soạn và kiểm nguồn riêng.",
+}
+
+# These six lessons inherit prose/sections but no direct source-map claim.
+# Keep the draft, and require source research before calling it verified.
+CLAIMLESS_REVIEWED_LESSONS = {
+    "P02.C03.L03", "P02.C04.L03", "P07.C03.L02",
+    "P09.C01.L02", "P09.C04.L03", "P11.C06.L03",
+}
+
 for chapter in CHAPTERS:
     if chapter["id"] in {"P03.C01", "P03.C02"}:
         for lesson in chapter["lessons"][:3]:
             lesson["status"] = "reviewed_draft"
         chapter["lessons"][3]["status"] = "planned_new"
+    if chapter["id"] == "P03.C01":
+        chapter["status"] = "mixed"
+        for lesson in chapter["lessons"]:
+            if lesson["id"] in PARTIAL_NETWORK_SCOPE:
+                lesson["status"] = "needs_extension"
 
 
 # Explicit old-section -> new-lesson map. A split has more than one target.
@@ -292,9 +308,9 @@ EXAMPLE_OWNER = {
     "examples/ansible-converge/templates/atlas.conf.j2": ("P10.C02.L02", ""),
     "examples/k8s-ch15-incident.yaml": ("P11.C02.L02", "P11.C04.L01"),
     "examples/gateway-helm/Chart.yaml": ("P11.C08.L01", ""),
-    "examples/gateway-helm/values.yaml": ("P11.C08.L01", "P11.C07.L01"),
-    "examples/gateway-helm/templates/gateway.yaml": ("P11.C07.L01", "P11.C08.L01"),
-    "examples/gateway-helm/templates/httproute.yaml": ("P11.C07.L02", "P11.C08.L01"),
+    "examples/gateway-helm/values.yaml": ("P11.C08.L01", ""),
+    "examples/gateway-helm/templates/gateway.yaml": ("P11.C08.L01", ""),
+    "examples/gateway-helm/templates/httproute.yaml": ("P11.C08.L01", ""),
     "examples/metrics-ch18.csv": ("P12.C02.L01", "P12.C02.L02"),
     "examples/metrics-ch18.promql": ("P12.C02.L01", "P12.C02.L02"),
     "examples/metrics-ch18.prom": ("P12.C02.L02", "P12.C01.L01"),
@@ -639,7 +655,19 @@ def compile_tree() -> tuple[dict, str]:
                 for sid in row["original_source_ids"].split(";") if sid})
             if lesson["status"] == "reviewed_draft" and not section_refs[lid]:
                 lesson["status"] = "needs_extension"
-            lesson["source_research_needed"] = lesson["status"] in {"planned_new", "needs_extension"}
+            if lesson["status"] == "reviewed_draft" and not claim_rows[lid]:
+                if lid not in CLAIMLESS_REVIEWED_LESSONS or not section_refs[lid]:
+                    raise ValueError(f"Undeclared reviewed lesson without direct claim: {lid}")
+            if lid in PARTIAL_NETWORK_SCOPE:
+                lesson["draft_scope_note"] = PARTIAL_NETWORK_SCOPE[lid]
+                lesson["source_research_reason"] = "Claim cũ chỉ hỗ trợ IPv4/ARP, chưa hỗ trợ IPv6/ND."
+            elif lid in CLAIMLESS_REVIEWED_LESSONS:
+                lesson["draft_scope_note"] = "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp."
+                lesson["source_research_reason"] = "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn."
+            else:
+                lesson.pop("source_research_reason", None)
+            lesson["source_research_needed"] = (lesson["status"] in {"planned_new", "needs_extension"}
+                or not claim_rows[lid])
         c["source_ids_to_recheck"] = sorted({sid for lesson in c["lessons"] for sid in lesson["source_ids_to_recheck"]})
         c["source_research_needed"] = any(lesson["source_research_needed"] for lesson in c["lessons"])
         c["learning_outcomes"] = [c["objective"], c["assessment"]]
@@ -696,9 +724,45 @@ def compile_tree() -> tuple[dict, str]:
                       f"- **Nguồn cũ:** {', '.join('Ch' + x for x in ch['legacy_chapters']) or 'Cần biên soạn mới'}.",
                       "- **Cây bài:**"]
             for lesson in ch["lessons"]:
-                lines.append(f"  - `{lesson['id']}` **{lesson['title']}** [{lesson['status']}; {len(lesson['legacy_sections'])} mục cũ; {len(lesson['legacy_claim_ids'])} claim] — {lesson['core']}")
+                source_note = ("; nghiên cứu nguồn trực tiếp: cần"
+                    if lesson["id"] in PARTIAL_NETWORK_SCOPE or lesson["id"] in CLAIMLESS_REVIEWED_LESSONS else "")
+                lines.append(f"  - `{lesson['id']}` **{lesson['title']}** [{lesson['status']}; {len(lesson['legacy_sections'])} mục cũ; {len(lesson['legacy_claim_ids'])} claim{source_note}] — {lesson['core']}")
+                if lesson.get("draft_scope_note"):
+                    lines.append(f"    - **Ranh giới bản thảo:** {lesson['draft_scope_note']}")
             lines.append("")
     return tree, "\n".join(lines).rstrip() + "\n"
+
+
+def validate_microfix_contracts(tree: dict, ownership: list[dict], capstone: str) -> None:
+    """Guard the four reviewed editorial boundaries before handing work to A2."""
+    lessons = {lesson["id"]: lesson for part in tree["parts"]
+        for chapter in part["chapters"] for lesson in chapter["lessons"]}
+    for lid, scope in PARTIAL_NETWORK_SCOPE.items():
+        lesson = lessons[lid]
+        if (lesson["status"] != "needs_extension" or not lesson["source_research_needed"]
+                or lesson.get("draft_scope_note") != scope):
+            raise ValueError(f"Unreviewed IPv6/ND scope marked as reviewed: {lid}")
+    for lid in CLAIMLESS_REVIEWED_LESSONS:
+        lesson = lessons[lid]
+        if (lesson["status"] != "reviewed_draft" or not lesson["legacy_sections"]
+                or lesson["legacy_claim_ids"] or lesson["source_ids_to_recheck"]
+                or not lesson["source_research_needed"] or not lesson.get("source_research_reason")):
+            raise ValueError(f"Claimless draft needs direct source research: {lid}")
+    by_id = {row["old_id"]: row for row in ownership}
+    for name in ("values.yaml", "templates/gateway.yaml", "templates/httproute.yaml"):
+        old_id = "examples/gateway-helm/" + name
+        row = by_id[old_id]
+        if row["primary_lesson_id"] != "P11.C08.L01" or any(
+                ref.startswith("P11.C07.") for ref in row["secondary_lesson_ids"].split(";") if ref):
+            raise ValueError(f"Helm input placed before Helm mechanisms: {old_id}")
+    required = (
+        "`change_id` theo đợt thay đổi", "`deployment_revision` riêng",
+        "Mỗi request thử có `request_id` riêng", "request hậu kiểm có ID mới",
+        "Quan hệ request–revision phải có bằng chứng tương quan",
+    )
+    if any(phrase not in capstone for phrase in required) or re.search(
+            r"cùng một `change_id` và `request_id` xuyên build", capstone):
+        raise ValueError("Capstone conflates change, deployment and request identity")
 
 
 def main() -> None:
@@ -706,6 +770,7 @@ def main() -> None:
     claims = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))["claims"]
     ownership = make_ownership(claims)
     validate_ownership(ownership, claims)
+    validate_microfix_contracts(tree, ownership, (OUT / "capstone_contract.md").read_text(encoding="utf-8"))
     content_units = make_content_units(claims, ownership)
     validate_content_units(content_units, claims, ownership)
     rows = make_migration(claims)

@@ -549,7 +549,9 @@
               ],
               "legacy_claim_ids": [],
               "source_ids_to_recheck": [],
-              "source_research_needed": false
+              "draft_scope_note": "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.",
+              "source_research_reason": "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn.",
+              "source_research_needed": true
             },
             {
               "id": "P02.C03.L04",
@@ -595,7 +597,7 @@
             "K3",
             "K4"
           ],
-          "source_research_needed": false,
+          "source_research_needed": true,
           "learning_outcomes": [
             "Phân biệt CPU runnable/quota, memory reclaim và I/O wait bằng counter.",
             "Tính core từ usage_usec và PSI, nêu giới hạn nhân quả."
@@ -692,7 +694,9 @@
               ],
               "legacy_claim_ids": [],
               "source_ids_to_recheck": [],
-              "source_research_needed": false
+              "draft_scope_note": "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.",
+              "source_research_reason": "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn.",
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -711,7 +715,7 @@
             "S3",
             "S4"
           ],
-          "source_research_needed": false,
+          "source_research_needed": true,
           "learning_outcomes": [
             "Tách start thành công khỏi listener, readiness và dữ liệu đúng.",
             "Phân biệt Type=exec, After/Wants/Requires, active và request thật."
@@ -842,7 +846,7 @@
               "parent": "P03.C01",
               "title": "Định danh logic",
               "core": "IPv4/IPv6, prefix, subnet và địa chỉ nguồn",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P01.C02.L03"
@@ -859,7 +863,9 @@
               "source_ids_to_recheck": [
                 "N1"
               ],
-              "source_research_needed": false
+              "draft_scope_note": "Ch4.1 đã viết IPv4/prefix/subnet; IPv6 addressing/prefix cần A2 biên soạn và kiểm nguồn riêng.",
+              "source_research_reason": "Claim cũ chỉ hỗ trợ IPv4/ARP, chưa hỗ trợ IPv6/ND.",
+              "source_research_needed": true
             },
             {
               "id": "P03.C01.L02",
@@ -892,7 +898,7 @@
               "parent": "P03.C01",
               "title": "Đóng frame",
               "core": "ARP/IPv6 Neighbor Discovery, link address, hop và đường về",
-              "status": "reviewed_draft",
+              "status": "needs_extension",
               "prerequisites": {
                 "required": [
                   "P03.C01.L02"
@@ -910,7 +916,9 @@
                 "I2",
                 "N3"
               ],
-              "source_research_needed": false
+              "draft_scope_note": "Ch4.2 đã viết ARP của IPv4/Ethernet; IPv6 Neighbor Discovery cần A2 biên soạn và kiểm nguồn riêng.",
+              "source_research_reason": "Claim cũ chỉ hỗ trợ IPv4/ARP, chưa hỗ trợ IPv6/ND.",
+              "source_research_needed": true
             },
             {
               "id": "P03.C01.L04",
@@ -2761,7 +2769,9 @@
               ],
               "legacy_claim_ids": [],
               "source_ids_to_recheck": [],
-              "source_research_needed": false
+              "draft_scope_note": "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.",
+              "source_research_reason": "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn.",
+              "source_research_needed": true
             },
             {
               "id": "P07.C03.L03",
@@ -2808,7 +2818,7 @@
             "DD3",
             "OCI3"
           ],
-          "source_research_needed": false,
+          "source_research_needed": true,
           "learning_outcomes": [
             "Dự đoán dữ liệu sau stop, recreate, remove, mount và đổi image.",
             "Phân biệt khả năng khôi phục khi container dừng và khi đã xóa."
@@ -3488,7 +3498,9 @@
               ],
               "legacy_claim_ids": [],
               "source_ids_to_recheck": [],
-              "source_research_needed": false
+              "draft_scope_note": "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.",
+              "source_research_reason": "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn.",
+              "source_research_needed": true
             },
             {
               "id": "P09.C01.L03",
@@ -3530,7 +3542,7 @@
             "TF2",
             "TF4"
           ],
-          "source_research_needed": false,
+          "source_research_needed": true,
           "learning_outcomes": [
             "Đọc tài nguyên, data source và cạnh implicit/explicit trong plan.",
             "Tìm cạnh tham chiếu và nhận diện cạnh depends_on dư."
@@ -3847,7 +3859,9 @@
               ],
               "legacy_claim_ids": [],
               "source_ids_to_recheck": [],
-              "source_research_needed": false
+              "draft_scope_note": "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.",
+              "source_research_reason": "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn.",
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -4959,7 +4973,9 @@
               ],
               "legacy_claim_ids": [],
               "source_ids_to_recheck": [],
-              "source_research_needed": false
+              "draft_scope_note": "Có văn xuôi cũ được chuyển đến bài, nhưng chưa có claim nguồn trực tiếp.",
+              "source_research_reason": "Tìm và kiểm chứng nguồn trực tiếp trước khi tái biên soạn.",
+              "source_research_needed": true
             }
           ],
           "legacy_chapters": [
@@ -4970,7 +4986,7 @@
           "source_ids_to_recheck": [
             "KU23"
           ],
-          "source_research_needed": false,
+          "source_research_needed": true,
           "learning_outcomes": [
             "Tính replica từ CPU utilization khi biết request và chất lượng metric.",
             "Nêu quyết định cơ sở và các lý do status cuối có thể khác."

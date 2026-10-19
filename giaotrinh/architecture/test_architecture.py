@@ -6,6 +6,7 @@ import json
 import re
 import unittest
 from collections import Counter
+from copy import deepcopy
 from pathlib import Path
 
 import compile_architecture as architecture
@@ -108,6 +109,42 @@ class ArchitectureContracts(unittest.TestCase):
                 if not exact:
                     self.assertEqual(chapter["source_ids_to_recheck"], [])
                     self.assertTrue(chapter["source_research_needed"])
+
+    def test_reviewer_microfix_boundaries_and_negative_cases(self):
+        capstone = (self.root / "capstone_contract.md").read_text(encoding="utf-8")
+        architecture.validate_microfix_contracts(self.tree, self.ownership, capstone)
+
+        def lesson(tree, lid):
+            return next(l for p in tree["parts"] for c in p["chapters"]
+                        for l in c["lessons"] if l["id"] == lid)
+
+        for lid in architecture.PARTIAL_NETWORK_SCOPE:
+            tampered = deepcopy(self.tree)
+            lesson(tampered, lid)["status"] = "reviewed_draft"
+            with self.subTest(ipv6_lesson=lid), self.assertRaisesRegex(ValueError, "IPv6/ND"):
+                architecture.validate_microfix_contracts(tampered, self.ownership, capstone)
+
+        for lid in architecture.CLAIMLESS_REVIEWED_LESSONS:
+            tampered = deepcopy(self.tree)
+            lesson(tampered, lid)["source_research_needed"] = False
+            with self.subTest(claimless_lesson=lid), self.assertRaisesRegex(ValueError, "direct source"):
+                architecture.validate_microfix_contracts(tampered, self.ownership, capstone)
+        tampered = deepcopy(self.tree)
+        lesson(tampered, "P09.C01.L02")["source_ids_to_recheck"] = ["R9"]
+        with self.assertRaisesRegex(ValueError, "direct source"):
+            architecture.validate_microfix_contracts(tampered, self.ownership, capstone)
+
+        for name in ("templates/gateway.yaml", "templates/httproute.yaml"):
+            tampered = [dict(row) for row in self.ownership]
+            row = next(row for row in tampered if row["old_id"] == "examples/gateway-helm/" + name)
+            row["primary_lesson_id"] = "P11.C07.L01"
+            with self.subTest(template=name), self.assertRaisesRegex(ValueError, "before Helm"):
+                architecture.validate_microfix_contracts(self.tree, tampered, capstone)
+
+        reverted = capstone.replace("Mỗi request thử có `request_id` riêng",
+                                     "Cùng một `request_id` dùng cho mọi request")
+        with self.assertRaisesRegex(ValueError, "conflates change"):
+            architecture.validate_microfix_contracts(self.tree, self.ownership, reverted)
 
     def test_negative_wrong_claim_example_exercise_or_source_fails(self):
         claims = json.loads((architecture.ROOT / "source_map.json").read_text(encoding="utf-8"))["claims"]
