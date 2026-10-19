@@ -137,7 +137,20 @@
     "AS11": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/command_module.html",
     "AS12": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/systemd_service_module.html",
     "AS13": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_strategies.html",
-    "AS14": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/stat_module.html"
+    "AS14": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/stat_module.html",
+    "KU1": "https://v1-34.docs.kubernetes.io/docs/concepts/architecture/",
+    "KU2": "https://v1-34.docs.kubernetes.io/docs/concepts/architecture/controller/",
+    "KU3": "https://v1-34.docs.kubernetes.io/docs/concepts/overview/working-with-objects/",
+    "KU4": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+    "KU5": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/controllers/replicaset/",
+    "KU6": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/",
+    "KU7": "https://v1-34.docs.kubernetes.io/docs/concepts/services-networking/service/",
+    "KU8": "https://v1-34.docs.kubernetes.io/docs/concepts/services-networking/endpoint-slices/",
+    "KU9": "https://v1-34.docs.kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/",
+    "KU10": "https://v1-34.docs.kubernetes.io/docs/reference/using-api/api-concepts/",
+    "KU11": "https://v1-34.docs.kubernetes.io/docs/concepts/storage/volumes/",
+    "KU12": "https://v1-34.docs.kubernetes.io/docs/concepts/overview/working-with-objects/labels/",
+    "KU13": "https://v1-34.docs.kubernetes.io/docs/concepts/security/controlling-access/"
   },
   "frozen_ids": [
     "AR1",
@@ -275,6 +288,19 @@
     "AS11",
     "AS12",
     "AS13",
-    "AS14"
+    "AS14",
+    "KU1",
+    "KU2",
+    "KU3",
+    "KU4",
+    "KU5",
+    "KU6",
+    "KU7",
+    "KU8",
+    "KU9",
+    "KU10",
+    "KU11",
+    "KU12",
+    "KU13"
   ]
 }
