@@ -1,0 +1,48 @@
+# Minh họa giả định trong namespace demo; cố ý sai probe và Service selector.
+# Image tag dùng để đọc spec, chưa được pull hoặc chạy trên cluster.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: atlas
+  template:
+    metadata:
+      labels:
+        app: atlas
+    spec:
+      containers:
+        - name: atlas
+          image: python:3.12-alpine
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              mkdir -p /tmp/site/health
+              printf 'ready\n' > /tmp/site/health/ready
+              cd /tmp/site
+              exec python -m http.server 8080
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /ready # Sai: file phục vụ ở /health/ready.
+              port: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas
+spec:
+  selector:
+    app: atals # Sai: Pod mang app=atlas.
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080

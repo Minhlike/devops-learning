@@ -150,7 +150,19 @@
     "KU10": "https://v1-34.docs.kubernetes.io/docs/reference/using-api/api-concepts/",
     "KU11": "https://v1-34.docs.kubernetes.io/docs/concepts/storage/volumes/",
     "KU12": "https://v1-34.docs.kubernetes.io/docs/concepts/overview/working-with-objects/labels/",
-    "KU13": "https://v1-34.docs.kubernetes.io/docs/concepts/security/controlling-access/"
+    "KU13": "https://v1-34.docs.kubernetes.io/docs/concepts/security/controlling-access/",
+    "KU14": "https://v1-34.docs.kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+    "KU15": "https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/",
+    "KU16": "https://v1-34.docs.kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/",
+    "KU17": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/pods/pod-qos/",
+    "KU18": "https://v1-34.docs.kubernetes.io/docs/concepts/services-networking/network-policies/",
+    "KU19": "https://v1-34.docs.kubernetes.io/docs/concepts/services-networking/dns-pod-service/",
+    "KU20": "https://v1-34.docs.kubernetes.io/docs/concepts/storage/persistent-volumes/",
+    "KU21": "https://v1-34.docs.kubernetes.io/docs/concepts/storage/storage-classes/",
+    "KU22": "https://v1-34.docs.kubernetes.io/docs/concepts/workloads/controllers/statefulset/",
+    "KU23": "https://v1-34.docs.kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/",
+    "KU24": "https://v1-34.docs.kubernetes.io/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/",
+    "CN1": "https://github.com/containernetworking/cni/blob/spec-v1.1.0/SPEC.md"
   },
   "frozen_ids": [
     "AR1",
@@ -301,6 +313,18 @@
     "KU10",
     "KU11",
     "KU12",
-    "KU13"
+    "KU13",
+    "KU14",
+    "KU15",
+    "KU16",
+    "KU17",
+    "KU18",
+    "KU19",
+    "KU20",
+    "KU21",
+    "KU22",
+    "KU23",
+    "KU24",
+    "CN1"
   ]
 }
