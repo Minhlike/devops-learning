@@ -1,0 +1,27 @@
+# Ma trận bao phủ và độ chín nội dung
+
+**Đơn vị đánh giá:** mục cũ đã đọc trực tiếp, ví dụ và lời giải tương ứng; một dòng “có bản thảo” không khẳng định đã đủ chiều sâu nghề nghiệp. `reviewed_draft` là kết luận review có điều kiện ở milestone; `new` cần nguồn, ví dụ, bài tập, QA từ đầu. Cột lab phân biệt tiến độ học trong repository với tiến độ viết sách. Không sửa roadmap/state.
+
+| Miền và vị trí mới | Đã có trong 19 chương | Thiếu hoặc cần mở rộng có chủ đích | Ranh giới chống lặp và trạng thái |
+| --- | --- | --- | --- |
+| Máy/OS `P01` | Ch1 fork/execve/FD; Ch2 wall vs CPU, địa chỉ ảo. | Mô hình công việc có luồng, queue và I/O được rút thành bài nền; cần thí nghiệm thống nhất. | Chỉ dạy mô hình; counter Linux ở P02. Review có điều kiện. |
+| Linux `P02` | Ch2 CPU/memory/PSI; Ch3 syscall, inode, quyền, systemd; ví dụ unit. | Host recovery, backup/restore, log rotation và capability/ACL cần biên soạn; không suy từ script backup là backup production. | Permission ở đây, Ansible áp dụng lại; P02.C05 mới. |
+| Mạng `P03` | Ch4 IP/ARP/route, TCP seq/ack, NAT; Ch5 DNS/TLS/HTTP/proxy và trace hai chặng. | UDP/IPv6/MTU cần mức nền tùy scope, packet capture có thể làm thí nghiệm giới hạn. | VPC/CNI/Gateway chỉ áp dụng; review có điều kiện. |
+| Git `P04` | Ch6 object/index/ref, merge conflict, rebase/revert/reset. | Chính sách nhánh, ký commit và provenance thuộc P06/P14; không cần lặp object model. | S10 lab có nền; bản thảo review có điều kiện. |
+| Automation `P05` | Ch7 Bash false success/checked backup; Ch8 Python/Go READY timeout/partial. | Workflow idempotency, concurrency, durable checkpoint và secrets cần mở rộng. Go test từng bị SKIP trên máy tác giả; không coi là đã chạy. | Ansible/Terraform là các mô hình sau, không thay bằng script. |
+| Build/CI/CD `P06` | Ch9 c83/H83→c84/H84, gate, canary, rollback/data. | Test strategy và provenance đủ cho nhiều loại artifact; release approval/concurrency thực tế. | OCI digest ở P07; supply-chain policy ở P14. |
+| Docker/OCI `P07` | Ch10 namespace/cgroup; Ch11 image/registry, lifecycle, volume/bind/Compose. | OCI platform index, cache/secret build, storage driver/backup thử thật, Compose health vận hành. | Cơ chế kernel từ P02; không biến Compose thành multi-node scheduler. |
+| Cloud/AWS `P08` | Ch12 IAM/STS, VPC/endpoint, EC2/EBS/EFS/S3, timeout→AccessDenied. | ALB/ASG và multi-AZ request/data case, Region/failure domain/cost model; không tạo tài nguyên tính phí để minh họa. | Terraform ở P09; security threat model ở P14. |
+| Terraform `P09` | Ch13 graph, provider, plan/state/drift/lock/replace, HCL terraform_data. | Modules, moved/import/refactor sâu, state restore drill, concurrent actor và saved-plan gate. CLI test trong review có giới hạn; không bịa plan. | Terraform quản object/cloud; Ansible quản cấu hình host. |
+| Ansible `P10` | Ch14 playbook local, mode, changed/ok/failed, handler, check/diff. | Roles, precedence, multi-host serial, Vault và secret rotation. POSIX hội tụ được review có điều kiện; kiểm lại evidence khi tái biên soạn. | Không dùng changed như health hoặc task như giao dịch. |
+| Kubernetes `P11` | Ch15–17 API/reconcile, Pod, scheduler, Service, storage, HPA, Gateway API, Helm. | Cluster lifecycle/upgrade, admission/RBAC, CSI/CNI triển khai, workload stateful và Helm release operations sâu hơn. HPA S40 lab còn partially verified; Gateway LB trên Kind chưa giải quyết. | HPA cần CPU request/resource metric tại P11.C03 trước; Prometheus sâu ở P12. |
+| Observability `P12` | Ch18 dataset PromQL/p95/missing scrape; Ch19 logs/traces/Otel và trace giả định. | Alertmanager/routing/no-data, retention/cost, pipeline failure injection; chưa chạy OTel Collector/backend thật. | SLO/burn policy ở P13 dùng dữ liệu đã kiểm tra. |
+| SRE `P13` | Các tình huống Ch9/12/16/18/19 cung cấp dữ kiện. | SLI/SLO/error budget, incident roles, postmortem, DR/RPO/RTO, load/capacity thực nghiệm. | Đây là quyết định vận hành, không lặp syntax công cụ. Mới. |
+| Security/DevSecOps `P14` | Cảnh báo cục bộ về IAM, argv, secret trong state/log, image layer, K8s policy. | Threat model, K8s RBAC/PSS/admission, secret lifecycle, SBOM/signature/provenance, kiểm thử âm và supply chain. | Dạy ở một trust model, liên kết các guardrail cục bộ. Mới. |
+| Production architecture `P15` | Các chương hiện có có incident nhỏ và hậu điều kiện rời rạc. | Một reference workload, tradeoff HA/cost, failure domain, capstone end-to-end có evidence ledger. | Không thêm catalogue sản phẩm; tổng hợp. Mới. |
+
+## Kiểm tra độ bao phủ chéo
+
+Một dòng có bản thảo không đủ để công bố “đã học”: `docs/ROADMAP.md` là kế hoạch học, `state/CURRENT_PHASE.md`/`NEXT_SESSION.md` ghi S42 gần nhất, S43 tiếp theo; S40/HPA và môi trường Kind có tồn đọng riêng. `source_map.json` giúp truy vết claim đã neo, nhưng validator chỉ kiểm cấu trúc và biên bản tác giả, không tự chứng minh nguồn hỗ trợ mọi câu. A2 phải đưa ví dụ giả định, thực nghiệm tái lập và suy luận vào các ngăn bằng chứng riêng.
+
+Các khoảng trống phụ thuộc nguy hiểm đã được đặt trước khi dùng: `CPU time/request/resource metrics → HPA`; `process + namespace/cgroup → container runtime`; `IP/TCP/HTTP → VPC/Service/Gateway`; `Git commit → artifact digest → image/release`; `state/backend + cloud data lifecycle → Terraform replacement`; `measurement integrity → SLI/SLO`; `restore-tested backup → DR/rollback claim`. Kiểm `knowledge_tree.json` và migration CSV trước khi A2 dời bất cứ mục nào.

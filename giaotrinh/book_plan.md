@@ -1,4 +1,8 @@
-# Kiến trúc tri thức
+# Kiến trúc tri thức — chỉ mục chuyển tiếp
+
+**Đề xuất A1 đang chờ Reviewer nghiệm thu:** kiến trúc đầy đủ nằm trong [`architecture/knowledge_tree.md`](architecture/knowledge_tree.md) và [`architecture/knowledge_tree.json`](architecture/knowledge_tree.json), không phải bảng 8 Phần bên dưới. Luận cứ, migration từng mục/bài tập, ma trận bao phủ, storyboard hình, cấu trúc xuất bản và trình tự A2 lần lượt ở `architecture/architecture_rationale.md`, `legacy_migration.csv`, `coverage_matrix.md`, `visual_storyboard.md`, `publication_structure.md`, `a2_handoff.md`. Cây mới có ID ổn định và đồ thị tiên quyết; **chưa** đổi tên/di chuyển 19 chương, chưa thay PDF candidate. Bảng cũ dưới đây được giữ làm ảnh chụp lịch sử để so sánh, không là lệnh biên soạn cho A2.
+
+## Ảnh chụp kế hoạch 8 Phần trước tái kiến trúc
 
 Sách đi từ mô hình máy tính đến vận hành một dịch vụ có người dùng thật. Chương không tương ứng một buổi học. `Đã học` nghĩa là có dấu vết trong roadmap và chỉ mục buổi học hiện hành; không có nghĩa là mọi chi tiết của chương đã được chứng minh trong lab. `Mở rộng` là phần biên soạn vượt ra ngoài lộ trình. S40 là nội dung học dở, với HPA chưa xác minh; S43–S66 là kế hoạch, không phải thành tích.
 
