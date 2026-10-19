@@ -5,6 +5,6 @@ time,event,epistemic_status
 10:05,Chốt cửa sổ 5 phút v1/v2 và lấy mẫu K-26 đến K-28,fixture observation
 10:07,Tuyên bố incident P1 và phân IC/Ops/Comms,proposed response
 10:09,Giữ manifest digest config log trace và bản sao dữ liệu,proposed response
-10:12,Chặn ghi từ v2 và đưa request mới về v1,proposed mitigation
-10:16,Thử request mới qua v1 đúng tiền và kiểm no-v2-writer,verification needed
-10:22,Khoanh 30 bản ghi nghi sai ở v2; chưa chứng minh đã sửa hết,partial recovery
+10:12,Đề xuất chặn mọi v2 writer và chuyển request mới về v1; chưa có hậu kiểm,proposed mitigation
+10:16,Cần thử request mới qua v1 và xác minh không còn v2 writer; chưa có kết quả,verification needed
+10:22,Đã phân loại 30 request v2 sai; số order hoặc bản ghi phân biệt chưa rõ,reconciliation needed

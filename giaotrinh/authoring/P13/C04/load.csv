@@ -1,4 +1,4 @@
-phase,duration_s,offered_rps,completed_rps,mean_latency_ms,p95_latency_ms,cpu_percent,db_wait_p95_ms,queue_delta,hidden_drop_timeout_retry
+phase,duration_s,offered_rps,completed_rps,mean_latency_ms,p95_latency_ms,cpu_percent,db_wait_p95_ms,outstanding_delta,hidden_drop_timeout_cancel_retry
 A,60,100,100,120,180,45,40,0,false
 B,60,160,160,250,520,65,110,0,false
 C,60,220,180,550,1800,70,300,2400,false
