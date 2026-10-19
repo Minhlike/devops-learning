@@ -19,7 +19,7 @@ class SourceFreePdfTests(unittest.TestCase):
         payload = json.dumps(frozen, ensure_ascii=False, sort_keys=True,
                              separators=(",", ":")).encode("utf-8")
         self.assertEqual(hashlib.sha256(payload).hexdigest(),
-                         "c0c70788360128ff42ce35ad454329d663e1e7b093565aab6423c500525c1a41")
+                         "30db9a97e46a86be6653c905559b7f079fadb351d9f8c2a73cd0cc3e96e816d4")
         self.assertEqual(lock["urls"]["R9"], "https://man7.org/linux/man-pages/man2/connect.2.html")
         self.assertEqual(lock["urls"]["R10"], "https://man7.org/linux/man-pages/man7/ip.7.html")
         registry = json.loads((build.ROOT / "source_map.json").read_text(encoding="utf-8"))

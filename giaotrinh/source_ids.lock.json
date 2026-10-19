@@ -186,7 +186,19 @@
     "PM10": "https://prometheus.io/docs/instrumenting/exposition_formats/",
     "PM11": "https://prometheus.io/docs/concepts/jobs_instances/",
     "GF1": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/datasources/prometheus/_index.md",
-    "GF2": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/dashboards/use-dashboards/index.md"
+    "GF2": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/dashboards/use-dashboards/index.md",
+    "OT1": "https://github.com/open-telemetry/opentelemetry-specification/blob/v1.49.0/specification/logs/data-model.md",
+    "OT2": "https://github.com/open-telemetry/opentelemetry-specification/blob/v1.49.0/specification/trace/api.md",
+    "OT3": "https://github.com/open-telemetry/opentelemetry-specification/blob/v1.49.0/specification/trace/sdk.md",
+    "OT4": "https://github.com/open-telemetry/opentelemetry-specification/blob/v1.49.0/specification/context/api-propagators.md",
+    "OT5": "https://github.com/open-telemetry/semantic-conventions/blob/v1.37.0/docs/resource/README.md",
+    "OT6": "https://github.com/open-telemetry/semantic-conventions/blob/v1.37.0/docs/http/http-spans.md",
+    "OT7": "https://opentelemetry.io/docs/specs/otlp/",
+    "OT8": "https://opentelemetry.io/docs/collector/configuration/",
+    "OT9": "https://github.com/open-telemetry/opentelemetry-collector/blob/v0.133.0/exporter/exporterhelper/README.md",
+    "OT10": "https://github.com/open-telemetry/opentelemetry-collector/blob/v0.133.0/processor/batchprocessor/README.md",
+    "OT11": "https://opentelemetry.io/docs/security/handling-sensitive-data/",
+    "WC1": "https://www.w3.org/TR/2021/REC-trace-context-1-20211123/"
   },
   "frozen_ids": [
     "AR1",
@@ -373,6 +385,18 @@
     "PM10",
     "PM11",
     "GF1",
-    "GF2"
+    "GF2",
+    "OT1",
+    "OT2",
+    "OT3",
+    "OT4",
+    "OT5",
+    "OT6",
+    "OT7",
+    "OT8",
+    "OT9",
+    "OT10",
+    "OT11",
+    "WC1"
   ]
 }

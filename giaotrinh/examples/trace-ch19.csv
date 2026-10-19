@@ -1,0 +1,6 @@
+alias,parent,span_id,stage,start_ms,end_ms,status
+G,-,00f067aa0ba902b7,gateway,0,420,UNSET
+A,G,b7ad6b7169203331,api,12,405,UNSET
+D,A,c1c1c1c1c1c1c1c1,db_call,30,280,UNSET
+U1,A,d2d2d2d2d2d2d2d2,upstream_1,285,335,ERROR
+U2,A,e3e3e3e3e3e3e3e3,upstream_2,345,385,UNSET
