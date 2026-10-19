@@ -1,0 +1,42 @@
+---
+- name: Converge an isolated Atlas configuration
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  vars:
+    sandbox: "{{ playbook_dir }}/../../.qa-ch14/fixture"
+    listen_port: 8080
+  tasks:
+    - name: Keep the sandbox directory
+      ansible.builtin.file:
+        path: "{{ sandbox }}"
+        state: directory
+        mode: '0750'
+    - name: Restore data directory access
+      ansible.builtin.file:
+        path: "{{ sandbox }}/data"
+        state: directory
+        mode: '0750'
+    - name: Converge application configuration
+      ansible.builtin.template:
+        src: templates/atlas.conf.j2
+        dest: "{{ sandbox }}/atlas.conf"
+        mode: '0640'
+      notify: Record reload request
+    - name: Observe final data directory mode
+      ansible.builtin.stat:
+        path: "{{ sandbox }}/data"
+      register: data_directory
+
+    - name: Reject a failed permission repair
+      ansible.builtin.assert:
+        that: data_directory.stat.mode == '0750'
+      when: not ansible_check_mode
+
+  handlers:
+    - name: Record reload request
+      ansible.builtin.file:
+        path: "{{ sandbox }}/reload-requested"
+        state: touch
+      when: not ansible_check_mode

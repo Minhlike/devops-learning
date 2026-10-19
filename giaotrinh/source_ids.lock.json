@@ -123,7 +123,21 @@
     "TF11": "https://developer.hashicorp.com/terraform/language/backend",
     "AWSTF1": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/website/docs/r/instance.html.markdown",
     "AWSTF2": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html",
-    "AWSTF3": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/internal/service/ec2/ec2_instance.go"
+    "AWSTF3": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/internal/service/ec2/ec2_instance.go",
+    "AS1": "https://docs.ansible.com/projects/ansible-core/2.16/inventory_guide/intro_inventory.html",
+    "AS2": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_privilege_escalation.html",
+    "AS3": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_variables.html",
+    "AS4": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_vars_facts.html",
+    "AS5": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_reuse_roles.html",
+    "AS6": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/template_module.html",
+    "AS7": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/file_module.html",
+    "AS8": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_handlers.html",
+    "AS9": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_checkmode.html",
+    "AS10": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_error_handling.html",
+    "AS11": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/command_module.html",
+    "AS12": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/systemd_service_module.html",
+    "AS13": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_strategies.html",
+    "AS14": "https://docs.ansible.com/projects/ansible-core/2.16/collections/ansible/builtin/stat_module.html"
   },
   "frozen_ids": [
     "AR1",
@@ -247,6 +261,20 @@
     "TF11",
     "AWSTF1",
     "AWSTF2",
-    "AWSTF3"
+    "AWSTF3",
+    "AS1",
+    "AS2",
+    "AS3",
+    "AS4",
+    "AS5",
+    "AS6",
+    "AS7",
+    "AS8",
+    "AS9",
+    "AS10",
+    "AS11",
+    "AS12",
+    "AS13",
+    "AS14"
   ]
 }
