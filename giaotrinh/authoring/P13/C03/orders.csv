@@ -1,0 +1,6 @@
+order_id,committed_at,amount_cents,expected_restored
+O-101,09:02,4100,true
+O-102,09:45,5900,true
+O-103,09:52,2300,true
+O-104,09:53,1700,false
+O-105,09:59,6600,false

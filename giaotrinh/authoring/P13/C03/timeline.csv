@@ -1,0 +1,8 @@
+event,at,meaning,evidence_kind
+base_backup,09:00,Base backup nhất quán theo giả định,fixture
+last_recoverable_commit,09:52,WAL liên tục đến commit này theo giả định,fixture
+failure,10:00,Mất khả năng ghi,fixture
+detected,10:04,Phát hiện tác động,fixture
+restore_started,10:08,Khởi tạo môi trường phục hồi tách biệt,fixture
+replay_finished,10:27,Database replay xong chưa đạt hậu kiểm ứng dụng,fixture
+service_verified,10:37,Ứng dụng đọc ghi và đối soát fixture xong,fixture
