@@ -1,0 +1,4 @@
+request_id,release,input_cents,stored_cents,http_status,db_ms
+K-26,v1,4100,4100,200,42
+K-27,v2,4100,41,200,46
+K-28,v2,5900,59,200,49

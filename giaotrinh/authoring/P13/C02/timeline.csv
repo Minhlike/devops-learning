@@ -1,0 +1,10 @@
+time,event,epistemic_status
+09:55,Baseline v1 ghi nhận 900 valid và 1 sai số tiền,fixture observation
+10:00,change rel-84 tạo revision 5 đưa v2 nhận 10 phần trăm request,fixture assumption
+10:03,Hỗ trợ nhận báo cáo số tiền sai,fixture observation
+10:05,Chốt cửa sổ 5 phút v1/v2 và lấy mẫu K-26 đến K-28,fixture observation
+10:07,Tuyên bố incident P1 và phân IC/Ops/Comms,proposed response
+10:09,Giữ manifest digest config log trace và bản sao dữ liệu,proposed response
+10:12,Chặn ghi từ v2 và đưa request mới về v1,proposed mitigation
+10:16,Thử request mới qua v1 đúng tiền và kiểm no-v2-writer,verification needed
+10:22,Khoanh 30 bản ghi nghi sai ở v2; chưa chứng minh đã sửa hết,partial recovery
