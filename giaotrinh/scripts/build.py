@@ -70,8 +70,8 @@ def style() -> dict[str, ParagraphStyle]:
                                leading=17.5, alignment=TA_LEFT, spaceAfter=7.5),
         "toc": ParagraphStyle("toc-title", fontName="BodyBold", fontSize=19,
                               leading=24, spaceAfter=20),
-        "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=10.5,
-                                   leading=12, leftIndent=8, firstLineIndent=-8),
+        "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=10,
+                                   leading=11, leftIndent=8, firstLineIndent=-8),
         "code": ParagraphStyle("code", fontName="Mono", fontSize=8.7,
                                leading=12.3, leftIndent=9, rightIndent=9,
                                backColor=colors.HexColor("#f5f5f5"),
@@ -321,7 +321,7 @@ def audit_document(doc: pymupdf.Document) -> None:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "C10.1.", "C11.1.", "Lời giải", "Chưa phải bản phát hành"):
+                   "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "C10.1.", "C11.1.", "C12.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     toc_entries = doc.get_toc()
