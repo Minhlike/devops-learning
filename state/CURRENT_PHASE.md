@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 42 — Kubernetes Gateway API & Application Exposure (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10). Chuẩn bị Buổi 43 — Helm Fundamentals. (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller).
-- **Current Week:** Tuần 10 (Nghiệm thu ngày 15/10/2026)
+- **Current Phase:** PHASE 9 — Container Orchestration with Kubernetes & Helm
+- **Current Status:** Hoàn thành Buổi 43 — Helm Fundamentals (COMPLETED — LEARNING & ASSESSMENT PASS: 9,3/10). Chuẩn bị Buổi 44 — Kubernetes Troubleshooting. (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller).
+- **Current Week:** Tuần 11 (Nghiệm thu ngày 19/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -689,3 +689,29 @@
         - Tổng kết bài kiểm tra: 8,5/11 quy đổi **7,7/10 — ĐẠT (PASS)**.
         - Điểm cần củng cố: Nguyên tắc ưu tiên tuyến cụ thể hơn, chẩn đoán dựa trên bằng chứng (evidence-based troubleshooting), phân biệt Gateway hợp lệ về cấu hình vs Gateway có External IP.
       - Kết quả: **COMPLETED — LEARNING & ASSESSMENT PASS (7,7/10 — Ngày 15/10/2026)**.
+  30. **Buổi 43 — Helm Fundamentals:**
+      - Môi trường & Khởi tạo Release:
+        - Môi trường: Windows 11 + WSL2 Ubuntu 24.04, Docker, cụm Kind `kind-s41` (Kubernetes v1.37.0), Helm CLI v4.3.1.
+        - Namespace: `s43`. Release: `s43-demo`.
+        - Cấu trúc Chart `s43-hello` (`Chart.yaml`, `values.yaml`, `templates/configmap.yaml`, `deployment.yaml`, `service.yaml`).
+      - Chuỗi Bài Lab Thực hành Hoàn thành:
+        - **Lab 43.1 (Kiểm tra công cụ):** Xác minh Helm CLI v4.3.1 trên WSL (PASS).
+        - **Lab 43.2 (Chart Anatomy & Validation):** Khảo sát cấu trúc Chart, chạy `helm lint` và `helm template` kiểm tra cú pháp và render manifest. Phát hiện và xử lý lỗi tệp tin mẫu `configmap.yaml` bị đặt nhầm ngoài thư mục `templates/` (PASS).
+        - **Lab 43.3 (Cài đặt Release):** Chạy `helm install s43-demo ./s43-hello -n s43 --create-namespace`, khởi tạo thành công Release `s43-demo` và ConfigMap `s43-demo-settings` ở revision 1 (PASS).
+        - **Lab 43.4 (Nâng cấp cấu hình):** Sử dụng `helm upgrade --set-string message="Hello from Helm S43 Upgrade"`, cập nhật ConfigMap thành công lên revision 2 (PASS).
+        - **Lab 43.5 (Khôi phục Release):** Sử dụng `helm rollback s43-demo 1 -n s43`, khôi phục ConfigMap về nội dung revision 1, Helm sinh ra revision 3 (Rollback to 1) (PASS).
+        - **Lab 43.6 (Mở rộng Workload Chart):** Bổ sung Deployment (`hashicorp/http-echo:1.0.0`, args `-text={{ .Values.message }}`, readinessProbe `/` cổng 5678) và Service ClusterIP (port 80 -> targetPort 5678) vào thư mục `templates/`; thực hiện `helm upgrade` thành công lên revision 4 (PASS).
+        - **Lab 43.7 (Kiểm thử HTTP End-to-End):** Thiết lập `kubectl port-forward svc/s43-demo-api 18080:80 -n s43`, gửi request HTTP nhận phản hồi `HTTP/1.1 200 OK`, `Hello from Helm S43` (PASS). (Lưu ý: lỗi `bind: address already in use` khi thử mở port-forward thứ hai là xung đột cổng local 18081 với tiến trình đang chạy, không phải lỗi Helm/Kubernetes).
+        - **Lab 43.8 (Scale Workload qua Helm Values):** Cập nhật `replicaCount: 2` trong `values.yaml`, thực hiện `helm upgrade` lên revision 5; Deployment đạt `2/2 Ready`, 2 Pods chạy ổn định trên node `s41-control-plane` (PASS).
+        - **Lab 43.9 (Failure Injection & Khả năng Chịu lỗi RollingUpdate):** Nâng cấp với image tag không tồn tại (`--set image.tag="9.9.9"`). Kết quả: Revision 6 mang trạng thái `failed`, Pod mới rơi vào `ErrImagePull`/`ImagePullBackOff`. Nhờ cơ chế RollingUpdate (`maxUnavailable=25%`), 2 Pods cũ ở revision 5 vẫn duy trì trạng thái `Running/Ready` (PASS).
+        - **Lab 43.10 (Zero-Downtime Rollback):** Xác minh dịch vụ vẫn trả về HTTP 200 trong lúc upgrade lỗi (không gián đoạn dịch vụ); thực hiện `helm rollback s43-demo 5 -n s43`, Helm tạo revision 7 `deployed`, Pod lỗi bị thu hồi và Deployment khôi phục `2/2 Ready` (PASS).
+      - Trạng thái Cuối cùng:
+        - Release `s43-demo`: revision 7, `deployed`.
+        - Deployment `s43-demo-api`: `2/2 Ready`, Service ClusterIP, 2 Pods Running trên `s41-control-plane`.
+        - Lịch sử Helm lưu vết đầy đủ revision 6 ở trạng thái `failed`.
+      - Đánh giá Năng lực Cuối Buổi (Áp dụng chính sách kiểm tra mới S42+):
+        - Trắc nghiệm: **7/7 câu đúng** (B, C, A, D, B, C, A).
+        - Tự luận: Câu 8 (1,75/2 điểm), Câu 9 (1,5/2 điểm).
+        - Tổng kết: 10,25/11 quy đổi **9,3/10 — ĐẠT (PASS)**.
+        - Điểm cần củng cố: Deployment/ReplicaSet là controller quản lý tài nguyên, không phải tiến trình trong Pod; 2 replicas không đồng nghĩa 2 máy vật lý; tăng replicas không bảo đảm thông lượng tăng tuyến tính; phân biệt lỗi kéo image với container crash hoặc probe fail; mô tả troubleshooting cần nêu rõ hành động rollback revision 6 về revision 5 tạo revision 7; phân biệt Release thất bại với việc dịch vụ dừng phục vụ.
+      - Kết quả: **COMPLETED — LEARNING & ASSESSMENT PASS (9,3/10 — Ngày 19/10/2026)**.

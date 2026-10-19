@@ -79,8 +79,8 @@
 | **S40** | Kubernetes Resources & Scaling | **PARTIALLY VERIFIED** | [`labs/s40-kubernetes-resources/`](../labs/s40-kubernetes-resources/) | `requests/limits`, OOMKilled exit 137, QoS, Taints/Tolerations | **Incident tồn đọng:** HPA báo `CPU: <unknown>/50%` |
 | **S41** | Kubernetes Storage & Persistence | **COMPLETED / PASS** | [`labs/s41-kubernetes-storage/`](../labs/s41-kubernetes-storage/) | emptyDir, PV/PVC dynamic, StatefulSet, PostgreSQL 16 | Dữ liệu SQL bảo toàn sau khi Pod DB bị xóa và tái tạo |
 | **S42** | Kubernetes Gateway API & Application Exposure | **COMPLETED** | [`labs/s42-kubernetes-gateway-api/`](../labs/s42-kubernetes-gateway-api/) | Gateway API, Envoy Gateway, GatewayClass, HTTPRoute, Host/Path routing | Đạt 7,7/10; AddressNotAssigned bảo lưu; 503 recovery |
-| **S43** | Helm Fundamentals | **NEXT SESSION** | Chuẩn bị triển khai | Helm Charts, Values, Templates, Release Lifecycle | Chuẩn hóa đóng gói và quản lý release ứng dụng K8s |
-| **S44** | K8s Troubleshooting & Defense | **UPCOMING** | Lộ trình chuẩn | Chẩn đoán cluster & phục hồi sự cố toàn diện | Mốc kết thúc Phase 9 trước khi sang Observability |
+| **S43** | Helm Fundamentals | **COMPLETED** | [`labs/s43-helm-fundamentals/`](../labs/s43-helm-fundamentals/) | Helm 3, Chart structure, Go templates, values, release lifecycle | Đạt 9,3/10; rolling upgrade bảo toàn traffic khi helm fail; rollback |
+| **S44** | K8s Troubleshooting & Defense | **NEXT SESSION** | Lộ trình chuẩn / Chuẩn bị triển khai | Chẩn đoán cluster & phục hồi sự cố toàn diện | 4 câu hỏi hạ tầng; 7 MCQ + 2 Essay; kết thúc Phase 9 |
 
 ---
 

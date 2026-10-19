@@ -573,3 +573,30 @@
     - *Bản chất kỹ thuật:*
       1. `GatewayClass` chỉ là định nghĩa trừu tượng cấp cluster khai báo Controller chịu trách nhiệm (template/class), không trực tiếp spawn tài nguyên hạ tầng.
       2. Trong môi trường Kind local, Service của Envoy Gateway có loại `LoadBalancer` nhưng kẹt ở trạng thái `EXTERNAL-IP: <pending>` (Gateway tổng thể mang điều kiện `Programmed=False`, `Reason: AddressNotAssigned`) do Kind không có Cloud LoadBalancer controller. Tuy nhiên, cấu hình Gateway và HTTPRoute vẫn hoàn toàn hợp lệ và hoàn toàn có thể kiểm thử routing thông suốt bằng phương pháp `kubectl port-forward` từ Service ra cổng local.
+
+## [2026-10-19] Sự cố Template Cấu trúc Chart và Bài học Đánh giá Helm Fundamentals S43
+- **Ngày:** 2026-10-19
+- **Bối cảnh:** Lab 43 — Helm Fundamentals (Chart structure, values.yaml, Go templating, release lifecycle, upgrade rollback, failure injection).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Đặt sai vị trí tệp manifest ngoài thư mục `templates/` của Helm Chart:**
+    - *Triệu chứng:* Tạo file `configmap.yaml` nằm ở thư mục gốc của chart (`s43-hello/configmap.yaml`). Khi thực thi `helm template` hoặc `helm install`, tài nguyên ConfigMap hoàn toàn không xuất hiện trong output và không được tạo trên cụm.
+    - *Nguyên nhân gốc:* Helm chart engine chỉ quét và render các tệp manifest nằm bên trong thư mục `templates/`. Mọi file đặt ở thư mục gốc (ngoài `Chart.yaml`, `values.yaml`, `README.md`, `LICENSE`) đều bị Helm bỏ qua hoàn toàn.
+    - *Khắc phục:* Di chuyển file vào `templates/configmap.yaml`. Manifest được render chính xác với các biến lấy từ `values.yaml`.
+  - **Nhầm lẫn giữa Replicas (Số lượng Pod) và Máy chủ vật lý / Scale tuyến tính:**
+    - *Hiểu lầm:* Học viên ngộ nhận khi nâng `replicaCount: 2` thì hệ thống tự động chạy trên 2 máy chủ vật lý riêng biệt và throughput hệ thống chắc chắn tăng gấp đôi (2x).
+    - *Bản chất kỹ thuật:*
+      1. Pods là các tiến trình container do ReplicaSet quản lý. Trong cụm thực tế, cả 2 Pods đều được Kubernetes Scheduler xếp lịch lên cùng node `s41-control-plane`.
+      2. Tổng tài nguyên CPU/RAM vật lý của máy chủ là hữu hạn. Tăng replica chỉ giúp tận dụng tốt hơn CPU đa nhân hoặc xử lý song song I/O không đồng bộ; throughput không bao giờ tăng tuyến tính 200% do nghẽn băng thông mạng, tranh chấp khóa CSDL (database lock contention), và giới hạn theo Định luật Amdahl (Amdahl's Law).
+  - **Nhầm lẫn vị trí thực thi của Controller (Deployment / ReplicaSet) so với Pod:**
+    - *Hiểu lầm:* Ngộ nhận Deployment và ReplicaSet là các tiến trình chạy bên trong Pod hoặc container.
+    - *Bản chất chuẩn xác:* Pod chỉ chứa tiến trình ứng dụng của người dùng (`python app.py`). Deployment và ReplicaSet là các reconciliation control loop chạy tập trung trong tiến trình `kube-controller-manager` trên Control Plane node, theo dõi trạng thái cụm qua API Server và gửi chỉ thị cho Kubelet tạo/xóa Pod.
+  - **Phân biệt rạch ròi 3 trạng thái lỗi Pod: `ImagePullBackOff` vs `CrashLoopBackOff` vs `Readiness Probe Failure`:**
+    - *`ImagePullBackOff`:* Kubelet/containerd không thể tải image từ registry (sai image tag, sai tên repo, lỗi mạng, thiếu imagePullSecrets). Tiến trình ứng dụng **chưa từng được khởi chạy**.
+    - *`CrashLoopBackOff`:* Image đã tải về thành công và container đã khởi tạo, nhưng tiến trình entrypoint thoát với mã lỗi khác 0 (`exit code != 0`), hoặc chết đột ngột, khiến Kubelet liên tục khởi động lại theo chu kỳ trễ số mũ (exponential backoff).
+    - *`Readiness Probe Failure`:* Tiến trình ứng dụng vẫn đang chạy ổn định từ góc độ HĐH (không crash, không restart), nhưng endpoint kiểm tra nghiệp vụ trả về lỗi (ví dụ HTTP 500, mất kết nối DB). Kubelet đánh dấu Pod `Ready=False` và ngắt IP Pod khỏi Service EndpointSlice (không nhận traffic), nhưng **không restart** container.
+  - **Trạng thái Helm Release `failed` không đồng nghĩa với sập dịch vụ (Zero-Downtime RollingUpdate):**
+    - *Quan sát thực tế:* Khi cố tình chạy `helm upgrade` với image tag không tồn tại, Helm trả về lỗi timeout và trạng thái release là `failed`. Tuy nhiên, ứng dụng vẫn phục vụ traffic 100% bình thường trên cổng forward.
+    - *Bản chất:* Cơ chế `RollingUpdate` của Kubernetes Deployment bảo toàn các Pod cũ (revision 1) đang Ready cho tới khi các Pod mới vượt qua Readiness Probe. Khi Pod mới kẹt `ImagePullBackOff`, Kubernetes dừng quá trình rollout và giữ nguyên Pod cũ đang chạy, đảm bảo dịch vụ không bị gián đoạn dù Helm ghi nhận release thất bại.
+  - **Lỗi cổng cục bộ `bind: address already in use` khi chạy `port-forward`:**
+    - *Triệu chứng:* `kubectl port-forward ... 18081:8080` trả về lỗi bind socket.
+    - *Bản chất:* Lỗi phát sinh do một tiến trình `port-forward` trước đó hoặc dịch vụ khác trên máy host (WSL/Windows) đang chiếm dụng port `18081`. Đây là lỗi xung đột socket của hệ điều hành cục bộ, không phải lỗi mạng của Kubernetes cluster. Cần kiểm tra bằng `netstat` / `ss` / `lsof` hoặc đổi port host (`18082:8080`).

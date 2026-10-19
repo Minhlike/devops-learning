@@ -26,10 +26,10 @@ Repository được chuẩn hóa theo kiến trúc tự chứa (self-contained),
 ## 2. Trạng thái Đào tạo Hiện tại
 
 - **Giai đoạn Hiện tại:** Phase 9 — Container Orchestration with Kubernetes & Helm.
-- **Buổi Hoàn thành Gần nhất:** **Buổi 42 — Kubernetes Gateway API & Application Exposure** (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10 — Ngày 15/10/2026).
-- **Buổi Tiếp theo:** **Buổi 43 — Helm Fundamentals** (NEXT SESSION).
+- **Buổi Hoàn thành Gần nhất:** **Buổi 43 — Helm Fundamentals** (COMPLETED — LEARNING & ASSESSMENT PASS: 9,3/10 — Ngày 19/10/2026).
+- **Buổi Tiếp theo:** **Buổi 44 — Kubernetes Troubleshooting & Defense** (NEXT SESSION).
 - **Sự cố Tồn đọng Độc lập:** Buổi 40 (Kubernetes Resources & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do sự cố HPA CPU: `<unknown>/50%` đang nằm trong backlog điều tra riêng biệt, cụm Kind `s40` và `s41` được duy trì nguyên vẹn; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller.
-- **Cột mốc Sắp tới:** Hoàn tất 2 buổi Kubernetes & Helm (**S43 Helm, S44 K8s Troubleshooting & Defense**) trước khi bước sang chuyên đề Observability (**S45 Prometheus, S46 Grafana**).
+- **Cột mốc Sắp tới:** Hoàn tất buổi Kubernetes cuối cùng (**S44 K8s Troubleshooting & Defense**) trước khi bước sang chuyên đề Observability (**S45 Prometheus, S46 Grafana**).
 
 ---
 
@@ -44,7 +44,7 @@ Toàn bộ các bài thực hành đã được hợp nhất về thư mục duy
 - `labs/s23-aws-ec2` đến `labs/s26-aws-alb-asg`: AWS Cloud Infrastructure (EC2, S3/EBS, RDS PostgreSQL, ALB & ASG).
 - `labs/s29-terraform-aws` đến `labs/s32-terraform-advanced`: Infrastructure as Code (Terraform VPC, S3 Remote State, Modules, Refactoring).
 - `labs/s33-ansible-fundamentals` đến `labs/s36-ansible-tags-vault`: Configuration Management (Ansible Roles, Multi-Host, Ansible Vault).
-- `labs/s37-kubernetes-fundamentals` đến `labs/s42-kubernetes-gateway-api`: Kubernetes Clusters, Services, ConfigMaps, Resources, Storage & Gateway API.
+- `labs/s37-kubernetes-fundamentals` đến `labs/s43-helm-fundamentals`: Kubernetes Clusters, Services, ConfigMaps, Resources, Storage, Gateway API & Helm Charts.
 
 ---
 
@@ -52,7 +52,7 @@ Toàn bộ các bài thực hành đã được hợp nhất về thư mục duy
 
 - **Hệ điều hành & Môi trường:** Ubuntu 24.04 trên WSL2, Windows 11.
 - **Ngôn ngữ & Tự động hóa:** Bash Shell, Python 3.12, Jinja2, HCL, YAML.
-- **Container & Điều phối:** Docker Engine, Docker Compose, Kubernetes (v1.37), Kind (v0.33), kubectl.
+- **Container & Điều phối:** Docker Engine, Docker Compose, Kubernetes (v1.37), Kind (v0.33), kubectl, Helm (v3).
 - **CI/CD & DevSecOps:** GitHub Actions, Gitleaks, Ruff, Bandit, Coverage.py, Google Release Please.
 - **Hạ tầng & Đám mây:** AWS (IAM, EC2, S3, EBS, RDS, ALB, ASG, CloudWatch, Route 53), HashiCorp Terraform.
 - **Quản trị Cấu hình:** Ansible, Ansible Vault.

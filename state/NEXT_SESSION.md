@@ -1,54 +1,56 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 43 — Helm Fundamentals (Tiến hành trực tiếp theo Roadmap, không bị chặn bởi sự cố S40).
+- **Buổi học tiếp theo:** BUỔI 44 — Kubernetes Troubleshooting & Defense (Mốc kết thúc Phase 9 trước khi sang Observability S45 Prometheus & S46 Grafana).
 - **Trạng thái Tiền đề (Prerequisites & State Confirmation):**
-  - Buổi 42 (Kubernetes Gateway API & Application Exposure) đã **HOÀN THÀNH (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10)** ngày 15/10/2026. Local HTTP routing PASS, Gateway External LoadBalancer provisioning UNRESOLVED (bảo lưu tồn đọng).
-  - Buổi 41 (Kubernetes Storage: Volumes, emptyDir, PV, PVC, StorageClass, StatefulSet, PostgreSQL 16 Persistence) đã **HOÀN THÀNH (COMPLETED / PASS)** ngày 15/10/2026.
-  - Buổi 40 (Kubernetes Resources, Scheduling & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do tồn đọng sự cố HPA CPU: `<unknown>/50%`. Cụm Kind `s40` và `s41` được giữ nguyên tài nguyên; sự cố S40 được quản lý như một backlog incident độc lập, không cản trở việc bắt đầu S43.
-  - Lộ trình Roadmap chính thức: Tiếp tục 2 buổi Kubernetes & Helm (**S43 Helm, S44 K8s Troubleshooting & Defense**) trước khi bước sang Observability (**S45 Prometheus, S46 Grafana**).
+  - Buổi 43 (Helm Fundamentals: Chart Anatomy, Values Override, Install, Upgrade, Rollback, RollingUpdate Resilience) đã **HOÀN THÀNH (COMPLETED — LEARNING & ASSESSMENT PASS: 9,3/10)** ngày 19/10/2026.
+  - Buổi 42 (Kubernetes Gateway API & Application Exposure) đã **HOÀN THÀNH (COMPLETED / PASS: 7,7/10)** ngày 15/10/2026; tồn đọng Gateway External LoadBalancer provisioning (`AddressNotAssigned`) tiếp tục được bảo lưu.
+  - Buổi 41 (Kubernetes Storage: Volumes, PV, PVC, StorageClass, StatefulSet, PostgreSQL 16) đã **HOÀN THÀNH (COMPLETED / PASS)**; dữ liệu PostgreSQL và PVC được bảo toàn nguyên vẹn.
+  - Buổi 40 (Kubernetes Resources, Scheduling & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do sự cố HPA CPU: `<unknown>/50%` nằm trong backlog độc lập. Cụm Kind `s40` và `s41` được giữ nguyên tài nguyên.
+  - Lộ trình Roadmap chính thức: Hoàn thành buổi Kubernetes cuối cùng (**S44 K8s Troubleshooting & Defense**) trước khi bước sang Observability (**S45 Prometheus, S46 Grafana**).
 
 ---
 
-## 1. CHÍNH SÁCH KIỂM TRA MỚI (BẮT BUỘC ÁP DỤNG TỪ BUỔI 42)
-*(Tuân thủ tuyệt đối quy định tại [docs/ASSESSMENT_POLICY.md](file:///D:/Devops/docs/ASSESSMENT_POLICY.md))*
+## 1. YÊU CẦU SƯ PHẠM MỚI (BẮT BUỘC ÁP DỤNG TỪ BUỔI 44)
+*(Học viên yêu cầu: Mọi thuật ngữ hạ tầng phải được gắn với đối tượng vật lý hoặc logic thực tế)*
 
-1. **Duy nhất một bài kiểm tra cuối buổi:** Mỗi buổi học chỉ tổ chức đúng MỘT bài kiểm tra chính thức ở cuối buổi sau khi đã hoàn thành 100% phần lý thuyết và bài lab thực hành.
-2. **Cấu trúc bài kiểm tra 9 câu:**
-   - **PHẦN A — 7 câu trắc nghiệm (7 MCQs):** 4 lựa chọn (A, B, C, D), đúng 1 đáp án chính xác, phân bố ngẫu nhiên, phương án nhiễu hợp lý, không gợi ý lộ liễu, không dùng khái niệm chưa học để đánh đố.
-   - **PHẦN B — 2 câu tự luận (2 Essays):** Trả lời bằng đoạn văn giải thích bản chất/cơ chế vận hành. Tuyệt đối **KHÔNG** bắt viết YAML, code, script, lệnh CLI hay thiết kế kiến trúc vượt phạm vi bài học.
-3. **Bãi bỏ hoàn toàn các hình thức kiểm tra cũ:** Kể từ S42, **BÃI BỎ** việc tổ chức riêng `Technical Defense`, `Active Recall`, `Timed Defense` hoặc các bài quiz phát sinh trong buổi.
-4. **Giới hạn phạm vi kiến thức (Scope Integrity):** 100% câu hỏi phải truy ngược được về nội dung lý thuyết và bài lab thực tế đã học trong chính buổi đó. Nghiêm cấm hỏi kiến thức ngoài lề hoặc câu hỏi phỏng vấn Senior.
-5. **Quy trình chấm bài:** Chấm một lượt cả 9 câu sau khi học viên nộp bài; công bố đáp án và giải thích minh bạch; không tự sinh bài kiểm tra thứ hai hay ép kiểm tra lại.
+Mỗi khi giới thiệu một khái niệm hoặc thuật ngữ mới, Agent bắt buộc giải thích theo 4 câu hỏi định vị:
+1. **Nó đại diện cho thành phần gì trong hệ thống thật?** (Tiến trình OS, file trên đĩa, bản ghi etcd, network socket, v.v.).
+2. **Nó nằm/chạy ở đâu?** (Máy vật lý host, máy ảo WSL, Worker Node, Control Plane Node, Pod, Container, hay chỉ là tài nguyên logic trên Kubernetes API Server).
+3. **Thành phần nào tạo ra, quản lý và giám sát nó?** (kubelet, kube-scheduler, kube-controller-manager, containerd, kernel cgroups, kube-proxy, v.v.).
+4. **Nó liên hệ với những thành phần đã học như thế nào?** (Đối chiếu với Linux process, systemd service, Docker container, Compose network, AWS EC2, v.v.).
+
+**Nguyên tắc triển khai:**
+- Luôn phân biệt rạch ròi **cấu hình logic** (YAML manifest, desired state) với **tài nguyên vật lý/runtime** (actual state, RAM/CPU cấp phát, cgroup, iptables/eBPF rules).
+- Dạy từng khái niệm nhỏ kết hợp lab có mục tiêu; tuyệt đối không đưa chuỗi lệnh dài khi chưa giải thích cơ chế.
+- Lệnh terminal trình bày thành từng khối riêng, có mục đích rõ ràng; đợi học viên chạy và đọc output thật.
+- File YAML được tạo/chỉnh sửa với đường dẫn tuyệt đối rõ ràng: `File cần sửa: /đường/dẫn/tuyệt/đối`.
+- **Duy nhất một bài kiểm tra cuối buổi:** 7 câu trắc nghiệm khách quan + 2 câu tự luận bản chất/cơ chế. Không phát sinh bài kiểm tra phụ.
 
 ---
 
-## 2. Kế hoạch Nội dung Buổi 43 (Helm Fundamentals)
+## 2. Kế hoạch Nội dung Buổi 44 (Kubernetes Troubleshooting & Defense)
 
-- **Mục tiêu:** Nắm vững nguyên lý và vận hành Helm Package Manager để đóng gói, cấu hình tham số hóa và quản trị vòng đời ứng dụng Kubernetes (install, upgrade, rollback) một cách chuẩn hóa.
+- **Mục tiêu:** Nắm vững phương pháp luận và công cụ chẩn đoán sự cố theo bằng chứng (Evidence-Based Troubleshooting) trên cụm Kubernetes; tự tin khoanh vùng và khắc phục các lớp sự cố phổ biến từ Pod, Workload đến Mạng và Tài nguyên mà không dùng thao tác restart mù quáng.
 - **Môi trường & Công cụ:**
-  - WSL2 Ubuntu 24.04, Docker daemon, Kind cluster (`s41` hoặc cụm mới nếu cần).
-  - Helm CLI v3, `kubectl`.
+  - WSL2 Ubuntu 24.04, Docker daemon, cụm Kind `s41` (hoặc dựng kịch bản kiểm thử độc lập).
+  - `kubectl` (`describe`, `logs`, `events`, `get -o wide`, `exec`), `crictl`, `curl`.
 - **Nội dung Lab Trọng tâm:**
-  1. Vì sao nhiều Kubernetes YAML rời rạc trở nên khó quản lý (YAML sprawl, thiếu versioning, khó quản lý đa môi trường).
-  2. Kiến trúc Helm: Chart, Release, Repository; phân biệt Helm client vs Kubernetes API Server.
-  3. Cấu trúc Chart chuẩn: `Chart.yaml`, `values.yaml`, `templates/`, `charts/`, `.helmignore`.
-  4. Templating cơ bản: `{{ .Values... }}`, `{{ .Release.Name }}`, built-in objects, template helpers.
-  5. Vòng đời Release: `helm install`, `helm upgrade`, `helm rollback`, `helm list`, `helm history`, `helm uninstall`, `helm status`.
-  6. Quản lý cấu hình đa môi trường bằng values override (`-f values-prod.yaml`, `--set`).
-  7. Failure Injection & Rollback: Cố tình cấu hình sai template hoặc values gây rollout fail $\rightarrow$ sử dụng `helm rollback` để khôi phục về release ổn định trước đó một cách an toàn.
-  8. Bài kiểm tra cuối buổi chuẩn hóa: 7 câu trắc nghiệm + 2 câu tự luận về Helm (chỉ trong phạm vi lý thuyết và lab đã thực hành).
-
----
-
-## 3. Quy chuẩn Phương pháp Giảng dạy & Vận hành Phiên
-
-- **Hiển thị tiến độ phiên:** Mỗi phản hồi trong session học phải hiển thị ngắn gọn tiến độ toàn buổi: phần đã xong, phần hiện tại, phần còn lại.
-- **Lab là trung tâm:** Thực hành chiếm phần lớn thời lượng; không biến buổi học thành chuỗi hỏi–đáp lý thuyết suông.
-- **Nhịp chuẩn triển khai:** Lý thuyết cần thiết $\rightarrow$ Guided Lab nhỏ $\rightarrow$ học viên chạy $\rightarrow$ đọc output thật $\rightarrow$ giải thích output $\rightarrow$ mini-check khi thực sự cần $\rightarrow$ tăng dần mức tự làm $\rightarrow$ Failure Injection $\rightarrow$ Troubleshooting $\rightarrow$ Bài kiểm tra cuối buổi (7 trắc nghiệm + 2 tự luận) $\rightarrow$ Cleanup.
-- **Mini-check có trọng tâm:** Mini-check chỉ dùng tại các điểm kiến thức quan trọng, không hỏi máy móc sau mọi đoạn giải thích.
-- **Cấu trúc 4 bước cho từng khái niệm:** `Nó là gì` $\rightarrow$ `Vì sao cần nó` $\rightarrow$ `Nó hoạt động thế nào` $\rightarrow$ `Ví dụ thực tế trong doanh nghiệp`.
-- **Chỉ định đường dẫn file:** Trước khi sửa hoặc tạo file, luôn ghi rõ: `File cần sửa: /đường/dẫn/tuyệt/đối/chính/xác`.
-- **Phân phối lệnh vừa phải:** Số lượng lệnh mỗi lượt phải vừa phải; trước mỗi lệnh phải giải thích ngắn gọn mục đích; không xả hàng loạt lệnh cùng lúc.
-- **Khởi động phiên:** Khi bắt đầu ngày học/session lab mới, thực hiện block khởi động WSL và kiểm tra trạng thái Docker daemon / Kind cluster.
-- **Kiểm soát tải nhận thức:** Giảm tốc độ giảng dạy, tinh gọn số lượng khái niệm mới để đảm bảo người học nắm vững bản chất thay vì chỉ chạy lướt qua lệnh lab.
-- **Ranh giới Git giữa buổi:** Không cập nhật và push lên GitHub giữa chừng trong buổi học trừ khi học viên yêu cầu.
+  1. **Quy trình Chẩn đoán theo Bằng chứng (Diagnostics Workflow):**
+     - Luồng: `kubectl get pods` $\rightarrow$ `kubectl describe pod <name>` (đọc Events) $\rightarrow$ `kubectl logs <name> [-p]` $\rightarrow$ `kubectl get events --sort-by=.metadata.creationTimestamp`.
+  2. **Nhóm sự cố Khởi tạo Pod (Pod Lifecycle & Image):**
+     - `ImagePullBackOff` / `ErrImagePull`: Sai repository, tag không tồn tại, thiếu ImagePullSecrets.
+     - `CreateContainerConfigError` / `CreateContainerError`: Sai tên ConfigMap/Secret key, volume mount thất bại.
+  3. **Nhóm sự cố Ứng dụng & Tiến trình (Application Crashes):**
+     - `CrashLoopBackOff`: Lệnh CMD/args sai, thiếu biến môi trường bắt buộc, process PID 1 thoát với exit code non-zero. Phân tích `lastState` và cờ `--previous`.
+     - Phân biệt rõ `CrashLoopBackOff` vs `ImagePullBackOff` vs `ReadinessProbe Failed`.
+  4. **Nhóm sự cố Tài nguyên Hệ thống (Resource Constraints):**
+     - `OOMKilled` (Exit code 137): Container vượt ngưỡng `limits.memory`; phân biệt với lỗi thiếu RAM node.
+     - `Pending` / `FailedScheduling`: Requests vượt quá sức chứa node (`Insufficient cpu/memory`), không khớp `nodeSelector`, hoặc bị chặn bởi `Taints` thiếu `Tolerations`.
+  5. **Nhóm sự cố Giám sát Sức khỏe (Health Check Probes):**
+     - Readiness Probe thất bại: Pod Running nhưng NotReady (`0/1 Ready`), EndpointSlice tự động gỡ Pod khỏi traffic; phân biệt với Liveness Probe thất bại khiến container restart liên tục.
+  6. **Nhóm sự cố Mạng Dịch vụ & Phân giải Tên miền (Networking & DNS):**
+     - Service không định tuyến được: Lệch `selector` với Pod `labels` dẫn đến EndpointSlice trống (0 endpoints); lệch cổng `targetPort` so với containerPort.
+     - Phân giải CoreDNS: Khắc phục sự cố Pod không resolve được service name nội bộ.
+  7. **Thử thách Troubleshooting Defense Tổng hợp:**
+     - Người học tiếp nhận kịch bản cụm bị lỗi đa tầng, tự thực hiện các bước điều tra theo bằng chứng, xác định root cause chính xác và áp dụng biện pháp sửa chữa tối thiểu.
+  8. **Bài kiểm tra cuối buổi chuẩn hóa:** 7 câu trắc nghiệm + 2 câu tự luận (chỉ trong phạm vi các sự cố và cơ chế đã thực hành).
