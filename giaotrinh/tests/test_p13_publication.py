@@ -66,8 +66,13 @@ class PublicationPart13(unittest.TestCase):
             manifest = json.loads((ROOT / "manuscript" / "manifest.json").read_text(encoding="utf-8"))
             publication_ids = [qa["publication_id"] for lid, row in manifest["lessons"].items()
                                if not lid.startswith("P13.") for qa in row["qa"]]
-            self.assertEqual(len(publication_ids), 79)
-            self.assertEqual(len(set(publication_ids)), 79)
+            old_question_ids = set(legacy_answers)
+            migrated_ids = [qa["id"] for lid, row in manifest["lessons"].items()
+                            if not lid.startswith("P13.") for qa in row["qa"]
+                            if qa["id"] in old_question_ids]
+            self.assertEqual(set(migrated_ids), old_question_ids)
+            self.assertEqual(len(migrated_ids), 79)
+            self.assertEqual(len(set(publication_ids)), len(publication_ids))
             for answer_id in publication_ids:
                 self.assertRegex(full, rf"(?m)^{re.escape(answer_id)}\. ")
             self.assertIn("Lời giải", full)

@@ -32,10 +32,10 @@ class ManuscriptContract(unittest.TestCase):
         self.assertEqual(sum(len(p["chapters"]) for p in self.tree["parts"]), 58)
         self.assertEqual(len(self.manifest["lessons"]), 178)
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
-                         Counter({"migrated_draft": 136, "pending_authorship": 41,
-                                  "migration_fragment": 1}))
+                         Counter({"migrated_draft": 136, "reviewed": 2,
+                                  "pending_authorship": 39, "migration_fragment": 1}))
         self.assertEqual(sum(len(ls) for _, chapters in build.published_lessons(self.tree, self.manifest)
-                             for _, ls in chapters), 136)
+                             for _, ls in chapters), 138)
 
     def test_legacy_sections_and_split_paragraphs_are_preserved(self):
         migration = [r for r in ledger("legacy_migration.csv") if r["action"] != "move_rekey_after_review"]
@@ -74,9 +74,9 @@ class ManuscriptContract(unittest.TestCase):
                 self.assertIn("{{code:" + row["old_id"] + "}}", manuscript)
             else:
                 self.assertEqual(sum(q["id"] == row["old_id"] for q in owner["qa"]), 1)
-        self.assertEqual(sum(len(x["qa"]) for x in self.manifest["lessons"].values()), 91)
+        self.assertEqual(sum(len(x["qa"]) for x in self.manifest["lessons"].values()), 93)
         publication_ids = [qa["publication_id"] for x in self.manifest["lessons"].values() for qa in x["qa"]]
-        self.assertEqual(len(set(publication_ids)), 91)
+        self.assertEqual(len(set(publication_ids)), 93)
         p13_claims = 0
         for i in range(1, 5):
             with (ROOT / "authoring" / "P13" / f"C{i:02d}" / "claims.csv").open(
@@ -120,6 +120,16 @@ class ManuscriptContract(unittest.TestCase):
         broken = copy.deepcopy(self.manifest)
         broken["lessons"]["P01.C02.L01"]["qa"][0]["publication_id"] = "C13.1"
         with self.assertRaisesRegex(ValueError, "Mã bài tập xuất bản"):
+            build.load_manuscript(self.tree, broken)
+
+    def test_wave2_lesson_and_qa_cannot_silently_drop(self):
+        broken = copy.deepcopy(self.manifest)
+        broken["lessons"]["P01.C01.L01"]["status"] = "pending_authorship"
+        with self.assertRaisesRegex(ValueError, "trạng thái kiểm chứng"):
+            build.load_manuscript(self.tree, broken)
+        broken = copy.deepcopy(self.manifest)
+        broken["lessons"]["P01.C01.L03"]["qa"].clear()
+        with self.assertRaisesRegex(ValueError, "Bài tập Đợt 2"):
             build.load_manuscript(self.tree, broken)
 
     def test_bookmark_same_count_but_wrong_destination_fails(self):

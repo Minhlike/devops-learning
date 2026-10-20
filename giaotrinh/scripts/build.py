@@ -126,7 +126,7 @@ class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
                          rightMargin=RIGHT, topMargin=TOP, bottomMargin=BOTTOM,
-                         title="Cẩm nang ngành DevOps — bản chuyển cấu trúc Đợt 1",
+                         title="Cẩm nang ngành DevOps — bản thảo candidate",
                          author="Dự án devops-learning")
         frame = Frame(LEFT, BOTTOM, PAGE_W - LEFT - RIGHT,
                       PAGE_H - TOP - BOTTOM, leftPadding=0, rightPadding=0,
@@ -172,6 +172,8 @@ def reference_urls() -> set[str]:
     for ledger in sorted((ROOT / "authoring" / "P13").glob("C*/claims.csv")):
         with ledger.open(encoding="utf-8", newline="") as stream:
             urls.update(row["source_url"] for row in csv.DictReader(stream))
+    wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+    urls.update(source["url"] for source in wave2["sources"].values())
     return urls
 
 
@@ -361,6 +363,7 @@ def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> t
         elif row["status"] != "pending_authorship":
             raise ValueError(f"Bài hoàn thành nhưng thiếu nội dung: {lid}")
     check_migration_evidence(manifest)
+    check_wave2_evidence(manifest)
     return tree, manifest
 
 
@@ -390,7 +393,8 @@ def check_migration_evidence(manifest: dict) -> None:
         for field in ("claim_ids", "examples"):
             if actual[field] != expected_row[field]:
                 raise ValueError(f"Mất hoặc đổi chủ {field}: {lid}")
-        old_qa = [] if lid.startswith("P13.") else [item["id"] for item in actual["qa"]]
+        old_qa = [] if lid.startswith("P13.") else [item["id"] for item in actual["qa"]
+                                                   if item["id"] in expected_row["qa"]]
         if old_qa != expected_row["qa"]:
             raise ValueError(f"Mất cặp đề đáp án: {lid}")
     p13_qa = [qa["id"] for lid, row in manifest["lessons"].items()
@@ -398,8 +402,44 @@ def check_migration_evidence(manifest: dict) -> None:
     if sorted(p13_qa) != sorted(f"C13.{i}" for i in range(1, 13)):
         raise ValueError("Mất bài tập hoặc đáp án Phần XIII")
     published_ids = [qa.get("publication_id") for row in manifest["lessons"].values() for qa in row["qa"]]
-    if len(published_ids) != 91 or any(not identifier for identifier in published_ids) or len(set(published_ids)) != 91:
+    if len(published_ids) < 91 or any(not identifier for identifier in published_ids) or len(set(published_ids)) != len(published_ids):
         raise ValueError("Mã bài tập xuất bản thiếu hoặc trùng")
+
+
+def check_wave2_evidence(manifest: dict) -> None:
+    ledger = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+    if ledger.get("schema_version") != 1 or not ledger.get("checked_on"):
+        raise ValueError("Ledger Đợt 2 thiếu phiên bản hoặc ngày kiểm")
+    old_sources = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))["sources"]
+    sources = dict(old_sources)
+    for sid, source in ledger["sources"].items():
+        if sid in sources or not all(source.get(k) for k in ("type", "version", "url")):
+            raise ValueError(f"Nguồn Đợt 2 trùng mã hoặc thiếu metadata: {sid}")
+        sources[sid] = source
+    for lid, evidence in ledger["lessons"].items():
+        if lid not in manifest["lessons"]:
+            raise ValueError(f"Ledger Đợt 2 trỏ ngoài cây: {lid}")
+        row = manifest["lessons"][lid]
+        if row["status"] != "reviewed" or row["verification"] != "source_reviewed_wave2":
+            raise ValueError(f"Bài Đợt 2 chưa có trạng thái kiểm chứng phù hợp: {lid}")
+        body = (ROOT / row["content"]).read_text(encoding="utf-8")
+        if not evidence.get("claims") or not evidence.get("qa"):
+            raise ValueError(f"Bài Đợt 2 thiếu claim hoặc bài tập: {lid}")
+        for claim in evidence["claims"]:
+            if not claim.get("anchor") or claim["anchor"] not in body:
+                raise ValueError(f"Claim Đợt 2 không neo vào bài: {lid}")
+            if not claim.get("sources") or any(sid not in sources for sid in claim["sources"]):
+                raise ValueError(f"Claim Đợt 2 thiếu nguồn: {lid}")
+            if not all(claim.get(k) for k in ("source_location", "support", "limits")):
+                raise ValueError(f"Claim Đợt 2 thiếu biên bản ngữ nghĩa: {lid}")
+        if row["qa"][-len(evidence["qa"]):] != evidence["qa"]:
+            raise ValueError(f"Bài tập Đợt 2 không khớp ledger: {lid}")
+        if row["source_ids"] != sorted({sid for claim in evidence["claims"]
+                                         for sid in claim["sources"]}):
+            raise ValueError(f"Nguồn bài Đợt 2 không khớp ledger: {lid}")
+    for lid, row in manifest["lessons"].items():
+        if row["verification"] == "source_reviewed_wave2" and lid not in ledger["lessons"]:
+            raise ValueError(f"Bài Đợt 2 thiếu ledger: {lid}")
 
 
 def published_lessons(tree: dict, manifest: dict):
@@ -429,7 +469,7 @@ def build() -> None:
         Spacer(1, 170),
         Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
         Spacer(1, 26),
-        Paragraph(f"Bản chuyển cấu trúc Đợt 1 · {count}/178 bài có bản thảo", styles["subtitle"]),
+        Paragraph(f"Bản thảo tích hợp Đợt 2 · {count}/178 bài có nội dung", styles["subtitle"]),
         Spacer(1, 10),
         Paragraph("Chưa phải bản phát hành hoàn chỉnh", styles["subtitle"]),
         PageBreak(),

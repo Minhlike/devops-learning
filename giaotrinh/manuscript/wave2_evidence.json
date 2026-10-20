@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-20",
+  "purpose": "Scientific claim and exercise ledger outside the PDF render path",
+  "sources": {
+    "W2-CLK": {
+      "type": "Linux man-pages",
+      "version": "man-pages 6.19",
+      "url": "https://man7.org/linux/man-pages/man2/clock_gettime.2.html"
+    }
+  },
+  "lessons": {
+    "P01.C01.L01": {
+      "claims": [
+        {
+          "anchor": "Một lần đọc sau có thể nhanh hơn vì dữ liệu đã nằm trong page cache",
+          "sources": ["K2"],
+          "source_location": "Concepts overview, Page cache",
+          "support": "Kernel mô tả dữ liệu đọc có thể được giữ trong page cache để tránh truy cập thiết bị ở lần đọc sau.",
+          "limits": "Không suy thời điểm writeback hay độ bền cho một request riêng."
+        },
+        {
+          "anchor": "đồng hồ đơn điệu phù hợp để lấy hiệu",
+          "sources": ["W2-CLK"],
+          "source_location": "DESCRIPTION, CLOCK_REALTIME; CLOCK_MONOTONIC; CLOCK_PROCESS_CPUTIME_ID",
+          "support": "Manual phân biệt đồng hồ có thể chỉnh, đồng hồ đơn điệu và CPU time.",
+          "limits": "CLOCK_MONOTONIC không tính thời gian suspend và có thể điều chỉnh tần số."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P01.C01.L01.Q01",
+          "publication_id": "P01.C01.L01.Q01",
+          "question": "Trong timeline giả định 8 ms chờ lịch chạy, 12 ms CPU, 60 ms chờ I/O và 20 ms CPU, hãy tính wall time và CPU time. Nếu chỉ phần CPU nhanh gấp đôi, kết quả tối thiểu theo mô hình là bao nhiêu?",
+          "answer": "Wall time 100 ms, CPU time 32 ms. Giữ nguyên 68 ms chờ và giảm CPU xuống 16 ms cho 84 ms. Đây là tính toán theo giả định; không dự báo phép đo thật."
+        }
+      ]
+    },
+    "P01.C01.L03": {
+      "claims": [
+        {
+          "anchor": "Page cache có thể giữ trang mới sửa ở trạng thái dirty",
+          "sources": ["K2"],
+          "source_location": "Concepts overview, Page cache",
+          "support": "Trang ghi mới được đánh dirty và đồng bộ về thiết bị ở writeback.",
+          "limits": "Đường ghi phụ thuộc filesystem, mount và thiết bị."
+        },
+        {
+          "anchor": "chỉ đồng bộ dữ liệu tệp chưa đủ",
+          "sources": ["R6"],
+          "source_location": "fsync(2), DESCRIPTION, directory entry paragraph",
+          "support": "Manual nêu fsync tệp không nhất thiết đồng bộ directory entry; cần fsync thư mục.",
+          "limits": "Không hứa phục hồi mọi lỗi phần cứng hay mọi filesystem."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P01.C01.L03.Q01",
+          "publication_id": "P01.C01.L03.Q01",
+          "question": "Một dịch vụ trả thành công ngay sau khi ghi tệp tạm và đổi tên. Sau mất điện, tên tệp mới biến mất. Nêu hai ranh giới độ bền cần kiểm và một điều chưa thể kết luận từ HTTP thành công.",
+          "answer": "Cần kiểm việc đồng bộ nội dung tệp và mục nhập thư mục sau đổi tên, đồng thời kiểm lỗi từng lời gọi trên filesystem mục tiêu. HTTP thành công không chứng minh dữ liệu đã bền vững sau mất điện."
+        }
+      ]
+    }
+  }
+}
