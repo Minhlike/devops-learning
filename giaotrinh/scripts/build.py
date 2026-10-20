@@ -30,6 +30,7 @@ except ImportError:  # direct execution: python giaotrinh/scripts/build.py
 
 
 ROOT = Path(__file__).resolve().parents[1]
+READER_TITLES = json.loads((ROOT / "manuscript" / "reader_titles.json").read_text(encoding="utf-8"))
 OUTPUT = ROOT / "Cam_nang_devops.candidate.pdf"
 NEXT = ROOT / "Cam_nang_devops.candidate.next.pdf"
 FONT_DIR = Path("C:/Windows/Fonts")
@@ -86,8 +87,9 @@ def style() -> dict[str, ParagraphStyle]:
                                      leading=15.5, alignment=TA_LEFT, spaceAfter=6),
         "toc": ParagraphStyle("toc-title", fontName="BodyBold", fontSize=19,
                               leading=24, spaceAfter=20),
-        "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=10,
-                                   leading=11, leftIndent=8, firstLineIndent=-8),
+        "tocentry": ParagraphStyle("toc-entry", fontName="BodyBold", fontSize=10,
+                                   leading=11, leftIndent=8, firstLineIndent=-8,
+                                   keepWithNext=True),
         "tocchapter": ParagraphStyle("toc-chapter", fontName="Body", fontSize=9.5,
                                      leading=11, leftIndent=22, firstLineIndent=-8),
         "toclesson": ParagraphStyle("toc-lesson", fontName="Body", fontSize=9,
@@ -128,14 +130,54 @@ class Heading(Paragraph):
         self.include_in_toc = include_in_toc
 
 
+def roman(number: int) -> str:
+    symbols = ((10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I"))
+    result = ""
+    for value, symbol in symbols:
+        while number >= value:
+            result += symbol
+            number -= value
+    return result
+
+
+def publication_labels(tree: dict) -> tuple[dict[str, int], dict[str, str]]:
+    """Keep stable architecture IDs separate from the labels printed for readers."""
+    chapter_numbers: dict[str, int] = {}
+    labels: dict[str, str] = {}
+    valid = {"parts": set(), "chapters": set(), "lessons": set()}
+    for part_index, part in enumerate(tree["parts"], 1):
+        valid["parts"].add(part["id"])
+        labels[part["id"]] = f"PHẦN {roman(part_index)} — {READER_TITLES['parts'].get(part['id'], part['title'])}"
+        for chapter in part["chapters"]:
+            chapter_id = chapter["id"]
+            valid["chapters"].add(chapter_id)
+            number = len(chapter_numbers) + 1
+            chapter_numbers[chapter_id] = number
+            labels[chapter_id] = f"Chương {number} — {READER_TITLES['chapters'][chapter_id]}"
+            for lesson_index, lesson in enumerate(chapter["lessons"], 1):
+                lesson_id = lesson["id"]
+                valid["lessons"].add(lesson_id)
+                title = READER_TITLES["lessons"].get(lesson_id, lesson["title"])
+                labels[lesson_id] = f"Bài {number}.{lesson_index} — {title}"
+    for kind, ids in valid.items():
+        overrides = READER_TITLES[kind]
+        if not set(overrides) <= ids or any(not value.strip() for value in overrides.values()):
+            raise ValueError(f"Nhãn hiển thị {kind} sai ID hoặc rỗng")
+    if set(READER_TITLES["chapters"]) != valid["chapters"]:
+        raise ValueError("Thiếu nhãn Chương dành cho người đọc")
+    return chapter_numbers, labels
+
+
 class PartPlate(Flowable):
     """A quiet monochrome part opener generated from the approved chapter tree."""
 
-    def __init__(self, part: dict, chapters: list, styles: dict[str, ParagraphStyle]):
+    def __init__(self, part: dict, chapters: list, styles: dict[str, ParagraphStyle],
+                 labels: dict[str, str]):
         super().__init__()
         self.part = part
         self.chapters = chapters
         self.styles = styles
+        self.labels = labels
         self.width = PAGE_W - LEFT - RIGHT
         self.height = max(315, 140 + 43 * len(chapters))
 
@@ -147,7 +189,7 @@ class PartPlate(Flowable):
         c.setFillColor(ink)
         c.rect(0, self.height - 9, self.width, 9, fill=1, stroke=0)
         c.setFont("BodyBold", 55)
-        c.drawString(9, self.height - 81, f"{int(self.part['id'][1:]):02d}")
+        c.drawString(9, self.height - 81, roman(int(self.part['id'][1:])))
         c.setStrokeColor(gray)
         c.setLineWidth(0.6)
         c.line(104, self.height - 65, self.width, self.height - 65)
@@ -160,7 +202,7 @@ class PartPlate(Flowable):
             c.setStrokeColor(gray)
             if index < len(self.chapters):
                 c.line(18, y + 3, 18, y - 35)
-            label = f"{chapter['id']}  —  {chapter['title']}"
+            label = self.labels[chapter["id"]]
             paragraph = Paragraph(paragraph_markup(label), self.styles["part_route"])
             _, ph = paragraph.wrap(self.width - 44, 50)
             paragraph.drawOn(c, 34, y - ph + 10)
@@ -231,6 +273,11 @@ class Book(BaseDocTemplate):
     @staticmethod
     def page_decoration(canvas, doc):
         canvas.saveState()
+        if not doc.running_part and doc.page > 2:
+            canvas.setFont("BodyBold", 8.5)
+            canvas.drawString(LEFT, PAGE_H - 39, "MỤC LỤC · TIẾP")
+            canvas.setStrokeColor(colors.HexColor("#999999"))
+            canvas.line(LEFT, PAGE_H - 47, PAGE_W - RIGHT, PAGE_H - 47)
         if doc.running_part and doc.page != doc.part_opening_page:
             canvas.setFont("BodyBold", 8.5)
             canvas.drawString(LEFT, PAGE_H - 39, "CẨM NANG NGÀNH DEVOPS")
@@ -251,7 +298,7 @@ class Book(BaseDocTemplate):
         if not isinstance(flowable, Heading):
             return
         if flowable.level == 1 and flowable.bookmark_key.startswith("P"):
-            self.running_part = flowable.bookmark_key
+            self.running_part = flowable.heading_text.split(" — ", 1)[0]
             self.running_chapter = None
             self.part_opening_page = self.page
         elif flowable.bookmark_key == "answers":
@@ -259,7 +306,7 @@ class Book(BaseDocTemplate):
             self.running_chapter = None
             self.part_opening_page = None
         elif flowable.level == 2 and flowable.bookmark_key.startswith("P"):
-            self.running_chapter = flowable.bookmark_key
+            self.running_chapter = flowable.heading_text.split(" — ", 1)[0]
         key = flowable.bookmark_key
         self.canv.bookmarkPage(key)
         self.canv.addOutlineEntry(flowable.heading_text, key,
@@ -642,13 +689,14 @@ def build() -> None:
     check_source_map()
     register_fonts()
     tree, manifest = load_manuscript()
+    chapter_numbers, labels = publication_labels(tree)
     publication = list(published_lessons(tree, manifest))
     count = sum(len(lessons) for _, chapters in publication for _, lessons in chapters)
     if count < 100:
         raise RuntimeError("Migration candidate thiếu phần lớn nội dung cũ")
     styles = style()
     toc = TableOfContents()
-    toc.levelStyles = [styles["tocentry"], styles["tocchapter"], styles["toclesson"]]
+    toc.levelStyles = [styles["tocentry"], styles["tocchapter"]]
     story: list[Flowable] = [
         Spacer(1, 170),
         Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
@@ -664,22 +712,22 @@ def build() -> None:
         PageBreak(),
     ]
     for part, chapters in publication:
-        story.append(Heading(f"PHẦN {int(part['id'][1:]):02d} — {part['title']}", 1, part["id"], styles))
+        story.append(Heading(labels[part["id"]], 1, part["id"], styles))
         story.append(Spacer(1, 28))
         story.append(Paragraph(paragraph_markup(part["central_question"]), styles["part_deck"]))
         story.append(Paragraph(paragraph_markup(part["mental_model"]), styles["part_intro"]))
-        story.append(PartPlate(part, chapters, styles))
+        story.append(PartPlate(part, chapters, styles, labels))
         story.append(PageBreak())
         for chapter_index, (chapter, lessons) in enumerate(chapters):
             if chapter_index:
                 # Keep a chapter heading with enough text while avoiding a
                 # near-empty page just for the preceding chapter's last task.
                 story.append(CondPageBreak(280))
-            story.append(Heading(f"Chương {chapter['id']} — {chapter['title']}", 2, chapter["id"], styles))
+            story.append(Heading(labels[chapter["id"]], 2, chapter["id"], styles))
             story.append(Paragraph(paragraph_markup(chapter["objective"]), styles["body"]))
             for lesson in lessons:
                 lid = lesson["id"]
-                story.append(Heading(f"Bài {lid} — {lesson['title']}", 3, lid, styles))
+                story.append(Heading(labels[lid], 3, lid, styles, include_in_toc=False))
                 story.extend(read_markdown(ROOT / manifest["lessons"][lid]["content"], styles))
                 for qa in manifest["lessons"][lid]["qa"]:
                     if lid.startswith("P13."):
@@ -693,7 +741,7 @@ def build() -> None:
             entries = [(lid["id"], qa) for lid in lessons for qa in manifest["lessons"][lid["id"]]["qa"]]
             if not entries:
                 continue
-            story.append(Heading(f"Đáp án {chapter['id']} — {chapter['title']}", 2,
+            story.append(Heading(f"Đáp án chương {chapter_numbers[chapter['id']]} — {READER_TITLES['chapters'][chapter['id']]}", 2,
                                  f"{chapter['id']}.answers", styles, include_in_toc=False))
             for _, qa in entries:
                 story.append(Paragraph(paragraph_markup(qa["publication_id"] + ". " + qa["answer"]), styles["answerbody"]))
@@ -732,12 +780,13 @@ def audit_document(doc: pymupdf.Document) -> None:
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     tree, manifest = load_manuscript()
+    _, labels = publication_labels(tree)
     expected = []
     for part, chapters in published_lessons(tree, manifest):
-        expected.append((1, part["id"]))
+        expected.append((1, labels[part["id"]]))
         for chapter, lessons in chapters:
-            expected.append((2, chapter["id"]))
-            expected.extend((3, lesson["id"]) for lesson in lessons)
+            expected.append((2, labels[chapter["id"]]))
+            expected.extend((3, labels[lesson["id"]]) for lesson in lessons)
             for lesson in lessons:
                 for qa in manifest["lessons"][lesson["id"]]["qa"]:
                     if qa["publication_id"] not in text:
@@ -761,18 +810,24 @@ def audit_document(doc: pymupdf.Document) -> None:
         if len(panels) != 1:
             raise RuntimeError(f"Thiếu panel vector hình {figure_id}")
     toc_entries = doc.get_toc()
-    actual = [(level, ("P" + title.split(" — ", 1)[0].split()[-1]
-                       if level == 1 and title.startswith("PHẦN ") else
-                       title.split(" — ", 1)[0].split()[-1]))
-              for level, title, _ in toc_entries[:len(expected)]]
+    actual = [(level, title) for level, title, _ in toc_entries[:len(expected)]]
     if actual != expected:
-        raise RuntimeError(f"Sai cấp/thứ tự bookmark: {actual[:8]} != {expected[:8]}")
+        raise RuntimeError(f"Sai nhãn/cấp/thứ tự bookmark: {actual[:8]} != {expected[:8]}")
     for level, title, page in toc_entries[:len(expected)]:
         if page < 3 or page > len(doc) or title not in doc[page - 1].get_text():
             raise RuntimeError(f"Bookmark trỏ sai trang: {title} -> {page}")
     for index, (level, title, page) in enumerate(toc_entries[:len(expected) - 1]):
         if level == 2 and toc_entries[index + 1][2] != page:
             raise RuntimeError(f"Tiêu đề Chương bị tách khỏi Bài đầu: {title}")
+    first_part_page = toc_entries[0][2]
+    printed_toc = "\n".join(doc[index].get_text() for index in range(1, first_part_page - 1))
+    if re.search(r"\bP\d{2}(?:\.C\d{2})?(?:\.L\d{2})?\b", printed_toc):
+        raise RuntimeError("Mục lục in lộ mã kiến trúc nội bộ")
+    if "Bài 1.1" in printed_toc or labels[tree["parts"][0]["chapters"][0]["lessons"][0]["id"]] in printed_toc:
+        raise RuntimeError("Mục lục in quá dày: đã đưa Bài vào danh sách Phần–Chương")
+    for level, label in expected:
+        if level <= 2 and label not in printed_toc:
+            raise RuntimeError(f"Mục lục in thiếu nhãn: {label}")
     issues = source_free_pdf_issues(doc)
     if issues:
         raise RuntimeError(f"Nguồn tham khảo lọt vào PDF: {issues}")

@@ -11,7 +11,7 @@ import pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build import audit, source_free_pdf_issues  # noqa: E402
+from build import audit, publication_labels, source_free_pdf_issues  # noqa: E402
 
 PART = ROOT / "authoring" / "P13"
 PDF = ROOT / "Cam_nang_devops.candidate.pdf"
@@ -44,12 +44,19 @@ class PublicationPart13(unittest.TestCase):
         with pymupdf.open(PDF) as doc:
             audit(PDF)
             toc = doc.get_toc()
-            part = next(item for item in toc if item[1].startswith("PHẦN 13"))
+            tree = json.loads((ROOT / "architecture" / "knowledge_tree.json").read_text(encoding="utf-8"))
+            _, labels = publication_labels(tree)
+            part_tree = next(row for row in tree["parts"] if row["id"] == "P13")
+            chapter_labels = {labels[row["id"]] for row in part_tree["chapters"]}
+            lesson_labels = {labels[row["id"]] for chapter in part_tree["chapters"]
+                             for row in chapter["lessons"]}
+            part = next(item for item in toc if item[1] == labels["P13"])
             self.assertEqual(part[0], 1)
             chapters = [item for item in toc if item[0] == 2 and
-                        re.match(r"Chương P13\.C0[1-4] — (?!đáp án)", item[1])]
+                        item[1] in chapter_labels]
             self.assertEqual(len(chapters), 4)
-            lessons = [item for item in toc if item[0] == 3 and item[1].startswith("Bài P13.")]
+            lessons = [item for item in toc if item[0] == 3 and
+                       item[1] in lesson_labels]
             self.assertEqual(len(lessons), 12)
             self.assertEqual([item[2] for item in chapters], sorted(item[2] for item in chapters))
             for item in [part, *chapters, *lessons]:

@@ -244,7 +244,7 @@ class ManuscriptContract(unittest.TestCase):
     def test_bookmark_same_count_but_wrong_destination_fails(self):
         with pymupdf.open(build.OUTPUT) as doc:
             toc = doc.get_toc()
-            index = next(i for i, item in enumerate(toc) if item[1].startswith("Bài P01.C02.L02"))
+            index = next(i for i, item in enumerate(toc) if item[1].startswith("Bài 2.2 —"))
             page = toc[index][2]
             wrong = next(p for p in range(page + 1, len(doc) + 1)
                          if toc[index][1] not in doc[p - 1].get_text())
@@ -252,6 +252,20 @@ class ManuscriptContract(unittest.TestCase):
             doc.set_toc(toc)
             self.assertEqual(len(doc.get_toc()), len(toc))
             with self.assertRaisesRegex(RuntimeError, "Bookmark trỏ sai trang"):
+                build.audit_document(doc)
+
+    def test_reader_toc_keeps_internal_ids_out(self):
+        _, labels = build.publication_labels(self.tree)
+        self.assertEqual(labels["P01"], "PHẦN I — Máy tính và tiến trình")
+        self.assertEqual(labels["P01.C01"], "Chương 1 — Công việc, thời gian và đường đi dữ liệu")
+        self.assertEqual(labels["P01.C01.L01"], "Bài 1.1 — Máy thực thi")
+        with pymupdf.open(build.OUTPUT) as doc:
+            printed_toc = "\n".join(doc[i].get_text() for i in range(1, doc.get_toc()[0][2] - 1))
+            self.assertIn(labels["P01.C01"], printed_toc)
+            self.assertNotIn(labels["P01.C01.L01"], printed_toc)
+            self.assertNotRegex(printed_toc, r"\bP\d{2}\.C\d{2}")
+            doc[1].insert_text((72, 800), "P01.C01.L01", fontsize=8)
+            with self.assertRaisesRegex(RuntimeError, "Mục lục in lộ mã"):
                 build.audit_document(doc)
 
 
