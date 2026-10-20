@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 import hashlib
 import json
+import csv
 import re
 from pathlib import Path
 
@@ -20,6 +21,7 @@ from reportlab.platypus import (
     Preformatted, Spacer, LongTable, TableStyle, KeepTogether,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
+from p13_publication import part_story, answer_story
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,12 +68,36 @@ def style() -> dict[str, ParagraphStyle]:
         "h2": ParagraphStyle("h2", fontName="BodyBold", fontSize=13.5,
                              leading=18, spaceBefore=14, spaceAfter=8,
                              keepWithNext=True),
+        "h3": ParagraphStyle("h3", fontName="BodyBold", fontSize=11.8,
+                             leading=16, spaceBefore=12, spaceAfter=7,
+                             keepWithNext=True),
         "body": ParagraphStyle("body", fontName="Body", fontSize=11.7,
                                leading=17.5, alignment=TA_LEFT, spaceAfter=7.5),
+        "p13body": ParagraphStyle("p13body", fontName="Body", fontSize=11.7,
+                                  leading=17, alignment=TA_LEFT, spaceAfter=6.5),
+        "answerbody": ParagraphStyle("answerbody", fontName="Body", fontSize=10.8,
+                                     leading=15.5, alignment=TA_LEFT, spaceAfter=6),
         "toc": ParagraphStyle("toc-title", fontName="BodyBold", fontSize=19,
                               leading=24, spaceAfter=20),
         "tocentry": ParagraphStyle("toc-entry", fontName="Body", fontSize=10,
                                    leading=11, leftIndent=8, firstLineIndent=-8),
+        "tocchapter": ParagraphStyle("toc-chapter", fontName="Body", fontSize=9.5,
+                                     leading=11, leftIndent=22, firstLineIndent=-8),
+        "toclesson": ParagraphStyle("toc-lesson", fontName="Body", fontSize=9,
+                                    leading=11, leftIndent=38, firstLineIndent=-8),
+        "part_deck": ParagraphStyle("part-deck", fontName="BodyBold", fontSize=19,
+                                    leading=25, alignment=TA_CENTER, spaceAfter=10),
+        "part_intro": ParagraphStyle("part-intro", fontName="Body", fontSize=12,
+                                     leading=19, spaceAfter=15),
+        "exercise": ParagraphStyle("exercise", fontName="BodyBold", fontSize=11.5,
+                                   leading=16, spaceBefore=12, spaceAfter=7,
+                                   keepWithNext=True),
+        "caption": ParagraphStyle("caption", fontName="Body", fontSize=9,
+                                  leading=12, spaceBefore=4),
+        "p13code": ParagraphStyle("p13code", fontName="Mono", fontSize=8,
+                                  leading=11, leftIndent=6, rightIndent=6,
+                                  backColor=colors.HexColor("#f5f5f5"),
+                                  spaceBefore=5, spaceAfter=10),
         "code": ParagraphStyle("code", fontName="Mono", fontSize=8.7,
                                leading=12.3, leftIndent=9, rightIndent=9,
                                backColor=colors.HexColor("#f5f5f5"),
@@ -97,7 +123,7 @@ class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
                          rightMargin=RIGHT, topMargin=TOP, bottomMargin=BOTTOM,
-                         title="Cẩm nang ngành DevOps — bản đọc thử phần nền tảng",
+                         title="Cẩm nang ngành DevOps — PDF candidate có Phần XIII",
                          author="Dự án devops-learning")
         frame = Frame(LEFT, BOTTOM, PAGE_W - LEFT - RIGHT,
                       PAGE_H - TOP - BOTTOM, leftPadding=0, rightPadding=0,
@@ -139,6 +165,9 @@ def reference_urls() -> set[str]:
     markdown = (ROOT / "references.md").read_text(encoding="utf-8")
     urls = {source["url"] for source in registry["sources"].values()}
     urls.update(match.group(0).rstrip(".,;") for match in URL_RE.finditer(markdown))
+    for ledger in sorted((ROOT / "authoring" / "P13").glob("C*/claims.csv")):
+        with ledger.open(encoding="utf-8", newline="") as stream:
+            urls.update(row["source_url"] for row in csv.DictReader(stream))
     return urls
 
 
@@ -272,7 +301,7 @@ def build() -> None:
         raise RuntimeError("Không có chương bản thảo")
     styles = style()
     toc = TableOfContents()
-    toc.levelStyles = [styles["tocentry"], styles["tocentry"]]
+    toc.levelStyles = [styles["tocentry"], styles["tocchapter"], styles["toclesson"]]
     story: list[Flowable] = [
         Spacer(1, 170),
         Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
@@ -288,7 +317,10 @@ def build() -> None:
     for chapter in chapters:
         story.extend(read_markdown(chapter, styles))
         story.append(PageBreak())
+    story.extend(part_story(styles, Heading))
     story.extend(read_markdown(ROOT / "answers.md", styles))
+    story.append(PageBreak())
+    story.extend(answer_story(styles, Heading))
     try:
         Book(NEXT).multiBuild(story)
         audit(NEXT)
@@ -324,11 +356,33 @@ def audit_document(doc: pymupdf.Document) -> None:
                    "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "C10.1.", "C11.1.", "C12.1.", "C13.1.", "C14.1.", "C15.1.", "C16.1.", "C17.1.", "C18.1.", "C19.1.", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
+    for phrase in ("PHẦN XIII", "Chương XIII.1", "Chương XIII.2", "Chương XIII.3",
+                   "Chương XIII.4", "Lời giải Phần XIII", "Hình XIII.1.1",
+                   "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
+        if phrase not in text:
+            raise RuntimeError(f"Thiếu nội dung Phần XIII trong PDF: {phrase}")
+    for i in range(1, 13):
+        if f"Bài tập C13.{i}" not in text or not re.search(rf"(?m)^C13\.{i}\. ", text):
+            raise RuntimeError(f"Thiếu đề hoặc đáp án C13.{i} trong PDF")
     toc_entries = doc.get_toc()
     if len(toc_entries) < 7:
         raise RuntimeError("Bookmark chưa đủ")
     if toc_entries[0][2] < 3 or any(a[2] > b[2] for a, b in zip(toc_entries, toc_entries[1:])):
         raise RuntimeError(f"Bookmark trỏ sai trang hoặc sai thứ tự: {toc_entries}")
+    part = next((i for i, item in enumerate(toc_entries) if item[1].startswith("PHẦN XIII")), None)
+    if part is None or toc_entries[part][0] != 1:
+        raise RuntimeError("Thiếu bookmark cấp Phần XIII")
+    expected = [(2, f"Chương XIII.{i}") for i in range(1, 5)]
+    for level, label in expected:
+        hits = [item for item in toc_entries if item[0] == level and item[1].startswith(label)
+                and "đáp án" not in item[1]]
+        if len(hits) != 1 or hits[0][2] <= toc_entries[part][2]:
+            raise RuntimeError(f"Bookmark chương sai: {label}")
+    for i in range(1, 5):
+        for j in range(1, 4):
+            label = f"Bài XIII.{i}.{j}"
+            if sum(item[0] == 3 and item[1].startswith(label) for item in toc_entries) != 1:
+                raise RuntimeError(f"Bookmark bài sai: {label}")
     issues = source_free_pdf_issues(doc)
     if issues:
         raise RuntimeError(f"Nguồn tham khảo lọt vào PDF: {issues}")
