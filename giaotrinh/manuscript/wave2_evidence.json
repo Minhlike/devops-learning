@@ -42,6 +42,21 @@
       "type": "IETF RFC",
       "version": "RFC 4861 (2007)",
       "url": "https://www.rfc-editor.org/rfc/rfc4861.html"
+    },
+    "W2-RBDEF": {
+      "type": "Reproducible Builds project definition",
+      "version": "project documentation checked 2026-10-20; mutable page",
+      "url": "https://reproducible-builds.org/docs/definition/"
+    },
+    "W2-OCILAYER": {
+      "type": "OCI image layer specification",
+      "version": "image-spec v1.1.1",
+      "url": "https://github.com/opencontainers/image-spec/blob/v1.1.1/layer.md"
+    },
+    "W2-OVERLAY": {
+      "type": "Linux kernel documentation",
+      "version": "Linux 6.12",
+      "url": "https://docs.kernel.org/6.12/filesystems/overlayfs.html"
     }
   },
   "lessons": {
@@ -49,14 +64,18 @@
       "claims": [
         {
           "anchor": "Một lần đọc sau có thể nhanh hơn vì dữ liệu đã nằm trong page cache",
-          "sources": ["K2"],
+          "sources": [
+            "K2"
+          ],
           "source_location": "Concepts overview, Page cache",
           "support": "Kernel mô tả dữ liệu đọc có thể được giữ trong page cache để tránh truy cập thiết bị ở lần đọc sau.",
           "limits": "Không suy thời điểm writeback hay độ bền cho một request riêng."
         },
         {
           "anchor": "đồng hồ đơn điệu phù hợp để lấy hiệu",
-          "sources": ["W2-CLK"],
+          "sources": [
+            "W2-CLK"
+          ],
           "source_location": "DESCRIPTION, CLOCK_REALTIME; CLOCK_MONOTONIC; CLOCK_PROCESS_CPUTIME_ID",
           "support": "Manual phân biệt đồng hồ có thể chỉnh, đồng hồ đơn điệu và CPU time.",
           "limits": "CLOCK_MONOTONIC không tính thời gian suspend và có thể điều chỉnh tần số."
@@ -75,14 +94,18 @@
       "claims": [
         {
           "anchor": "Page cache có thể giữ trang mới sửa ở trạng thái dirty",
-          "sources": ["K2"],
+          "sources": [
+            "K2"
+          ],
           "source_location": "Concepts overview, Page cache",
           "support": "Trang ghi mới được đánh dirty và đồng bộ về thiết bị ở writeback.",
           "limits": "Đường ghi phụ thuộc filesystem, mount và thiết bị."
         },
         {
           "anchor": "chỉ đồng bộ dữ liệu tệp chưa đủ",
-          "sources": ["R6"],
+          "sources": [
+            "R6"
+          ],
           "source_location": "fsync(2), DESCRIPTION, directory entry paragraph",
           "support": "Manual nêu fsync tệp không nhất thiết đồng bộ directory entry; cần fsync thư mục.",
           "limits": "Không hứa phục hồi mọi lỗi phần cứng hay mọi filesystem."
@@ -101,7 +124,9 @@
       "claims": [
         {
           "anchor": "Thiếu quyền tìm kiếm trên một thư mục trung gian có thể trả `EACCES`",
-          "sources": ["R7"],
+          "sources": [
+            "R7"
+          ],
           "source_location": "path_resolution(7), Step 2; Permissions",
           "support": "Thiếu search permission khi đi qua thành phần tên trả EACCES; quyền phụ thuộc danh tính và nhóm.",
           "limits": "ACL, capability, LSM và mount namespace có thể bổ sung điều kiện."
@@ -120,14 +145,18 @@
       "claims": [
         {
           "anchor": "kernel còn giữ trang dirty, trong khi writeback xuống thiết bị diễn ra sau đó",
-          "sources": ["K2"],
+          "sources": [
+            "K2"
+          ],
           "source_location": "Concepts overview, Page cache",
           "support": "Kernel nêu trang ghi được đánh dirty rồi đồng bộ tới backing storage sau đó.",
           "limits": "Không đồng nhất bộ đếm toàn máy với một request."
         },
         {
           "anchor": "khi tạo tên mới còn phải xét thư mục chứa tên ấy",
-          "sources": ["R6"],
+          "sources": [
+            "R6"
+          ],
           "source_location": "fsync(2), DESCRIPTION, directory entry paragraph",
           "support": "fsync tệp không nhất thiết đồng bộ directory entry, cần đồng bộ thư mục.",
           "limits": "Độ bền cuối phụ thuộc filesystem và thiết bị."
@@ -146,7 +175,9 @@
       "claims": [
         {
           "anchor": "`systemctl restart` thành công chỉ chứng minh systemd đã xử lý yêu cầu",
-          "sources": ["S1"],
+          "sources": [
+            "S1"
+          ],
           "source_location": "systemd.service, Type=exec and service states",
           "support": "systemd phân biệt khởi tạo/thực thi tiến trình với readiness của ứng dụng.",
           "limits": "Hậu điều kiện request và dữ liệu do ứng dụng xác nhận riêng."
@@ -165,14 +196,18 @@
       "claims": [
         {
           "anchor": "sao chép trực tiếp các tệp dữ liệu bằng công cụ tệp khi server đang chạy không tạo bản backup dùng được",
-          "sources": ["W2-PG17"],
+          "sources": [
+            "W2-PG17"
+          ],
           "source_location": "25.2 File System Level Backup, restrictions 1 and consistent snapshot paragraphs",
           "support": "PostgreSQL yêu cầu dừng server cho bản sao tệp thông thường hoặc dùng snapshot nhất quán cùng điều kiện WAL.",
           "limits": "Áp dụng cho PostgreSQL 17, không khái quát mọi cơ sở dữ liệu."
         },
         {
           "anchor": "khoảng giữa copy và truncate khiến bản ghi mới có thể mất",
-          "sources": ["W2-LOG322"],
+          "sources": [
+            "W2-LOG322"
+          ],
           "source_location": "logrotate.8.in, copytruncate option",
           "support": "Manual nêu khoảng giữa copy và truncate có thể làm mất log mới.",
           "limits": "Mức mất phụ thuộc tốc độ ghi và lịch chạy; không đo từ tài liệu."
@@ -191,7 +226,9 @@
       "claims": [
         {
           "anchor": "`active` của systemd là một quan sát về vòng đời tiến trình",
-          "sources": ["S1"],
+          "sources": [
+            "S1"
+          ],
           "source_location": "systemd.service, service states and Type=",
           "support": "Trạng thái service mô tả vòng đời unit/process, không định nghĩa request nghiệp vụ.",
           "limits": "Readiness phải được ứng dụng kiểm ở đường người dùng."
@@ -210,21 +247,28 @@
       "claims": [
         {
           "anchor": "Path MTU là giới hạn nhỏ nhất trên đường đang dùng",
-          "sources": ["W2-MTU4"],
+          "sources": [
+            "W2-MTU4"
+          ],
           "source_location": "RFC 1191, Section 1 Introduction",
           "support": "Path MTU được định nghĩa bằng MTU nhỏ nhất của từng hop.",
           "limits": "Route và PMTU có thể đổi; không suy từ MTU giao diện đầu tiên."
         },
         {
           "anchor": "gói có bit Don't Fragment vượt MTU chặng sau bị router bỏ",
-          "sources": ["W2-MTU4"],
+          "sources": [
+            "W2-MTU4"
+          ],
           "source_location": "RFC 1191, Section 2 Protocol overview",
           "support": "Router bỏ gói DF quá lớn và trả ICMP fragmentation needed; nguồn hạ PMTU.",
           "limits": "ICMP có thể bị chặn, gây black hole; ví dụ số giả định."
         },
         {
           "anchor": "router không phân mảnh gói đang chuyển tiếp",
-          "sources": ["W2-IP6", "W2-MTU6"],
+          "sources": [
+            "W2-IP6",
+            "W2-MTU6"
+          ],
           "source_location": "RFC 8200, Section 5 Packet Size Issues; RFC 8201, Section 2 Protocol Overview",
           "support": "IPv6 router không fragment; ICMPv6 Packet Too Big báo nguồn điều chỉnh PMTU.",
           "limits": "Nguồn IPv6 có thể phân mảnh; mức 1280 là minimum link MTU theo điều kiện RFC."
@@ -243,21 +287,27 @@
       "claims": [
         {
           "anchor": "không tự đánh số để truyền lại và không hứa thứ tự hay giao hàng",
-          "sources": ["W2-UDP"],
+          "sources": [
+            "W2-UDP"
+          ],
           "source_location": "RFC 8085, Section 3 UDP Usage Guidelines and Introduction",
           "support": "Ứng dụng UDP cần tự xử lý reliability, congestion và kích thước khi cần.",
           "limits": "QUIC xây cơ chế riêng ở tầng trên UDP."
         },
         {
           "anchor": "UDP checksum thông thường là bắt buộc",
-          "sources": ["W2-IP6"],
+          "sources": [
+            "W2-IP6"
+          ],
           "source_location": "RFC 8200, Section 8.1 Upper-Layer Checksums",
           "support": "IPv6 yêu cầu UDP checksum ngoại trừ các ngoại lệ zero-checksum được chỉ định riêng.",
           "limits": "Không dùng ngoại lệ tunnel làm mặc định cho UDP IPv6."
         },
         {
           "anchor": "IPv6 Neighbor Discovery thay ARP",
-          "sources": ["W2-ND6"],
+          "sources": [
+            "W2-ND6"
+          ],
           "source_location": "RFC 4861, Abstract and Section 3.1 Comparison with IPv4",
           "support": "Neighbor Discovery phân giải địa chỉ tầng liên kết và khám phá láng giềng/router ở IPv6.",
           "limits": "Chi tiết phụ thuộc loại liên kết; không chứng minh route xa khỏe."
@@ -269,6 +319,125 @@
           "publication_id": "P03.C02.L04.Q01",
           "question": "Client thấy DNS datagram đi, resolver thấy request và gửi response, nhưng client timeout. Điều gì đã được loại trừ, điểm nào cần quan sát tiếp, và vì sao retry không chứng minh UDP tự truyền lại?",
           "answer": "Đã có bằng chứng request tới resolver và resolver phát response ở điểm capture ấy. Cần kiểm tuple sau NAT, route/filter chiều về và capture gần client; timeout chưa định vị nơi mất. Retry là chính sách ứng dụng hoặc thư viện, không là bảo đảm của UDP."
+        }
+      ]
+    },
+    "P04.C01.L03": {
+      "claims": [
+        {
+          "anchor": "một tag nhẹ thường trỏ tới object được đánh dấu, trong khi annotated tag là một object riêng",
+          "sources": [
+            "G2"
+          ],
+          "source_location": "Pro Git 2nd ed, Git Internals: Git References, Tags",
+          "support": "Mô tả ref nhánh và hai kiểu tag; annotated tag là object có metadata và target.",
+          "limits": "Không xác thực nguồn gốc hoặc chữ ký chỉ từ tên tag."
+        },
+        {
+          "anchor": "`origin/main` là remote-tracking ref trong kho cục bộ",
+          "sources": [
+            "G3"
+          ],
+          "source_location": "Git user manual 2.51.0, Remote-tracking branches",
+          "support": "Remote-tracking branches là refs cập nhật khi tương tác với remote.",
+          "limits": "Ref cục bộ có thể cũ trước lần fetch tiếp theo."
+        },
+        {
+          "anchor": "E có thể trở thành unreachable từ các ref hiện tại",
+          "sources": [
+            "G3"
+          ],
+          "source_location": "Git user manual 2.51.0, Dangling objects and reflog",
+          "support": "Object không còn reachable từ refs có thể tồn tại tạm nhờ reflog hoặc chính sách dọn.",
+          "limits": "Không hứa thời điểm thu gom hoặc tính bền của reflog."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P04.C01.L03.Q01",
+          "publication_id": "P04.C01.L03.Q01",
+          "question": "Trong đồ thị giả định A→B→C→D, main trỏ D, tag v1.4 trỏ B và origin/main chưa fetch vẫn trỏ C. Những tên nào xác định cùng commit? Có thể kết luận server hiện trỏ C không?",
+          "answer": "Không tên nào trong ba ref xác định cùng commit ở snapshot này: main=D, tag=B, origin/main=C. origin/main là bản ghi cục bộ nên chưa thể kết luận branch trên server hiện trỏ C; cần fetch/đối chiếu remote rồi ghi object ID."
+        }
+      ]
+    },
+    "P06.C01.L03": {
+      "claims": [
+        {
+          "anchor": "cùng nguồn, môi trường và chỉ dẫn build đã xác định tạo cùng byte",
+          "sources": [
+            "W2-RBDEF"
+          ],
+          "source_location": "Definitions, When is a build reproducible?",
+          "support": "Định nghĩa yêu cầu bản sao byte-by-byte giống nhau của các artifact đã chỉ định khi cùng nguồn, môi trường, hướng dẫn.",
+          "limits": "Định nghĩa không chứng minh source an toàn hay builder đáng tin."
+        },
+        {
+          "anchor": "dependency tải động, phiên bản compiler, locale, đường dẫn build, thời điểm đóng gói",
+          "sources": [
+            "W2-RBDEF"
+          ],
+          "source_location": "Definitions, Explanations; managing variance links",
+          "support": "Môi trường liên quan gồm dependencies, version, flags, environment variables như locale; các đầu vào biến thiên cần kiểm soát.",
+          "limits": "Danh sách trong bài là các khả năng, không khẳng định mọi toolchain đều nhạy với tất cả."
+        },
+        {
+          "anchor": "Provenance có thể ghi nguồn, tham số, builder và subject digest",
+          "sources": [
+            "SL1"
+          ],
+          "source_location": "SLSA v1.1 provenance schema, subject and buildDefinition/runDetails",
+          "support": "Schema ghi subject digest, buildDefinition và runDetails/builder.",
+          "limits": "Bản ghi có thể sai nếu builder hoặc hệ thống ký bị xâm nhập."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P06.C01.L03.Q01",
+          "publication_id": "P06.C01.L03.Q01",
+          "question": "Hai build cùng commit c84 đều chạy được nhưng cho digest H84 và H84b. Có thể promote H84b vì test trên H84 đã xanh không? Nêu bước kiểm tiếp.",
+          "answer": "Không. Hai digest khác nhau là hai chuỗi byte khác nhau trong phạm vi hash; test của H84 chưa chứng minh H84b. Ghi môi trường và tập đầu ra, so byte/metadata để tìm biến thiên, tái lập hoặc chạy lại gate trên chính digest sẽ promote."
+        }
+      ]
+    },
+    "P07.C03.L02": {
+      "claims": [
+        {
+          "anchor": "Trong định dạng layer OCI, tên whiteout có dạng `.wh.`",
+          "sources": [
+            "W2-OCILAYER"
+          ],
+          "source_location": "Image Layer Filesystem Changeset, Representing Changes and Whiteouts",
+          "support": "Spec dùng .wh. prefix để biểu diễn xóa tệp ở layer thấp khi áp changeset.",
+          "limits": "Đây là định dạng archive OCI; storage driver có biểu diễn nội bộ khác."
+        },
+        {
+          "anchor": "merged filesystem che chi tiết nguồn gốc",
+          "sources": [
+            "W2-OVERLAY"
+          ],
+          "source_location": "Overlay Filesystem, Directories; whiteouts and opaque directories",
+          "support": "Kernel mô tả upper/lower merge, upper che lower và whiteout che tên lower.",
+          "limits": "Không phải mọi runtime và filesystem đều dùng OverlayFS."
+        },
+        {
+          "anchor": "named volume tại `/var/lib/orders`, dữ liệu ghi vào mount thuộc volume",
+          "sources": [
+            "DD1",
+            "DD2",
+            "DD3"
+          ],
+          "source_location": "Docker Engine Storage overview; Volumes; Bind mounts",
+          "support": "Docker phân biệt writable layer vòng đời container với volume/bind mount ngoài lớp ghi; mount che nội dung destination.",
+          "limits": "Tình huống 41 bản ghi là giả định, chưa chạy Docker trong môi trường này."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P07.C03.L02.Q01",
+          "publication_id": "P07.C03.L02.Q01",
+          "question": "Container A ghi 41 bản ghi vào /var/lib/orders không mount. Tạo B từ cùng image rồi B thấy thư mục rỗng. Vì sao và cần quan sát gì trước khi xử lý?",
+          "answer": "B có lớp ghi mới, không kế thừa lớp ghi của A. Kiểm tra identity A/B, digest image, mount type/source/destination và đọc dữ liệu của A hoặc bản sao trước khi xóa. Không suy rằng image mới đã xóa dữ liệu cũ; nếu từng dùng volume còn phải kiểm đúng volume identity."
         }
       ]
     }

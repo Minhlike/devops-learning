@@ -7,6 +7,9 @@
     "W2-MTU6": "https://www.rfc-editor.org/rfc/rfc8201.html",
     "W2-IP6": "https://www.rfc-editor.org/rfc/rfc8200.html",
     "W2-UDP": "https://www.rfc-editor.org/rfc/rfc8085.html",
-    "W2-ND6": "https://www.rfc-editor.org/rfc/rfc4861.html"
+    "W2-ND6": "https://www.rfc-editor.org/rfc/rfc4861.html",
+    "W2-RBDEF": "https://reproducible-builds.org/docs/definition/",
+    "W2-OCILAYER": "https://github.com/opencontainers/image-spec/blob/v1.1.1/layer.md",
+    "W2-OVERLAY": "https://docs.kernel.org/6.12/filesystems/overlayfs.html"
   }
 }
