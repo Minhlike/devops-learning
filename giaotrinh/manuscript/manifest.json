@@ -5648,16 +5648,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C01/L01.md",
+      "sha256": "533a11e97739f9eb2ee884289bc70144abdde9ba1593854da59499e24c952097",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-SRESLO",
+        "W2-WAREL"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C01.L01.Q01",
+          "publication_id": "P15.C01.L01.Q01",
+          "question": "Vì sao 99,9% request thành công chưa là SLO kiểm được nếu chưa định nghĩa request hợp lệ và điểm đo?",
+          "answer": "Thiếu population, cửa sổ, numerator/denominator, loại timeout/lỗi và điểm đo. Cần hợp đồng chỉ số trước khi chọn capacity hoặc tính error budget."
+        }
+      ]
     },
     "P15.C01.L02": {
       "parent": "P15.C01",
@@ -5668,16 +5678,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C01/L02.md",
+      "sha256": "b332746a73b859f80f1a181143b09918c04c6f46caae61bcfd4b35f95eec4ff0",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS10",
+        "W2-SRESLO",
+        "W2-WAREL"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C01.L02.Q01",
+          "publication_id": "P15.C01.L02.Q01",
+          "question": "Control plane rollout xanh, Pod Ready, nhưng POST /orders không đọc lại được. Ba trạng thái cho biết gì và thiếu phép kiểm nào?",
+          "answer": "Chúng xác nhận các ranh giới điều khiển và probe hẹp; cần theo request thật tới database, xác nhận commit và GET đọc lại record cùng revision/digest đang phục vụ."
+        }
+      ]
     },
     "P15.C01.L03": {
       "parent": "P15.C01",
@@ -5688,16 +5709,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C01/L03.md",
+      "sha256": "2fd82326535d9db7cc0a7ad19589f6bd345f0485e7080e3b07593717d6cf4000",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-WADR",
+        "W2-WAREL"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C01.L03.Q01",
+          "publication_id": "P15.C01.L03.Q01",
+          "question": "H84 gây 2% lỗi trong 5 phút ở 360 rps nhưng /health xanh. Tính số lỗi theo giả định và nêu stop rule.",
+          "answer": "360×300×0,02=2.160 request lỗi. Dừng tăng canary, giữ evidence, kiểm request/data và tương thích schema trước quyết định rollback; đây là tính toán giả định."
+        }
+      ]
     },
     "P15.C02.L01": {
       "parent": "P15.C02",
@@ -5710,16 +5741,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C02/L01.md",
+      "sha256": "9e3a4fc4902355e335c2ff4a64a59f02b2c7b9e60421fcd3f0c3554807e774e7",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "KU23",
+        "KU24",
+        "W2-SREOVER"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C02.L01.Q01",
+          "publication_id": "P15.C02.L01.Q01",
+          "question": "Giả định đỉnh 360 rps, mỗi replica 120 rps đã đo và chỉ dùng 75% để giữ headroom. Cần mấy replica khỏe, và nếu muốn mất một AZ vẫn chịu đỉnh với hai AZ cân bằng?",
+          "answer": "Mục tiêu 90 rps/replica, cần 4 replica cho hệ khỏe. Để AZ còn lại một mình có 4 replica, đặt 4 mỗi AZ, tổng 8; vẫn phải thử năng lực thật và dependency."
+        }
+      ]
     },
     "P15.C02.L02": {
       "parent": "P15.C02",
@@ -5730,16 +5772,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C02/L02.md",
+      "sha256": "0f1ec2174ac14dfe5d413ac3051fa06330e1013aad6d6ea420e6c15aeb96f42d",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "OT11",
+        "PM7",
+        "W2-WACOST"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C02.L02.Q01",
+          "publication_id": "P15.C02.L02.Q01",
+          "question": "Với p là giá mỗi replica-giờ, so compute 8 replica cả 730 giờ và 4 nền cộng 4 thêm 2 giờ/ngày trong 30 ngày.",
+          "answer": "A=8×730p=5.840p. B=(4×730+4×2×30)p=3.160p; chênh 2.680p, chưa gồm node/egress/storage và rủi ro autoscale lag."
+        }
+      ]
     },
     "P15.C02.L03": {
       "parent": "P15.C02",
@@ -5750,16 +5803,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C02/L03.md",
+      "sha256": "0f4469a5a6c9c7b197decebae8ab796d4ab3a25908896cba435389bbda98b4fc",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-SRESLO",
+        "W2-WACOST"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C02.L03.Q01",
+          "publication_id": "P15.C02.L03.Q01",
+          "question": "Phương án B rẻ hơn 2.680p nhưng có thể mất SLO khi một AZ lỗi. Dữ kiện gì cần trước khi chọn?",
+          "answer": "Cần năng lực và autoscale lag đo thật, ràng buộc SLO/DR, error budget, chi phí đầy đủ theo Region/ngày, tác động nghiệp vụ và chủ rủi ro; chênh compute riêng chưa đủ."
+        }
+      ]
     },
     "P15.C03.L01": {
       "parent": "P15.C03",
@@ -5772,16 +5835,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C03/L01.md",
+      "sha256": "706dd277c78ead5c3ce1526cbaf19cf134a64e7b115f98c9236a53f65dd411a6",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "SL1",
+        "W2-RBDEF",
+        "W2-WADR"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L01.Q01",
+          "publication_id": "P15.C03.L01.Q01",
+          "question": "Có commit và file backup nhưng chưa tính digest artifact hay thử restore. Có được deploy theo rubric không?",
+          "answer": "Không. Ghi digest từ byte, khóa input, restore thử và kiểm nội dung trước; thiếu mắt xích thì dừng hoặc ghi SKIP/FAIL đúng phạm vi."
+        }
+      ]
     },
     "P15.C03.L02": {
       "parent": "P15.C03",
@@ -5792,16 +5866,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C03/L02.md",
+      "sha256": "bd3ad0784257b231bf9b4acdfca85200c5582aa1eeb55806b6765ede6ee3d016",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "KU4",
+        "SL1",
+        "W2-SRESLO"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L02.Q01",
+          "publication_id": "P15.C03.L02.Q01",
+          "question": "Canary có 990/1000 request hợp lệ thành công, SLO giả định 99,9%. Có tăng traffic không?",
+          "answer": "Không. SLI cửa sổ là 99%, dưới 99,9%; dừng tăng traffic, điều tra lỗi và kiểm missing data/request-data trước quyết định tiếp."
+        }
+      ]
     },
     "P15.C03.L03": {
       "parent": "P15.C03",
@@ -5812,16 +5897,25 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C03/L03.md",
+      "sha256": "454df6dc67b79c9641aa06cd7122c7e34f71c736b971775e6bb0a9c18c7234ba",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-WADR"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L03.Q01",
+          "publication_id": "P15.C03.L03.Q01",
+          "question": "Backup 10:00, lỗi 10:04, rút S2 10:07, request ghi/đọc phục hồi 10:13. Nếu chỉ restore backup mà không replay, RPO/RTO suy ra gì?",
+          "answer": "Có thể mất các ghi đã xác nhận sau 10:00 tới 10:13, tối đa khoảng 13 phút trong timeline giả định; RTO đo từ lúc dịch vụ hỏng theo hợp đồng tới 10:13, không tính tới lệnh rollback đơn thuần."
+        }
+      ]
     },
     "P15.C03.L04": {
       "parent": "P15.C03",
@@ -5832,16 +5926,28 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P15/C03/L04.md",
+      "sha256": "449dc944f46820d48eced84b62584c463f7646bd7a15f019d0b23ab36330d85a",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "KU4",
+        "SL1",
+        "W2-SRESLO",
+        "W2-WAREL"
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L04.Q01",
+          "publication_id": "P15.C03.L04.Q01",
+          "question": "Một ledger có tag prod, CI xanh và dashboard xanh nhưng thiếu digest, request ID và restore test. Đạt capstone không?",
+          "answer": "Không. Thiếu identity artifact, liên kết request–revision–record và bằng chứng phục hồi. Ghi UNKNOWN/SKIP theo nguyên nhân, dừng triển khai nếu thiếu hậu trạng thái dữ liệu."
+        }
+      ]
     }
   }
 }

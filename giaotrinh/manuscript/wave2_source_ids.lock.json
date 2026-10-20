@@ -27,6 +27,11 @@
     "W2-RBAC": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/rbac/",
     "W2-SA": "https://v1-34.docs.kubernetes.io/docs/concepts/security/service-accounts/",
     "W2-SECRET": "https://v1-34.docs.kubernetes.io/docs/concepts/security/secrets-good-practices/",
-    "W2-ADMIT": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/admission-controllers/"
+    "W2-ADMIT": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/admission-controllers/",
+    "W2-SRESLO": "https://sre.google/sre-book/service-level-objectives/",
+    "W2-SREOVER": "https://sre.google/sre-book/handling-overload/",
+    "W2-WAREL": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html",
+    "W2-WACOST": "https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html",
+    "W2-WADR": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_planning_for_recovery_disaster_recovery.html"
   }
 }

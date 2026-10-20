@@ -142,6 +142,31 @@
       "type": "Kubernetes documentation",
       "version": "Kubernetes v1.34 snapshot",
       "url": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/admission-controllers/"
+    },
+    "W2-SRESLO": {
+      "type": "Google SRE Book",
+      "version": "2016 edition, Service Level Objectives chapter",
+      "url": "https://sre.google/sre-book/service-level-objectives/"
+    },
+    "W2-SREOVER": {
+      "type": "Google SRE Book",
+      "version": "2016 edition, Handling Overload chapter",
+      "url": "https://sre.google/sre-book/handling-overload/"
+    },
+    "W2-WAREL": {
+      "type": "AWS Well-Architected Framework",
+      "version": "Reliability Pillar, checked 2026-10-20; rolling guidance",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html"
+    },
+    "W2-WACOST": {
+      "type": "AWS Well-Architected Framework",
+      "version": "Cost Optimization Pillar, checked 2026-10-20; rolling guidance",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html"
+    },
+    "W2-WADR": {
+      "type": "AWS Well-Architected Framework",
+      "version": "Reliability Pillar REL13-BP02, checked 2026-10-20",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_planning_for_recovery_disaster_recovery.html"
     }
   },
   "lessons": {
@@ -1172,6 +1197,315 @@
           "publication_id": "P14.C04.L03.Q01",
           "question": "Pod Ready, DNS và TCP tới endpoint đã qua nhưng S3 trả AccessDenied. Mở SG 0.0.0.0/0 có chữa đúng nguyên nhân không?",
           "answer": "Không. Kiểm role session, action/object, explicit Deny và resource policy; mở SG rộng không cấp IAM Allow và làm tăng bề mặt tấn công."
+        }
+      ]
+    },
+    "P15.C01.L01": {
+      "claims": [
+        {
+          "anchor": "Một thiết kế production bắt đầu từ hợp đồng người dùng và dữ liệu",
+          "sources": [
+            "W2-SRESLO"
+          ],
+          "source_location": "Service Level Objectives, indicators and objectives",
+          "support": "SRE chọn SLI/SLO từ hành vi có ý nghĩa với người dùng; latency/error/correctness cần định nghĩa.",
+          "limits": "120/360 rps, 99.9% và 400 ms trong bài là giả định, không là benchmark."
+        },
+        {
+          "anchor": "Không tự tuyên bố đạt một chuẩn pháp lý",
+          "sources": [
+            "W2-WAREL"
+          ],
+          "source_location": "Reliability Pillar, scope of architectural review",
+          "support": "Framework đưa nguyên tắc kiến trúc, không cấp chứng nhận pháp lý.",
+          "limits": "Retention/compliance là yêu cầu bài toán giả định, cần chuyên gia và nguồn pháp lý riêng khi áp dụng thật."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C01.L01.Q01",
+          "publication_id": "P15.C01.L01.Q01",
+          "question": "Vì sao 99,9% request thành công chưa là SLO kiểm được nếu chưa định nghĩa request hợp lệ và điểm đo?",
+          "answer": "Thiếu population, cửa sổ, numerator/denominator, loại timeout/lỗi và điểm đo. Cần hợp đồng chỉ số trước khi chọn capacity hoặc tính error budget."
+        }
+      ]
+    },
+    "P15.C01.L02": {
+      "claims": [
+        {
+          "anchor": "Vẽ ba đường riêng cho `orders-api`",
+          "sources": [
+            "W2-WAREL",
+            "W2-SRESLO"
+          ],
+          "source_location": "Reliability Pillar; SRE request/data indicators",
+          "support": "Thiết kế cần phân biệt luồng request, data và control để kiểm failure domain và SLO.",
+          "limits": "Đây là phép tổng hợp kiến trúc, không khẳng định topology đã triển khai."
+        },
+        {
+          "anchor": "EBS của một instance không tự attach xuyên AZ",
+          "sources": [
+            "AWS10"
+          ],
+          "source_location": "EBS volume lifecycle, AZ constraint",
+          "support": "Volume EBS thuộc AZ; đường dữ liệu cần giải pháp khôi phục/replication riêng.",
+          "limits": "Không suy mọi storage đều có ranh giới EBS."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C01.L02.Q01",
+          "publication_id": "P15.C01.L02.Q01",
+          "question": "Control plane rollout xanh, Pod Ready, nhưng POST /orders không đọc lại được. Ba trạng thái cho biết gì và thiếu phép kiểm nào?",
+          "answer": "Chúng xác nhận các ranh giới điều khiển và probe hẹp; cần theo request thật tới database, xác nhận commit và GET đọc lại record cùng revision/digest đang phục vụ."
+        }
+      ]
+    },
+    "P15.C01.L03": {
+      "claims": [
+        {
+          "anchor": "Mất AZ A: target ở B còn capacity và dữ liệu có thể đọc không?",
+          "sources": [
+            "W2-WAREL",
+            "W2-WADR"
+          ],
+          "source_location": "Reliability Pillar, recovery objectives and strategies",
+          "support": "Failure domain/recovery cần kiểm capacity, data và thời gian phục hồi theo mục tiêu.",
+          "limits": "Bài là fault model giả định, không kết quả failover thật."
+        },
+        {
+          "anchor": "Nếu H84 đã ghi schema mới, kiểm khả năng H83 đọc đơn mới trước rollback",
+          "sources": [
+            "W2-WADR"
+          ],
+          "source_location": "Reliability Pillar, data recovery planning",
+          "support": "Recovery strategy phải xét dữ liệu cùng ứng dụng; rollback ứng dụng là suy luận riêng.",
+          "limits": "Không hứa một migration có thể đảo."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C01.L03.Q01",
+          "publication_id": "P15.C01.L03.Q01",
+          "question": "H84 gây 2% lỗi trong 5 phút ở 360 rps nhưng /health xanh. Tính số lỗi theo giả định và nêu stop rule.",
+          "answer": "360×300×0,02=2.160 request lỗi. Dừng tăng canary, giữ evidence, kiểm request/data và tương thích schema trước quyết định rollback; đây là tính toán giả định."
+        }
+      ]
+    },
+    "P15.C02.L01": {
+      "claims": [
+        {
+          "anchor": "Hàng đợi làm tail latency tăng mạnh",
+          "sources": [
+            "W2-SREOVER"
+          ],
+          "source_location": "Handling Overload, queues and load shedding",
+          "support": "Overload/queueing làm tăng latency và cần giới hạn hoặc shed load.",
+          "limits": "Năng lực 120 rps mỗi replica trong bài là giả định cần đo."
+        },
+        {
+          "anchor": "HPA nhìn metric có cửa sổ lấy mẫu",
+          "sources": [
+            "KU23",
+            "KU24"
+          ],
+          "source_location": "Kubernetes HPA algorithm and resource metrics pipeline",
+          "support": "HPA dùng metric cập nhật theo chu kỳ; scale-up/readiness có trễ.",
+          "limits": "Thời gian trễ cụ thể phụ thuộc cluster và workload."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C02.L01.Q01",
+          "publication_id": "P15.C02.L01.Q01",
+          "question": "Giả định đỉnh 360 rps, mỗi replica 120 rps đã đo và chỉ dùng 75% để giữ headroom. Cần mấy replica khỏe, và nếu muốn mất một AZ vẫn chịu đỉnh với hai AZ cân bằng?",
+          "answer": "Mục tiêu 90 rps/replica, cần 4 replica cho hệ khỏe. Để AZ còn lại một mình có 4 replica, đặt 4 mỗi AZ, tổng 8; vẫn phải thử năng lực thật và dependency."
+        }
+      ]
+    },
+    "P15.C02.L02": {
+      "claims": [
+        {
+          "anchor": "Mô hình tiền phải có đơn vị và ranh giới",
+          "sources": [
+            "W2-WACOST"
+          ],
+          "source_location": "Cost Optimization Pillar, measuring cost and usage",
+          "support": "Cost model cần tính các driver sử dụng và yêu cầu kiến trúc; bài nêu biến thay giá thực.",
+          "limits": "Không đưa giá AWS hiện hành; p là biến giả định."
+        },
+        {
+          "anchor": "Một label `request_id` trên metric tạo chuỗi gần như theo từng request",
+          "sources": [
+            "PM7",
+            "OT11"
+          ],
+          "source_location": "Prometheus naming/label practices; OTel sensitive data guidance",
+          "support": "Label cardinality cao tăng số series; ID truy vết cần bảo vệ ở log/trace.",
+          "limits": "Tác động bộ nhớ/chi phí cụ thể phải đo theo hệ thật."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C02.L02.Q01",
+          "publication_id": "P15.C02.L02.Q01",
+          "question": "Với p là giá mỗi replica-giờ, so compute 8 replica cả 730 giờ và 4 nền cộng 4 thêm 2 giờ/ngày trong 30 ngày.",
+          "answer": "A=8×730p=5.840p. B=(4×730+4×2×30)p=3.160p; chênh 2.680p, chưa gồm node/egress/storage và rủi ro autoscale lag."
+        }
+      ]
+    },
+    "P15.C02.L03": {
+      "claims": [
+        {
+          "anchor": "Quyết định tối ưu dùng “chi phí cho một kết quả hợp lệ”",
+          "sources": [
+            "W2-WACOST",
+            "W2-SRESLO"
+          ],
+          "source_location": "Cost Optimization Pillar; SRE SLI/SLO",
+          "support": "Chi phí phải xét cùng workload và mức service đạt được; bài đề xuất metric per outcome.",
+          "limits": "Giá trị nghiệp vụ của lỗi cần product định nghĩa, không suy từ hạ tầng."
+        },
+        {
+          "anchor": "chọn candidate, ghi baseline tải/SLO/chi phí",
+          "sources": [
+            "W2-WACOST"
+          ],
+          "source_location": "Cost Optimization Pillar, continuous optimization",
+          "support": "Cần đo baseline, thay đổi và đánh giá lại tác động chi phí.",
+          "limits": "Thí nghiệm phải có stop rule để không gây hại hệ thật."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C02.L03.Q01",
+          "publication_id": "P15.C02.L03.Q01",
+          "question": "Phương án B rẻ hơn 2.680p nhưng có thể mất SLO khi một AZ lỗi. Dữ kiện gì cần trước khi chọn?",
+          "answer": "Cần năng lực và autoscale lag đo thật, ràng buộc SLO/DR, error budget, chi phí đầy đủ theo Region/ngày, tác động nghiệp vụ và chủ rủi ro; chênh compute riêng chưa đủ."
+        }
+      ]
+    },
+    "P15.C03.L01": {
+      "claims": [
+        {
+          "anchor": "digest artifact tính từ byte",
+          "sources": [
+            "W2-RBDEF",
+            "SL1"
+          ],
+          "source_location": "Reproducible Builds definition; SLSA provenance subject",
+          "support": "Artifact identity gắn byte/digest; provenance ghi subject và build input.",
+          "limits": "Không chứng minh artifact an toàn chỉ từ digest."
+        },
+        {
+          "anchor": "backup và phép restore nhỏ",
+          "sources": [
+            "W2-WADR"
+          ],
+          "source_location": "Reliability Pillar, test recovery strategy",
+          "support": "Bản sao cần được thử khôi phục theo mục tiêu recovery.",
+          "limits": "Fixture cục bộ không chứng nhận production DR."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L01.Q01",
+          "publication_id": "P15.C03.L01.Q01",
+          "question": "Có commit và file backup nhưng chưa tính digest artifact hay thử restore. Có được deploy theo rubric không?",
+          "answer": "Không. Ghi digest từ byte, khóa input, restore thử và kiểm nội dung trước; thiếu mắt xích thì dừng hoặc ghi SKIP/FAIL đúng phạm vi."
+        }
+      ]
+    },
+    "P15.C03.L02": {
+      "claims": [
+        {
+          "anchor": "Pod/process nào đang chạy H2",
+          "sources": [
+            "KU4",
+            "SL1"
+          ],
+          "source_location": "Kubernetes Deployment rollout; SLSA subject digest",
+          "support": "Spec/revision và running Pod/artifact là các trạng thái khác; cần đối chiếu digest thực.",
+          "limits": "Process fixture cần cơ chế ghi revision riêng, không tự có imageID."
+        },
+        {
+          "anchor": "SLI thành công của cửa sổ là `990/1000 = 99%`",
+          "sources": [
+            "W2-SRESLO"
+          ],
+          "source_location": "Service Level Objectives, success fraction and measurement window",
+          "support": "SRE định nghĩa SLI theo numerator/denominator và cửa sổ; số là phép tính minh họa.",
+          "limits": "1.000 request là dữ liệu giả định, không là đo."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L02.Q01",
+          "publication_id": "P15.C03.L02.Q01",
+          "question": "Canary có 990/1000 request hợp lệ thành công, SLO giả định 99,9%. Có tăng traffic không?",
+          "answer": "Không. SLI cửa sổ là 99%, dưới 99,9%; dừng tăng traffic, điều tra lỗi và kiểm missing data/request-data trước quyết định tiếp."
+        }
+      ]
+    },
+    "P15.C03.L03": {
+      "claims": [
+        {
+          "anchor": "Rollback ứng dụng từ `rev-s2` về `rev-s1` chỉ đổi code",
+          "sources": [
+            "W2-WADR"
+          ],
+          "source_location": "Reliability Pillar, data recovery and objectives",
+          "support": "Recovery ứng dụng và dữ liệu cần kế hoạch riêng, đánh giá RPO/RTO.",
+          "limits": "Timeline 10:00–10:13 trong bài là giả định."
+        },
+        {
+          "anchor": "RTO tính từ mất khả năng phục vụ",
+          "sources": [
+            "W2-WADR"
+          ],
+          "source_location": "Reliability Pillar, recovery time objective",
+          "support": "RTO là thời gian tối đa/được đo cho khôi phục phục vụ theo định nghĩa.",
+          "limits": "Điểm bắt đầu/kết thúc phải quy định theo hợp đồng dịch vụ."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L03.Q01",
+          "publication_id": "P15.C03.L03.Q01",
+          "question": "Backup 10:00, lỗi 10:04, rút S2 10:07, request ghi/đọc phục hồi 10:13. Nếu chỉ restore backup mà không replay, RPO/RTO suy ra gì?",
+          "answer": "Có thể mất các ghi đã xác nhận sau 10:00 tới 10:13, tối đa khoảng 13 phút trong timeline giả định; RTO đo từ lúc dịch vụ hỏng theo hợp đồng tới 10:13, không tính tới lệnh rollback đơn thuần."
+        }
+      ]
+    },
+    "P15.C03.L04": {
+      "claims": [
+        {
+          "anchor": "`change_id → commit → build input → artifact digest → deployment_revision → running instance`",
+          "sources": [
+            "SL1",
+            "KU4"
+          ],
+          "source_location": "SLSA provenance; Kubernetes Deployment/Pod lifecycle",
+          "support": "Provenance và rollout records nối artifact với revision/running workload, nếu được thu thập.",
+          "limits": "Chuỗi ledger là hợp đồng sư phạm, không là output thực nghiệm."
+        },
+        {
+          "anchor": "SKIP không biến thành PASS",
+          "sources": [
+            "W2-WAREL",
+            "W2-SRESLO"
+          ],
+          "source_location": "Reliability review and SLI measurement principles",
+          "support": "Thiếu phép đo không đủ chứng minh SLO/control; bài quy định trạng thái kiểm toán trung thực.",
+          "limits": "PASS/FAIL/SKIP/UNKNOWN là rubric sách, không là thuật ngữ AWS bắt buộc."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P15.C03.L04.Q01",
+          "publication_id": "P15.C03.L04.Q01",
+          "question": "Một ledger có tag prod, CI xanh và dashboard xanh nhưng thiếu digest, request ID và restore test. Đạt capstone không?",
+          "answer": "Không. Thiếu identity artifact, liên kết request–revision–record và bằng chứng phục hồi. Ghi UNKNOWN/SKIP theo nguyên nhân, dừng triển khai nếu thiếu hậu trạng thái dữ liệu."
         }
       ]
     }
