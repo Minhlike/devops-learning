@@ -44,12 +44,12 @@ class PublicationPart13(unittest.TestCase):
         with pymupdf.open(PDF) as doc:
             audit(PDF)
             toc = doc.get_toc()
-            part = next(item for item in toc if item[1].startswith("PHẦN XIII"))
+            part = next(item for item in toc if item[1].startswith("PHẦN 13"))
             self.assertEqual(part[0], 1)
             chapters = [item for item in toc if item[0] == 2 and
-                        re.match(r"Chương XIII\.[1-4] — (?!đáp án)", item[1])]
+                        re.match(r"Chương P13\.C0[1-4] — (?!đáp án)", item[1])]
             self.assertEqual(len(chapters), 4)
-            lessons = [item for item in toc if item[0] == 3 and item[1].startswith("Bài XIII.")]
+            lessons = [item for item in toc if item[0] == 3 and item[1].startswith("Bài P13.")]
             self.assertEqual(len(lessons), 12)
             self.assertEqual([item[2] for item in chapters], sorted(item[2] for item in chapters))
             for item in [part, *chapters, *lessons]:
@@ -58,15 +58,19 @@ class PublicationPart13(unittest.TestCase):
             full = "\n".join(page.get_text() for page in doc)
             legacy_chapters = sorted((ROOT / "chapters").glob("[0-9][0-9]-*.md"))
             self.assertEqual(len(legacy_chapters), 19)
-            for chapter in legacy_chapters:
-                title = chapter.read_text(encoding="utf-8").splitlines()[0].removeprefix("# ")
-                self.assertIn(title, full)
+            self.assertFalse(any(item[1].startswith("Chương 1. ") for item in toc),
+                             "legacy chapters must not be standalone publication units")
             legacy_answers = re.findall(r"(?m)^(C\d+\.\d+)\.\s",
                                         (ROOT / "answers.md").read_text(encoding="utf-8"))
             self.assertEqual(len(legacy_answers), 79)
-            for answer_id in legacy_answers:
+            manifest = json.loads((ROOT / "manuscript" / "manifest.json").read_text(encoding="utf-8"))
+            publication_ids = [qa["publication_id"] for lid, row in manifest["lessons"].items()
+                               if not lid.startswith("P13.") for qa in row["qa"]]
+            self.assertEqual(len(publication_ids), 79)
+            self.assertEqual(len(set(publication_ids)), 79)
+            for answer_id in publication_ids:
                 self.assertRegex(full, rf"(?m)^{re.escape(answer_id)}\. ")
-            self.assertIn("Lời giải Phần XIII", full)
+            self.assertIn("Lời giải", full)
             for i in range(1, 13):
                 self.assertIn(f"Bài tập C13.{i}", full)
                 self.assertRegex(full, rf"(?m)^C13\.{i}\. ")

@@ -21,7 +21,10 @@ from reportlab.platypus import (
     Preformatted, Spacer, LongTable, TableStyle, KeepTogether,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
-from p13_publication import part_story, answer_story
+try:
+    from .p13_publication import figure_story
+except ImportError:  # direct execution: python giaotrinh/scripts/build.py
+    from p13_publication import figure_story
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,7 +126,7 @@ class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
                          rightMargin=RIGHT, topMargin=TOP, bottomMargin=BOTTOM,
-                         title="Cẩm nang ngành DevOps — PDF candidate có Phần XIII",
+                         title="Cẩm nang ngành DevOps — bản chuyển cấu trúc Đợt 1",
                          author="Dự án devops-learning")
         frame = Frame(LEFT, BOTTOM, PAGE_W - LEFT - RIGHT,
                       PAGE_H - TOP - BOTTOM, leftPadding=0, rightPadding=0,
@@ -156,6 +159,7 @@ class Book(BaseDocTemplate):
 
 def paragraph_markup(text: str) -> str:
     escaped = html.escape(text)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", escaped)
     escaped = re.sub(r"`([^`]+)`", r'<font name="Mono">\1</font>', escaped)
     return escaped
 
@@ -230,15 +234,36 @@ def source_free_issues(text: str) -> list[str]:
 def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowable]:
     if not path.is_file():
         raise FileNotFoundError(path)
-    blocks = re.split(r"\n\s*\n", path.read_text(encoding="utf-8").strip())
-    issues = source_free_issues(path.read_text(encoding="utf-8"))
+    raw = path.read_text(encoding="utf-8")
+    # Fence bodies may contain blank lines. Keep them as one render unit.
+    chunks = re.split(r"(?ms)(^```[^\n]*\n.*?^```\s*$)", raw.strip())
+    blocks = [piece for chunk in chunks for piece in
+              ([chunk] if chunk.startswith("```") else re.split(r"\n\s*\n", chunk)) if piece.strip()]
+    issues = source_free_issues(raw)
     if issues:
         raise ValueError(f"Nguồn tham khảo lọt vào bản thảo PDF {path}: {issues}")
     story: list[Flowable] = []
     for index, block in enumerate(blocks):
         block = block.strip()
         key = "section-" + hashlib.sha1(f"{path.name}:{index}".encode("utf-8")).hexdigest()[:12]
-        if block.startswith("# "):
+        if block.startswith("{{figure:") and block.endswith("}}"):
+            story.append(figure_story(block[9:-2], styles))
+        elif block.startswith("```"):
+            lines = block.splitlines()
+            if len(lines) < 2 or not lines[-1].startswith("```"):
+                raise ValueError(f"Code fence chưa đóng: {path}")
+            code_lines = lines[1:-1]
+            for line in code_lines:
+                if pdfmetrics.stringWidth(line, "Mono", 8) > PAGE_W - LEFT - RIGHT - 18:
+                    raise ValueError(f"Dòng code quá rộng: {path}: {line}")
+            for start in range(0, len(code_lines), 42):
+                story.append(Preformatted("\n".join(code_lines[start:start + 42]), styles["p13code"]))
+        elif block.startswith("### Bài tập "):
+            heading, _, rest = block.partition("\n")
+            story.append(Paragraph(paragraph_markup(heading[4:]), styles["exercise"]))
+            if rest.strip():
+                story.append(Paragraph(paragraph_markup(" ".join(rest.splitlines())), styles["body"]))
+        elif block.startswith("# "):
             story.append(Heading(block[2:].strip(), 1, key, styles))
         elif block.startswith("## "):
             story.append(Heading(block[3:].strip(), 2, key, styles,
@@ -293,12 +318,110 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
     return story
 
 
+def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> tuple[dict, dict]:
+    if tree is None:
+        tree = json.loads((ROOT / "architecture" / "knowledge_tree.json").read_text(encoding="utf-8"))
+    if manifest is None:
+        manifest = json.loads((ROOT / "manuscript" / "manifest.json").read_text(encoding="utf-8"))
+    lessons = {}
+    chapter_ids = set()
+    part_ids = set()
+    for part in tree["parts"]:
+        if part["id"] in part_ids:
+            raise ValueError(f"Trùng Phần: {part['id']}")
+        part_ids.add(part["id"])
+        for chapter in part["chapters"]:
+            cid = chapter["id"]
+            if cid in chapter_ids or chapter["part"] != part["id"] or not cid.startswith(part["id"] + "."):
+                raise ValueError(f"Chương trùng hoặc sai parent: {cid}")
+            chapter_ids.add(cid)
+            for lesson in chapter["lessons"]:
+                lid = lesson["id"]
+                if lid in lessons or lesson["parent"] != cid or not lid.startswith(cid + "."):
+                    raise ValueError(f"Bài trùng hoặc sai parent: {lid}")
+                lessons[lid] = lesson
+    if len(part_ids) != 15 or len(chapter_ids) != 58 or len(lessons) != 178:
+        raise ValueError("Cây kiến thức không còn đủ 15/58/178")
+    if set(manifest["lessons"]) != set(lessons):
+        raise ValueError("Manifest thiếu hoặc thừa bài so với cây đã duyệt")
+    for lid, row in manifest["lessons"].items():
+        if row["parent"] != lessons[lid]["parent"] or row["prerequisites"] != lessons[lid]["prerequisites"]:
+            raise ValueError(f"Metadata parent hoặc tiên quyết sai: {lid}")
+        if row["status"] not in ("migrated_draft", "migration_fragment", "pending_authorship", "reviewed"):
+            raise ValueError(f"Trạng thái bài sai: {lid}")
+        if row["content"]:
+            path = (ROOT / row["content"]).resolve()
+            if not path.is_relative_to(ROOT / "manuscript") or not path.is_file():
+                raise ValueError(f"Bài trỏ sai tệp: {lid}")
+            digest = hashlib.sha256(path.read_text(encoding="utf-8").strip().encode("utf-8")).hexdigest()
+            if digest != row["sha256"]:
+                raise ValueError(f"Bài đã đổi mà manifest chưa duyệt: {lid}")
+            if row["status"] in ("migrated_draft", "reviewed") and len(path.read_text(encoding="utf-8").split()) < 100:
+                raise ValueError(f"Bài quá ngắn để tuyên bố có nội dung: {lid}")
+        elif row["status"] != "pending_authorship":
+            raise ValueError(f"Bài hoàn thành nhưng thiếu nội dung: {lid}")
+    check_migration_evidence(manifest)
+    return tree, manifest
+
+
+def check_migration_evidence(manifest: dict) -> None:
+    with (ROOT / "architecture" / "evidence_ownership.csv").open(
+            encoding="utf-8-sig", newline="") as stream:
+        evidence = list(csv.DictReader(stream))
+    if len(evidence) != 369 or len({row["old_id"] for row in evidence}) != 369:
+        raise ValueError("Ledger claim/ví dụ/bài tập không đủ hoặc trùng")
+    expected = {lid: {"claim_ids": [], "examples": [], "qa": []}
+                for lid in manifest["lessons"]}
+    for row in evidence:
+        owner = row["primary_lesson_id"]
+        if owner not in expected:
+            raise ValueError(f"Chủ chứng cứ ngoài cây: {owner}")
+        kind = row["kind"]
+        field = {"claim": "claim_ids", "example": "examples", "exercise_answer": "qa"}[kind]
+        expected[owner][field].append(row["old_id"])
+        if kind in ("claim", "example"):
+            path = manifest["lessons"][owner]["content"]
+            body = (ROOT / path).read_text(encoding="utf-8") if path else ""
+            anchor = row["old_anchor_or_title"] if kind == "claim" else "{{code:" + row["old_id"] + "}}"
+            if anchor not in body:
+                raise ValueError(f"Mất claim hoặc ví dụ tại chủ bài: {row['old_id']}")
+    for lid, expected_row in expected.items():
+        actual = manifest["lessons"][lid]
+        for field in ("claim_ids", "examples"):
+            if actual[field] != expected_row[field]:
+                raise ValueError(f"Mất hoặc đổi chủ {field}: {lid}")
+        old_qa = [] if lid.startswith("P13.") else [item["id"] for item in actual["qa"]]
+        if old_qa != expected_row["qa"]:
+            raise ValueError(f"Mất cặp đề đáp án: {lid}")
+    p13_qa = [qa["id"] for lid, row in manifest["lessons"].items()
+              if lid.startswith("P13.") for qa in row["qa"]]
+    if sorted(p13_qa) != sorted(f"C13.{i}" for i in range(1, 13)):
+        raise ValueError("Mất bài tập hoặc đáp án Phần XIII")
+    published_ids = [qa.get("publication_id") for row in manifest["lessons"].values() for qa in row["qa"]]
+    if len(published_ids) != 91 or any(not identifier for identifier in published_ids) or len(set(published_ids)) != 91:
+        raise ValueError("Mã bài tập xuất bản thiếu hoặc trùng")
+
+
+def published_lessons(tree: dict, manifest: dict):
+    for part in tree["parts"]:
+        chapters = []
+        for chapter in part["chapters"]:
+            content = [lesson for lesson in chapter["lessons"] if
+                       manifest["lessons"][lesson["id"]]["status"] in ("migrated_draft", "reviewed")]
+            if content:
+                chapters.append((chapter, content))
+        if chapters:
+            yield part, chapters
+
+
 def build() -> None:
     check_source_map()
     register_fonts()
-    chapters = sorted((ROOT / "chapters").glob("[0-9][0-9]-*.md"))
-    if not chapters:
-        raise RuntimeError("Không có chương bản thảo")
+    tree, manifest = load_manuscript()
+    publication = list(published_lessons(tree, manifest))
+    count = sum(len(lessons) for _, chapters in publication for _, lessons in chapters)
+    if count < 100:
+        raise RuntimeError("Migration candidate thiếu phần lớn nội dung cũ")
     styles = style()
     toc = TableOfContents()
     toc.levelStyles = [styles["tocentry"], styles["tocchapter"], styles["toclesson"]]
@@ -306,7 +429,7 @@ def build() -> None:
         Spacer(1, 170),
         Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
         Spacer(1, 26),
-        Paragraph(f"Giáo trình kỹ thuật · bản đọc thử {len(chapters)} chương", styles["subtitle"]),
+        Paragraph(f"Bản chuyển cấu trúc Đợt 1 · {count}/178 bài có bản thảo", styles["subtitle"]),
         Spacer(1, 10),
         Paragraph("Chưa phải bản phát hành hoàn chỉnh", styles["subtitle"]),
         PageBreak(),
@@ -314,13 +437,35 @@ def build() -> None:
         toc,
         PageBreak(),
     ]
-    for chapter in chapters:
-        story.extend(read_markdown(chapter, styles))
+    for part, chapters in publication:
+        story.append(Heading(f"PHẦN {int(part['id'][1:]):02d} — {part['title']}", 1, part["id"], styles))
+        story.append(Spacer(1, 28))
+        story.append(Paragraph(paragraph_markup(part["central_question"]), styles["part_deck"]))
+        story.append(Paragraph(paragraph_markup(part["mental_model"]), styles["part_intro"]))
         story.append(PageBreak())
-    story.extend(part_story(styles, Heading))
-    story.extend(read_markdown(ROOT / "answers.md", styles))
-    story.append(PageBreak())
-    story.extend(answer_story(styles, Heading))
+        for chapter, lessons in chapters:
+            story.append(Heading(f"Chương {chapter['id']} — {chapter['title']}", 2, chapter["id"], styles))
+            story.append(Paragraph(paragraph_markup(chapter["objective"]), styles["body"]))
+            for lesson in lessons:
+                lid = lesson["id"]
+                story.append(Heading(f"Bài {lid} — {lesson['title']}", 3, lid, styles))
+                story.extend(read_markdown(ROOT / manifest["lessons"][lid]["content"], styles))
+                for qa in manifest["lessons"][lid]["qa"]:
+                    if lid.startswith("P13."):
+                        continue  # Reviewed P13 questions are already inside the lesson.
+                    story.append(Paragraph(paragraph_markup(f"Bài tập {qa['publication_id']}"), styles["exercise"]))
+                    story.append(Paragraph(paragraph_markup(qa["question"]), styles["body"]))
+            story.append(PageBreak())
+    story.append(Heading("Lời giải", 1, "answers", styles, include_in_toc=False))
+    for part, chapters in publication:
+        for chapter, lessons in chapters:
+            entries = [(lid["id"], qa) for lid in lessons for qa in manifest["lessons"][lid["id"]]["qa"]]
+            if not entries:
+                continue
+            story.append(Heading(f"Đáp án {chapter['id']} — {chapter['title']}", 2,
+                                 f"{chapter['id']}.answers", styles, include_in_toc=False))
+            for _, qa in entries:
+                story.append(Paragraph(paragraph_markup(qa["publication_id"] + ". " + qa["answer"]), styles["answerbody"]))
     try:
         Book(NEXT).multiBuild(story)
         audit(NEXT)
@@ -352,37 +497,33 @@ def audit_document(doc: pymupdf.Document) -> None:
     if len(doc) < 8:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
-    for phrase in ("CẨM NANG", "MỤC LỤC", "Từ chương trình đến tiến trình",
-                   "C1.1.", "C2.1.", "C3.1.", "C4.6.", "C5.1.", "C10.1.", "C11.1.", "C12.1.", "C13.1.", "C14.1.", "C15.1.", "C16.1.", "C17.1.", "C18.1.", "C19.1.", "Lời giải", "Chưa phải bản phát hành"):
+    for phrase in ("CẨM NANG", "MỤC LỤC", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
-    for phrase in ("PHẦN XIII", "Chương XIII.1", "Chương XIII.2", "Chương XIII.3",
-                   "Chương XIII.4", "Lời giải Phần XIII", "Hình XIII.1.1",
-                   "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
-        if phrase not in text:
-            raise RuntimeError(f"Thiếu nội dung Phần XIII trong PDF: {phrase}")
-    for i in range(1, 13):
-        if f"Bài tập C13.{i}" not in text or not re.search(rf"(?m)^C13\.{i}\. ", text):
-            raise RuntimeError(f"Thiếu đề hoặc đáp án C13.{i} trong PDF")
+    tree, manifest = load_manuscript()
+    expected = []
+    for part, chapters in published_lessons(tree, manifest):
+        expected.append((1, part["id"]))
+        for chapter, lessons in chapters:
+            expected.append((2, chapter["id"]))
+            expected.extend((3, lesson["id"]) for lesson in lessons)
+            for lesson in lessons:
+                for qa in manifest["lessons"][lesson["id"]]["qa"]:
+                    if qa["publication_id"] not in text:
+                        raise RuntimeError(f"Thiếu bài tập/đáp án {qa['publication_id']}")
+    for figure in ("Hình XIII.1.1", "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
+        if figure not in text:
+            raise RuntimeError(f"Thiếu hình đã duyệt: {figure}")
     toc_entries = doc.get_toc()
-    if len(toc_entries) < 7:
-        raise RuntimeError("Bookmark chưa đủ")
-    if toc_entries[0][2] < 3 or any(a[2] > b[2] for a, b in zip(toc_entries, toc_entries[1:])):
-        raise RuntimeError(f"Bookmark trỏ sai trang hoặc sai thứ tự: {toc_entries}")
-    part = next((i for i, item in enumerate(toc_entries) if item[1].startswith("PHẦN XIII")), None)
-    if part is None or toc_entries[part][0] != 1:
-        raise RuntimeError("Thiếu bookmark cấp Phần XIII")
-    expected = [(2, f"Chương XIII.{i}") for i in range(1, 5)]
-    for level, label in expected:
-        hits = [item for item in toc_entries if item[0] == level and item[1].startswith(label)
-                and "đáp án" not in item[1]]
-        if len(hits) != 1 or hits[0][2] <= toc_entries[part][2]:
-            raise RuntimeError(f"Bookmark chương sai: {label}")
-    for i in range(1, 5):
-        for j in range(1, 4):
-            label = f"Bài XIII.{i}.{j}"
-            if sum(item[0] == 3 and item[1].startswith(label) for item in toc_entries) != 1:
-                raise RuntimeError(f"Bookmark bài sai: {label}")
+    actual = [(level, ("P" + title.split(" — ", 1)[0].split()[-1]
+                       if level == 1 and title.startswith("PHẦN ") else
+                       title.split(" — ", 1)[0].split()[-1]))
+              for level, title, _ in toc_entries[:len(expected)]]
+    if actual != expected:
+        raise RuntimeError(f"Sai cấp/thứ tự bookmark: {actual[:8]} != {expected[:8]}")
+    for level, title, page in toc_entries[:len(expected)]:
+        if page < 3 or page > len(doc) or title not in doc[page - 1].get_text():
+            raise RuntimeError(f"Bookmark trỏ sai trang: {title} -> {page}")
     issues = source_free_pdf_issues(doc)
     if issues:
         raise RuntimeError(f"Nguồn tham khảo lọt vào PDF: {issues}")

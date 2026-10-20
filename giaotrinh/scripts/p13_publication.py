@@ -1,7 +1,6 @@
-"""Render the reviewed P13 manuscript and its CSV-backed vector figures.
+"""Render CSV-backed vector figures for reviewed P13 lessons.
 
-Only manuscript/answers enter the book. The claim ledger and status files stay
-outside the PDF. Every figure calls the chapter's fixture audit before drawing.
+Every figure calls the chapter fixture audit before drawing.
 """
 
 from __future__ import annotations
@@ -15,7 +14,7 @@ from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
-from reportlab.platypus import Flowable, KeepTogether, Paragraph, Preformatted, Spacer, Table, TableStyle
+from reportlab.platypus import Flowable, KeepTogether, Paragraph
 
 PART = Path(__file__).resolve().parents[1] / "authoring" / "P13"
 INK = colors.HexColor("#202020")
@@ -178,115 +177,24 @@ class Figure(Flowable):
         self.label(c, 17, y0 + 20, "Cột nhạt: offered; cột đậm: completed. Không đo riêng queue length.", 8)
 
 
-def _blocks(path: Path, styles: dict, heading_factory, chapter: int, answer: bool = False):
-    text = path.read_text(encoding="utf-8")
-    if re.search(r"https?://|\[(?:R|B|SRE|DR|INC|PERF)\d+\]", text):
-        raise ValueError(f"source leak in {path}")
-    story = []
-    paragraph = []
-    code = []
-    in_code = False
-
-    def flush():
-        nonlocal paragraph
-        if paragraph:
-            content = " ".join(s.strip() for s in paragraph)
-            story.append(Paragraph(markup(content), styles["answerbody"] if answer else styles["p13body"]))
-            paragraph = []
-
-    for line in text.splitlines() + [""]:
-        if line.startswith("```"):
-            flush()
-            if in_code:
-                for code_line in code:
-                    if pdfmetrics.stringWidth(code_line, "Mono", 8.0) > 453:
-                        raise ValueError(f"code too wide in {path}: {code_line}")
-                code_style = styles["p13code"]
-                story.append(Preformatted("\n".join(code), code_style))
-                code = []
-            in_code = not in_code
-            continue
-        if in_code:
-            code.append(line)
-            continue
-        if not line.strip():
-            flush()
-            continue
-        if line.startswith("## P13.C") and not answer:
-            flush()
-            m = re.match(r"## P13\.C(\d{2})\.L(\d{2}) — (.*)", line)
-            if not m or int(m[1]) != chapter:
-                raise ValueError(f"invalid lesson heading: {line}")
-            lesson = int(m[2])
-            story.append(heading_factory(f"Bài XIII.{chapter}.{lesson} — {m[3]}", 3,
-                                         f"P13.C{chapter:02d}.L{lesson:02d}", styles))
-            continue
-        if line.startswith("### Bài tập "):
-            flush()
-            story.append(Paragraph(markup(line[4:]), styles["exercise"]))
-            continue
-        if line.startswith("# "):
-            flush()  # Chapter title comes from the locked architecture, not manuscript heading.
-            continue
-        paragraph.append(line)
-    if in_code:
-        raise ValueError(f"unclosed code fence in {path}")
-    return story
-
-
-def part_story(styles: dict, heading_factory):
-    result = []
-    chapter_names = (
-        "SLI, SLO và Error Budget", "Incident Response và Postmortem",
-        "Backup và Disaster Recovery", "Performance và Capacity Planning",
+def figure_story(chapter_id: str, styles: dict):
+    """Asset handler used by the generic lesson renderer's figure directive."""
+    n = int(chapter_id[-2:])
+    if chapter_id != f"P13.C{n:02d}" or n not in range(1, 5):
+        raise ValueError(f"Unknown figure chapter: {chapter_id}")
+    captions = (
+        "Hình XIII.1.1 — V30: 700 bad đã dùng và 300 còn lại; burn 1h/5m từ dữ liệu giả định.",
+        "Hình XIII.2.1 — Trạng thái bằng chứng trong incident; 10:16 còn cần xác minh.",
+        "Hình XIII.3.1 — V31: WAL, điểm khôi phục và hậu kiểm ứng dụng; RPO/RTO giả định.",
+        "Hình XIII.4.1 — Tải A/B/C: offered và completed; chênh lệch C là tổng outstanding.",
     )
-    result.append(heading_factory("PHẦN XIII — SRE VÀ PHỤC HỒI", 1, "P13", styles))
-    result.append(Spacer(1, 42))
-    result.append(Paragraph("Từ tín hiệu phục vụ tới quyết định phục hồi", styles["part_deck"]))
-    result.append(Spacer(1, 35))
-    for line in (
-        "Câu hỏi trung tâm: Khi hệ thống trả lời sai, chậm hoặc mất dữ liệu, ta biết điều gì, còn thiếu bằng chứng nào và khi nào được tuyên bố đã phục hồi?",
-        "Mô hình: định nghĩa phép đo → xác nhận tác động → giới hạn thiệt hại → khôi phục dữ liệu và phục vụ → thử sức chịu tải.",
-        "Ranh giới: metric không tự nói nguyên nhân; rollback ứng dụng không sửa dữ liệu; một bản backup chưa được thử restore không chứng minh khả năng phục hồi.",
-    ):
-        result.append(Paragraph(markup(line), styles["part_intro"]))
-    from reportlab.platypus import PageBreak
-    result.append(PageBreak())
-    for n, name in enumerate(chapter_names, 1):
-        folder = PART / f"C{n:02d}"
-        result.append(heading_factory(f"Chương XIII.{n} — {name}", 2, f"P13.C{n:02d}", styles))
-        blocks = _blocks(folder / "manuscript.md", styles, heading_factory, n)
-        # Figure follows its primary lesson; text keeps exact reviewed order.
-        inserted = False
-        for i, block in enumerate(blocks):
-            if hasattr(block, "bookmark_key") and block.bookmark_key == f"P13.C{n:02d}.L03" and not inserted:
-                caption = (
-                    "Hình XIII.1.1 — V30: 700 bad đã dùng và 300 còn lại; burn 1h/5m từ dữ liệu giả định.",
-                    "Hình XIII.2.1 — Trạng thái bằng chứng trong incident; 10:16 còn cần xác minh.",
-                    "Hình XIII.3.1 — V31: WAL, điểm khôi phục và hậu kiểm ứng dụng; RPO/RTO giả định.",
-                    "Hình XIII.4.1 — Tải A/B/C: offered và completed; chênh lệch C là tổng outstanding.",
-                )[n - 1]
-                lead = (
-                    "Hình XIII.1.1 đặt ngân sách lỗi cạnh hai cửa sổ burn và 12 khoảng dữ liệu thực có trong fixture.",
-                    "Hình XIII.2.1 giữ riêng quan sát, giả định, đề xuất và hậu kiểm còn thiếu.",
-                    "Hình XIII.3.1 tách mốc replay database khỏi mốc ứng dụng được xác minh.",
-                    "Hình XIII.4.1 đối chiếu tốc độ đến, tốc độ hoàn tất và độ trễ theo cùng pha tải.",
-                )[n - 1]
-                result.append(KeepTogether([
-                    Paragraph(markup(lead), styles["caption"]),
-                    Figure(f"C{n:02d}", caption, styles),
-                ]))
-                inserted = True
-            result.append(block)
-        if not inserted:
-            raise ValueError(f"missing figure insertion point C{n:02d}")
-        result.append(PageBreak())
-    return result
-
-
-def answer_story(styles: dict, heading_factory):
-    result = [heading_factory("Lời giải Phần XIII", 1, "P13.answers", styles)]
-    for n in range(1, 5):
-        result.append(heading_factory(f"Chương XIII.{n} — đáp án", 2, f"P13.C{n:02d}.answers", styles))
-        result.extend(_blocks(PART / f"C{n:02d}" / "answers.md", styles, heading_factory, n, answer=True))
-    return result
+    leads = (
+        "Hình XIII.1.1 đặt ngân sách lỗi cạnh hai cửa sổ burn và 12 khoảng dữ liệu thực có trong fixture.",
+        "Hình XIII.2.1 giữ riêng quan sát, giả định, đề xuất và hậu kiểm còn thiếu.",
+        "Hình XIII.3.1 tách mốc replay database khỏi mốc ứng dụng được xác minh.",
+        "Hình XIII.4.1 đối chiếu tốc độ đến, tốc độ hoàn tất và độ trễ theo cùng pha tải.",
+    )
+    return KeepTogether([
+        Paragraph(markup(leads[n - 1]), styles["caption"]),
+        Figure(f"C{n:02d}", captions[n - 1], styles),
+    ])
