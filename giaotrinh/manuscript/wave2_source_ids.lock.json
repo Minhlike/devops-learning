@@ -10,6 +10,14 @@
     "W2-ND6": "https://www.rfc-editor.org/rfc/rfc4861.html",
     "W2-RBDEF": "https://reproducible-builds.org/docs/definition/",
     "W2-OCILAYER": "https://github.com/opencontainers/image-spec/blob/v1.1.1/layer.md",
-    "W2-OVERLAY": "https://docs.kernel.org/6.12/filesystems/overlayfs.html"
+    "W2-OVERLAY": "https://docs.kernel.org/6.12/filesystems/overlayfs.html",
+    "W2-EC2STOP": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html",
+    "W2-AZ": "https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-availability-zones.html",
+    "W2-TFPROV": "https://developer.hashicorp.com/terraform/language/providers/requirements",
+    "W2-TFLOCK": "https://developer.hashicorp.com/terraform/language/files/dependency-lock",
+    "W2-TFMOVED": "https://developer.hashicorp.com/terraform/language/modules/develop/refactoring",
+    "W2-TFSTATEMV": "https://developer.hashicorp.com/terraform/cli/commands/state/mv",
+    "W2-ANSVAULT": "https://docs.ansible.com/projects/ansible-core/2.16/vault_guide/vault.html",
+    "W2-AMAGER": "https://prometheus.io/docs/alerting/latest/alertmanager/"
   }
 }

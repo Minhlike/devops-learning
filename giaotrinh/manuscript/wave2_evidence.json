@@ -57,6 +57,46 @@
       "type": "Linux kernel documentation",
       "version": "Linux 6.12",
       "url": "https://docs.kernel.org/6.12/filesystems/overlayfs.html"
+    },
+    "W2-EC2STOP": {
+      "type": "AWS EC2 User Guide",
+      "version": "checked 2026-10-20; rolling service documentation",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html"
+    },
+    "W2-AZ": {
+      "type": "AWS global infrastructure documentation",
+      "version": "checked 2026-10-20; rolling service documentation",
+      "url": "https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-availability-zones.html"
+    },
+    "W2-TFPROV": {
+      "type": "HashiCorp Terraform documentation",
+      "version": "Terraform CLI 1.16.x context; checked 2026-10-20",
+      "url": "https://developer.hashicorp.com/terraform/language/providers/requirements"
+    },
+    "W2-TFLOCK": {
+      "type": "HashiCorp Terraform documentation",
+      "version": "Terraform CLI 1.16.x context; checked 2026-10-20",
+      "url": "https://developer.hashicorp.com/terraform/language/files/dependency-lock"
+    },
+    "W2-TFMOVED": {
+      "type": "HashiCorp Terraform documentation",
+      "version": "Terraform CLI 1.16.x context; checked 2026-10-20",
+      "url": "https://developer.hashicorp.com/terraform/language/modules/develop/refactoring"
+    },
+    "W2-TFSTATEMV": {
+      "type": "HashiCorp Terraform documentation",
+      "version": "Terraform CLI 1.16.x context; checked 2026-10-20",
+      "url": "https://developer.hashicorp.com/terraform/cli/commands/state/mv"
+    },
+    "W2-ANSVAULT": {
+      "type": "Ansible Core documentation",
+      "version": "ansible-core 2.16",
+      "url": "https://docs.ansible.com/projects/ansible-core/2.16/vault_guide/vault.html"
+    },
+    "W2-AMAGER": {
+      "type": "Prometheus Alertmanager documentation",
+      "version": "checked 2026-10-20; rolling page",
+      "url": "https://prometheus.io/docs/alerting/latest/alertmanager/"
     }
   },
   "lessons": {
@@ -438,6 +478,273 @@
           "publication_id": "P07.C03.L02.Q01",
           "question": "Container A ghi 41 bản ghi vào /var/lib/orders không mount. Tạo B từ cùng image rồi B thấy thư mục rỗng. Vì sao và cần quan sát gì trước khi xử lý?",
           "answer": "B có lớp ghi mới, không kế thừa lớp ghi của A. Kiểm tra identity A/B, digest image, mount type/source/destination và đọc dữ liệu của A hoặc bản sao trước khi xóa. Không suy rằng image mới đã xóa dữ liệu cũ; nếu từng dùng volume còn phải kiểm đúng volume identity."
+        }
+      ]
+    },
+    "P08.C03.L01": {
+      "claims": [
+        {
+          "anchor": "Instance profile gắn role vào EC2",
+          "sources": [
+            "AWS1"
+          ],
+          "source_location": "IAM roles for Amazon EC2, instance profiles",
+          "support": "AWS mô tả instance profile là container cho role gắn vào instance và cấp credential tạm thời.",
+          "limits": "Quyền cuối còn phụ thuộc trust, identity/resource policy và context."
+        },
+        {
+          "anchor": "Dừng rồi khởi động một instance EBS-backed khác với terminate",
+          "sources": [
+            "W2-EC2STOP"
+          ],
+          "source_location": "Stop and start EC2 instances, How it works",
+          "support": "EBS-backed instance có thể stop/start, public IPv4 tự cấp có thể đổi; terminate là vòng đời khác.",
+          "limits": "Hành vi volume phụ thuộc cấu hình DeleteOnTermination, không được suy từ trạng thái running."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P08.C03.L01.Q01",
+          "publication_id": "P08.C03.L01.Q01",
+          "question": "EC2 đã running và ALB /health trả 200 nhưng /reports lỗi AccessDenied. Hai phép quan sát ấy chứng minh điều gì, và cần kiểm gì tiếp?",
+          "answer": "Chúng chỉ chứng minh compute đang chạy và hợp đồng /health đã qua. Kiểm profile/role của request, policy trên action/object, đường mạng tới S3 và request /reports; không suy từ health check rằng S3 đọc được."
+        }
+      ]
+    },
+    "P08.C03.L03": {
+      "claims": [
+        {
+          "anchor": "Availability Zone (AZ) là ranh giới vận hành",
+          "sources": [
+            "W2-AZ"
+          ],
+          "source_location": "AWS Availability Zones, AZ design and independence",
+          "support": "AWS mô tả AZ là miền hạ tầng riêng trong Region và dùng để bố trí tính sẵn sàng.",
+          "limits": "Multi-AZ compute không tự giải dependency/data single point of failure."
+        },
+        {
+          "anchor": "ALB chuyển request mới sang target ở AZ B",
+          "sources": [
+            "AWS9"
+          ],
+          "source_location": "Application Load Balancers, target and health check routing",
+          "support": "ALB định tuyến tới healthy targets và hỗ trợ target ở nhiều AZ.",
+          "limits": "09:02 và request trong ví dụ là giả định; failover không tức thời."
+        },
+        {
+          "anchor": "Root EBS gắn với AZ",
+          "sources": [
+            "AWS10"
+          ],
+          "source_location": "EBS volume lifecycle and Availability Zone attachment",
+          "support": "EBS volume thuộc một AZ và vòng đời dữ liệu phụ thuộc loại volume/cấu hình terminate.",
+          "limits": "Không xem replication nội AZ là backup."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P08.C03.L03.Q01",
+          "publication_id": "P08.C03.L03.Q01",
+          "question": "Hai EC2 ở hai AZ đều /health xanh. Có thể kết luận /reports vẫn phục vụ sau khi mất AZ A không?",
+          "answer": "Chưa. Cần chứng minh ALB route tới target B, B đủ capacity, dependency và quyền S3 hoạt động, dữ liệu nghiệp vụ ở nơi B đọc được; thử request thật và đọc dữ liệu sau failover."
+        }
+      ]
+    },
+    "P09.C01.L02": {
+      "claims": [
+        {
+          "anchor": "provider plugin khai báo schema",
+          "sources": [
+            "W2-TFPROV"
+          ],
+          "source_location": "Provider Requirements, Overview",
+          "support": "Provider plugin là cơ chế Terraform giao tiếp hệ ngoài; source/version/config được khai báo riêng.",
+          "limits": "Chi tiết CRUD/replace là theo provider và version cụ thể."
+        },
+        {
+          "anchor": "Khóa dependency ở `.terraform.lock.hcl` ghi phiên bản và checksum provider",
+          "sources": [
+            "W2-TFLOCK"
+          ],
+          "source_location": "Dependency Lock File, overview and installation behavior",
+          "support": "Lockfile lưu provider version/checksum; hiện không khóa remote modules.",
+          "limits": "Không chứng minh pipeline dùng đúng workspace/account nếu chỉ có lockfile."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C01.L02.Q01",
+          "publication_id": "P09.C01.L02.Q01",
+          "question": "Cùng HCL nhưng hai pipeline cho plan khác. Trước khi kết luận drift, cần so những danh tính nào?",
+          "answer": "So provider source/version/checksum, input, workspace/backend/state serial, alias, account/Region và ID object; sau đó mới đối chiếu API thực và schema provider."
+        }
+      ]
+    },
+    "P09.C03.L02": {
+      "claims": [
+        {
+          "anchor": "`import` dùng khi object đã tồn tại",
+          "sources": [
+            "TF10"
+          ],
+          "source_location": "Import existing resources into Terraform state",
+          "support": "Import gắn object hiện hữu vào address khi destination resource được khai báo; plan có thể còn thay đổi khác.",
+          "limits": "Không tự tạo cấu hình mong muốn chính xác."
+        },
+        {
+          "anchor": "`moved` diễn đạt đổi địa chỉ",
+          "sources": [
+            "W2-TFMOVED"
+          ],
+          "source_location": "Refactor modules, Overview",
+          "support": "Moved block chuyển state address khi đổi tên/move trong config mà tránh destroy do đổi địa chỉ.",
+          "limits": "Không khắc phục replacement do thay thuộc tính thực."
+        },
+        {
+          "anchor": "`terraform state mv` sửa ánh xạ state",
+          "sources": [
+            "W2-TFSTATEMV"
+          ],
+          "source_location": "terraform state mv, usage",
+          "support": "CLI state mv chuyển binding từ address cũ sang mới.",
+          "limits": "Cần phối hợp HCL và bảo vệ state/concurrent actors."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C03.L02.Q01",
+          "publication_id": "P09.C03.L02.Q01",
+          "question": "Bucket có sẵn chưa ở state; một instance đã ở state chỉ đổi tên HCL. Dùng import hay moved cho từng việc?",
+          "answer": "Bucket: import vào địa chỉ resource đúng sau khi xác minh ownership. Instance: moved block cũ→mới; đọc plan để bảo đảm không có delete/replace ngoài ý định."
+        }
+      ]
+    },
+    "P09.C03.L03": {
+      "claims": [
+        {
+          "anchor": "`moved` block trong module lưu lịch sử ánh xạ",
+          "sources": [
+            "W2-TFMOVED"
+          ],
+          "source_location": "Refactor modules, Remove a move block",
+          "support": "Tài liệu khuyến nghị giữ moved blocks để các workspace chưa nâng cấp còn đường nâng cấp.",
+          "limits": "Không bảo đảm provider behavior hoặc dữ liệu sau apply."
+        },
+        {
+          "anchor": "`count` đánh số instance bằng chỉ số nguyên",
+          "sources": [
+            "W2-TFMOVED"
+          ],
+          "source_location": "Refactor modules, Enable count or for_each for a resource",
+          "support": "Ví dụ chuyển instance từ count index sang for_each key qua moved blocks.",
+          "limits": "Rủi ro reorder là suy luận vận hành từ địa chỉ index và danh sách đầu vào."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C03.L03.Q01",
+          "publication_id": "P09.C03.L03.Q01",
+          "question": "Đổi count [0]/[1] thành for_each [a]/[b] cho hai EC2 giữ dữ liệu. Nêu điều kiện trước apply và lúc nào dừng.",
+          "answer": "Xác minh bảng ánh xạ ID thật [0]→a, [1]→b; viết moved blocks, backup state, plan từng workspace; dừng nếu plan có delete/replace ngoài ý định hay ID không khớp."
+        }
+      ]
+    },
+    "P09.C04.L03": {
+      "claims": [
+        {
+          "anchor": "Apply thành công chỉ cho biết Terraform hoàn tất các hành động",
+          "sources": [
+            "TF5"
+          ],
+          "source_location": "Terraform plan/apply model",
+          "support": "Terraform plan/apply xử lý thay đổi hạ tầng; thành công không định nghĩa hậu điều kiện nghiệp vụ.",
+          "limits": "Kết luận về request/dữ liệu là suy luận kiểm chứng bổ sung, không phải lời hứa của Terraform."
+        },
+        {
+          "anchor": "Một state snapshot cũ là bản ghi ánh xạ object",
+          "sources": [
+            "TF1"
+          ],
+          "source_location": "Purpose of Terraform state",
+          "support": "State ánh xạ resource address tới object ID và metadata, không là bản backup dữ liệu ứng dụng.",
+          "limits": "Cần backup state lẫn backup dữ liệu theo hợp đồng riêng."
+        },
+        {
+          "anchor": "volume ID mới, profile, target health, số đơn đọc được",
+          "sources": [
+            "AWS10"
+          ],
+          "source_location": "EBS volume lifecycle",
+          "support": "Volume root và cờ xóa cần kiểm khi thay instance.",
+          "limits": "Các ID/số đơn trong bài là giả định, chưa chạy AWS."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C04.L03.Q01",
+          "publication_id": "P09.C04.L03.Q01",
+          "question": "Terraform apply complete và target /health xanh sau replace. Có thể đóng sự cố mất 41 đơn chưa?",
+          "answer": "Chưa. So instance/root volume ID, đọc đủ 41/41 đơn từ nơi khôi phục, thử request nghiệp vụ, kiểm backup restore và plan mới; state snapshot cũ không chứa dữ liệu EBS."
+        }
+      ]
+    },
+    "P10.C03.L03": {
+      "claims": [
+        {
+          "anchor": "Ansible Vault mã hóa biến hoặc tệp ở trạng thái lưu trữ",
+          "sources": [
+            "W2-ANSVAULT"
+          ],
+          "source_location": "Ansible Vault, overview and warning",
+          "support": "Vault bảo vệ dữ liệu at rest, không bảo vệ sau giải mã trong lúc dùng.",
+          "limits": "no_log và quyền/logging là các kiểm soát riêng."
+        },
+        {
+          "anchor": "`serial: 1` hạn chế số host cùng đổi",
+          "sources": [
+            "AS13"
+          ],
+          "source_location": "Execution strategies, serial",
+          "support": "serial giới hạn batch host của play.",
+          "limits": "Không tự rút target khỏi load balancer hay xoay credential."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P10.C03.L03.Q01",
+          "publication_id": "P10.C03.L03.Q01",
+          "question": "File Vault trong Git và task template chạy với --diff. Có thể khẳng định secret không rò không? Nêu kiểm soát cần thiết.",
+          "answer": "Không. Vault chỉ mã hóa at rest; cần bảo vệ khóa giải mã, no_log/không in diff ở task nhạy cảm, quyền file đích và log ứng dụng, rồi kiểm đường đi secret và quy trình rotation."
+        }
+      ]
+    },
+    "P12.C04.L02": {
+      "claims": [
+        {
+          "anchor": "Alertmanager deduplicate, group và route thông báo",
+          "sources": [
+            "W2-AMAGER"
+          ],
+          "source_location": "Alertmanager, overview and grouping",
+          "support": "Alertmanager deduplicate/group/route, hỗ trợ inhibition và silences.",
+          "limits": "Notification sent chưa chứng minh người trực nhận/hiểu."
+        },
+        {
+          "anchor": "Inhibition chỉ chặn notification của alert mục tiêu",
+          "sources": [
+            "W2-AMAGER"
+          ],
+          "source_location": "Alertmanager, Inhibition and Silences",
+          "support": "Inhibition phụ thuộc alert nguồn; silence khớp matcher trong thời gian.",
+          "limits": "Không sửa metric hoặc hệ bệnh; matcher cần test với missing labels."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P12.C04.L02.Q01",
+          "publication_id": "P12.C04.L02.Q01",
+          "question": "Không có page khi cluster mất scrape. Có thể kết luận healthy không? Truy vết các ranh giới nào?",
+          "answer": "Không. Kiểm target/discovery, rule firing, alert tới Alertmanager, route/group/inhibition/silence, receiver giao hàng và người trực xác nhận; xét trường hợp thiếu nhãn hoặc alert nguồn không đến."
         }
       ]
     }

@@ -2757,16 +2757,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P08/C03/L01.md",
+      "sha256": "09924d2eff91733a640500bc0fdf0c74986d616929e92700bd097f6f724a50dc",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS1",
+        "W2-EC2STOP"
+      ],
+      "qa": [
+        {
+          "id": "W2.P08.C03.L01.Q01",
+          "publication_id": "P08.C03.L01.Q01",
+          "question": "EC2 đã running và ALB /health trả 200 nhưng /reports lỗi AccessDenied. Hai phép quan sát ấy chứng minh điều gì, và cần kiểm gì tiếp?",
+          "answer": "Chúng chỉ chứng minh compute đang chạy và hợp đồng /health đã qua. Kiểm profile/role của request, policy trên action/object, đường mạng tới S3 và request /reports; không suy từ health check rằng S3 đọc được."
+        }
+      ]
     },
     "P08.C03.L02": {
       "parent": "P08.C03",
@@ -2806,16 +2816,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P08/C03/L03.md",
+      "sha256": "c7dc07033e5106536e4affbde568073519e617c6d8e13f8a47cd0d0512ca0095",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS10",
+        "AWS9",
+        "W2-AZ"
+      ],
+      "qa": [
+        {
+          "id": "W2.P08.C03.L03.Q01",
+          "publication_id": "P08.C03.L03.Q01",
+          "question": "Hai EC2 ở hai AZ đều /health xanh. Có thể kết luận /reports vẫn phục vụ sau khi mất AZ A không?",
+          "answer": "Chưa. Cần chứng minh ALB route tới target B, B đủ capacity, dependency và quyền S3 hoạt động, dữ liệu nghiệp vụ ở nơi B đọc được; thử request thật và đọc dữ liệu sau failover."
+        }
+      ]
     },
     "P08.C04.L01": {
       "parent": "P08.C04",
@@ -2946,16 +2967,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P09/C01/L02.md",
+      "sha256": "7fc08db22c13227a9ad78a28ce5d863c6f4297f1cdfdf25247992a9bb63bd90a",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-TFLOCK",
+        "W2-TFPROV"
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C01.L02.Q01",
+          "publication_id": "P09.C01.L02.Q01",
+          "question": "Cùng HCL nhưng hai pipeline cho plan khác. Trước khi kết luận drift, cần so những danh tính nào?",
+          "answer": "So provider source/version/checksum, input, workspace/backend/state serial, alias, account/Region và ID object; sau đó mới đối chiếu API thực và schema provider."
+        }
+      ]
     },
     "P09.C01.L03": {
       "parent": "P09.C01",
@@ -3139,16 +3170,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P09/C03/L02.md",
+      "sha256": "f737fa405ff3268be0ee2e2875abffed963c37a8e7cf475de47f21cbee9a44c6",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "TF10",
+        "W2-TFMOVED",
+        "W2-TFSTATEMV"
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C03.L02.Q01",
+          "publication_id": "P09.C03.L02.Q01",
+          "question": "Bucket có sẵn chưa ở state; một instance đã ở state chỉ đổi tên HCL. Dùng import hay moved cho từng việc?",
+          "answer": "Bucket: import vào địa chỉ resource đúng sau khi xác minh ownership. Instance: moved block cũ→mới; đọc plan để bảo đảm không có delete/replace ngoài ý định."
+        }
+      ]
     },
     "P09.C03.L03": {
       "parent": "P09.C03",
@@ -3159,16 +3201,25 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P09/C03/L03.md",
+      "sha256": "f9aa9cd436f50c0f04393c37b91166efdf93d3248d95117a7c7b531429ac473f",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-TFMOVED"
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C03.L03.Q01",
+          "publication_id": "P09.C03.L03.Q01",
+          "question": "Đổi count [0]/[1] thành for_each [a]/[b] cho hai EC2 giữ dữ liệu. Nêu điều kiện trước apply và lúc nào dừng.",
+          "answer": "Xác minh bảng ánh xạ ID thật [0]→a, [1]→b; viết moved blocks, backup state, plan từng workspace; dừng nếu plan có delete/replace ngoài ý định hay ID không khớp."
+        }
+      ]
     },
     "P09.C04.L01": {
       "parent": "P09.C04",
@@ -3244,16 +3295,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P09/C04/L03.md",
+      "sha256": "1b816210e2467482f38acf325cbd6c241477632f17a13d1b5dca480ee872709a",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS10",
+        "TF1",
+        "TF5"
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C04.L03.Q01",
+          "publication_id": "P09.C04.L03.Q01",
+          "question": "Terraform apply complete và target /health xanh sau replace. Có thể đóng sự cố mất 41 đơn chưa?",
+          "answer": "Chưa. So instance/root volume ID, đọc đủ 41/41 đơn từ nơi khôi phục, thử request nghiệp vụ, kiểm backup restore và plan mới; state snapshot cũ không chứa dữ liệu EBS."
+        }
+      ]
     },
     "P10.C01.L01": {
       "parent": "P10.C01",
@@ -3534,16 +3596,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P10/C03/L03.md",
+      "sha256": "2b92b6b7c36e353cc5e1a1721a5c94f91689dcfa6471f9ba525f8bedf273b6a0",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AS13",
+        "W2-ANSVAULT"
+      ],
+      "qa": [
+        {
+          "id": "W2.P10.C03.L03.Q01",
+          "publication_id": "P10.C03.L03.Q01",
+          "question": "File Vault trong Git và task template chạy với --diff. Có thể khẳng định secret không rò không? Nêu kiểm soát cần thiết.",
+          "answer": "Không. Vault chỉ mã hóa at rest; cần bảo vệ khóa giải mã, no_log/không in diff ở task nhạy cảm, quyền file đích và log ứng dụng, rồi kiểm đường đi secret và quy trình rotation."
+        }
+      ]
     },
     "P11.C01.L01": {
       "parent": "P11.C01",
@@ -4785,16 +4857,25 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P12/C04/L02.md",
+      "sha256": "c37e3f0f30d6018f1321dcae555d04b416344e0bca34f30f261dce9f095bfb30",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-AMAGER"
+      ],
+      "qa": [
+        {
+          "id": "W2.P12.C04.L02.Q01",
+          "publication_id": "P12.C04.L02.Q01",
+          "question": "Không có page khi cluster mất scrape. Có thể kết luận healthy không? Truy vết các ranh giới nào?",
+          "answer": "Không. Kiểm target/discovery, rule firing, alert tới Alertmanager, route/group/inhibition/silence, receiver giao hàng và người trực xác nhận; xét trường hợp thiếu nhãn hoặc alert nguồn không đến."
+        }
+      ]
     },
     "P12.C04.L03": {
       "parent": "P12.C04",
