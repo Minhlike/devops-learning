@@ -393,6 +393,3034 @@
           "limits": "Cảnh báo không chứng minh dịch vụ chạy hay sẵn sàng; mã thoát mặc định không đủ để xét mọi warning."
         }
       ]
+    },
+    "P03.C01.L01": {
+      "content_sha256": "04c8296676449f3fd01049da8447a20a13977577c83be8c5c3cdea1638ef6613",
+      "editorial_decision": "Ví dụ IPv4 /24 và địa chỉ tài liệu được gắn giả định; phân biệt địa chỉ logic với kết nối và namespace.",
+      "checks": [
+        {
+          "anchor": "địa chỉ dành cho tài liệu",
+          "kind": "documented",
+          "sources": [
+            "N1"
+          ],
+          "source_location": "RFC 5737 section 3",
+          "support": "198.51.100.0/24 and 203.0.113.0/24 are documentation blocks",
+          "limits": "Illustrative values, not reachable endpoints"
+        }
+      ]
+    },
+    "P03.C01.L02": {
+      "content_sha256": "1111c42972f9dfb49bfc041845390cd49091801121485a0e7fdf80122b1142dd",
+      "editorial_decision": "Thứ tự longest-prefix, next hop và phép quan sát route được tách khỏi bảo đảm gói thực đến đích.",
+      "checks": [
+        {
+          "anchor": "prefix cụ thể hơn thắng prefix ngắn hơn",
+          "kind": "documented",
+          "sources": [
+            "N2"
+          ],
+          "source_location": "RFC 4632 section 5.1",
+          "support": "forwarding chooses longest matching prefix",
+          "limits": "Linux policy routing can select a different table first"
+        },
+        {
+          "anchor": "`ip route get 198.51.100.20` hữu ích",
+          "kind": "documented",
+          "sources": [
+            "I1"
+          ],
+          "source_location": "ip-route(8): ip route get",
+          "support": "get resolves route for a specified destination rather than only listing route entries",
+          "limits": "Local lookup is not proof of successful forwarding"
+        }
+      ]
+    },
+    "P03.C01.L03": {
+      "content_sha256": "e41937232d131b3639ea44fabfb82b15228573b4e55e7d00178afa8666022cb9",
+      "editorial_decision": "ARP chỉ áp cho IPv4 trên liên kết; neighbor entry không chứng minh server ứng dụng khỏe.",
+      "checks": [
+        {
+          "anchor": "ARP của IPv4 hỏi",
+          "kind": "documented",
+          "sources": [
+            "N3",
+            "I2"
+          ],
+          "source_location": "RFC 826 packet reception and request; ip-neighbour(8) DESCRIPTION",
+          "support": "ARP resolves protocol address to link address on local link; Linux neighbour table stores bindings",
+          "limits": "IPv6 uses different neighbor discovery"
+        }
+      ]
+    },
+    "P03.C02.L01": {
+      "content_sha256": "15726892aad39d1f508f9aac68098db4b2f8fdb090235bd7f6c8ef83f74071ed",
+      "editorial_decision": "Trace SYN 1000/5000, ACK 1001/5001 và bốn byte tới ACK 1005 nhất quán; ACK mất không tự chứng minh dữ liệu mất.",
+      "checks": [
+        {
+          "anchor": "client gửi SYN từ một cổng nguồn tạm thời",
+          "kind": "documented",
+          "sources": [
+            "N4"
+          ],
+          "source_location": "RFC 9293 section 3.5, basic three-way handshake",
+          "support": "SYN, SYN-ACK, ACK synchronize two TCP endpoints",
+          "limits": "Simultaneous open and extensions also exist"
+        },
+        {
+          "anchor": "Cửa sổ nhận giới hạn lượng dữ liệu",
+          "kind": "documented",
+          "sources": [
+            "N6"
+          ],
+          "source_location": "RFC 5681 section 3.1",
+          "support": "receiver window and congestion window are distinct limits; minimum governs outstanding data",
+          "limits": "Specific Linux congestion algorithm may differ"
+        },
+        {
+          "anchor": "Mỗi SYN chiếm một vị trí trong không gian số thứ tự",
+          "kind": "documented",
+          "sources": [
+            "N4"
+          ],
+          "source_location": "RFC 9293 sections 3.4 and 3.5, SEG.LEN and three-way handshake",
+          "support": "SYN occupies one sequence number; cumulative ACK X acknowledges all octets before X; retransmitted data retain sequence numbers",
+          "limits": "Trace uses synthetic initial sequence numbers and omits options, wraparound and reordering"
+        }
+      ]
+    },
+    "P03.C02.L02": {
+      "content_sha256": "1aff783d2f48e8f8c9688083f5bc69719a1305a3f09782d784364d45e0058357",
+      "editorial_decision": "Tách LISTEN theo network namespace, ECONNREFUSED và timeout; quan sát socket không được suy thành readiness.",
+      "checks": [
+        {
+          "anchor": "`ss -ltn` trên đúng network namespace",
+          "kind": "documented",
+          "sources": [
+            "I3",
+            "R10"
+          ],
+          "source_location": "ss(8): -l, -t, -n; ip(7): address binding",
+          "support": "ss lists listening TCP sockets; loopback-bound IPv4 socket is local to its namespace",
+          "limits": "Socket state alone is not application health"
+        },
+        {
+          "anchor": "`connect` báo `ECONNREFUSED`",
+          "kind": "documented",
+          "sources": [
+            "R9"
+          ],
+          "source_location": "connect(2): ERRORS",
+          "support": "ECONNREFUSED when no one is listening; ETIMEDOUT when connection attempt times out",
+          "limits": "Firewall behavior may produce similar client symptoms"
+        },
+        {
+          "anchor": "`ss -ltn` chỉ thấy `127.0.0.1:443`",
+          "kind": "documented",
+          "sources": [
+            "I3",
+            "R9",
+            "R10"
+          ],
+          "source_location": "ss(8): -l; ip(7): binding; connect(2): ECONNREFUSED",
+          "support": "listener bound to loopback does not accept packets addressed to the external IPv4 address",
+          "limits": "RST source and firewall policy require separate check"
+        }
+      ]
+    },
+    "P03.C02.L03": {
+      "content_sha256": "fd524887ef00babc892f4490435a5209d342a186d032b09425ebf9404beed70a",
+      "editorial_decision": "NAPT đổi nguồn và conntrack được giải thích theo ví dụ giả định; return mapping không hàm ý ứng dụng trả HTTP.",
+      "checks": [
+        {
+          "anchor": "gateway trong ví dụ thực hiện NAPT",
+          "kind": "documented",
+          "sources": [
+            "N5"
+          ],
+          "source_location": "RFC 3022 sections 2.2 and 3",
+          "support": "NAPT translates private source address and TCP/UDP port and maintains binding for reverse translation",
+          "limits": "Example ports are synthetic and mapping policy varies"
+        },
+        {
+          "anchor": "theo dõi kết nối của netfilter",
+          "kind": "documented",
+          "sources": [
+            "K5"
+          ],
+          "source_location": "nf_conntrack sysctl: count, max, TCP timeouts",
+          "support": "Linux netfilter maintains flow entries for original and reply directions",
+          "limits": "A flow entry is not proof of application acceptance"
+        }
+      ]
+    },
+    "P03.C03.L01": {
+      "content_sha256": "6aa6f165fcef97e68c766060aecd92f9e0ec18fd531d76416cfaedfa326e2517",
+      "editorial_decision": "DNS cache và negative caching có giới hạn; DNS thành công không được suy thành TCP/TLS/HTTP thành công.",
+      "checks": [
+        {
+          "anchor": "Bộ phân giải có thể dùng thông tin cục bộ hoặc hỏi recursive resolver",
+          "kind": "documented",
+          "sources": [
+            "D1"
+          ],
+          "source_location": "RFC 1034 sections 2.3 and 5.3.1",
+          "support": "stub resolvers can ask recursive name servers, which use cache or authoritative data",
+          "limits": "Host and application lookup policies vary"
+        },
+        {
+          "anchor": "Mỗi bản ghi có TTL giới hạn thời gian lưu ở cache DNS",
+          "kind": "documented",
+          "sources": [
+            "D1",
+            "D2"
+          ],
+          "source_location": "RFC 1034 section 3.6; RFC 1035 section 3.2.1",
+          "support": "TTL bounds RR caching lifetime",
+          "limits": "Application caches and retained connections can behave separately"
+        },
+        {
+          "anchor": "Kết quả không tồn tại tên (NXDOMAIN) cũng có thể được cache",
+          "kind": "documented",
+          "sources": [
+            "D3"
+          ],
+          "source_location": "RFC 2308 sections 2 and 5",
+          "support": "negative DNS answers can be cached with bounded lifetime",
+          "limits": "NXDOMAIN differs from transport failure; resolver policy matters"
+        }
+      ]
+    },
+    "P03.C03.L02": {
+      "content_sha256": "357e9f71854a03af90baab37382ad23b4d58bd04de19b579ef1f88efbdaa26a3",
+      "editorial_decision": "TLS 1.3 và xác minh danh tính được đặt đúng ranh giới client–proxy; đoạn proxy–upstream cần hợp đồng riêng.",
+      "checks": [
+        {
+          "anchor": "client bắt đầu TLS bằng ClientHello",
+          "kind": "documented",
+          "sources": [
+            "T1",
+            "T3"
+          ],
+          "source_location": "RFC 8446 sections 2 and 4; RFC 6066 section 3",
+          "support": "ClientHello begins TLS negotiation; SNI can guide server certificate selection",
+          "limits": "SNI is not certificate verification and some handshakes use other authentication modes"
+        },
+        {
+          "anchor": "Client phải kiểm tra chuỗi tin cậy, thời hạn và danh tính",
+          "kind": "documented",
+          "sources": [
+            "T1",
+            "T2",
+            "H1"
+          ],
+          "source_location": "RFC 8446 section 4.4.2; RFC 9525 sections 6 and 7; RFC 9110 section 4.3.4",
+          "support": "authenticated TLS service identity requires validating certificate chain and matching presented identity to reference name",
+          "limits": "Exact trust policy and revocation behavior depend on client"
+        },
+        {
+          "anchor": "TLS tới proxy không tự mã hóa đoạn proxy–upstream",
+          "kind": "documented",
+          "sources": [
+            "H1",
+            "T1"
+          ],
+          "source_location": "RFC 9110 section 3.7; RFC 8446 section 2",
+          "support": "proxy is a separate communication endpoint and any upstream leg needs its own transport protection",
+          "limits": "Specific deployments may use end-to-end tunneling instead"
+        }
+      ]
+    },
+    "P03.C03.L03": {
+      "content_sha256": "d45c4fb4cf5151edb03fd4bc7c2adad285a78e7999b9108bbc42938d6b415808",
+      "editorial_decision": "Phân biệt ngữ nghĩa HTTP với transport HTTP/2, HTTP/3; status và cache không tự xác nhận nội dung đúng.",
+      "checks": [
+        {
+          "anchor": "HTTP/2 có thể ghép nhiều luồng trên một kết nối TCP",
+          "kind": "documented",
+          "sources": [
+            "H3",
+            "H4"
+          ],
+          "source_location": "RFC 9113 sections 2 and 5; RFC 9114 sections 1 and 2",
+          "support": "HTTP/2 multiplexes streams on a connection commonly over TCP; HTTP/3 maps HTTP semantics to QUIC",
+          "limits": "The chapter's main trace is HTTP/1.1 over TLS and TCP"
+        },
+        {
+          "anchor": "Cache HTTP lưu phản hồi đủ điều kiện",
+          "kind": "documented",
+          "sources": [
+            "H2"
+          ],
+          "source_location": "RFC 9111 sections 1, 3, 4.2 and 5.2",
+          "support": "HTTP caches store eligible responses and use freshness or validation rules",
+          "limits": "Application-level caches may have separate behavior; sensitive responses need explicit policy"
+        }
+      ]
+    },
+    "P03.C04.L01": {
+      "content_sha256": "3efebbb9fba07c71c5c2252f461746ea78b2cc4570193f0cc514b0b55e43e0cd",
+      "editorial_decision": "Hai chặng proxy có timeout và trách nhiệm riêng; trường chuyển tiếp chỉ tin từ proxy được cấu hình đáng tin cậy.",
+      "checks": [
+        {
+          "anchor": "Reverse proxy nhận request ở phía client",
+          "kind": "documented",
+          "sources": [
+            "H1"
+          ],
+          "source_location": "RFC 9110 sections 3.7 and 7.3",
+          "support": "intermediaries receive a request and forward or answer it according to routing and configuration",
+          "limits": "Proxy route selection is implementation-specific"
+        }
+      ]
+    },
+    "P03.C04.L02": {
+      "content_sha256": "b6a61c5276a368b05b678627eaf4730ec2a2112bc59a0bb12fc9308e08d33c00",
+      "editorial_decision": "Trace giả định GET /report và body 9 byte được gắn nhãn; Host hai chặng, TLS và nguồn tạo status tách rõ.",
+      "checks": [
+        {
+          "anchor": "Trace dưới đây là dữ liệu giả định",
+          "kind": "documented",
+          "sources": [
+            "H5",
+            "H1",
+            "T1"
+          ],
+          "source_location": "RFC 9112 sections 2.1, 3 and 6; RFC 9110 sections 3.7, 7.2 and 15.3.1; RFC 8446 section 2",
+          "support": "HTTP/1.1 start-line, Host field, blank-line-delimited fields and Content-Length describe the displayed messages; TLS protects only its endpoints",
+          "limits": "Example headers, route, payload and status are synthetic; LF display is not wire CRLF"
+        },
+        {
+          "anchor": "proxy chủ động đổi `Host` thành `orders.internal.test`",
+          "kind": "documented",
+          "sources": [
+            "H1",
+            "H5"
+          ],
+          "source_location": "RFC 9110 sections 3.7 and 7.2; RFC 9112 section 3.2",
+          "support": "an intermediary can generate the request on the next hop and the HTTP/1.1 Host field identifies its target authority",
+          "limits": "Whether Host is rewritten is a deployment configuration choice"
+        }
+      ]
+    },
+    "P03.C04.L03": {
+      "content_sha256": "6dbfa08b9aa9a154272b763b3507790e37c62160004b0cce3862732f597ff2c9",
+      "editorial_decision": "Sự cố DNS/TCP/TLS/502/504 được chẩn đoán theo bằng chứng từng tầng; status không bị đồng nhất với nguyên nhân gốc.",
+      "checks": [
+        {
+          "anchor": "nó có thể tạo `504 Gateway Timeout`",
+          "kind": "documented",
+          "sources": [
+            "H1"
+          ],
+          "source_location": "RFC 9110 sections 15.6.3 and 15.6.5",
+          "support": "502 denotes invalid upstream response; 504 denotes missing timely upstream response for a gateway",
+          "limits": "Status alone does not identify which component generated it or root cause"
+        },
+        {
+          "anchor": "Giả sử upstream ghi nhận request và kẹt ở truy vấn dữ liệu",
+          "kind": "documented",
+          "sources": [
+            "H1"
+          ],
+          "source_location": "RFC 9110 section 15.6.5",
+          "support": "gateway timeout is consistent with a delayed upstream response",
+          "limits": "The scenario is synthetic, not evidence of a real deployment"
+        }
+      ]
+    },
+    "P04.C01.L01": {
+      "content_sha256": "59d92649fcc8cf8cf86eea1c9b14c6de2c26991d068133747250aba8126e00ae",
+      "editorial_decision": "Blob/tree/commit và hash object đúng mô hình; SHA không được coi là bằng chứng tác giả hoặc an toàn mã.",
+      "checks": [
+        {
+          "anchor": "Một blob chứa nội dung tệp, không chứa tên tệp",
+          "kind": "documented",
+          "sources": [
+            "G1"
+          ],
+          "source_location": "Git Objects: Blob Objects, Tree Objects, Commit Objects",
+          "support": "blob holds file data, tree associates names and modes with object IDs, commit names root tree and parent IDs",
+          "limits": "Book diagrams use SHA-1 examples; object format can vary"
+        },
+        {
+          "anchor": "Git cũng hỗ trợ kho SHA-256",
+          "kind": "documented",
+          "sources": [
+            "G8",
+            "G3"
+          ],
+          "source_location": "git-init(1) --object-format; user-manual: Object storage format",
+          "support": "Git init accepts sha1 and, if enabled, sha256 object formats",
+          "limits": "SHA-1 remains default in cited release; interoperability may vary"
+        }
+      ]
+    },
+    "P04.C01.L02": {
+      "content_sha256": "5417488f046c27976e268d02a2275f1d55db02a9877ddf3734aa5dff8925b11d",
+      "editorial_decision": "Ví dụ HEAD 1000, index 2000, working tree 3000 cho thấy chính xác sự khác biệt sau git add.",
+      "checks": [
+        {
+          "anchor": "`git add` chép nội dung hiện tại của đường dẫn vào index",
+          "kind": "documented",
+          "sources": [
+            "G3"
+          ],
+          "source_location": "user-manual: Creating a new commit; index and git add",
+          "support": "git add records current file content into index and later worktree edits need staging again",
+          "limits": "Partial staging can select only some hunks"
+        },
+        {
+          "anchor": "`HEAD` thường là tham chiếu tượng trưng",
+          "kind": "documented",
+          "sources": [
+            "G2"
+          ],
+          "source_location": "Git References: The HEAD",
+          "support": "HEAD commonly refers symbolically to the current branch and commit advances that branch ref",
+          "limits": "Detached HEAD is an exception"
+        }
+      ]
+    },
+    "P04.C02.L01": {
+      "content_sha256": "44f64af930df3216f0a858360134c1ad2d7991fcf44c645bedbf316e101d87bc",
+      "editorial_decision": "Tình huống B–C/D tạo conflict và ba index stages; merge commit hai cha chỉ sau giải conflict và kiểm thử.",
+      "checks": [
+        {
+          "anchor": "index có thể giữ ba stage cho tệp xung đột",
+          "kind": "documented",
+          "sources": [
+            "G4",
+            "G9"
+          ],
+          "source_location": "git-merge(1): TRUE MERGE and HOW CONFLICTS ARE PRESENTED; git-merge.adoc: TRUE MERGE",
+          "support": "on conflict HEAD stays, MERGE_HEAD records other side, index stages 1/2/3 contain base/ours/theirs",
+          "limits": "Not every conflict has all three stages; add/delete can omit a side"
+        },
+        {
+          "anchor": "chỉ sau đó tạo merge commit `M` với hai cha",
+          "kind": "documented",
+          "sources": [
+            "G4"
+          ],
+          "source_location": "git-merge(1): FAST-FORWARD MERGE, TRUE MERGE",
+          "support": "diverged histories require a new two-parent commit while fast-forward can move a ref without new commit",
+          "limits": "A user may choose other strategies or squash; model assumes ordinary merge"
+        }
+      ]
+    },
+    "P04.C02.L02": {
+      "content_sha256": "d9c346a975340375a2a32854251a537d7c419780858489a620c7e7b6f8539917",
+      "editorial_decision": "Rebase tạo commit mới trên D và đổi đồ thị; giới hạn an toàn khi lịch sử đã chia sẻ được nêu rõ.",
+      "checks": [
+        {
+          "anchor": "tạo commit mới `C′` có cha là `D`",
+          "kind": "documented",
+          "sources": [
+            "G5"
+          ],
+          "source_location": "git-rebase(1): DESCRIPTION and NOTES",
+          "support": "rebase reapplies commits onto new base and writes new commits, changing branch history",
+          "limits": "Empty or duplicate commits can be dropped under options; example has one nonempty conflict"
+        }
+      ]
+    },
+    "P04.C02.L03": {
+      "content_sha256": "949da99c4a7ce10660dad75b9505c9021aee70f9c649b6ae6955961fd963c243",
+      "editorial_decision": "Revert tạo commit đảo chiều, reset dịch ref; thao tác với merge parent và tác động tới index/tree không bị đánh đồng.",
+      "checks": [
+        {
+          "anchor": "`git revert -m 1 M` xem `D` là mainline",
+          "kind": "documented",
+          "sources": [
+            "G6"
+          ],
+          "source_location": "git-revert(1): DESCRIPTION and --mainline",
+          "support": "reverting a merge needs a selected parent and records new commit reversing change relative to it",
+          "limits": "Reverting a merge affects subsequent remerge semantics"
+        },
+        {
+          "anchor": "`--soft`, mặc định `--mixed`, và `--hard`",
+          "kind": "documented",
+          "sources": [
+            "G7"
+          ],
+          "source_location": "git-reset(1): DESCRIPTION and --soft/--mixed/--hard",
+          "support": "reset moves current branch tip and updates index/worktree according to mode; hard can discard tracked local changes",
+          "limits": "Pathspec form of reset updates index without moving HEAD"
+        }
+      ]
+    },
+    "P05.C01.L01": {
+      "content_sha256": "9d40c2226e2545376a6f7ce1d29ce836911e9219c0d24a98a64c58197310b70f",
+      "editorial_decision": "Tình huống BACKUP_OK sai được tách khỏi thành công tar; quote, expansion và status được đọc theo Bash, không suy từ dòng log.",
+      "checks": [
+        {
+          "anchor": "Bash đọc cú pháp trước",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Shell Syntax; Shell Expansions",
+          "support": "Shell parses operators and quoting before the documented expansions",
+          "limits": "Expansion details depend on context and quoting"
+        },
+        {
+          "anchor": "`tar -C \"$src\"` đưa đúng một đường dẫn",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Double Quotes; Word Splitting; Filename Expansion",
+          "support": "Double quotes inhibit word splitting and filename expansion of parameter expansion",
+          "limits": "Assumes ordinary scalar src and no later eval"
+        },
+        {
+          "anchor": "Phép gán đơn giản `src=$1` không tách word",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Simple Command Expansion; Shell Parameters",
+          "support": "Assignment RHS undergoes expansion without word splitting or pathname expansion",
+          "limits": "Later unquoted use can still split"
+        }
+      ]
+    },
+    "P05.C01.L02": {
+      "content_sha256": "a1102c65dd790f3ecdfa0a61f18bd0040ab59b46f9149ada25d85400e8dd7f86",
+      "editorial_decision": "Redirection và pipe được phân biệt theo file descriptor; mã lỗi của utility và pipeline được kiểm theo hợp đồng riêng.",
+      "checks": [
+        {
+          "anchor": "cả pipeline có status 0",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Pipelines; The Set Builtin: pipefail",
+          "support": "Without pipefail pipeline status is last command status",
+          "limits": "Assumes tee is last and exits zero"
+        },
+        {
+          "anchor": "Mảng `PIPESTATUS` trong Bash giữ status từng phần",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Bash Variables: PIPESTATUS",
+          "support": "PIPESTATUS contains last foreground pipeline command statuses",
+          "limits": "Subsequent simple command changes recorded status"
+        },
+        {
+          "anchor": "GNU `tar` phân biệt 0 thành công, 1 khi file thay đổi trong lúc tạo kho và 2 cho lỗi nghiêm trọng",
+          "kind": "documented",
+          "sources": [
+            "TA1"
+          ],
+          "source_location": "General Synopsis of tar: exit status",
+          "support": "Tar manual defines 0, 1 for changed input during create/append/update, and 2 fatal",
+          "limits": "Other options give status 1 different meaning; child status can propagate"
+        }
+      ]
+    },
+    "P05.C01.L03": {
+      "content_sha256": "19a20f032b998effaf1ea2be9c95b4aa5ec016a87e1b6c861efaf6d64e5e67dc",
+      "editorial_decision": "errexit/pipefail không được tuyên bố toàn năng; nhánh if, command substitution và cleanup có giới hạn cụ thể.",
+      "checks": [
+        {
+          "anchor": "Nó bỏ qua lỗi ở phép thử `if`/`while`",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "The Set Builtin: -e",
+          "support": "errexit excluded in if/while tests, nonfinal lists and pipeline contexts",
+          "limits": "Function behavior also depends on call context"
+        },
+        {
+          "anchor": "Bash không ở POSIX mode thường tắt `errexit`",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Command Substitution; The Shopt Builtin: inherit_errexit",
+          "support": "Subshell for command substitution clears errexit unless POSIX mode or inherit_errexit",
+          "limits": "Applies to Bash, not arbitrary POSIX shells"
+        },
+        {
+          "anchor": "`SIGKILL` không bắt được",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Signals; Bourne Shell Builtins: trap",
+          "support": "Bash traps execute on catchable signals or EXIT; SIGKILL cannot be trapped",
+          "limits": "Foreground command may delay trap handling"
+        }
+      ]
+    },
+    "P05.C02.L01": {
+      "content_sha256": "656c88482e14584f05e094dba07fd340cdf25dd6a715809f007e3a50a96df576",
+      "editorial_decision": "Lựa chọn Bash/Python/Go dựa trên trạng thái và môi trường chạy; binary hoặc virtual environment không được coi tự di động.",
+      "checks": [
+        {
+          "anchor": "virtual environment là thứ tái tạo được",
+          "kind": "documented",
+          "sources": [
+            "P3"
+          ],
+          "source_location": "venv overview",
+          "support": "virtual environments isolate packages and are disposable, not portable artifacts",
+          "limits": "Exact dependency locking requires packaging tool workflow"
+        }
+      ]
+    },
+    "P05.C02.L02": {
+      "content_sha256": "58069a960fb5e6c7ed0c344475e60f7577325ba275e4b3315e196eecb1516e14",
+      "editorial_decision": "argv, môi trường và API subprocess được tách khỏi shell parsing; ví dụ Python/Go kiểm returncode và trạng thái cuối.",
+      "checks": [
+        {
+          "anchor": "Hai API này mặc định không gọi shell",
+          "kind": "documented",
+          "sources": [
+            "P2",
+            "GO1"
+          ],
+          "source_location": "Python subprocess Frequently Used Arguments; Go os/exec Overview",
+          "support": "Sequence argv is passed without implicit shell parsing in both APIs",
+          "limits": "Child program may parse arguments or spawn shell itself"
+        },
+        {
+          "anchor": "Python `env=None` và Go `Cmd.Env=nil` cho con kế thừa môi trường hiện tại",
+          "kind": "documented",
+          "sources": [
+            "P2",
+            "GO1"
+          ],
+          "source_location": "Python subprocess.run env; Go Cmd.Env",
+          "support": "Default subprocess environment is inherited",
+          "limits": "Inheritance may expose configuration or secrets"
+        },
+        {
+          "anchor": "`subprocess.run(check=False)` trả `CompletedProcess`",
+          "kind": "documented",
+          "sources": [
+            "P2"
+          ],
+          "source_location": "subprocess.run and CompletedProcess.returncode",
+          "support": "run returns CompletedProcess on nonzero exit when check is false",
+          "limits": "Popen is used in this demo to separate startup and task timing"
+        },
+        {
+          "anchor": "`Run` trả `nil` khi lệnh chạy và kết thúc thành công",
+          "kind": "documented",
+          "sources": [
+            "GO1"
+          ],
+          "source_location": "Cmd.Run; Cmd.Wait; ExitError",
+          "support": "Run/Wait report zero success and nonzero exit through error",
+          "limits": "Demo uses Start and Wait for readiness handshake"
+        }
+      ]
+    },
+    "P05.C02.L03": {
+      "content_sha256": "9e1f7ecddceb03d46d95838cb2a7261341231b7ab85eaef6bcb481012d613c7f",
+      "editorial_decision": "READY tách startup khỏi timeout tác vụ; cancellation chỉ quản lý process trực tiếp và không rollback partial side effects.",
+      "checks": [
+        {
+          "anchor": "gọi `communicate(timeout=0.5)`",
+          "kind": "documented",
+          "sources": [
+            "P2"
+          ],
+          "source_location": "Popen.communicate; orchestration_probe.py",
+          "support": "communicate can time out after readiness handshake; parent kills and reaps child",
+          "limits": "Does not stop grandchildren or remote work"
+        },
+        {
+          "anchor": "Go dùng `exec.CommandContext` nhưng chưa hủy context trong giai đoạn đợi `READY`",
+          "kind": "documented",
+          "sources": [
+            "GO1",
+            "GO2"
+          ],
+          "source_location": "CommandContext; context.WithCancel; orchestrate_go_step.go",
+          "support": "context cancellation kills direct process; demo begins task timer after READY",
+          "limits": "Startup has a distinct 10 second bound"
+        },
+        {
+          "anchor": "`os.Exit` trong Go còn bỏ qua các `defer`",
+          "kind": "documented",
+          "sources": [
+            "GO3"
+          ],
+          "source_location": "os.Exit",
+          "support": "os.Exit terminates immediately without running deferred functions",
+          "limits": "Applies to defer in terminating process"
+        }
+      ]
+    },
+    "P05.C03.L01": {
+      "content_sha256": "2a05cc9e4f78783017cbaab8870b9b9dc13cdec507804d0674ae58bc0fcec978",
+      "editorial_decision": "Script backup lỗi được dán nhãn cố ý, chỉ chạy với fixture; success giả được chứng minh bằng status và file cuối.",
+      "checks": [
+        {
+          "anchor": "`tar` không thể đổi sang nguồn và thoát 2",
+          "kind": "documented",
+          "sources": [
+            "TA1"
+          ],
+          "source_location": "General Synopsis of tar: exit status",
+          "support": "Missing input directory is fatal in tested GNU tar 1.35; observed exit 2",
+          "limits": "Observed on Ubuntu 24.04 under WSL; diagnostics may vary"
+        },
+        {
+          "anchor": "Ma trận kiểm thử có kiểm soát phải đối chiếu cả status lẫn file trạng thái",
+          "kind": "documented",
+          "sources": [
+            "P2",
+            "GO1"
+          ],
+          "source_location": "tests/test_orchestration_example.py",
+          "support": "Tests assert success, false success, failure, timeout and final ready/partial state",
+          "limits": "Demonstration only; not production safety proof"
+        }
+      ]
+    },
+    "P05.C03.L02": {
+      "content_sha256": "e90dffcd52c3800410b6bf478ae0e52c0130fe38a4495972725b4245d0a05319",
+      "editorial_decision": "Hợp đồng chạy lại kiểm tra tên đích, marker và hậu điều kiện; giới hạn idempotency được suy luận từ trạng thái bền vững.",
+      "checks": [
+        {
+          "anchor": "Khi script chạy lại, phải định nghĩa rõ trạng thái nào có thể tái sử dụng",
+          "kind": "inference",
+          "sources": [],
+          "support": "Một tên đích tồn tại không chứng minh nội dung hợp lệ; ví dụ kiểm trạng thái trước khi ghi đè.",
+          "limits": "Hợp đồng phụ thuộc filesystem và utility thực tế."
+        }
+      ]
+    },
+    "P05.C03.L03": {
+      "content_sha256": "6829e124de2313b69b8b049f09d465b80beed404f67c7d074833e317c468b525",
+      "editorial_decision": "Bản sửa dùng staging và publish có điều kiện; restore trên đường tạm và cleanup chỉ được xác nhận trong phạm vi fixture.",
+      "checks": [
+        {
+          "anchor": "`mktemp` tạo file riêng trong thư mục đích",
+          "kind": "documented",
+          "sources": [
+            "CU1"
+          ],
+          "source_location": "doc/coreutils.texi: mktemp invocation",
+          "support": "mktemp securely creates named temporary file from template; local run confirmed same destination directory",
+          "limits": "Requires trusted destination path and suitable filesystem"
+        },
+        {
+          "anchor": "GNU `ln` mặc định thất bại",
+          "kind": "documented",
+          "sources": [
+            "CU1"
+          ],
+          "source_location": "doc/coreutils.texi: ln invocation",
+          "support": "ln makes hard link by default and normally does not replace an existing target",
+          "limits": "Same-filesystem requirement; hostile directory race not solved"
+        },
+        {
+          "anchor": "`tar -tf` kiểm tra archive đọc được về mặt cấu trúc",
+          "kind": "documented",
+          "sources": [
+            "TA1"
+          ],
+          "source_location": "Listing Archive Contents",
+          "support": "tar -t lists archive members without extracting payload",
+          "limits": "Not a restore or integrity guarantee"
+        }
+      ]
+    },
+    "P06.C01.L01": {
+      "content_sha256": "b394543c42647eee30a851375a05466b5602ee68773582eb8d3e58012560dd91",
+      "editorial_decision": "Chuỗi commit→artifact→runtime nêu rõ commit không định danh binary; tái lập byte cần khóa và đo toàn bộ đầu vào.",
+      "checks": [
+        {
+          "anchor": "module ghi yêu cầu ở `go.mod`, checksum dependency được quản lý ở `go.sum`",
+          "kind": "documented",
+          "sources": [
+            "GO4"
+          ],
+          "source_location": "go mod init; go mod tidy; module authentication using go.sum",
+          "support": "module metadata and downloaded dependency hashes are managed by go command",
+          "limits": "Standard-library-only demo has no third-party module requirement"
+        },
+        {
+          "anchor": "Commit định danh một trạng thái của repository, không định danh duy nhất binary hay image",
+          "kind": "documented",
+          "sources": [
+            "G2",
+            "SL1"
+          ],
+          "source_location": "Git References; SLSA provenance subject/buildDefinition",
+          "support": "Source revision and build output are separate identities linked by provenance",
+          "limits": "Specific build variability is illustrated, not guaranteed for every toolchain"
+        }
+      ]
+    },
+    "P06.C01.L02": {
+      "content_sha256": "15236a161fe9657fbe31fc1a619a4933a51d333fbb7dc2b56bcc2366f6973c36",
+      "editorial_decision": "Digest artifact gắn chính byte đã test, không suy từ tag; phép kiểm danh tính nằm ở artifact được triển khai.",
+      "checks": [
+        {
+          "anchor": "descriptor chứa digest và kích thước",
+          "kind": "documented",
+          "sources": [
+            "OCI1"
+          ],
+          "source_location": "Properties: digest, size; Digests; Verification",
+          "support": "Descriptor requires digest and size and recommends verification of fetched content",
+          "limits": "Cryptographic identity alone does not prove safe behavior"
+        },
+        {
+          "anchor": "Bản ghi provenance nối subject artifact với nguồn và cách build",
+          "kind": "documented",
+          "sources": [
+            "SL1"
+          ],
+          "source_location": "Provenance v1.1: subject, buildDefinition, runDetails",
+          "support": "Provenance describes artifact subject and build process inputs",
+          "limits": "Trust depends on builder and verifier policy"
+        }
+      ]
+    },
+    "P06.C02.L01": {
+      "content_sha256": "2ca4b0e4704be030ed24725fd2b997b484b6b2058f37324f4b1e009a87b2ecc4",
+      "editorial_decision": "CI/CD và approval được tách khỏi readiness; gate bảo vệ đường phát hành nhưng không chứng minh hậu điều kiện production.",
+      "checks": [
+        {
+          "anchor": "Môi trường triển khai có schema dữ liệu, cấu hình, quyền, secret, quota và lưu lượng riêng",
+          "kind": "documented",
+          "sources": [
+            "GH1"
+          ],
+          "source_location": "Using environments; required reviews; secrets; concurrency",
+          "support": "Deployment environments have protection rules, secrets and concurrency controls",
+          "limits": "Schema, traffic and quota are application-specific design concerns"
+        }
+      ]
+    },
+    "P06.C02.L03": {
+      "content_sha256": "f940b22408997fe28bb21d3eaee344e8cc851c16ac26700e899f074f4e150f72",
+      "editorial_decision": "Đồ thị job và phụ thuộc môi trường được mô tả như điều kiện chạy test; output xanh không thay chứng cứ artifact/secret.",
+      "checks": [
+        {
+          "anchor": "Hai bản phát hành chạy đồng thời vào cùng môi trường có thể ghi đè nhau",
+          "kind": "documented",
+          "sources": [
+            "GH1"
+          ],
+          "source_location": "Using concurrency",
+          "support": "Concurrency groups serialize jobs for a deployment environment",
+          "limits": "External deployment paths need destination-side conditional update"
+        }
+      ]
+    },
+    "P06.C03.L01": {
+      "content_sha256": "fe503bd3cf1258177b16c27f65ef2c6c373e8dca2835863a3e0ded6f3b112414",
+      "editorial_decision": "Rolling, blue-green và canary nêu thời điểm chuyển traffic, điều kiện dừng và nguồn quan sát; không áp quota hoặc tỉ lệ cố định.",
+      "checks": [
+        {
+          "anchor": "Rolling update thay dần instance cũ bằng mới",
+          "kind": "documented",
+          "sources": [
+            "KD1"
+          ],
+          "source_location": "Rolling Update Deployment; maxUnavailable; maxSurge",
+          "support": "Deployment controls replacement using new and old ReplicaSets with surge/unavailable bounds",
+          "limits": "Application compatibility and data semantics remain operator responsibility"
+        },
+        {
+          "anchor": "Blue-green chuẩn bị một tập mới rồi đổi tuyến lưu lượng",
+          "kind": "documented",
+          "sources": [
+            "AR1"
+          ],
+          "source_location": "Overview; Sequence of Events",
+          "support": "Active Service stays on old ReplicaSet while preview becomes ready, then selector switches",
+          "limits": "Exact traffic propagation and resource needs depend on implementation"
+        },
+        {
+          "anchor": "Canary gửi một phần lưu lượng tới bản mới",
+          "kind": "documented",
+          "sources": [
+            "AR2"
+          ],
+          "source_location": "Traffic management; raw percentages; stable/canary Services",
+          "support": "Traffic routing can send a chosen percentage to new version while stable receives rest",
+          "limits": "Requires appropriate router; small samples may not represent all users"
+        },
+        {
+          "anchor": "Rollback ứng dụng là đưa lưu lượng hoặc cấu hình chạy về artifact trước đó",
+          "kind": "documented",
+          "sources": [
+            "KD1"
+          ],
+          "source_location": "Rolling Back a Deployment",
+          "support": "Deployment rollback restores previous Pod template revision",
+          "limits": "Does not reverse external state or committed database writes"
+        }
+      ]
+    },
+    "P06.C03.L02": {
+      "content_sha256": "d9d4aa00bf19174590dc94931a2071439b47e70e94cae06431339592146f2368",
+      "editorial_decision": "Running và readiness được tách; phép xác minh ứng dụng phải đo qua đường người dùng thay vì mỗi Pod state.",
+      "checks": [
+        {
+          "anchor": "Pod chưa ready không nhận lưu lượng qua Service tương ứng",
+          "kind": "documented",
+          "sources": [
+            "KD2"
+          ],
+          "source_location": "Readiness probes",
+          "support": "Not-ready Pods are removed from matching Service endpoints",
+          "limits": "Does not cover direct traffic or in-flight requests"
+        }
+      ]
+    },
+    "P06.C04.L01": {
+      "content_sha256": "32506043cc6129df5f00c7a41ad752012ef173b1742c3892ccfea1ceea017ff0",
+      "editorial_decision": "Tình huống 1.8.3/1.8.4, H83/H84, 1234→123400 được dán nhãn giả định; rollback binary không đảo dữ liệu.",
+      "checks": [
+        {
+          "anchor": "lệnh `ROLLBACK` chỉ hủy thay đổi của giao dịch còn mở",
+          "kind": "documented",
+          "sources": [
+            "PG2"
+          ],
+          "source_location": "ROLLBACK Description and Notes",
+          "support": "ROLLBACK aborts current transaction; outside transaction has no undo effect",
+          "limits": "Committed changes require new corrective action"
+        },
+        {
+          "anchor": "migration thêm `receipt_token` nullable",
+          "kind": "documented",
+          "sources": [
+            "PG1"
+          ],
+          "source_location": "Modifying Tables: Adding a Column",
+          "support": "Adding nullable column without default gives null in existing rows",
+          "limits": "Application compatibility is explicitly assumed, not guaranteed by SQL alone"
+        }
+      ]
+    },
+    "P06.C04.L03": {
+      "content_sha256": "d63ff925323f70ff68eacd4315ac0cd3e8e03d3df010a0ce3b4665ae3a75efb5",
+      "editorial_decision": "Hậu điều kiện sau rollback gồm traffic, schema và dữ liệu 41 đơn; không coi plan xanh hoặc app version là đủ.",
+      "checks": [
+        {
+          "anchor": "Không chia mọi `amount_cents` cho 100",
+          "kind": "documented",
+          "sources": [
+            "PG2"
+          ],
+          "source_location": "ROLLBACK transaction scope",
+          "support": "Committed writes require targeted correction; SQL rollback cannot discriminate old/new app rows",
+          "limits": "Concrete remediation depends on independent ledger and affected-row evidence"
+        }
+      ]
+    },
+    "P07.C01.L01": {
+      "content_sha256": "79b972e1a46b873acd5b853d2cf33164cf07d2eb1cd4fbc8f817b49e178bd9e3",
+      "editorial_decision": "clone/unshare/setns và ngoại lệ PID namespace được đặt đúng thứ tự với fork/exec; ví dụ readlink chỉ chứng minh kế thừa quan sát.",
+      "checks": [
+        {
+          "anchor": "`clone`/`clone3` có thể tạo tiến trình con ngay trong namespace mới",
+          "kind": "documented",
+          "sources": [
+            "R13"
+          ],
+          "source_location": "clone(2): DESCRIPTION; CLONE_NEWNET; CLONE_NEWPID",
+          "support": "clone creates a child and can place it into a new namespace according to flags",
+          "limits": "Creation can fail under capability and kernel configuration constraints"
+        },
+        {
+          "anchor": "`unshare(CLONE_NEWPID)` chỉ đặt namespace PID cho những đứa con tạo sau đó",
+          "kind": "documented",
+          "sources": [
+            "R14"
+          ],
+          "source_location": "unshare(2): CLONE_NEWPID",
+          "support": "Caller remains in old PID namespace; its first subsequently created child becomes PID 1 in new namespace",
+          "limits": "Requires capability and a live PID 1 for further children"
+        },
+        {
+          "anchor": "`setns` dùng file descriptor của namespace đã tồn tại để tham gia",
+          "kind": "documented",
+          "sources": [
+            "R15"
+          ],
+          "source_location": "setns(2): DESCRIPTION; PID namespaces; Network, IPC, and UTS namespaces",
+          "support": "setns reassociates caller with a target namespace; PID reassociation affects future children rather than caller",
+          "limits": "Target and caller must satisfy type, ancestry and capability rules"
+        },
+        {
+          "anchor": "`fork` thông thường kế thừa namespace",
+          "kind": "documented",
+          "sources": [
+            "R1",
+            "R13",
+            "R2"
+          ],
+          "source_location": "fork(2): DESCRIPTION; clone(2): CLONE_NEWNET; execve(2): DESCRIPTION",
+          "support": "Ordinary child inherits context without new namespace flags; execve replaces program image, not process",
+          "limits": "Specific user or mount settings may have additional exec-time effects"
+        },
+        {
+          "anchor": "loại namespace không khai báo có thể được kế thừa",
+          "kind": "documented",
+          "sources": [
+            "OCI2"
+          ],
+          "source_location": "config-linux.md: Namespaces, missing type inheritance",
+          "support": "Unspecified namespace type must inherit the runtime namespace of that type",
+          "limits": "Actual container configuration must be inspected before inferring isolation"
+        }
+      ]
+    },
+    "P07.C01.L02": {
+      "content_sha256": "4c603f6792a25632fd44a49e33f7909b585ff126a22a5137714cbb728f94833b",
+      "editorial_decision": "Namespace là góc nhìn, cgroup là kiểm soát tài nguyên; không suy container là ranh giới bảo mật tuyệt đối.",
+      "checks": [
+        {
+          "anchor": "Namespace gắn với tiến trình và bọc một loại tài nguyên bằng góc nhìn riêng",
+          "kind": "documented",
+          "sources": [
+            "R4",
+            "OCI2"
+          ],
+          "source_location": "namespaces(7): DESCRIPTION; config-linux: Namespaces",
+          "support": "Namespace isolates the view of a resource for member processes",
+          "limits": "Isolation depends on selected namespaces and other security controls"
+        },
+        {
+          "anchor": "cùng một tiến trình có thể là PID 1 khi nhìn từ bên trong và PID 3142 từ namespace tổ tiên",
+          "kind": "documented",
+          "sources": [
+            "R11"
+          ],
+          "source_location": "pid_namespaces(7): PID namespace ID; /proc/pid/status NSpid",
+          "support": "A process has a PID in each visible ancestor namespace; NSpid lists namespace-specific PIDs",
+          "limits": "3142 is illustrative; procfs mount context affects what is visible"
+        },
+        {
+          "anchor": "`127.0.0.1` của tiến trình bên trong trỏ về loopback của ngăn ấy",
+          "kind": "documented",
+          "sources": [
+            "R12"
+          ],
+          "source_location": "network_namespaces(7): DESCRIPTION",
+          "support": "Network namespaces isolate devices, IP stacks, routing and sockets; loopback is namespace-local",
+          "limits": "Reachability across namespaces depends on separately configured links and forwarding"
+        }
+      ]
+    },
+    "P07.C01.L03": {
+      "content_sha256": "1d0c42715de5c8a90efd0637eba3d795e286fa72475109493e2b2dea4da72eb1",
+      "editorial_decision": "CPU quota/throttle và memory.current/events được giải thích bằng số liệu giả định, không biến nr_throttled thành utilization.",
+      "checks": [
+        {
+          "anchor": "cgroup là một cơ chế Linux dùng để tổ chức và kiểm soát tài nguyên",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Control Group v2: What is cgroup?",
+          "support": "cgroup organizes processes hierarchically and distributes resources",
+          "limits": "Controller behavior depends on configuration"
+        },
+        {
+          "anchor": "`cpu.weight` là trọng số cạnh tranh",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Resource Distribution Models: Weights; CPU: cpu.weight",
+          "support": "Weight distributes CPU among active sibling groups",
+          "limits": "Not a hard CPU quota"
+        },
+        {
+          "anchor": "`cpu.max` bằng `50000 100000` cho phép tối đa 50.000 microsecond CPU",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "CPU: cpu.max",
+          "support": "cpu.max takes quota and period in microseconds; ratio is 0.5 CPU on average",
+          "limits": "Does not promise request latency and ancestor limits may apply"
+        },
+        {
+          "anchor": "`memory.events.local` cho biết sự kiện tại cgroup ấy",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Memory: memory.events, memory.events.local",
+          "support": "Local file excludes hierarchical events from children; max, oom and oom_kill have distinct meanings",
+          "limits": "oom_kill includes any kind of OOM killer and does not identify victim PID"
+        },
+        {
+          "anchor": "`memory.high` là ngưỡng thúc đẩy thu hồi và gây chậm",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Memory: memory.high and memory.max",
+          "support": "memory.high subjects cgroup to reclaim and throttling; memory.max is hard limit and can trigger OOM",
+          "limits": "Neither counter alone establishes application root cause"
+        },
+        {
+          "anchor": "Hiệu `usage_usec` là 4,7 triệu microsecond",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "CPU: cpu.stat",
+          "support": "24,700,000 minus 20,000,000 equals 4,700,000 microseconds; divided by 10s equals 0.47 CPU",
+          "limits": "Synthetic data cannot establish an observed incident"
+        },
+        {
+          "anchor": "`memory.events.local max` tăng 2, `oom` tăng 1 và `oom_kill` tăng 1",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Memory: memory.events.local",
+          "support": "Deltas 5-3, 1-0 and 1-0 are 2, 1 and 1; oom_kill counts killed processes belonging to cgroup",
+          "limits": "Does not identify PID or prove causal link to a specific request"
+        }
+      ]
+    },
+    "P07.C02.L01": {
+      "content_sha256": "d7b9fd67a0c38cdd5ff07da3bc1b6572bbb766b208bfa0758979fb0d440fd058",
+      "editorial_decision": "Cache build gắn đầu vào và layer; không khẳng định cache hit đồng nghĩa byte đầu ra an toàn hoặc tái lập.",
+      "checks": [
+        {
+          "anchor": "Build cache tái dùng kết quả bước trước",
+          "kind": "documented",
+          "sources": [
+            "DD9"
+          ],
+          "source_location": "Docker build cache: How the build cache works",
+          "support": "Builder can reuse cached layer results for unchanged inputs; changed layer invalidates dependent steps",
+          "limits": "Documentation page is rolling; cache hit is not a correctness proof"
+        }
+      ]
+    },
+    "P07.C02.L02": {
+      "content_sha256": "8136c95d90efb8c6082fbce6313206a024142cac4efd84d1daf7e3f75415a854",
+      "editorial_decision": "Image OCI, config, layer và runtime được tách; cùng tag đa nền tảng cần xác định manifest con.",
+      "checks": [
+        {
+          "anchor": "Image OCI gồm những thay đổi hệ thống tệp có thứ tự và cấu hình chạy",
+          "kind": "documented",
+          "sources": [
+            "OCI4"
+          ],
+          "source_location": "config.md: OCI Image Configuration; Layer; Image JSON",
+          "support": "Image contains ordered root filesystem changes and execution parameters",
+          "limits": "Actual runtime can override configuration"
+        },
+        {
+          "anchor": "manifest chỉ tới cấu hình và danh sách layer có thứ tự",
+          "kind": "documented",
+          "sources": [
+            "OCI6",
+            "OCI4"
+          ],
+          "source_location": "manifest.md: Image Manifest config/layers; config.md: Layer",
+          "support": "A manifest references configuration and ordered filesystem layers",
+          "limits": "Image manifest by itself does not describe live container state"
+        },
+        {
+          "anchor": "một index đa nền tảng",
+          "kind": "documented",
+          "sources": [
+            "OCI7"
+          ],
+          "source_location": "image-index.md: Image Index",
+          "support": "Image index points to image manifests for platform-specific variants",
+          "limits": "Actual platform selection and cache policy depend on client runtime"
+        }
+      ]
+    },
+    "P07.C02.L03": {
+      "content_sha256": "5a4c0801d1dc41395f13daae245dd8075e9705a83e9885f7bdc59d60a49dc89d",
+      "editorial_decision": "Registry tag có thể dịch, digest định danh byte; pull không chứng minh tiến trình đang dùng image mới.",
+      "checks": [
+        {
+          "anchor": "Tag như `orders:2.1` là tên thuận tiện trỏ tới manifest",
+          "kind": "documented",
+          "sources": [
+            "OCI5"
+          ],
+          "source_location": "distribution-spec: Definitions, Tag; Content Discovery",
+          "support": "A tag is a human-readable pointer to a manifest, while digest addresses content",
+          "limits": "orders:2.1 is illustrative; registry access and authorization are separate"
+        }
+      ]
+    },
+    "P07.C03.L01": {
+      "content_sha256": "45e68ee09be50065d5567320a10703f984a266f1872d626ddbb1ae4036fe2343",
+      "editorial_decision": "Vòng đời container và writable layer tách khỏi readiness; thêm giới hạn rằng container có thể chứa tiến trình con.",
+      "checks": [
+        {
+          "anchor": "Container đang `running` là một tiến trình đã thực thi chương trình",
+          "kind": "documented",
+          "sources": [
+            "OCI3"
+          ],
+          "source_location": "runtime.md: State; Lifecycle",
+          "support": "running means container process executed user program and has not exited",
+          "limits": "Does not imply application readiness"
+        },
+        {
+          "anchor": "Dừng tiến trình rồi khởi động lại cùng container có thể giữ writable layer",
+          "kind": "documented",
+          "sources": [
+            "DD1",
+            "OCI3"
+          ],
+          "source_location": "Docker storage: Container layer basics; OCI runtime: State",
+          "support": "Writable layer belongs to container and survives stop, but not container destruction",
+          "limits": "Exact stop/restart behavior depends on engine and cleanup options"
+        }
+      ]
+    },
+    "P07.C03.L03": {
+      "content_sha256": "40bfcd4cba338fc48a84b1d7d7e097cac3a91fb9426b7efefef23f3a1eff147a",
+      "editorial_decision": "Volume/bind mount và quyền trên host được phân biệt; không hứa dữ liệu bền vững chỉ vì tên mount.",
+      "checks": [
+        {
+          "anchor": "Named volume có định danh để một container khác có thể gắn lại",
+          "kind": "documented",
+          "sources": [
+            "DD2"
+          ],
+          "source_location": "Volumes: lifecycle; named and anonymous volumes",
+          "support": "Named volume persists outside container lifecycle and can be mounted again",
+          "limits": "Volume persistence does not imply off-host backup or replication"
+        },
+        {
+          "anchor": "Bind mount thay bằng một đường dẫn cụ thể trên host của Docker daemon",
+          "kind": "documented",
+          "sources": [
+            "DD3"
+          ],
+          "source_location": "Bind mounts: considerations and constraints",
+          "support": "Bind mount source is path on daemon host, with direct access and write risk",
+          "limits": "Docker Desktop path sharing may bridge client and Linux VM"
+        },
+        {
+          "anchor": "Cả hai loại mount che nội dung có sẵn tại điểm mount",
+          "kind": "documented",
+          "sources": [
+            "DD2",
+            "DD3"
+          ],
+          "source_location": "Volumes: Mounting a volume over existing data; Bind mounts: Bind-mounting over existing data",
+          "support": "Mounted data obscures pre-existing data at target; empty volume may be populated by default",
+          "limits": "Does not move data written in a previous container's writable layer"
+        }
+      ]
+    },
+    "P07.C04.L01": {
+      "content_sha256": "51ff9c559cc4120c1e9f1307205a2beed16aed241060496dddcc721ae5e6af7e",
+      "editorial_decision": "Compose xác định ứng dụng trong phạm vi project/host; mạng và volume mặc định không được suy là điều phối nhiều node.",
+      "checks": [
+        {
+          "anchor": "Compose file khai báo service, image hoặc cách build, port, network và volume",
+          "kind": "documented",
+          "sources": [
+            "DD4"
+          ],
+          "source_location": "How Compose works: Compose application model",
+          "support": "Compose describes services and associated networks/volumes and creates them on up",
+          "limits": "Example image and config are hypothetical, not a runnable deployment"
+        },
+        {
+          "anchor": "mặc định có mạng cho các service cùng project",
+          "kind": "documented",
+          "sources": [
+            "DD5"
+          ],
+          "source_location": "Networking in Compose: Default network and service discovery",
+          "support": "Default network is project-scoped and service names resolve within it",
+          "limits": "Host port publication and container-local loopback are separate"
+        }
+      ]
+    },
+    "P07.C04.L02": {
+      "content_sha256": "c22921e5242e49d4cd9d4491d1de7229e45ef6b185b91cbe8cfed4ef7cd321ad",
+      "editorial_decision": "Compose YAML cho thấy mount dữ liệu và phụ thuộc startup; depends_on không mặc nhiên bảo đảm ứng dụng khỏe.",
+      "checks": [
+        {
+          "anchor": "`depends_on` mặc định giải quyết thứ tự khởi động",
+          "kind": "documented",
+          "sources": [
+            "DD6"
+          ],
+          "source_location": "Control startup and shutdown order: Control startup",
+          "support": "depends_on orders creation but readiness requires service_healthy and a defined healthcheck",
+          "limits": "Even successful healthcheck covers only configured probe"
+        },
+        {
+          "anchor": "File Compose tự nó không là bộ lập lịch nhiều node",
+          "kind": "documented",
+          "sources": [
+            "DD7"
+          ],
+          "source_location": "Use Compose in production: Running Compose on a single server",
+          "support": "Compose can deploy to one remote Engine; multi-node scale requires additional Swarm or orchestration mechanisms",
+          "limits": "Compose configuration may be used with Swarm, but Compose CLI alone is not a multi-node scheduler"
+        }
+      ]
+    },
+    "P07.C04.L03": {
+      "content_sha256": "f5408b39b4315ae19dc84ae66de6c761db0e90922fc3175b6980a4075b21f772",
+      "editorial_decision": "Tình huống 41 bản ghi phân biệt writable layer/volume/project name, giữ mọi dữ liệu là giả định và không bịa Docker output.",
+      "checks": [
+        {
+          "anchor": "`orders-case_orders_data`",
+          "kind": "documented",
+          "sources": [
+            "DD4",
+            "DD8",
+            "DD2"
+          ],
+          "source_location": "Compose application model: project resource prefix; Specify a project name; Volumes: lifecycle",
+          "support": "Project name scopes Compose-managed resources and named volumes survive container recreation",
+          "limits": "41 records are invented for reasoning and were not observed in Docker"
+        },
+        {
+          "anchor": "Không chạy `down -v`, `volume prune`",
+          "kind": "documented",
+          "sources": [
+            "DD10",
+            "DD2"
+          ],
+          "source_location": "docker compose down: --volumes; Volumes: Remove all volumes",
+          "support": "down -v removes named project volumes and prune removes unused volumes",
+          "limits": "Exact targets must be inspected on the actual Engine before any cleanup"
+        }
+      ]
+    },
+    "P08.C01.L01": {
+      "content_sha256": "74a2e5638e1de1bd39637169846879eb669699e7588859643350f2e7abb23336",
+      "editorial_decision": "Request AWS đi qua ranh giới mạng và IAM riêng; ALB healthy không chứng minh quyền S3.",
+      "checks": [
+        {
+          "anchor": "gắn IAM role ứng dụng qua instance profile",
+          "kind": "documented",
+          "sources": [
+            "AWS1"
+          ],
+          "source_location": "IAM roles for Amazon EC2: instance profile and temporary credentials",
+          "support": "EC2 instance profile associates application role; application retrieves temporary credentials from metadata",
+          "limits": "IMDS access and credential provider configuration must be verified on actual instance"
+        },
+        {
+          "anchor": "STS phát hành phiên tạm thời khi một principal gọi `AssumeRole`",
+          "kind": "documented",
+          "sources": [
+            "AWS3"
+          ],
+          "source_location": "AssumeRole: Description and response elements",
+          "support": "AssumeRole returns temporary credentials subject to role trust and authorization",
+          "limits": "EC2 application role credentials are normally delivered automatically without self-assume"
+        }
+      ]
+    },
+    "P08.C01.L02": {
+      "content_sha256": "d7ecfed313779af0d64a9ca3b494e2c90cffa33f05b633ea04fd8f28431bdddb",
+      "editorial_decision": "Role session, action, resource và explicit Deny được phân biệt; không suy từ tên role rằng GetObject được phép.",
+      "checks": [
+        {
+          "anchor": "Một explicit `Deny` áp dụng ở bất kỳ policy liên quan nào thắng `Allow`",
+          "kind": "documented",
+          "sources": [
+            "AWS2"
+          ],
+          "source_location": "How AWS enforcement code logic evaluates requests: Deny evaluation",
+          "support": "Applicable explicit deny overrides allow",
+          "limits": "Applicable policy set depends on account, principal and service"
+        },
+        {
+          "anchor": "resource policy cấp quyền trực tiếp cho role session có quy tắc khác",
+          "kind": "documented",
+          "sources": [
+            "AWS2"
+          ],
+          "source_location": "Resource-based policies: IAM role and IAM role session",
+          "support": "Grant to role session can bypass implicit denies that constrain grant to role ARN",
+          "limits": "Explicit denies still apply; cross-account and service rules differ"
+        }
+      ]
+    },
+    "P08.C01.L03": {
+      "content_sha256": "1439c2151bf2afb74ad5215e1d301001413a3c292c33af9134d8dfe180b7cdfa",
+      "editorial_decision": "Timeout rồi AccessDenied được diễn giải là hai quan sát ở hai ranh giới, không phải bằng chứng một lỗi duy nhất.",
+      "checks": [
+        {
+          "anchor": "explicit `Deny` khớp object sẽ thắng `Allow`",
+          "kind": "documented",
+          "sources": [
+            "AWS2"
+          ],
+          "source_location": "IAM enforcement code: Deny evaluation",
+          "support": "Applicable explicit deny is final even with identity allow for same request",
+          "limits": "In a real 403, evaluate actual principal and all applicable policies"
+        }
+      ]
+    },
+    "P08.C02.L01": {
+      "content_sha256": "b21b6975ba1cbb381b1d2dc2bec74b3ba8cefbbe00cc949066215a066506279d",
+      "editorial_decision": "VPC/subnet/route/IGW/NAT/endpoint được nêu với Region, AZ và điều kiện public IPv4; không nói private subnet tự internet-ready.",
+      "checks": [
+        {
+          "anchor": "Route table gắn với subnet quy định đích IP/prefix đi tới target nào",
+          "kind": "documented",
+          "sources": [
+            "AWS4"
+          ],
+          "source_location": "Subnet route tables: association and routes",
+          "support": "Each subnet has one effective route table; routes choose target by destination",
+          "limits": "Custom routes and service reserved ranges have additional rules"
+        },
+        {
+          "anchor": "Public ALB có thể nhận client ở các subnet public rồi kết nối tới private IP của target EC2",
+          "kind": "documented",
+          "sources": [
+            "AWS9"
+          ],
+          "source_location": "Application Load Balancers: targets and subnets",
+          "support": "ALB accepts client connections and forwards to target group instances at private address",
+          "limits": "Requires suitable listener, target health and security group configuration"
+        },
+        {
+          "anchor": "Public NAT Gateway theo kiến trúc theo AZ",
+          "kind": "documented",
+          "sources": [
+            "AWS5",
+            "AWS16"
+          ],
+          "source_location": "Route table options: routing to NAT; NAT gateway basics",
+          "support": "Private subnet routes egress via NAT; zonal NAT is an AZ dependency",
+          "limits": "Regional NAT and IPv6 have distinct configuration; no price assumed"
+        }
+      ]
+    },
+    "P08.C02.L03": {
+      "content_sha256": "f3f8bcdfc676b4ba6c0bdace21b105ef069b723a2a9da7f6ee791687f43bee92",
+      "editorial_decision": "DNS, route, SG, NACL, Flow Logs và endpoint S3/STS được tách; ba câu đã chuyển claim được gộp theo đường đi.",
+      "checks": [
+        {
+          "anchor": "gateway VPC endpoint có thể thêm tuyến prefix list S3",
+          "kind": "documented",
+          "sources": [
+            "AWS6"
+          ],
+          "source_location": "Gateway endpoints for Amazon S3: Associate route tables",
+          "support": "Associated route table receives S3 service route to endpoint without NAT or IGW",
+          "limits": "Endpoint is scoped to a VPC and Region; policy conditions can still deny"
+        },
+        {
+          "anchor": "S3 gateway endpoint không tự mở đường tới STS",
+          "kind": "documented",
+          "sources": [
+            "AWS6",
+            "AWS5"
+          ],
+          "source_location": "Gateway endpoints for Amazon S3: S3 service endpoint; Route table options",
+          "support": "S3 gateway route covers S3 prefix, not other service endpoints such as STS",
+          "limits": "STS may be reachable through another configured route or interface endpoint"
+        },
+        {
+          "anchor": "DNS đổi tên thành địa chỉ; nó không chứng minh TCP",
+          "kind": "documented",
+          "sources": [
+            "AWS7"
+          ],
+          "source_location": "DNS attributes for your VPC: DNS resolution",
+          "support": "Resolver maps name to address; routing and transport are separate",
+          "limits": "A returned answer may be cached or custom; test from affected host"
+        },
+        {
+          "anchor": "endpoint được tạo nhưng không gắn với table ấy",
+          "kind": "documented",
+          "sources": [
+            "AWS4",
+            "AWS6"
+          ],
+          "source_location": "Subnet route tables: association; Gateway endpoints for S3: Associate route tables",
+          "support": "Endpoint does not install S3 route in unassociated subnet route table",
+          "limits": "Synthetic observation, not an AWS trace; SG/NACL and DNS still require checking"
+        },
+        {
+          "anchor": "S3 gateway endpoint không cấp kết nối cho STS",
+          "kind": "documented",
+          "sources": [
+            "AWS6",
+            "AWS5"
+          ],
+          "source_location": "Gateway endpoints for S3: scope; Route table options",
+          "support": "A route to S3 service prefix does not provide a path to STS service endpoint",
+          "limits": "Regional STS access may be supplied by NAT or appropriate interface endpoint"
+        }
+      ]
+    },
+    "P08.C03.L02": {
+      "content_sha256": "76ccf2d78a3e802eb09317bfc51105761a9b0bfd937396b4884559e1e4f6e0ac",
+      "editorial_decision": "Sự cố ALB→EC2→S3 hoàn toàn giả định; endpoint route sửa reachability nhưng explicit Deny còn nguyên.",
+      "checks": [
+        {
+          "anchor": "Đây là dữ kiện thiết kế giả định, không phải kết quả AWS đã đo",
+          "kind": "derived",
+          "sources": [],
+          "support": "Tình huống gắn kết các cơ chế được kiểm ở các bài IAM/VPC/S3 trước; kết quả dự đoán theo dữ kiện giả định.",
+          "limits": "Không có request AWS, ALB hoặc S3 thực được chạy."
+        }
+      ]
+    },
+    "P08.C04.L01": {
+      "content_sha256": "f081227628938dac520989187d6cee5d26353186798245d916565156f47c9929",
+      "editorial_decision": "EC2 và EBS có vòng đời khác; dừng/thay instance không được suy là backup dữ liệu.",
+      "checks": [
+        {
+          "anchor": "Volume EBS thuộc một AZ",
+          "kind": "documented",
+          "sources": [
+            "AWS10"
+          ],
+          "source_location": "Amazon EBS volume lifecycle: attach volume",
+          "support": "EBS volume attaches to eligible EC2 instance in same Availability Zone",
+          "limits": "Snapshot can be used to create a new volume in another AZ"
+        },
+        {
+          "anchor": "Snapshot là bản sao theo thời điểm",
+          "kind": "documented",
+          "sources": [
+            "AWS11"
+          ],
+          "source_location": "Amazon EBS snapshots: point-in-time copies",
+          "support": "Snapshot provides incremental point-in-time block backup; AWS does not automatically back up EBS volumes",
+          "limits": "Application-level transaction consistency and restore need separate validation"
+        }
+      ]
+    },
+    "P08.C04.L02": {
+      "content_sha256": "11073d0d57c8e256bd0fa3fdf1858fe78bf6fb01bdbacdc81c52fa2535533847",
+      "editorial_decision": "EFS là NFS share, cần mount target/SG/quyền; phân biệt availability với backup và filesystem với block.",
+      "checks": [
+        {
+          "anchor": "EFS Regional giữ dữ liệu qua nhiều AZ",
+          "kind": "documented",
+          "sources": [
+            "AWS12",
+            "AWS13"
+          ],
+          "source_location": "Managing mount targets: Availability Zones; Features of EFS: Regional and One Zone",
+          "support": "Regional file system stores redundantly across AZs with mount targets in multiple AZs; One Zone uses one AZ",
+          "limits": "Actual mount reachability still requires DNS, network and permissions"
+        }
+      ]
+    },
+    "P08.C04.L03": {
+      "content_sha256": "9a7d29679009e2306de3fd14b803d99c39254536c127701d68603a288c9c9ad7",
+      "editorial_decision": "S3 object theo key, Region và storage class; durability/availability/replication không bị đồng nhất với backup.",
+      "checks": [
+        {
+          "anchor": "S3 Standard được thiết kế phân tán qua nhiều AZ",
+          "kind": "documented",
+          "sources": [
+            "AWS14"
+          ],
+          "source_location": "Understanding and managing Amazon S3 storage classes: comparison",
+          "support": "S3 Standard stores across at least three AZs with distinct durability and availability targets",
+          "limits": "Other storage classes have different AZ and retrieval behavior; design target is not guarantee"
+        },
+        {
+          "anchor": "Replication có thể chép cả thay đổi sai hoặc xóa tùy cấu hình",
+          "kind": "documented",
+          "sources": [
+            "AWS19",
+            "AWS15"
+          ],
+          "source_location": "What does Amazon S3 replicate: How delete operations affect replication; S3 Versioning",
+          "support": "Delete markers may replicate depending on rule while versioning retains older versions unless permanently removed",
+          "limits": "Behavior differs by replication rule, versioning state and retention controls"
+        }
+      ]
+    },
+    "P09.C01.L03": {
+      "content_sha256": "b9b8259b8660a1c0c07aad983125928f9a0e7f0c8f2dc6f438c741f381859186",
+      "editorial_decision": "Configuration, state và API thực là ba thực thể; ví dụ provider 6.19.0 được gắn điều kiện option replacement.",
+      "checks": [
+        {
+          "anchor": "Tham chiếu thuộc tính như `terraform_data.schema.output` tạo cạnh phụ thuộc suy diễn",
+          "kind": "documented",
+          "sources": [
+            "TF2"
+          ],
+          "source_location": "Dependency Graph: building the graph",
+          "support": "References produce dependency edges",
+          "limits": "Graph is not application readiness"
+        },
+        {
+          "anchor": "`depends_on` tạo cạnh tường minh",
+          "kind": "documented",
+          "sources": [
+            "TF2"
+          ],
+          "source_location": "Dependency Graph: explicit dependencies",
+          "support": "Explicit dependencies add ordering edges",
+          "limits": "Use only for hidden dependencies"
+        },
+        {
+          "anchor": "`triggers_replace` khiến resource `service` được thay",
+          "kind": "documented",
+          "sources": [
+            "TF4"
+          ],
+          "source_location": "terraform_data: triggers_replace",
+          "support": "Changing triggers_replace causes replacement",
+          "limits": "Example is local model, not cloud service"
+        }
+      ]
+    },
+    "P09.C02.L01": {
+      "content_sha256": "52ec9dba2cb06d356aa39b59ff1ed198cea0c58bf66239ee14e0c2c3363d51d1",
+      "editorial_decision": "State là ánh xạ và có thể chứa secret; locking chặn apply đồng thời chứ không thay backup/versioning.",
+      "checks": [
+        {
+          "anchor": "State ánh xạ địa chỉ `resource` trong cấu hình tới ID object thực",
+          "kind": "documented",
+          "sources": [
+            "TF1"
+          ],
+          "source_location": "Purpose of Terraform State: Mapping to the Real World",
+          "support": "State maps config addresses to remote identities",
+          "limits": "State also contains cached attributes and metadata"
+        }
+      ]
+    },
+    "P09.C02.L02": {
+      "content_sha256": "6031284264a3f9dbe9edd004268ffac7f6b641a28a2dc487f884415ad44d9b16",
+      "editorial_decision": "Plan là dự báo, partial apply không rollback; lifecycle, data source và refresh có giới hạn nêu rõ.",
+      "checks": [
+        {
+          "anchor": "Data source có thể được đọc lúc plan hoặc bị hoãn tới apply",
+          "kind": "documented",
+          "sources": [
+            "TF3"
+          ],
+          "source_location": "Query data from external sources: Data source behavior",
+          "support": "Data source reads may be deferred if dependency or arguments unknown",
+          "limits": "Provider-specific reading varies"
+        },
+        {
+          "anchor": "`-refresh=false` tránh phép đọc trong lượt đó",
+          "kind": "documented",
+          "sources": [
+            "TF5"
+          ],
+          "source_location": "terraform plan: Planning options",
+          "support": "No-refresh plan can rely on stale state",
+          "limits": "Not a safe way to suppress drift"
+        },
+        {
+          "anchor": "Terraform thực hiện các tác vụ theo dependency graph",
+          "kind": "documented",
+          "sources": [
+            "TF2",
+            "TF5"
+          ],
+          "source_location": "Dependency Graph; terraform plan command",
+          "support": "Independent graph vertices can run in parallel; plan precedes apply",
+          "limits": "No cross-provider transaction guarantee"
+        },
+        {
+          "anchor": "`prevent_destroy` chặn plan phá object khi rule còn trong cấu hình",
+          "kind": "documented",
+          "sources": [
+            "TF6"
+          ],
+          "source_location": "lifecycle: prevent_destroy",
+          "support": "Rule rejects destruction plan while resource config remains",
+          "limits": "Cannot protect object from external deletion or removed config"
+        }
+      ]
+    },
+    "P09.C02.L03": {
+      "content_sha256": "f8c29fea012e20290e65849b424f5a65fe24e8693da8126ceeb849915838e5b1",
+      "editorial_decision": "Remote backend, import và state locking được tách; thao tác state cần đối chiếu API và lịch sử.",
+      "checks": [
+        {
+          "anchor": "Backend nào có locking thì Terraform có thể khóa state",
+          "kind": "documented",
+          "sources": [
+            "TF7",
+            "TF8"
+          ],
+          "source_location": "Backends: State Storage and Locking; State Locking",
+          "support": "Supported backend can serialize Terraform state operations",
+          "limits": "Cannot lock out-of-band API changes"
+        },
+        {
+          "anchor": "State và tệp plan có thể chứa secret",
+          "kind": "documented",
+          "sources": [
+            "TF9",
+            "TF11"
+          ],
+          "source_location": "Manage sensitive data: state; Backend block: credentials",
+          "support": "Sensitive values can persist in state/plan and backend credentials in working data",
+          "limits": "Protection differs by backend and ephemeral features"
+        },
+        {
+          "anchor": "`import` nối một object đã tồn tại với một địa chỉ resource",
+          "kind": "documented",
+          "sources": [
+            "TF10",
+            "TF1"
+          ],
+          "source_location": "Import existing resources: import block; State purpose: one-to-one",
+          "support": "Import binds existing ID to resource address; config still needs reconciliation",
+          "limits": "Do not bind same remote object to multiple addresses"
+        }
+      ]
+    },
+    "P09.C03.L01": {
+      "content_sha256": "fd2bd705b391ad973f9b187450d3c1aded30b2f24e4a6e08d9afc09c10d89db7",
+      "editorial_decision": "Sự cố user_data A/B và 41 đơn giả định; giữ claim refresh/replacement ở bài này, rủi ro root EBS ở bài sau.",
+      "checks": [
+        {
+          "anchor": "nếu refresh đọc được B và plan hiển thị thay đổi `user_data` yêu cầu replacement",
+          "kind": "documented",
+          "sources": [
+            "AWSTF1",
+            "AWSTF2",
+            "AWSTF3"
+          ],
+          "source_location": "aws_instance Argument Reference: user_data, user_data_replace_on_change; EC2 Update instance user data; resourceInstanceRead: DescribeInstanceAttribute UserData; ForceNewIf user_data",
+          "support": "Provider v6.19.0 replaces on user_data change when option true; stopped EC2 user data can be modified externally; provider read decodes current EC2 user data into state",
+          "limits": "Synthetic incident; actual plan and provider read require testing"
+        }
+      ]
+    },
+    "P09.C04.L01": {
+      "content_sha256": "1dd7bfe423b8618fb4b65c1f4d54505e8fe96335762b4499ad187b6eadfc494d",
+      "editorial_decision": "Quyết định không apply replacement trước snapshot/restore; không dùng refresh=false/ignore_changes để che drift.",
+      "checks": [
+        {
+          "anchor": "root EBS với cờ xóa theo termination có nguy cơ mất 41 đơn",
+          "kind": "documented",
+          "sources": [
+            "AWSTF1"
+          ],
+          "source_location": "aws_instance Root Block Devices: delete_on_termination",
+          "support": "Root EBS configured true is destroyed on instance termination",
+          "limits": "41 orders fictional; snapshot and restore state unknown"
+        },
+        {
+          "anchor": "mặc định dẫn tới stop/start khi đổi",
+          "kind": "documented",
+          "sources": [
+            "AWSTF1"
+          ],
+          "source_location": "aws_instance Argument Reference: user_data",
+          "support": "Default user_data update triggers stop/start, option true triggers replacement",
+          "limits": "Provider version pinned v6.19.0"
+        }
+      ]
+    },
+    "P10.C01.L01": {
+      "content_sha256": "0a6c03d8b74c6ac938bf6cf8e06fbc18f3e7644ecd1670837eaad1fcbbbe6924",
+      "editorial_decision": "Ansible hội tụ trên host và Terraform state được phân biệt; inventory/control/managed node có ranh giới SSH.",
+      "checks": [
+        {
+          "anchor": "Inventory liệt kê managed node và nhóm",
+          "kind": "documented",
+          "sources": [
+            "AS1"
+          ],
+          "source_location": "Inventory basics: hosts and groups",
+          "support": "Inventory identifies hosts/groups to target",
+          "limits": "Actual reachability and service health separate"
+        },
+        {
+          "anchor": "Với máy Linux, kết nối thường qua SSH",
+          "kind": "documented",
+          "sources": [
+            "AS1"
+          ],
+          "source_location": "Connecting to hosts: behavioral inventory parameters",
+          "support": "SSH is common default for Linux hosts; local is alternate",
+          "limits": "Connection success alone is not readiness"
+        }
+      ]
+    },
+    "P10.C02.L01": {
+      "content_sha256": "4f634373c39260b6da378805e42069316ebe5bae0f35a97f58e57b0249d3e688",
+      "editorial_decision": "Idempotency được gắn module và trạng thái thực, không áp cho shell/command; test POSIX mode nêu điều kiện môi trường.",
+      "checks": [
+        {
+          "anchor": "`file` với `mode: '0750'` chỉ sửa quyền khi khác",
+          "kind": "documented",
+          "sources": [
+            "AS7"
+          ],
+          "source_location": "file module: mode/state/check mode",
+          "support": "File module manages file properties and reports changes",
+          "limits": "Requires POSIX-like mode semantics"
+        },
+        {
+          "anchor": "`template` so nội dung tạo ra với file đích",
+          "kind": "documented",
+          "sources": [
+            "AS6"
+          ],
+          "source_location": "template module: synopsis and attributes",
+          "support": "Template renders Jinja2 and updates destination on differences",
+          "limits": "Mode/metadata may also cause changed"
+        },
+        {
+          "anchor": "Một `command` hoặc `shell` gọi utility thường không có hiểu biết trạng thái đích",
+          "kind": "documented",
+          "sources": [
+            "AS11"
+          ],
+          "source_location": "command module: creates/removes, check mode",
+          "support": "Arbitrary commands need explicit guards; command lacks intrinsic state contract",
+          "limits": "Specific utilities may be idempotent independently"
+        },
+        {
+          "anchor": "Task `file` sửa quyền thư mục dữ liệu nhưng không notify",
+          "kind": "documented",
+          "sources": [
+            "AS7",
+            "AS8"
+          ],
+          "source_location": "file module: mode; Handlers: notification",
+          "support": "No notify on file task means its changed status does not queue handler",
+          "limits": "Other tasks could notify same handler"
+        }
+      ]
+    },
+    "P10.C02.L02": {
+      "content_sha256": "4967b006946b317a74f28451de9e8f2fff387c5ad8a265ef023a1b377f2be2e2",
+      "editorial_decision": "Task order, changed, notify và handler flush được phân biệt; không coi force_handlers là cách chữa mọi lỗi.",
+      "checks": [
+        {
+          "anchor": "`notify` chỉ xếp handler khi task báo changed",
+          "kind": "documented",
+          "sources": [
+            "AS8"
+          ],
+          "source_location": "Handlers: Notifying handlers",
+          "support": "Handler notification depends on changed status; deduplicated per flush",
+          "limits": "Handler may fail or be skipped on failed host"
+        },
+        {
+          "anchor": "Task template mới notify handler khi nội dung hoặc quyền",
+          "kind": "documented",
+          "sources": [
+            "AS6",
+            "AS8"
+          ],
+          "source_location": "template module: mode; Handlers: notification",
+          "support": "Template change including metadata can trigger notify",
+          "limits": "No actual daemon reload in fixture"
+        },
+        {
+          "anchor": "Phép `stat`/`assert` kiểm tra hậu điều kiện quyền",
+          "kind": "documented",
+          "sources": [
+            "AS14",
+            "AS9"
+          ],
+          "source_location": "stat module: mode; check mode caveat",
+          "support": "stat reports file mode after real task",
+          "limits": "9p/DrvFS may not preserve POSIX mode"
+        }
+      ]
+    },
+    "P10.C02.L03": {
+      "content_sha256": "6126837b232aaa3d79008b12a8ff57c66e3a6f492eeb7d112a3a4d905d05fda4",
+      "editorial_decision": "Syntax/check/diff mode có giới hạn; handler có thể không chạy trên host lỗi, cần hậu kiểm ở lượt thực.",
+      "checks": [
+        {
+          "anchor": "Nếu host lỗi trước lúc handler được chạy",
+          "kind": "documented",
+          "sources": [
+            "AS10",
+            "AS8"
+          ],
+          "source_location": "Error handling: Handlers and failure; Handlers: controlling when handlers run",
+          "support": "Default suppresses handler on a failed host; force_handlers changes it",
+          "limits": "Unreachable host still cannot run handler"
+        },
+        {
+          "anchor": "`--check` dự đoán thay đổi mà không ghi",
+          "kind": "documented",
+          "sources": [
+            "AS9"
+          ],
+          "source_location": "Validating tasks: check mode",
+          "support": "Supporting modules simulate planned changes without target modification",
+          "limits": "Dependent tasks and unsupported modules limit prediction"
+        },
+        {
+          "anchor": "`--diff` hiển thị chênh lệch",
+          "kind": "documented",
+          "sources": [
+            "AS9"
+          ],
+          "source_location": "Validating tasks: diff mode",
+          "support": "Supporting modules display before/after differences",
+          "limits": "May expose sensitive data"
+        }
+      ]
+    },
+    "P10.C03.L01": {
+      "content_sha256": "86956a69797f9a680ca1e141a68e78174c4b26887041a1779eea9d9bf0ae76bf",
+      "editorial_decision": "Variable precedence, facts và roles có phạm vi; fact cache không được coi luôn mới.",
+      "checks": [
+        {
+          "anchor": "Role gom task, handler, template và biến",
+          "kind": "documented",
+          "sources": [
+            "AS5"
+          ],
+          "source_location": "Roles: role directory structure",
+          "support": "Roles package tasks, handlers, templates and defaults",
+          "limits": "Role reuse does not confer permissions"
+        }
+      ]
+    },
+    "P10.C03.L02": {
+      "content_sha256": "b728609b07ccc39d51ec8c2e31cf9d0b9e4a12c6aa3ba2386e916cd58ee8ba1e",
+      "editorial_decision": "Tình huống hai host và chmod sai được dán nhãn giả định; sửa quyền, nội dung, handler và serial theo hậu điều kiện.",
+      "checks": [
+        {
+          "anchor": "`serial: 1` giới hạn số host trong một batch",
+          "kind": "documented",
+          "sources": [
+            "AS13"
+          ],
+          "source_location": "Strategies: Setting the batch size with serial",
+          "support": "Serial controls batch size",
+          "limits": "Does not drain traffic or prove health"
+        },
+        {
+          "anchor": "`state: started`, không dùng `restarted` ở mọi lượt",
+          "kind": "documented",
+          "sources": [
+            "AS12"
+          ],
+          "source_location": "systemd_service: state parameter",
+          "support": "started is idempotent; restarted always restarts",
+          "limits": "Systemd active state not application readiness"
+        }
+      ]
+    },
+    "P11.C01.L01": {
+      "content_sha256": "728430258bb723d246695f01d722559b25b4282103d189a7c2402b2a52d408d2",
+      "editorial_decision": "API server, etcd và controller manager có trách nhiệm riêng; apply ghi ý định.",
+      "checks": [
+        {
+          "anchor": "Controller manager chạy các vòng điều khiển",
+          "kind": "documented",
+          "sources": [
+            "KU2",
+            "KU1"
+          ],
+          "source_location": "Controllers: Controller pattern; Cluster Architecture: controller manager",
+          "support": "Controllers watch state and act toward desired state through API",
+          "limits": "Does not promise successful convergence"
+        },
+        {
+          "anchor": "API server xác thực người gọi, kiểm tra quyền",
+          "kind": "documented",
+          "sources": [
+            "KU1",
+            "KU13"
+          ],
+          "source_location": "Cluster Architecture: kube-apiserver and etcd; Controlling Access: authentication, authorization, admission and persistence",
+          "support": "API server fronts cluster API, applies access stages before object store; etcd is backing store",
+          "limits": "Auth and admission details depend on cluster configuration"
+        },
+        {
+          "anchor": "Deployment controller thấy Deployment mới thì tạo hoặc điều chỉnh ReplicaSet",
+          "kind": "documented",
+          "sources": [
+            "KU4",
+            "KU5"
+          ],
+          "source_location": "Deployments: use case and rollout; ReplicaSet: how it works",
+          "support": "Deployment manages ReplicaSets; ReplicaSet maintains Pods",
+          "limits": "Asynchronous work can fail or lag"
+        }
+      ]
+    },
+    "P11.C01.L02": {
+      "content_sha256": "8505d5725cac4c4925e6f8ee8796bd2c4c9ad5751cff54e48382660916ec9e37",
+      "editorial_decision": "Spec, status, resourceVersion và reconciliation là các trạng thái và vòng lặp bất đồng bộ.",
+      "checks": [
+        {
+          "anchor": "`spec` và `status` có chủ thể ghi khác nhau",
+          "kind": "documented",
+          "sources": [
+            "KU3"
+          ],
+          "source_location": "Objects In Kubernetes: Object spec and status",
+          "support": "Spec expresses desired state and status current state",
+          "limits": "Status may lag the spec"
+        },
+        {
+          "anchor": "`metadata.resourceVersion` là chuỗi phiên bản nội bộ",
+          "kind": "documented",
+          "sources": [
+            "KU10"
+          ],
+          "source_location": "API Concepts: Resource versions",
+          "support": "ResourceVersion is opaque and may be compared only for equality",
+          "limits": "Not a wall clock or sortable generation"
+        }
+      ]
+    },
+    "P11.C01.L03": {
+      "content_sha256": "d300efe0ffb35aeafc115d18a4bb7c554bcf24ab755571ccc6454b8a42d64cb2",
+      "editorial_decision": "Scheduler đặt Pod; kubelet và runtime thực thi trên node.",
+      "checks": [
+        {
+          "anchor": "Scheduler theo dõi Pod chưa có node",
+          "kind": "documented",
+          "sources": [
+            "KU1"
+          ],
+          "source_location": "Cluster Architecture: kube-scheduler",
+          "support": "Scheduler selects node for unscheduled Pods",
+          "limits": "Scheduling is not execution or readiness"
+        },
+        {
+          "anchor": "Kubelet trên node nhận Pod được gán",
+          "kind": "documented",
+          "sources": [
+            "KU1",
+            "KU6"
+          ],
+          "source_location": "Cluster Architecture: kubelet and runtime; Pod Lifecycle: container states",
+          "support": "Kubelet works with runtime to start assigned Pod containers",
+          "limits": "Runtime and networking implementations vary"
+        }
+      ]
+    },
+    "P11.C02.L01": {
+      "content_sha256": "307e3bae895dfeb204acc9a45fa0f89dafda64dc9811dd6463f49673e417267e",
+      "editorial_decision": "Selector khác owner reference; Running, Ready, Available khác nhau.",
+      "checks": [
+        {
+          "anchor": "Quan hệ quản lý được ghi ở `metadata.ownerReferences`",
+          "kind": "documented",
+          "sources": [
+            "KU9",
+            "KU5"
+          ],
+          "source_location": "Owners and Dependents: owner references; ReplicaSet: how it works",
+          "support": "Owned resources carry owner references; RS owns Pods",
+          "limits": "Ownership differs from selection"
+        },
+        {
+          "anchor": "Selector là phép chọn theo label, không phải quan hệ sở hữu",
+          "kind": "documented",
+          "sources": [
+            "KU9",
+            "KU12",
+            "KU7"
+          ],
+          "source_location": "Owners and Dependents: ownership versus selection; Labels and Selectors; Service",
+          "support": "Service selects matching Pod labels independently of ownership",
+          "limits": "Service without selector follows different endpoint management"
+        },
+        {
+          "anchor": "Pod `Running` nói Pod đã gắn vào node",
+          "kind": "documented",
+          "sources": [
+            "KU6"
+          ],
+          "source_location": "Pod Lifecycle: Pod phase and Pod conditions",
+          "support": "Running phase does not imply Ready condition",
+          "limits": "CLI STATUS column can show reason rather than phase"
+        }
+      ]
+    },
+    "P11.C02.L02": {
+      "content_sha256": "fab58510ad68bed18ff41e2742c76d8ae567d825ac9eff1175f72e4dbfb62f57",
+      "editorial_decision": "Ca giả định có lỗi probe và selector độc lập; quan sát theo từng ranh giới.",
+      "checks": [
+        {
+          "anchor": "Readiness probe kiểm tra điều kiện để đưa Pod vào tập backend",
+          "kind": "documented",
+          "sources": [
+            "KU6",
+            "KU8"
+          ],
+          "source_location": "Pod Lifecycle: readiness probe; EndpointSlices: conditions",
+          "support": "Readiness affects Pod Ready and endpoint readiness",
+          "limits": "Probe may be too narrow for full application health"
+        }
+      ]
+    },
+    "P11.C02.L03": {
+      "content_sha256": "d5a9657c921798136c7082fd434bb98902f0ead5d649e497c460a95b0d954e6b",
+      "editorial_decision": "Rollout deadline phát hiện kẹt; không tự sửa hay bảo đảm request thành công.",
+      "checks": [
+        {
+          "anchor": "Deployment `Available=True` phản ánh mức sẵn sàng tối thiểu",
+          "kind": "documented",
+          "sources": [
+            "KU4"
+          ],
+          "source_location": "Deployments: Deployment status",
+          "support": "Available condition reflects minimum availability; Progressing may be in progress or complete",
+          "limits": "Status can change after observation"
+        },
+        {
+          "anchor": "`progressDeadlineSeconds` giúp nhận biết rollout không tiến triển",
+          "kind": "documented",
+          "sources": [
+            "KU4"
+          ],
+          "source_location": "Deployments: failed deployment and progress deadline",
+          "support": "Progress deadline reports failure but does not automatically roll back",
+          "limits": "Operator or automation decides recovery"
+        }
+      ]
+    },
+    "P11.C03.L01": {
+      "content_sha256": "262893a9bbe07cd64bccfa086d15344c5d51e9fe25ff3d4e5cdd4336a3132343",
+      "editorial_decision": "Placement dựa requests, allocatable và ràng buộc node.",
+      "checks": [
+        {
+          "anchor": "Node công bố `capacity` và `allocatable`",
+          "kind": "documented",
+          "sources": [
+            "KU14"
+          ],
+          "source_location": "Resource Management: node allocatable and scheduling",
+          "support": "Allocatable is resources available to Pods, distinct from capacity and instantaneous usage",
+          "limits": "Reservation configuration varies"
+        },
+        {
+          "anchor": "Scheduler lọc các node khả thi bằng requests",
+          "kind": "documented",
+          "sources": [
+            "KU14",
+            "KU16",
+            "KU21"
+          ],
+          "source_location": "Resource Management: scheduling; Assigning Pods to Nodes; Storage Classes: volume binding",
+          "support": "Scheduling checks requests and hard placement and volume constraints",
+          "limits": "Plugins and custom scheduler configuration can change scoring"
+        },
+        {
+          "anchor": "Toleration chỉ bỏ một rào cản taint",
+          "kind": "documented",
+          "sources": [
+            "KU15",
+            "KU16"
+          ],
+          "source_location": "Taints and Tolerations: concept; Assigning Pods: affinity",
+          "support": "Toleration allows but does not guarantee scheduling",
+          "limits": "Other filters can reject node"
+        }
+      ]
+    },
+    "P11.C03.L02": {
+      "content_sha256": "ee44e422b5b3f6b0624cc0dcb7f10cf916b206ed32a3dca9a8c32bd900b4c508",
+      "editorial_decision": "CPU request/limit/throttling và memory OOM được phân biệt với lỗi ứng dụng.",
+      "checks": [
+        {
+          "anchor": "`requests.cpu` dùng để đặt chỗ trên node",
+          "kind": "documented",
+          "sources": [
+            "KU14"
+          ],
+          "source_location": "Resource Management: how requests and limits work",
+          "support": "CPU request influences scheduling and weight; limit imposes ceiling",
+          "limits": "Runtime and cgroup mode affect implementation"
+        },
+        {
+          "anchor": "counter `cpu.stat.nr_throttled`",
+          "kind": "documented",
+          "sources": [
+            "K3",
+            "KU14"
+          ],
+          "source_location": "cgroup v2: cpu.stat; Resource Management: CPU limit",
+          "support": "cpu.stat reports throttling counts and duration; CPU limits constrain time",
+          "limits": "Counter alone does not explain request latency"
+        },
+        {
+          "anchor": "`limits.memory` khác",
+          "kind": "documented",
+          "sources": [
+            "KU14",
+            "K3"
+          ],
+          "source_location": "Resource Management: memory limit; cgroup v2: memory.events",
+          "support": "Limit may trigger OOM; counters distinguish event and kill",
+          "limits": "Need correct cgroup and time window"
+        },
+        {
+          "anchor": "Pod `Guaranteed` có request và limit CPU lẫn memory bằng nhau",
+          "kind": "documented",
+          "sources": [
+            "KU17"
+          ],
+          "source_location": "Pod Quality of Service Classes: Guaranteed/Burstable/BestEffort",
+          "support": "QoS class criteria and eviction behavior",
+          "limits": "Pod-level resource feature has separate versioned semantics"
+        }
+      ]
+    },
+    "P11.C03.L03": {
+      "content_sha256": "0e74f69e1e0334e94b895b17cf656b42cf271b66b46f57e3a9cdf602073afb5f",
+      "editorial_decision": "Metric CPU và request được dạy trước HPA; utilization không phải latency.",
+      "checks": [
+        {
+          "anchor": "CPU usage là mức CPU time tiêu thụ trong một khoảng đo",
+          "kind": "documented",
+          "sources": [
+            "K3",
+            "KU24"
+          ],
+          "source_location": "cgroup v2: cpu.stat; Resource metrics pipeline",
+          "support": "CPU time counter sampled over elapsed time yields rate",
+          "limits": "Instantaneous request latency not determined"
+        },
+        {
+          "anchor": "Metrics Server thường thu resource metrics từ kubelet",
+          "kind": "documented",
+          "sources": [
+            "KU24"
+          ],
+          "source_location": "Resource metrics pipeline: Metrics Server",
+          "support": "Kubelet to Metrics Server to Metrics API for HPA and kubectl top",
+          "limits": "Addon may be absent or samples stale"
+        }
+      ]
+    },
+    "P11.C04.L01": {
+      "content_sha256": "bd3f2ecceefa5a5aa7f98977ade9683b02bca000a94db57b9253d130471852f8",
+      "editorial_decision": "Service selector, EndpointSlice và DNS nằm ở các ranh giới khác nhau.",
+      "checks": [
+        {
+          "anchor": "EndpointSlice gắn với Service không có endpoint khớp",
+          "kind": "documented",
+          "sources": [
+            "KU7",
+            "KU8"
+          ],
+          "source_location": "Service: defining a Service; EndpointSlices: API and management",
+          "support": "Controller builds EndpointSlices from matching Pod selector",
+          "limits": "Incident is invented; no cluster run claimed"
+        },
+        {
+          "anchor": "tên Service được phân giải theo namespace",
+          "kind": "documented",
+          "sources": [
+            "KU19",
+            "KU7"
+          ],
+          "source_location": "DNS for Services and Pods: namespace; Service: DNS",
+          "support": "Service DNS discovery is namespace-aware",
+          "limits": "DNS addon and policy configuration required"
+        },
+        {
+          "anchor": "Service selector chọn Pod theo label",
+          "kind": "documented",
+          "sources": [
+            "KU7",
+            "KU8"
+          ],
+          "source_location": "Service: selectors; EndpointSlices: conditions",
+          "support": "Matching Pods populate EndpointSlices, with readiness conditions",
+          "limits": "Selectorless services differ"
+        }
+      ]
+    },
+    "P11.C04.L02": {
+      "content_sha256": "dea1716334dc4bd4e1564cb67abbe612f5b7edd57da5abe88a2efeecd7c5d323",
+      "editorial_decision": "CNI triển khai dataplane; spec không chứng minh traffic đã đi được.",
+      "checks": [
+        {
+          "anchor": "Pod network do plugin tương thích CNI triển khai",
+          "kind": "documented",
+          "sources": [
+            "KU1",
+            "CN1"
+          ],
+          "source_location": "Cluster Architecture: network plugins; CNI spec: Overview and Summary",
+          "support": "CNI defines runtime-to-plugin network interface; plugin implements network configuration",
+          "limits": "Concrete dataplane varies by implementation"
+        }
+      ]
+    },
+    "P11.C04.L03": {
+      "content_sha256": "e3419e5bb24fbe2252ed97d964af876978de6e18db794e2d5d14b5c73a0f353e",
+      "editorial_decision": "NetworkPolicy phụ thuộc plugin và phạm vi selector/hướng lưu lượng.",
+      "checks": [
+        {
+          "anchor": "`NetworkPolicy` là API chọn Pod",
+          "kind": "documented",
+          "sources": [
+            "KU18"
+          ],
+          "source_location": "Network Policies: behavior and isolation",
+          "support": "Policy selects Pods and ingress/egress allowances; requires implementing plugin",
+          "limits": "API object alone does not prove enforcement"
+        }
+      ]
+    },
+    "P11.C05.L01": {
+      "content_sha256": "4010d529934febf83bdde1837c4f23e60ce21980e0c21368a3ca73db42c30212",
+      "editorial_decision": "PV/PVC/StorageClass và access mode tách cấp phát khỏi mount.",
+      "checks": [
+        {
+          "anchor": "PersistentVolume (PV) là object tài nguyên lưu trữ",
+          "kind": "documented",
+          "sources": [
+            "KU20",
+            "KU21"
+          ],
+          "source_location": "Persistent Volumes: introduction/lifecycle; Storage Classes: introduction",
+          "support": "PV, PVC, StorageClass and dynamic provisioning roles",
+          "limits": "Provider implementation changes storage capability"
+        },
+        {
+          "anchor": "`ReadWriteOnce` cho phép read-write từ một node",
+          "kind": "documented",
+          "sources": [
+            "KU20"
+          ],
+          "source_location": "Persistent Volumes: Access Modes",
+          "support": "RWO one node, RWOP one Pod with CSI support",
+          "limits": "Provider capabilities and filesystem permissions differ"
+        },
+        {
+          "anchor": "Với `WaitForFirstConsumer`",
+          "kind": "documented",
+          "sources": [
+            "KU21"
+          ],
+          "source_location": "Storage Classes: Volume binding mode",
+          "support": "WFFC delays binding for scheduler topology; direct nodeName bypass can leave PVC Pending",
+          "limits": "CSI driver must support relevant mode"
+        }
+      ]
+    },
+    "P11.C05.L02": {
+      "content_sha256": "2a1317296266b4e011300560259891bfa7ab22a991f1db25417c9990c0075cee",
+      "editorial_decision": "PVC Bound chưa chứng minh mount hay dữ liệu ứng dụng có mặt.",
+      "checks": [
+        {
+          "anchor": "`PVC Bound` không chứng minh file đã mount",
+          "kind": "documented",
+          "sources": [
+            "KU20"
+          ],
+          "source_location": "Persistent Volumes: Binding and Using",
+          "support": "Binding and using/mounting are distinct stages",
+          "limits": "Backup claim is operational inference, not a storage API guarantee"
+        }
+      ]
+    },
+    "P11.C05.L03": {
+      "content_sha256": "d7aa9f8f4c7f0e15ff70e422bc59d183e992e492b2c57794f7d851b5f292518a",
+      "editorial_decision": "emptyDir, PVC và StatefulSet có vòng đời và định danh khác nhau.",
+      "checks": [
+        {
+          "anchor": "`emptyDir` sống theo Pod và mất khi Pod bị loại khỏi node",
+          "kind": "documented",
+          "sources": [
+            "KU11"
+          ],
+          "source_location": "Volumes: emptyDir",
+          "support": "emptyDir deleted when Pod removed from node",
+          "limits": "Container restart within same Pod retains emptyDir"
+        },
+        {
+          "anchor": "StatefulSet cho Pod danh tính ổn định",
+          "kind": "documented",
+          "sources": [
+            "KU22"
+          ],
+          "source_location": "StatefulSets: stable identity and volumeClaimTemplates",
+          "support": "StatefulSet creates stable identity and per-ordinal claims",
+          "limits": "Does not provide database replication or backup"
+        }
+      ]
+    },
+    "P11.C06.L02": {
+      "content_sha256": "65eb781aec529f045e98f11c1ba273b79228a4c6ddc5d6338b818ac76c922f51",
+      "editorial_decision": "HPA 3×60/50 làm tròn lên 4 theo dữ kiện giả định; hành vi thực có điều kiện metric.",
+      "checks": [
+        {
+          "anchor": "`ceil(3 × 60/50)=ceil(3,6)=4`",
+          "kind": "documented",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Horizontal Pod Autoscaling: Algorithm details",
+          "support": "ceil(current replicas times current/target); arithmetic checked independently",
+          "limits": "Ideal full-data calculation only"
+        },
+        {
+          "anchor": "controller loại Pod đang xóa hoặc Failed",
+          "kind": "documented",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Horizontal Pod Autoscaling: Algorithm details and behavior",
+          "support": "Missing metrics, readiness, tolerance, min/max and stabilization affect recommendation",
+          "limits": "Controller options may be configured differently"
+        },
+        {
+          "anchor": "tránh liên tục apply một `spec.replicas` cố định",
+          "kind": "documented",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Horizontal Pod Autoscaling: Migrating workloads to HPA",
+          "support": "Repeated apply with replicas can cause flapping against HPA",
+          "limits": "Ownership depends on manifest workflow"
+        }
+      ]
+    },
+    "P11.C06.L03": {
+      "content_sha256": "97c7603587189fd300f65e0d8a6dd860a9af26196a5642509f76c8c4c9f28b62",
+      "editorial_decision": "9 giây CPU/10 giây/3 Pod là 0,3 lõi; desired=4 không chứng minh Ready.",
+      "checks": [
+        {
+          "anchor": "chia cho ba Pod được 0,3 lõi mỗi Pod",
+          "kind": "derived",
+          "sources": [],
+          "support": "(3,0+4,5+1,5)/10/3 = 0,3 lõi; 0,3/0,2 = 150% theo dữ kiện giả định.",
+          "limits": "Không xác định CPU trống của node, latency thực hoặc Pod thứ tư được đặt chỗ."
+        }
+      ]
+    },
+    "P11.C07.L01": {
+      "content_sha256": "a330f3beb0410b6de9f080194bcfb755b23bcc11aedea468fcafdc20ffda985d",
+      "editorial_decision": "GatewayClass, Gateway, HTTPRoute và controller khác vai trò.",
+      "checks": [
+        {
+          "anchor": "Gateway API là nhóm API mở rộng",
+          "kind": "documented",
+          "sources": [
+            "GW5"
+          ],
+          "source_location": "API Overview: Gateway API resources and roles",
+          "support": "Gateway resources are CRDs reconciled by implementations",
+          "limits": "Installed CRD/controller support must be verified per cluster"
+        },
+        {
+          "anchor": "`GatewayClass` là object phạm vi cluster",
+          "kind": "documented",
+          "sources": [
+            "GW1"
+          ],
+          "source_location": "GatewayClass: scope, controller selection and status",
+          "support": "Class binds controllerName to a Gateway implementation",
+          "limits": "Class name alone does not install controller"
+        },
+        {
+          "anchor": "`Gateway` là object có namespace",
+          "kind": "documented",
+          "sources": [
+            "GW2"
+          ],
+          "source_location": "Gateway: spec, listeners and deployment models",
+          "support": "Gateway selects class and listener; implementation chooses dataplane model",
+          "limits": "No universal proxy behavior"
+        },
+        {
+          "anchor": "`HTTPRoute` mô tả một hay nhiều luật HTTP",
+          "kind": "documented",
+          "sources": [
+            "GW3"
+          ],
+          "source_location": "HTTPRoute: parentRefs, hostnames, matches, backendRefs",
+          "support": "Route attaches to parent and matches HTTP requests before forwarding",
+          "limits": "Controller must support selected features"
+        },
+        {
+          "anchor": "Với HTTPS termination",
+          "kind": "documented",
+          "sources": [
+            "GW2",
+            "GW4"
+          ],
+          "source_location": "Gateway: TLS listeners; ReferenceGrant: cross-namespace Secret",
+          "support": "Listener terminates TLS using certificate reference subject to namespace rules",
+          "limits": "Backend encryption is separately configured"
+        }
+      ]
+    },
+    "P11.C07.L02": {
+      "content_sha256": "eed335ad13b89ecc0eba2c14800a3a891e0a9dbd076c89af667e0f69fc0d105e",
+      "editorial_decision": "Listener, allowedRoutes và attachment condition phải được đọc riêng.",
+      "checks": [
+        {
+          "anchor": "`allowedRoutes`",
+          "kind": "documented",
+          "sources": [
+            "GW2",
+            "GW4"
+          ],
+          "source_location": "Gateway: route attachment; ReferenceGrant: cross-namespace references",
+          "support": "Listener governs route attachment; grants authorize other cross-namespace references",
+          "limits": "ReferenceGrant does not override listener policy"
+        },
+        {
+          "anchor": "`Accepted=True` nghĩa cấu hình được controller nhận",
+          "kind": "documented",
+          "sources": [
+            "GW2",
+            "GW3"
+          ],
+          "source_location": "Gateway: status conditions; HTTPRoute: parent status",
+          "support": "Accepted and Programmed represent controller processing stages",
+          "limits": "Neither is an end-to-end request probe"
+        },
+        {
+          "anchor": "`ResolvedRefs=False`",
+          "kind": "documented",
+          "sources": [
+            "GW3",
+            "GW4"
+          ],
+          "source_location": "HTTPRoute: status and backend reference validation; ReferenceGrant",
+          "support": "False indicates unresolved or impermissible references",
+          "limits": "Inspect parent and condition reason for exact field"
+        }
+      ]
+    },
+    "P11.C07.L03": {
+      "content_sha256": "f6180be852db2350be1e8f2df96259feecae7a89f0f52ef4a8f925ab17cc58b8",
+      "editorial_decision": "Đường request qua listener, route, backend và endpoint cần kiểm từng chặng.",
+      "checks": [
+        {
+          "anchor": "Ingress vẫn là API Kubernetes đang tồn tại",
+          "kind": "documented",
+          "sources": [
+            "KU25",
+            "GW5"
+          ],
+          "source_location": "Ingress: introduction; Gateway API overview",
+          "support": "Ingress remains an existing API alongside Gateway API",
+          "limits": "Controller support and migration behavior vary"
+        }
+      ]
+    },
+    "P11.C08.L01": {
+      "content_sha256": "cfc155f907f57cbae73e615c069f7309d122bca0e28b4381f86be51fb2c899ae",
+      "editorial_decision": "Chart và values render YAML; controller vẫn phải hội tụ.",
+      "checks": [
+        {
+          "anchor": "Một chart là gói đầu vào",
+          "kind": "documented",
+          "sources": [
+            "HE1"
+          ],
+          "source_location": "Getting Started: Charts",
+          "support": "Chart.yaml, values.yaml and templates are chart inputs",
+          "limits": "Exact release output depends on values and capabilities"
+        },
+        {
+          "anchor": "Giá trị do người dùng truyền qua `-f`",
+          "kind": "documented",
+          "sources": [
+            "HE2",
+            "HE3"
+          ],
+          "source_location": "Values Files: precedence; Using Helm: upgrade",
+          "support": "User values override defaults; upgrade can reuse prior values",
+          "limits": "Review actual effective values for each revision"
+        },
+        {
+          "anchor": "Chart `atlas-gateway` chỉ tạo Gateway và HTTPRoute",
+          "kind": "documented",
+          "sources": [
+            "GW2",
+            "GW3",
+            "HE1"
+          ],
+          "source_location": "Gateway/HTTPRoute fields; Chart guide",
+          "support": "Chart manifests include namespaced Gateway and HTTPRoute with Service backend",
+          "limits": "Local render is not runtime validation"
+        }
+      ]
+    },
+    "P11.C08.L02": {
+      "content_sha256": "2cb527e347fc458c276802e20f28f227cc928e2f9352c29bff56d26c1d17444d",
+      "editorial_decision": "Helm revision và template khác trạng thái tài nguyên đang chạy.",
+      "checks": [
+        {
+          "anchor": "`helm template` cho thấy YAML render",
+          "kind": "documented",
+          "sources": [
+            "HE4"
+          ],
+          "source_location": "helm template: Synopsis",
+          "support": "Template command renders locally without server-side validity testing",
+          "limits": "Does not prove API/controller acceptance"
+        }
+      ]
+    },
+    "P11.C08.L03": {
+      "content_sha256": "cae752fde2dbacfc8193f1bff8ee8a905fd423839c38f3c9854185f245010f1e",
+      "editorial_decision": "Helm rollback tạo revision mới; không đảo dữ liệu ngoài manifest.",
+      "checks": [
+        {
+          "anchor": "`helm rollback` tạo một revision mới",
+          "kind": "documented",
+          "sources": [
+            "HE3"
+          ],
+          "source_location": "Using Helm: Upgrading a Release and Recovering on Failure",
+          "support": "Rollback targets previous revision and increments history",
+          "limits": "External data changes are beyond Helm release manifest"
+        },
+        {
+          "anchor": "Kubernetes Secret của Helm 3",
+          "kind": "documented",
+          "sources": [
+            "HE5"
+          ],
+          "source_location": "Changes Since Helm 2: Secrets as default storage driver",
+          "support": "Helm 3 uses Kubernetes Secrets by default for release metadata",
+          "limits": "Storage driver may be configured differently; secrecy needs separate controls"
+        },
+        {
+          "anchor": "Revision 5 được tạo bằng `helm upgrade`",
+          "kind": "documented",
+          "sources": [
+            "HE3",
+            "GW2",
+            "GW3"
+          ],
+          "source_location": "Using Helm: upgrade; Gateway/HTTPRoute hostname matching",
+          "support": "An override can alter rendered listener and Route hostnames, changing matching",
+          "limits": "Revision numbers and HTTP symptoms are hypothetical"
+        }
+      ]
+    },
+    "P12.C01.L02": {
+      "content_sha256": "bd05d76878481137d87f64d8d869d50447260b902661ef8beab7538af4ff9235",
+      "editorial_decision": "Tổ hợp label quyết định cardinality; request_id/user_id không hợp làm label.",
+      "checks": [
+        {
+          "anchor": "Mỗi tổ hợp tên metric và giá trị nhãn tạo một time series",
+          "kind": "documented",
+          "sources": [
+            "PM3"
+          ],
+          "source_location": "Metric names and labels",
+          "support": "Metric identity includes the full label set",
+          "limits": "Changing any label creates a distinct series"
+        },
+        {
+          "anchor": "tránh `request_id` hoặc user ID",
+          "kind": "documented",
+          "sources": [
+            "PM7"
+          ],
+          "source_location": "Do not use labels to store dimensions with high cardinality",
+          "support": "Unbounded identifiers make many series",
+          "limits": "50,000 in chapter is illustrative arithmetic, not benchmark"
+        }
+      ]
+    },
+    "P12.C01.L03": {
+      "content_sha256": "9b2645f3c160d8e3005817fe02ec015fefa909924a9f906e2b6fb670a755363d",
+      "editorial_decision": "Scrape, up metric và TSDB là các bước khác nhau.",
+      "checks": [
+        {
+          "anchor": "Prometheus chọn target bằng cấu hình hoặc service discovery",
+          "kind": "documented",
+          "sources": [
+            "PM1"
+          ],
+          "source_location": "scrape_config and service discovery",
+          "support": "Configured targets are periodically scraped; scrape settings govern interval and timeout",
+          "limits": "A configured target may still fail at runtime"
+        },
+        {
+          "anchor": "Metric `up` do Prometheus tạo",
+          "kind": "documented",
+          "sources": [
+            "PM11"
+          ],
+          "source_location": "Jobs and instances: automatically generated up metric",
+          "support": "Prometheus reports scrape success as up for monitored targets",
+          "limits": "Up does not test application request path"
+        },
+        {
+          "anchor": "Prometheus lưu mẫu thành các chuỗi thời gian",
+          "kind": "documented",
+          "sources": [
+            "PM4"
+          ],
+          "source_location": "On-disk layout and retention",
+          "support": "Local TSDB uses WAL and blocks with retention configuration",
+          "limits": "Retention is not an independent backup"
+        }
+      ]
+    },
+    "P12.C02.L01": {
+      "content_sha256": "f8bed85709c797fffbf63f833b593f67d6e1457898340c1420b1deb56e3cd3ed",
+      "editorial_decision": "Rate/increase tính trên cửa sổ giả định; recording rule khác alerting rule.",
+      "checks": [
+        {
+          "anchor": "Recording rule định kỳ lưu kết quả biểu thức",
+          "kind": "documented",
+          "sources": [
+            "PM5"
+          ],
+          "source_location": "recording rules definition",
+          "support": "Recording rules precompute expressions into new time series",
+          "limits": "Bad source data remains bad"
+        },
+        {
+          "anchor": "Tại giây 180, biểu thức `rate(http_requests_total[3m])`",
+          "kind": "documented",
+          "sources": [
+            "PM8"
+          ],
+          "source_location": "Range Vector Selectors",
+          "support": "Range is left-open and right-closed",
+          "limits": "Numeric samples are illustrative"
+        },
+        {
+          "anchor": "`increase(counter[3m])` là `rate` nhân 180 giây",
+          "kind": "documented",
+          "sources": [
+            "PM9"
+          ],
+          "source_location": "increase and rate functions",
+          "support": "Increase is rate extrapolated to full range duration",
+          "limits": "Results can be noninteger"
+        },
+        {
+          "anchor": "`rate` và `increase` nhận biết bước giảm counter",
+          "kind": "documented",
+          "sources": [
+            "PM9"
+          ],
+          "source_location": "rate function",
+          "support": "Rate adjusts for counter resets",
+          "limits": "Too few samples or wrong instrumentation cannot be repaired"
+        }
+      ]
+    },
+    "P12.C02.L02": {
+      "content_sha256": "fb1832c31ece7ee0c8e7dd1bf486042b306314a9b559668f373e5732f710aaef",
+      "editorial_decision": "Bucket histogram cộng dồn; quantile nội suy có giới hạn.",
+      "checks": [
+        {
+          "anchor": "Với giả định nội suy đều trong bucket của `histogram_quantile`",
+          "kind": "documented",
+          "sources": [
+            "PM9"
+          ],
+          "source_location": "histogram_quantile classic histograms",
+          "support": "Classic histogram quantile interpolates within buckets",
+          "limits": "Quantile is estimate dependent on bucket width"
+        },
+        {
+          "anchor": "Snapshot exposition giả định của target `a`",
+          "kind": "documented",
+          "sources": [
+            "PM10",
+            "PM11"
+          ],
+          "source_location": "Text-based format: HELP TYPE sample syntax; Jobs and instances",
+          "support": "Snapshot uses documented text exposition syntax; scrape adds target labels",
+          "limits": "One snapshot cannot establish a rate"
+        }
+      ]
+    },
+    "P12.C02.L03": {
+      "content_sha256": "474256d895434429d2be8b96f12a5f7d46f85e7cdeabb66dab6d265305e3b208",
+      "editorial_decision": "Dashboard phụ thuộc data source/time range/step và staleness.",
+      "checks": [
+        {
+          "anchor": "Grafana truy vấn Prometheus qua data source",
+          "kind": "documented",
+          "sources": [
+            "GF1"
+          ],
+          "source_location": "Prometheus data source",
+          "support": "Grafana queries Prometheus as a data source",
+          "limits": "Grafana panel is a presentation of query results"
+        },
+        {
+          "anchor": "sau failed scrape, series do `b` xuất có thể stale",
+          "kind": "documented",
+          "sources": [
+            "PM8"
+          ],
+          "source_location": "Staleness and range-vector selectors",
+          "support": "Failed scrape marks prior series stale for instant selection while range may retain samples",
+          "limits": "Timing and target removal differ"
+        },
+        {
+          "anchor": "khóa cùng data source, time range, step",
+          "kind": "documented",
+          "sources": [
+            "GF1",
+            "GF2"
+          ],
+          "source_location": "Prometheus data source and dashboard time range controls",
+          "support": "Panels depend on selected data source, time range and query interval",
+          "limits": "Panel result alone cannot prove application health"
+        }
+      ]
+    },
+    "P12.C03.L01": {
+      "content_sha256": "348cc98e2d5543af375907e6f9d2577dfbc5425363199a12a0cc49a441cdf0aa",
+      "editorial_decision": "Log record, event time và trace_id phục vụ tương quan.",
+      "checks": [
+        {
+          "anchor": "Một log record cần thời gian, mức nghiêm trọng",
+          "kind": "documented",
+          "sources": [
+            "OT1"
+          ],
+          "source_location": "LogRecord fields and timestamp definitions",
+          "support": "Log records carry timestamp, severity, body, attributes and optional trace context",
+          "limits": "Field availability depends on source and SDK"
+        },
+        {
+          "anchor": "OpenTelemetry phân biệt thời điểm sự kiện được ghi",
+          "kind": "documented",
+          "sources": [
+            "OT1"
+          ],
+          "source_location": "Timestamp and ObservedTimestamp",
+          "support": "Event and observed timestamps can differ",
+          "limits": "Our JSON only models event time"
+        },
+        {
+          "anchor": "`trace_id` định danh một trace",
+          "kind": "documented",
+          "sources": [
+            "OT1",
+            "OT2"
+          ],
+          "source_location": "Log trace context fields; SpanContext",
+          "support": "Trace ID and span ID correlate a log to trace and operation",
+          "limits": "IDs require propagation and logger context"
+        }
+      ]
+    },
+    "P12.C03.L02": {
+      "content_sha256": "45377960f86e812161a8180157a93cfcd477438f05a55dd98b4947921edb336e",
+      "editorial_decision": "Traceparent và span graph cho thấy critical path; không cộng span lồng nhau.",
+      "checks": [
+        {
+          "anchor": "Span biểu diễn một thao tác",
+          "kind": "documented",
+          "sources": [
+            "OT2"
+          ],
+          "source_location": "Span and SpanContext",
+          "support": "Span has context, parent, timing, attributes, events and status",
+          "limits": "Span coverage depends on instrumentation"
+        },
+        {
+          "anchor": "Khi Gateway gọi API, nó inject trace context",
+          "kind": "documented",
+          "sources": [
+            "OT4"
+          ],
+          "source_location": "TextMapPropagator inject and extract",
+          "support": "Propagation serializes context into carrier and extracts remotely",
+          "limits": "No guarantee of export or storage"
+        },
+        {
+          "anchor": "W3C Trace Context quy định header `traceparent`",
+          "kind": "documented",
+          "sources": [
+            "WC1"
+          ],
+          "source_location": "3.2 Traceparent Header",
+          "support": "Header contains version, trace id, parent id, flags",
+          "limits": "Valid header alone does not prove trace retention"
+        },
+        {
+          "anchor": "Bit sampled trong `01`",
+          "kind": "documented",
+          "sources": [
+            "WC1"
+          ],
+          "source_location": "4.3 A traceparent is Received",
+          "support": "Sampled flag indicates likely recording and is not a guarantee",
+          "limits": "Downstream configuration may drop data"
+        },
+        {
+          "anchor": "Header `tracestate` tùy chọn",
+          "kind": "documented",
+          "sources": [
+            "WC1"
+          ],
+          "source_location": "3.3 Tracestate Header and privacy",
+          "support": "Tracestate carries vendor-specific entries and can be omitted",
+          "limits": "Sensitive values must not be injected"
+        },
+        {
+          "anchor": "Sampling giảm lượng trace",
+          "kind": "documented",
+          "sources": [
+            "OT3"
+          ],
+          "source_location": "Sampling and SpanProcessor",
+          "support": "SDK sampling can select or drop span recording",
+          "limits": "Stored traces need not represent all requests"
+        },
+        {
+          "anchor": "Gateway mất `420−0=420 ms`",
+          "kind": "documented",
+          "sources": [
+            "OT2"
+          ],
+          "source_location": "Span start/end timestamps; local illustrative CSV",
+          "support": "Duration is end minus start; nested spans overlap",
+          "limits": "Numbers are invented for instruction, not measured"
+        },
+        {
+          "anchor": "`U1` có span status `ERROR`",
+          "kind": "documented",
+          "sources": [
+            "OT6"
+          ],
+          "source_location": "HTTP spans: Status and resend attempt",
+          "support": "Failed attempt may be Error while later HTTP success has independent response status",
+          "limits": "Exact instrumentation must be checked"
+        }
+      ]
+    },
+    "P12.C03.L03": {
+      "content_sha256": "6f209992a09776e8f8a007dce5e84e94e25af2f1b540a8638750361ca82f7254",
+      "editorial_decision": "API, SDK, OTLP và Collector là các ranh giới telemetry; sampling/drop giới hạn.",
+      "checks": [
+        {
+          "anchor": "Instrumentation gọi OpenTelemetry API",
+          "kind": "documented",
+          "sources": [
+            "OT2",
+            "OT3"
+          ],
+          "source_location": "Tracing API and SDK overview",
+          "support": "API creates spans and SDK provides recording/export implementation",
+          "limits": "Language SDK implementation varies"
+        },
+        {
+          "anchor": "Resource attributes như `service.name`",
+          "kind": "documented",
+          "sources": [
+            "OT5"
+          ],
+          "source_location": "Service resource attributes",
+          "support": "Service name/version describe resource associated with telemetry",
+          "limits": "Semconv version and SDK behavior must be checked"
+        },
+        {
+          "anchor": "SDK có thể xuất OTLP qua HTTP hoặc gRPC",
+          "kind": "documented",
+          "sources": [
+            "OT7"
+          ],
+          "source_location": "OTLP transport",
+          "support": "OTLP supports HTTP and gRPC transport",
+          "limits": "Endpoint and exporter depend on configuration"
+        },
+        {
+          "anchor": "Collector dùng `receiver` nhận tín hiệu",
+          "kind": "documented",
+          "sources": [
+            "OT8"
+          ],
+          "source_location": "Configuration structure and service pipelines",
+          "support": "Receiver, processor, exporter are enabled through pipelines",
+          "limits": "Configured but unreferenced component is inactive"
+        },
+        {
+          "anchor": "Exporter helper của Collector hỗ trợ queue",
+          "kind": "documented",
+          "sources": [
+            "OT9"
+          ],
+          "source_location": "Configuration: sending_queue retry_on_failure timeout",
+          "support": "Exporter helper includes queue, retry and timeout options",
+          "limits": "Defaults and behavior are pinned to v0.133.0"
+        },
+        {
+          "anchor": "batch giảm số lần gửi",
+          "kind": "documented",
+          "sources": [
+            "OT10"
+          ],
+          "source_location": "Batch processor description",
+          "support": "Batching combines telemetry before export",
+          "limits": "Adds delay and in-memory pending data"
+        },
+        {
+          "anchor": "OTLP còn có phản hồi partial success",
+          "kind": "documented",
+          "sources": [
+            "OT7"
+          ],
+          "source_location": "Response partial success and failures",
+          "support": "OTLP defines partially accepted exports and retryable or permanent failures",
+          "limits": "Collector acceptance is not backend persistence"
+        },
+        {
+          "anchor": "Không có span chỉ chứng minh không thấy span",
+          "kind": "documented",
+          "sources": [
+            "OT3",
+            "OT9"
+          ],
+          "source_location": "Sampling, exporter queue and retry",
+          "support": "Sampling and telemetry pipeline can omit otherwise executed operations",
+          "limits": "Also verify query filters and backend retention"
+        }
+      ]
+    },
+    "P12.C04.L01": {
+      "content_sha256": "29d195c57e34a8de9247008a3d46a9254b470fd5aa03bc18ccb420c1d849e92b",
+      "editorial_decision": "Alert rule đánh giá theo cửa sổ; firing không chỉ ra nguyên nhân gốc.",
+      "checks": [
+        {
+          "anchor": "alerting rule đánh giá điều kiện",
+          "kind": "documented",
+          "sources": [
+            "PM6"
+          ],
+          "source_location": "alerting rules and for clause",
+          "support": "Alerts evaluate expressions with pending duration",
+          "limits": "An alert does not prove root cause"
+        }
+      ]
     }
   }
 }

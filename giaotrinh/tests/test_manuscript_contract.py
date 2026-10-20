@@ -7,6 +7,7 @@ import re
 import unittest
 from collections import Counter
 from pathlib import Path
+from unittest.mock import patch
 
 import pymupdf
 
@@ -45,6 +46,8 @@ class ManuscriptContract(unittest.TestCase):
                         row["verification"] == "reviewed_p13_publication_contract"}
         self.assertEqual(len(p13_reviewed), 12)
         reviewed_ids = set(wave2["lessons"]) | p13_reviewed | set(editorial["lessons"])
+        self.assertEqual(self.manifest["phase"], "complete_scientific_candidate")
+        self.assertEqual(len(reviewed_ids), 178)
         self.assertEqual({lid for lid, row in self.manifest["lessons"].items()
                           if row["status"] == "reviewed"}, reviewed_ids)
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
@@ -72,7 +75,38 @@ class ManuscriptContract(unittest.TestCase):
             paragraph = re.split(r"\n\s*\n", sections(ROOT / old)[1][section])[int(ordinal.split("-")[1]) - 1]
             owner = self.manifest["lessons"][unit["primary_lesson_id"]]
             self.assertIn(unit["old_id"], owner["legacy_units"])
-            self.assertIn(paragraph, (ROOT / owner["content"]).read_text(encoding="utf-8"))
+            migrated = (ROOT / owner["content"]).read_text(encoding="utf-8")
+            extracted = json.loads(unit["extract_to_other_owners"])
+            if extracted:
+                evidence = {row["old_id"]: row for row in ledger("evidence_ownership.csv")}
+                sentences = set()
+                for claim in extracted:
+                    anchor = evidence[claim["old_id"]]["old_anchor_or_title"]
+                    position = paragraph.index(anchor)
+                    previous = max(paragraph.rfind(". ", 0, position),
+                                   paragraph.rfind("? ", 0, position),
+                                   paragraph.rfind("! ", 0, position))
+                    start = 0 if previous < 0 else previous + 2
+                    endings = [index for index in (paragraph.find(". ", position),
+                               paragraph.find("? ", position), paragraph.find("! ", position))
+                               if index >= 0]
+                    end = min(endings) + 1 if endings else len(paragraph)
+                    sentence = paragraph[start:end]
+                    sentences.add(sentence)
+                    target = self.manifest["lessons"][claim["owner"]]
+                    target_body = (ROOT / target["content"]).read_text(encoding="utf-8")
+                    self.assertIn(anchor, target_body)
+                    self.assertNotIn(anchor, migrated)
+                    if claim["old_id"] not in ("CLM-ea54a2dace4146ac",
+                                               "CLM-fc44f951fc7f37a7",
+                                               "CLM-4694812c6561c96f",
+                                               "CLM-04bb47b429753cbe"):
+                        self.assertEqual(target_body.count(sentence), 1)
+                for sentence in sentences:
+                    paragraph = paragraph.replace(sentence + " ", "", 1) if sentence + " " in paragraph else (
+                        paragraph.replace(" " + sentence, "", 1) if " " + sentence in paragraph else
+                        paragraph.replace(sentence, "", 1))
+            self.assertIn(" ".join(paragraph.split()), " ".join(migrated.split()))
 
     def test_each_lesson_first_and_last_prose_reaches_candidate(self):
         with pymupdf.open(build.OUTPUT) as doc:
@@ -189,9 +223,23 @@ class ManuscriptContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Nguồn bài không khớp"):
             build.check_editorial_evidence(self.manifest, broken)
         broken_manifest = copy.deepcopy(self.manifest)
-        broken_manifest["lessons"]["P03.C01.L01"]["status"] = "reviewed"
+        broken_manifest["lessons"]["P01.C02.L01"]["verification"] = "reviewed_baseline_migration"
         with self.assertRaisesRegex(ValueError, "thiếu hợp đồng kiểm chứng"):
             build.load_manuscript(self.tree, broken_manifest)
+
+    def test_migrated_claim_cannot_reappear_in_paragraph_owner(self):
+        lid = "P03.C02.L01"
+        target = (ROOT / self.manifest["lessons"][lid]["content"]).resolve()
+        original_read = Path.read_text
+        duplicate = " `ss -ltn` trên đúng network namespace"
+
+        def injected_read(path, *args, **kwargs):
+            value = original_read(path, *args, **kwargs)
+            return value + duplicate if path.resolve() == target else value
+
+        with patch.object(Path, "read_text", injected_read):
+            with self.assertRaisesRegex(ValueError, "Claim đã tách vẫn lặp"):
+                build.check_migration_evidence(self.manifest)
 
     def test_bookmark_same_count_but_wrong_destination_fails(self):
         with pymupdf.open(build.OUTPUT) as doc:

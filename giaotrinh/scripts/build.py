@@ -495,6 +495,7 @@ def check_migration_evidence(manifest: dict) -> None:
         evidence = list(csv.DictReader(stream))
     if len(evidence) != 369 or len({row["old_id"] for row in evidence}) != 369:
         raise ValueError("Ledger claim/ví dụ/bài tập không đủ hoặc trùng")
+    evidence_by_id = {row["old_id"]: row for row in evidence}
     expected = {lid: {"claim_ids": [], "examples": [], "qa": []}
                 for lid in manifest["lessons"]}
     for row in evidence:
@@ -510,6 +511,17 @@ def check_migration_evidence(manifest: dict) -> None:
             anchor = row["old_anchor_or_title"] if kind == "claim" else "{{code:" + row["old_id"] + "}}"
             if anchor not in body:
                 raise ValueError(f"Mất claim hoặc ví dụ tại chủ bài: {row['old_id']}")
+    # A split claim belongs in its selected lesson exactly once. Keeping the
+    # original sentence in the paragraph owner makes migration duplicate prose.
+    with (ROOT / "architecture" / "legacy_content_units.csv").open(
+            encoding="utf-8-sig", newline="") as stream:
+        for unit in csv.DictReader(stream):
+            primary = manifest["lessons"][unit["primary_lesson_id"]]
+            body = (ROOT / primary["content"]).read_text(encoding="utf-8")
+            for moved in json.loads(unit["extract_to_other_owners"]):
+                match = evidence_by_id[moved["old_id"]]
+                if match["old_anchor_or_title"] in body:
+                    raise ValueError(f"Claim đã tách vẫn lặp ở bài gốc: {moved['old_id']}")
     for lid, expected_row in expected.items():
         actual = manifest["lessons"][lid]
         for field in ("claim_ids", "examples"):
@@ -641,7 +653,7 @@ def build() -> None:
         Spacer(1, 170),
         Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
         Spacer(1, 26),
-        Paragraph(f"Bản thảo tích hợp Đợt 2 · {count}/178 bài có nội dung", styles["subtitle"]),
+        Paragraph(f"Bản thảo hoàn chỉnh · {count}/178 bài có nội dung", styles["subtitle"]),
         Spacer(1, 10),
         Paragraph("Chưa phải bản phát hành hoàn chỉnh", styles["subtitle"]),
         Spacer(1, 34),

@@ -114,12 +114,9 @@ class MechanismFigure(Flowable):
 
     def draw_V20(self, y0):
         self.text(15, y0 + 199, "Ba thực thể tại cùng một thời điểm", 10, True)
-        self.box(18, y0 + 125, 132, 48, "HCL · A", "desired configuration", fill=True)
-        self.box(170, y0 + 125, 132, 48, "STATE", "binding → i-demo-01", fill=True)
-        self.box(322, y0 + 125, 132, 48, "API · B", "real infrastructure", fill=True)
-        self.text(18, y0 + 105, "A: CPU 2", 8.5)
-        self.text(170, y0 + 105, "state: CPU 2, ID cũ", 8.5)
-        self.text(322, y0 + 105, "B: CPU 4 sau sửa console", 8.5)
+        self.box(18, y0 + 125, 132, 48, "HCL · A: CPU 2", "desired configuration", fill=True)
+        self.box(170, y0 + 125, 132, 48, "STATE: CPU 2", "binding → i-demo-01", fill=True)
+        self.box(322, y0 + 125, 132, 48, "API · B: CPU 4", "real infrastructure", fill=True)
         self.line(84, y0 + 125, 175, y0 + 66, arrow=True)
         self.line(236, y0 + 125, 236, y0 + 66, arrow=True)
         self.line(388, y0 + 125, 295, y0 + 66, arrow=True)
