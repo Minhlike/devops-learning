@@ -167,6 +167,21 @@
       "type": "AWS Well-Architected Framework",
       "version": "Reliability Pillar REL13-BP02, checked 2026-10-20",
       "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_planning_for_recovery_disaster_recovery.html"
+    },
+    "W2-GHACT": {
+      "type": "GitHub Actions documentation",
+      "version": "rolling documentation checked 2026-10-20",
+      "url": "https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments"
+    },
+    "W2-KREAD": {
+      "type": "Kubernetes documentation",
+      "version": "v1.34",
+      "url": "https://v1-34.docs.kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/"
+    },
+    "W2-OTELCOL": {
+      "type": "OpenTelemetry Collector documentation",
+      "version": "rolling documentation checked 2026-10-20",
+      "url": "https://opentelemetry.io/docs/collector/troubleshooting/"
     }
   },
   "lessons": {
@@ -1506,6 +1521,239 @@
           "publication_id": "P15.C03.L04.Q01",
           "question": "Một ledger có tag prod, CI xanh và dashboard xanh nhưng thiếu digest, request ID và restore test. Đạt capstone không?",
           "answer": "Không. Thiếu identity artifact, liên kết request–revision–record và bằng chứng phục hồi. Ghi UNKNOWN/SKIP theo nguyên nhân, dừng triển khai nếu thiếu hậu trạng thái dữ liệu."
+        }
+      ]
+    },
+    "P06.C02.L02": {
+      "claims": [
+        {
+          "anchor": "readiness chỉ gọi đường probe",
+          "sources": [
+            "W2-KREAD"
+          ],
+          "source_location": "Readiness probe, service endpoint inclusion",
+          "support": "Readiness chỉ đánh giá phép kiểm được cấu hình; không kiểm tra hậu điều kiện nghiệp vụ nếu probe không làm việc đó.",
+          "limits": "orders-api, amount_cents và fixture là tình huống giả định; tài liệu không chứng thực dữ liệu giả định."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P06.C02.L02.Q01",
+          "publication_id": "P06.C02.L02.Q02",
+          "question": "Nếu readiness xanh nhưng amount_cents sai, phép kiểm nào còn thiếu?",
+          "answer": "So giá trị đã ghi với input và quy tắc nghiệp vụ trên cùng request/artifact; readiness chỉ chứng minh probe đã đáp ứng."
+        }
+      ]
+    },
+    "P06.C03.L03": {
+      "claims": [
+        {
+          "anchor": "Phê duyệt một release là quyết định cho phép thử thay đổi",
+          "sources": [
+            "W2-GHACT"
+          ],
+          "source_location": "Using environments; Using concurrency",
+          "support": "GitHub phân biệt environment approval và concurrency group; nhóm đồng thời giới hạn một deployment đang chạy.",
+          "limits": "R1/R2 là suy luận về race, không phải log hoặc bảo đảm cho mọi bộ điều phối."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P06.C03.L03.Q01",
+          "publication_id": "P06.C03.L03.Q02",
+          "question": "Vì sao hai release được phê duyệt vẫn có thể ghi đè nhau?",
+          "answer": "Approval là cổng quyền, còn serialization/CAS ở đích mới bảo vệ thứ tự cập nhật môi trường."
+        }
+      ]
+    },
+    "P06.C04.L02": {
+      "claims": [
+        {
+          "anchor": "Readiness của Pod vẫn xanh",
+          "sources": [
+            "KD2"
+          ],
+          "source_location": "Readiness probes",
+          "support": "Probe thành công chỉ phản ánh điều kiện probe được cấu hình; không bao trùm đường ghi đơn nếu đường đó không tham gia.",
+          "limits": "orders-api và lỗi dữ liệu là case giả định."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P06.C04.L02.Q01",
+          "publication_id": "P06.C04.L02.Q01",
+          "question": "Pod Ready nhưng đơn ghi sai: bằng chứng đầu tiên cần thêm là gì?",
+          "answer": "Gắn request với artifact và kiểm tra hậu điều kiện bản ghi; Ready không chứng minh tính đúng của phép ghi."
+        }
+      ]
+    },
+    "P08.C02.L02": {
+      "claims": [
+        {
+          "anchor": "Security Group (SG) gắn với network interface",
+          "sources": [
+            "AWS8",
+            "AWS18"
+          ],
+          "source_location": "Compare security groups and network ACLs; flow log records",
+          "support": "AWS mô tả SG stateful, NACL subnet-level stateless và bản ghi flow log ACCEPT/REJECT.",
+          "limits": "Flow log không giải thích IAM hoặc nội dung application request; không suy ra nguyên nhân chỉ từ action."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P08.C02.L02.Q01",
+          "publication_id": "P08.C02.L02.Q01",
+          "question": "Flow log ACCEPT có chứng minh IAM cho phép request không?",
+          "answer": "Không. ACCEPT chỉ là bằng chứng tầng mạng trong phạm vi bản ghi; phải kiểm principal, action, resource, context riêng."
+        }
+      ]
+    },
+    "P09.C01.L01": {
+      "claims": [
+        {
+          "anchor": "Một `resource` khai báo object Terraform quản lý",
+          "sources": [
+            "TF1",
+            "TF2"
+          ],
+          "source_location": "Purpose of state; Dependency Graph",
+          "support": "Terraform dùng resource/state để quản lý object và đồ thị suy ra phụ thuộc từ tham chiếu.",
+          "limits": "Cấu hình HCL không tự chứng minh API đã tạo đúng object; cần đối chiếu plan/apply/state và hạ tầng thật."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C01.L01.Q01",
+          "publication_id": "P09.C01.L01.Q01",
+          "question": "Khi nào phải dùng depends_on thay vì chỉ tham chiếu giá trị?",
+          "answer": "Khi phụ thuộc vận hành có thật nhưng không biểu diễn được qua tham chiếu dữ liệu; kiểm đồ thị và kế hoạch sau sửa."
+        }
+      ]
+    },
+    "P09.C04.L02": {
+      "claims": [
+        {
+          "anchor": "Một backend có khóa state giúp các lượt Terraform",
+          "sources": [
+            "TF8"
+          ],
+          "source_location": "State locking",
+          "support": "Terraform khóa state với backend có hỗ trợ để tránh nhiều writer cùng ghi state.",
+          "limits": "Lock không khóa API cloud và không ngăn drift ngoài Terraform; ví dụ hai pipeline là phân tích điều kiện."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P09.C04.L02.Q01",
+          "publication_id": "P09.C04.L02.Q02",
+          "question": "State lock có ngăn sửa security group qua console không?",
+          "answer": "Không; nó chỉ điều phối những lượt dùng cùng cơ chế backend/state. Phải refresh và xét lại plan sau thay đổi ngoài."
+        }
+      ]
+    },
+    "P10.C01.L02": {
+      "claims": [
+        {
+          "anchor": "Facts là dữ liệu Ansible thu được từ managed node",
+          "sources": [
+            "AS4"
+          ],
+          "source_location": "Facts and fact caching",
+          "support": "Ansible thu thập facts và có thể cache; cached facts có thể cũ so với trạng thái hiện tại.",
+          "limits": "Recap ok/changed/failed phụ thuộc module và lần chạy cụ thể; không chứng minh mọi hậu điều kiện ngoài module."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P10.C01.L02.Q01",
+          "publication_id": "P10.C01.L02.Q01",
+          "question": "Fact cache có đủ để xác nhận host sau drift không?",
+          "answer": "Không; xác định tuổi fact hoặc thu thập lại rồi kiểm trực tiếp hậu điều kiện quan trọng."
+        }
+      ]
+    },
+    "P10.C01.L03": {
+      "claims": [
+        {
+          "anchor": "`become` thay danh tính thực thi trên đích",
+          "sources": [
+            "AS2"
+          ],
+          "source_location": "Understanding privilege escalation: become",
+          "support": "Ansible dùng cơ chế privilege escalation hiện có của host; become không tự cấp quyền.",
+          "limits": "Quyền cụ thể và sudo policy tùy host; không khẳng định thực thi thành công nếu chưa chạy."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P10.C01.L03.Q01",
+          "publication_id": "P10.C01.L03.Q01",
+          "question": "Nếu task thiếu quyền, bật become có tự giải quyết không?",
+          "answer": "Không; cần kiểm connection user, become user, policy trên host và hậu điều kiện file."
+        }
+      ]
+    },
+    "P11.C06.L01": {
+      "claims": [
+        {
+          "anchor": "Không lấy CPU `limits.cpu` hoặc tổng CPU node",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Algorithm details, resource metrics",
+          "support": "HPA CPU utilization tính theo CPU request của container được xét, không theo node CPU hoặc limit.",
+          "limits": "Metric thiếu, Pod chưa Ready và cấu hình behavior ảnh hưởng phép tính thực tế; bài không giả định có cluster chạy."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P11.C06.L01.Q01",
+          "publication_id": "P11.C06.L01.Q01",
+          "question": "CPU 80% request có nghĩa dùng 80% node không?",
+          "answer": "Không; mẫu số là requests.cpu phù hợp, cần biết mức request và cửa sổ metric."
+        }
+      ]
+    },
+    "P12.C01.L01": {
+      "claims": [
+        {
+          "anchor": "Classic histogram gồm các bucket tích lũy",
+          "sources": [
+            "PM2"
+          ],
+          "source_location": "Histogram and summary metric types",
+          "support": "Prometheus định nghĩa classic histogram với bucket le, sum, count và summary với quantile client-side.",
+          "limits": "Khả năng aggregate quantile cần tài liệu practices bổ sung; không suy ra percentile toàn cụm bằng trung bình quantile."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P12.C01.L01.Q01",
+          "publication_id": "P12.C01.L01.Q01",
+          "question": "Vì sao không lấy trung bình p95 của hai Summary?",
+          "answer": "Quantile từng phân phối không cộng tuyến tính; dùng histogram với bucket và phép tổng hợp phù hợp."
+        }
+      ]
+    },
+    "P12.C04.L03": {
+      "claims": [
+        {
+          "anchor": "Một pipeline telemetry gồm nhiều chặng",
+          "sources": [
+            "W2-OTELCOL"
+          ],
+          "source_location": "Collector troubleshooting, telemetry flow and dropped data",
+          "support": "Collector có receiver, processor, exporter và hàng đợi; quá tải hoặc cấu hình sai có thể làm mất dữ liệu.",
+          "limits": "Case p95 cao nhưng trace nhanh là suy luận có điều kiện; chỉ dữ liệu thật mới xác định sampling/drop cụ thể."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P12.C04.L03.Q01",
+          "publication_id": "P12.C04.L03.Q02",
+          "question": "Metric p95 cao nhưng trace thấy nhanh: được kết luận metric sai không?",
+          "answer": "Không; kiểm sampling, queue/drop và cùng population/cửa sổ trước khi kết luận."
         }
       ]
     }

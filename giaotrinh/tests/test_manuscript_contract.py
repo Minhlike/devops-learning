@@ -33,13 +33,17 @@ class ManuscriptContract(unittest.TestCase):
         self.assertEqual(len(self.manifest["lessons"]), 178)
         wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
         reviewed = len(wave2["lessons"])
-        fragment_reviewed = int("P14.C02.L02" in wave2["lessons"])
+        synthesis_ids = {
+            "P06.C02.L02", "P06.C03.L03", "P06.C04.L02", "P08.C02.L02",
+            "P09.C01.L01", "P09.C04.L02", "P10.C01.L02", "P10.C01.L03",
+            "P11.C06.L01", "P12.C01.L01", "P12.C04.L03",
+        }
+        self.assertTrue(synthesis_ids <= set(wave2["lessons"]))
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
-                         Counter({"migrated_draft": 136, "reviewed": reviewed,
-                                  "pending_authorship": 41 - reviewed + fragment_reviewed,
-                                  "migration_fragment": 1 - fragment_reviewed}))
+                         Counter({"migrated_draft": 136 - len(synthesis_ids),
+                                  "reviewed": reviewed}))
         self.assertEqual(sum(len(ls) for _, chapters in build.published_lessons(self.tree, self.manifest)
-                             for _, ls in chapters), 136 + reviewed)
+                             for _, ls in chapters), 136 - len(synthesis_ids) + reviewed)
 
     def test_legacy_sections_and_split_paragraphs_are_preserved(self):
         migration = [r for r in ledger("legacy_migration.csv") if r["action"] != "move_rekey_after_review"]

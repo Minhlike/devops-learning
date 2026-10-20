@@ -23,8 +23,10 @@ from reportlab.platypus import (
 from reportlab.platypus.tableofcontents import TableOfContents
 try:
     from .p13_publication import figure_story
+    from .science_figures import FIGURES, figure_story as mechanism_figure_story
 except ImportError:  # direct execution: python giaotrinh/scripts/build.py
     from p13_publication import figure_story
+    from science_figures import FIGURES, figure_story as mechanism_figure_story
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,7 +74,9 @@ def style() -> dict[str, ParagraphStyle]:
                              leading=18, spaceBefore=14, spaceAfter=8,
                              keepWithNext=True),
         "h3": ParagraphStyle("h3", fontName="BodyBold", fontSize=11.8,
-                             leading=16, spaceBefore=12, spaceAfter=7,
+                             leading=16, spaceBefore=13, spaceAfter=9,
+                             leftIndent=7, rightIndent=7, borderPadding=5,
+                             backColor=colors.HexColor("#eeeeee"),
                              keepWithNext=True),
         "body": ParagraphStyle("body", fontName="Body", fontSize=11.7,
                                leading=17.5, alignment=TA_LEFT, spaceAfter=7.5),
@@ -92,6 +96,8 @@ def style() -> dict[str, ParagraphStyle]:
                                     leading=25, alignment=TA_CENTER, spaceAfter=10),
         "part_intro": ParagraphStyle("part-intro", fontName="Body", fontSize=12,
                                      leading=19, spaceAfter=15),
+        "part_route": ParagraphStyle("part-route", fontName="Body", fontSize=11,
+                                     leading=15, textColor=colors.HexColor("#222222")),
         "exercise": ParagraphStyle("exercise", fontName="BodyBold", fontSize=11.5,
                                    leading=16, spaceBefore=12, spaceAfter=7,
                                    keepWithNext=True),
@@ -122,6 +128,48 @@ class Heading(Paragraph):
         self.include_in_toc = include_in_toc
 
 
+class PartPlate(Flowable):
+    """A quiet monochrome part opener generated from the approved chapter tree."""
+
+    def __init__(self, part: dict, chapters: list, styles: dict[str, ParagraphStyle]):
+        super().__init__()
+        self.part = part
+        self.chapters = chapters
+        self.styles = styles
+        self.width = PAGE_W - LEFT - RIGHT
+        self.height = max(315, 140 + 43 * len(chapters))
+
+    def draw(self):
+        c = self.canv
+        c.saveState()
+        ink = colors.HexColor("#222222")
+        gray = colors.HexColor("#777777")
+        c.setFillColor(ink)
+        c.rect(0, self.height - 9, self.width, 9, fill=1, stroke=0)
+        c.setFont("BodyBold", 55)
+        c.drawString(9, self.height - 81, f"{int(self.part['id'][1:]):02d}")
+        c.setStrokeColor(gray)
+        c.setLineWidth(0.6)
+        c.line(104, self.height - 65, self.width, self.height - 65)
+        c.setFont("BodyBold", 10)
+        c.drawString(110, self.height - 53, "LỘ TRÌNH PHẦN")
+        y = self.height - 112
+        for index, (chapter, _) in enumerate(self.chapters, 1):
+            c.setFillColor(ink)
+            c.circle(18, y + 6, 3.2, fill=1, stroke=0)
+            c.setStrokeColor(gray)
+            if index < len(self.chapters):
+                c.line(18, y + 3, 18, y - 35)
+            label = f"{chapter['id']}  —  {chapter['title']}"
+            paragraph = Paragraph(paragraph_markup(label), self.styles["part_route"])
+            _, ph = paragraph.wrap(self.width - 44, 50)
+            paragraph.drawOn(c, 34, y - ph + 10)
+            y -= max(43, ph + 14)
+        c.setStrokeColor(gray)
+        c.line(0, 5, self.width, 5)
+        c.restoreState()
+
+
 class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
@@ -131,12 +179,23 @@ class Book(BaseDocTemplate):
         frame = Frame(LEFT, BOTTOM, PAGE_W - LEFT - RIGHT,
                       PAGE_H - TOP - BOTTOM, leftPadding=0, rightPadding=0,
                       topPadding=0, bottomPadding=0)
+        self.running_part = None
+        self.running_chapter = None
+        self.part_opening_page = None
         self.addPageTemplates(PageTemplate(id="normal", frames=[frame],
-                                           onPage=self.page_decoration))
+                                           onPageEnd=self.page_decoration))
 
     @staticmethod
     def page_decoration(canvas, doc):
         canvas.saveState()
+        if doc.running_part and doc.page != doc.part_opening_page:
+            canvas.setFont("BodyBold", 8.5)
+            canvas.drawString(LEFT, PAGE_H - 39, "CẨM NANG NGÀNH DEVOPS")
+            canvas.setFont("Body", 8.5)
+            section = doc.running_chapter or doc.running_part
+            canvas.drawRightString(PAGE_W - RIGHT, PAGE_H - 39, section)
+            canvas.setStrokeColor(colors.HexColor("#999999"))
+            canvas.line(LEFT, PAGE_H - 47, PAGE_W - RIGHT, PAGE_H - 47)
         canvas.setStrokeColor(colors.HexColor("#999999"))
         canvas.setLineWidth(0.4)
         canvas.line(LEFT, 45, PAGE_W - RIGHT, 45)
@@ -148,6 +207,12 @@ class Book(BaseDocTemplate):
     def afterFlowable(self, flowable: Flowable):
         if not isinstance(flowable, Heading):
             return
+        if flowable.level == 1 and flowable.bookmark_key.startswith("P"):
+            self.running_part = flowable.bookmark_key
+            self.running_chapter = None
+            self.part_opening_page = self.page
+        elif flowable.level == 2 and flowable.bookmark_key.startswith("P"):
+            self.running_chapter = flowable.bookmark_key
         key = flowable.bookmark_key
         self.canv.bookmarkPage(key)
         self.canv.addOutlineEntry(flowable.heading_text, key,
@@ -249,7 +314,9 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
         block = block.strip()
         key = "section-" + hashlib.sha1(f"{path.name}:{index}".encode("utf-8")).hexdigest()[:12]
         if block.startswith("{{figure:") and block.endswith("}}"):
-            story.append(figure_story(block[9:-2], styles))
+            figure_id = block[9:-2]
+            story.append(figure_story(figure_id, styles) if figure_id.startswith("P13.C")
+                         else mechanism_figure_story(figure_id, styles))
         elif block.startswith("```"):
             lines = block.splitlines()
             if len(lines) < 2 or not lines[-1].startswith("```"):
@@ -487,6 +554,7 @@ def build() -> None:
         story.append(Spacer(1, 28))
         story.append(Paragraph(paragraph_markup(part["central_question"]), styles["part_deck"]))
         story.append(Paragraph(paragraph_markup(part["mental_model"]), styles["part_intro"]))
+        story.append(PartPlate(part, chapters, styles))
         story.append(PageBreak())
         for chapter, lessons in chapters:
             story.append(Heading(f"Chương {chapter['id']} — {chapter['title']}", 2, chapter["id"], styles))
@@ -559,6 +627,21 @@ def audit_document(doc: pymupdf.Document) -> None:
     for figure in ("Hình XIII.1.1", "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
         if figure not in text:
             raise RuntimeError(f"Thiếu hình đã duyệt: {figure}")
+    for figure_id, (caption, _) in FIGURES.items():
+        owners = [lid for lid, row in manifest["lessons"].items()
+                  if f"{{{{figure:{figure_id}}}}}" in (ROOT / row["content"]).read_text(encoding="utf-8")]
+        if len(owners) != 1 or len(re.findall(rf"\b{re.escape(figure_id)}\b", text)) != 1:
+            raise RuntimeError(f"Thiếu hoặc lặp hình cơ chế {figure_id}")
+        label = caption.split(" — ", 1)[0]
+        pages = [page for page in doc if label in page.get_text()]
+        if len(pages) != 1:
+            raise RuntimeError(f"Thiếu hoặc lặp caption hình {figure_id}")
+        caption_rect = pages[0].search_for(label)[0]
+        panels = [drawing["rect"] for drawing in pages[0].get_drawings()
+                  if drawing["rect"].width >= 450 and drawing["rect"].height >= 200
+                  and 0 <= caption_rect.y0 - drawing["rect"].y1 <= 30]
+        if len(panels) != 1:
+            raise RuntimeError(f"Thiếu panel vector hình {figure_id}")
     toc_entries = doc.get_toc()
     actual = [(level, ("P" + title.split(" — ", 1)[0].split()[-1]
                        if level == 1 and title.startswith("PHẦN ") else

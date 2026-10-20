@@ -138,7 +138,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P01/C02/L02.md",
-      "sha256": "1ea177e84f55a69f346722256d1736948c698b988e1f2d94f1174336374dfdb4",
+      "sha256": "a8ca6fc5c273e8e1769cf439dbba51eda8fe4115b4d6a91ef1490ce1a40f509d",
       "legacy_units": [
         "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.2"
       ],
@@ -851,7 +851,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P03/C02/L01.md",
-      "sha256": "df776aa12d0da2366536cc1deb7d56397f5eff197ee27b0a2b0b9dacfe48c8f4",
+      "sha256": "c70e25cfb194163b1f891c2f27ca8593bdeeeb576c46c9a9a2d9c18f46b07459",
       "legacy_units": [
         "TXT-ca6d0f1f39e8b007",
         "TXT-ed1e75bc1dd9fba7",
@@ -1877,21 +1877,29 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P06/C02/L02.md",
       "sha256": "1e67b05c2ad1bbe6d0d3cf9ff0fc9d4e0b9c80d3ab055a81b4cb7aa2894874f0",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "W2-KREAD"
+      ],
       "qa": [
         {
           "id": "C9.2",
           "publication_id": "P06.C02.L02.Q01",
           "question": "Trong tình huống `orders-api`, unit test và readiness đều xanh. Vì sao hai tín hiệu ấy không bác bỏ lỗi `amount_cents`? Nêu phép kiểm tra hậu triển khai phát hiện sai lệch và giới hạn của mẫu canary nhỏ.",
           "answer": "Unit test không phủ đơn giá trị 1234; readiness chỉ chứng minh điều kiện của probe, không kiểm tra phép ghi tiền. Gửi một đơn canary có đầu vào biết trước, đối chiếu bản ghi và sổ độc lập, gắn kết quả với `H84`; 123400 thay vì 1234 là bằng chứng lỗi cụ thể. Bốn mẫu cho phép dừng rollout nhưng không ước lượng chính xác tỷ lệ lỗi toàn hệ thống, nhất là khi luồng canary hoặc phân phối đơn hàng không đại diện."
+        },
+        {
+          "id": "W2.P06.C02.L02.Q01",
+          "publication_id": "P06.C02.L02.Q02",
+          "question": "Nếu readiness xanh nhưng amount_cents sai, phép kiểm nào còn thiếu?",
+          "answer": "So giá trị đã ghi với input và quy tắc nghiệp vụ trên cùng request/artifact; readiness chỉ chứng minh probe đã đáp ứng."
         }
       ]
     },
@@ -1999,21 +2007,29 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P06/C03/L03.md",
       "sha256": "7b89b0c36eef29638ff7eb53d7bcfee3d97e8f6323116a7927e4b7a313fcae43",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "W2-GHACT"
+      ],
       "qa": [
         {
           "id": "C9.5",
           "publication_id": "P06.C03.L03.Q01",
           "question": "Hai lượt release `R1` và `R2` cùng được phê duyệt vào production; `R2` hoàn tất trước nhưng `R1` ghi đè sau. Cổng phê duyệt thiếu điều kiện nào? Nêu cách điều phối theo môi trường và phép kiểm tra phiên bản ngay trước khi thay, đồng thời giải thích vì sao khóa ở CI chưa đủ nếu có người triển khai bằng công cụ khác.",
           "answer": "Approval cho phép từng lượt nhưng không đảm bảo thứ tự và không xác nhận phiên bản đích tại lúc ghi. Cần serialize release theo môi trường và dùng kiểm tra điều kiện: chỉ thay nếu digest hiện tại đúng phiên bản mà lượt này dự kiến. Nếu `R2` đã thay trước, `R1` phải dừng hoặc được đánh giá lại, không ghi đè im lặng. Khóa CI chỉ quản lý các lượt đi qua CI; công cụ hoặc người triển khai trực tiếp vẫn có thể thay đích, nên hệ thống đích cũng phải kiểm tra danh tính bản hiện tại và quyền thao tác."
+        },
+        {
+          "id": "W2.P06.C03.L03.Q01",
+          "publication_id": "P06.C03.L03.Q02",
+          "question": "Vì sao hai release được phê duyệt vẫn có thể ghi đè nhau?",
+          "answer": "Approval là cổng quyền, còn serialization/CAS ở đích mới bảo vệ thứ tự cập nhật môi trường."
         }
       ]
     },
@@ -2057,8 +2073,8 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P06/C04/L02.md",
       "sha256": "486efa07aa53686121978d7ea6ea2f288c2060b20500dde6156a62ed543246be",
@@ -2072,7 +2088,14 @@
       "source_ids": [
         "KD2"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P06.C04.L02.Q01",
+          "publication_id": "P06.C04.L02.Q01",
+          "question": "Pod Ready nhưng đơn ghi sai: bằng chứng đầu tiên cần thêm là gì?",
+          "answer": "Gắn request với artifact và kiểm tra hậu điều kiện bản ghi; Ready không chứng minh tính đúng của phép ghi."
+        }
+      ]
     },
     "P06.C04.L03": {
       "parent": "P06.C04",
@@ -2682,8 +2705,8 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P08/C02/L02.md",
       "sha256": "7851fa0736c44f8bc42ba0a0c37ec63fb789feb834408c05b6028983ca0002b7",
@@ -2700,7 +2723,14 @@
         "AWS18",
         "AWS8"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P08.C02.L02.Q01",
+          "publication_id": "P08.C02.L02.Q01",
+          "question": "Flow log ACCEPT có chứng minh IAM cho phép request không?",
+          "answer": "Không. ACCEPT chỉ là bằng chứng tầng mạng trong phạm vi bản ghi; phải kiểm principal, action, resource, context riêng."
+        }
+      ]
     },
     "P08.C02.L03": {
       "parent": "P08.C02",
@@ -2940,8 +2970,8 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C01/L01.md",
       "sha256": "04d3f2cd5fedacdd25ad0b9cee8ae9a83adf58442a7e25e1d6424f1b8856c59d",
@@ -2956,7 +2986,14 @@
         "TF1",
         "TF2"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P09.C01.L01.Q01",
+          "publication_id": "P09.C01.L01.Q01",
+          "question": "Khi nào phải dùng depends_on thay vì chỉ tham chiếu giá trị?",
+          "answer": "Khi phụ thuộc vận hành có thật nhưng không biểu diễn được qua tham chiếu dữ liệu; kiểm đồ thị và kế hoạch sau sửa."
+        }
+      ]
     },
     "P09.C01.L02": {
       "parent": "P09.C01",
@@ -3044,7 +3081,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P09/C02/L01.md",
-      "sha256": "fbf1484ffa712f52956fcd9f93a6205e74489236b3591630f1e04f892bc8b70a",
+      "sha256": "f4c7f92e97d0897c264535d3b6d4b3813101797f1f25da3f22e0140ad93f2162",
       "legacy_units": [
         "TXT-3d63d47ddff53d59"
       ],
@@ -3268,21 +3305,29 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C04/L02.md",
       "sha256": "3166c33fb0c23d02e5b442166a16bbc09d2ae0237ec89e2b6d27d094a5d3bfe3",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "TF8"
+      ],
       "qa": [
         {
           "id": "C13.4",
           "publication_id": "P09.C04.L02.Q01",
           "question": "Hai pipeline cùng dùng một backend có locking; một người sửa security group trực tiếp trên console. Khóa bảo vệ được gì, drift nào nó không ngăn, và vì sao `sensitive = true` hoặc state versioning riêng lẻ chưa đủ bảo vệ dữ liệu?",
           "answer": "Locking của backend, nếu hỗ trợ và cùng dùng đúng state, ngăn hai lượt Terraform cùng sửa state; nó không khóa console hoặc tất cả API AWS, nên thay security group ngoài Terraform vẫn là drift. Lượt plan kế tiếp có refresh và quyền đọc phù hợp mới có cơ hội thấy đổi khác. `sensitive = true` che hiển thị nhưng state/plan vẫn có thể chứa giá trị; cần giới hạn quyền, mã hóa và tránh nhúng credential. Versioning giữ bản cũ để khôi phục nhưng không ngăn đọc trái phép hay chứng minh restore chạy được; phải bảo vệ bản sao, kiểm tra quyền và thử phục hồi."
+        },
+        {
+          "id": "W2.P09.C04.L02.Q01",
+          "publication_id": "P09.C04.L02.Q02",
+          "question": "State lock có ngăn sửa security group qua console không?",
+          "answer": "Không; nó chỉ điều phối những lượt dùng cùng cơ chế backend/state. Phải refresh và xét lại plan sau thay đổi ngoài."
         }
       ]
     },
@@ -3356,8 +3401,8 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P10/C01/L02.md",
       "sha256": "ad9a49317ce3b2bb7b885b144eea46c28405f118fb9c2048f98bb46a878dffc0",
@@ -3371,7 +3416,14 @@
       "source_ids": [
         "AS4"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P10.C01.L02.Q01",
+          "publication_id": "P10.C01.L02.Q01",
+          "question": "Fact cache có đủ để xác nhận host sau drift không?",
+          "answer": "Không; xác định tuổi fact hoặc thu thập lại rồi kiểm trực tiếp hậu điều kiện quan trọng."
+        }
+      ]
     },
     "P10.C01.L03": {
       "parent": "P10.C01",
@@ -3382,8 +3434,8 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P10/C01/L03.md",
       "sha256": "620a86cf35a46fe9a4d07e361627d1c9638ac2affa916ee7707ce8d74a6b0f7a",
@@ -3397,7 +3449,14 @@
       "source_ids": [
         "AS2"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P10.C01.L03.Q01",
+          "publication_id": "P10.C01.L03.Q01",
+          "question": "Nếu task thiếu quyền, bật become có tự giải quyết không?",
+          "answer": "Không; cần kiểm connection user, become user, policy trên host và hậu điều kiện file."
+        }
+      ]
     },
     "P10.C02.L01": {
       "parent": "P10.C02",
@@ -3665,7 +3724,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C01/L02.md",
-      "sha256": "1e6b82ca60c1841fb9c98ae5f345563d045b77e18f4fdc7d93da9929c5e4169a",
+      "sha256": "7c50eca34dba119a5fde2f1191a0e8a4670b0753ab4081983e2bba61e93820b1",
       "legacy_units": [
         "TXT-92c85c3a5823a77d"
       ],
@@ -4139,8 +4198,8 @@
         ],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L01.md",
       "sha256": "c0c5b106d16f0f6cf9b31234bc55da2e8566bacb63a9b641b02a8257cf1a298b",
@@ -4154,7 +4213,14 @@
       "source_ids": [
         "KU23"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P11.C06.L01.Q01",
+          "publication_id": "P11.C06.L01.Q01",
+          "question": "CPU 80% request có nghĩa dùng 80% node không?",
+          "answer": "Không; mẫu số là requests.cpu phù hợp, cần biết mức request và cửa sổ metric."
+        }
+      ]
     },
     "P11.C06.L02": {
       "parent": "P11.C06",
@@ -4473,8 +4539,8 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P12/C01/L01.md",
       "sha256": "df595d81083e6d8881aa226a04deb8f3c08e4b033de91b9df1cd3220d27a9cdf",
@@ -4490,7 +4556,14 @@
       "source_ids": [
         "PM2"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P12.C01.L01.Q01",
+          "publication_id": "P12.C01.L01.Q01",
+          "question": "Vì sao không lấy trung bình p95 của hai Summary?",
+          "answer": "Quantile từng phân phối không cộng tuyến tính; dùng histogram với bucket và phép tổng hợp phù hợp."
+        }
+      ]
     },
     "P12.C01.L02": {
       "parent": "P12.C01",
@@ -4886,21 +4959,29 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "editorial_synthesis_pending_source_review",
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P12/C04/L03.md",
       "sha256": "b89ae8a9ff9675f00a3604aa887bc805f257a75f573fd1bde53edc4af38e64c5",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "W2-OTELCOL"
+      ],
       "qa": [
         {
           "id": "C19.4",
           "publication_id": "P12.C04.L03.Q01",
           "question": "p95 metric tăng, còn tập trace đã lưu có phần lớn request nhanh. Nêu ba cách dữ liệu quan sát bị sai lệch và một phép kiểm cho từng cách. Đề xuất cách liên kết log/trace/metric mà không đưa request ID vào nhãn Prometheus hoặc lộ PII.",
           "answer": "Thứ nhất, head sampling thấp hoặc tail sampling thiên về một loại request có thể làm trace đã lưu không đại diện; đối chiếu cấu hình/chỉ số sampling và metric toàn lưu lượng. Thứ hai, mất context hoặc span ở exporter/Collector/backend có thể làm trace ngắn giả; kiểm tra parent, queue, dropped/export failures và truy vấn cùng time range. Thứ ba, khác route, instance, phiên bản, cửa sổ hoặc đồng hồ lệch khiến hai tập không so được; khóa selector, thời gian và kiểm tra đồng hồ. Dùng nhãn metric hữu hạn như route template và status class để định vị nhóm; từ log có quyền truy cập lấy request ID/trace ID của request đại diện, rồi truy trace. Không đưa ID hay PII vào nhãn metric hoặc payload telemetry."
+        },
+        {
+          "id": "W2.P12.C04.L03.Q01",
+          "publication_id": "P12.C04.L03.Q02",
+          "question": "Metric p95 cao nhưng trace thấy nhanh: được kết luận metric sai không?",
+          "answer": "Không; kiểm sampling, queue/drop và cùng population/cửa sổ trước khi kết luận."
         }
       ]
     },
