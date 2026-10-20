@@ -5264,16 +5264,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C01/L01.md",
+      "sha256": "caf6749e1d0289b43a6d3bab30a0f588a4e5e92c271576500de9c644a2d7a7d9",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-ASVS",
+        "W2-NIST30"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C01.L01.Q01",
+          "publication_id": "P14.C01.L01.Q01",
+          "question": "Token user 7 hợp lệ nhưng đơn 41 thuộc user 8. TLS, WAF và private subnet đều hoạt động. Control nào còn thiếu, và hai phép thử nào cần có?",
+          "answer": "API thiếu kiểm chủ sở hữu từng object. Thử user 8 đọc được đơn 41 và user 7 bị từ chối; kiểm cache không dùng kết quả của user khác."
+        }
+      ]
     },
     "P14.C01.L02": {
       "parent": "P14.C01",
@@ -5284,16 +5294,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C01/L02.md",
+      "sha256": "d7c1c80de2710cc5af5c899634714adc37b40cfc45a16048a2f25db8a9eec50e",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS2",
+        "W2-RBAC",
+        "W2-SA"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C01.L02.Q01",
+          "publication_id": "P14.C01.L02.Q01",
+          "question": "Pod đọc được ConfigMap. Có thể kết luận Pod cũng đọc được S3 không? Nêu ca âm least privilege.",
+          "answer": "Không. K8s RBAC và AWS IAM là hai chính sách. Kiểm role session thực và thử Pod bị từ chối PutObject hoặc prefix S3 ngoài phạm vi, đồng thời vẫn đọc object cần thiết."
+        }
+      ]
     },
     "P14.C01.L03": {
       "parent": "P14.C01",
@@ -5304,16 +5325,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C01/L03.md",
+      "sha256": "937a7f7689ce1a82f65fcd96d8ad3470b06cf679d60c62a2b649934c2b41574c",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS2",
+        "W2-ASVS"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C01.L03.Q01",
+          "publication_id": "P14.C01.L03.Q01",
+          "question": "PR thêm s3:* để sửa AccessDenied. Chứng cứ nào cần trước và sau khi cấp quyền?",
+          "answer": "Trước: request lỗi, identity/action/object và đường mạng. Sau: policy hẹp, request hợp lệ thành công, ca âm PutObject/prefix khác bị chặn, audit và thời điểm được ghi; không duyệt wildcard chỉ vì status hết lỗi."
+        }
+      ]
     },
     "P14.C02.L01": {
       "parent": "P14.C02",
@@ -5326,16 +5357,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C02/L01.md",
+      "sha256": "28aa2ba81ad8e895826df1b9a5eecca83c4ac292fd688a1093f69dc50563f969",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-ANSVAULT",
+        "W2-KMS"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C02.L01.Q01",
+          "publication_id": "P14.C02.L01.Q01",
+          "question": "Đổi token A thành B trong CI nhưng container cũ vẫn chạy. Có thể kết luận rotation hoàn tất không?",
+          "answer": "Không. Xác định instance còn dùng A, rollout và kiểm B, revoke A ở backend rồi chạy ca âm A bị từ chối; ghi thời điểm và phạm vi nếu hệ không hỗ trợ hai credential."
+        }
+      ]
     },
     "P14.C02.L02": {
       "parent": "P14.C02",
@@ -5346,11 +5387,11 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migration_fragment",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
       "content": "manuscript/P14/C02/L02.md",
-      "sha256": "d4cc9f496b39aa89eacb02dd7ae8d60973fe3dbefd7a1ed8d75701711bd6c172",
+      "sha256": "c6c61825e12097e96b91249e45678a09331a0425cf8066590eda189548d85ee5",
       "legacy_units": [
         "TXT-ad5bf62ca5645629"
       ],
@@ -5359,10 +5400,20 @@
       ],
       "examples": [],
       "source_ids": [
+        "DD1",
         "OT11",
+        "TF9",
+        "W2-OCILAYER",
         "WC1"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P14.C02.L02.Q01",
+          "publication_id": "P14.C02.L02.Q01",
+          "question": "File .env đã COPY vào image rồi xóa bằng RUN ở layer sau. Container cuối không thấy file. Có thể giữ image không?",
+          "answer": "Không; layer cũ có thể còn byte. Dựng lại từ context sạch, thu hồi token, truy registry/cache và nơi image đã phân phối, kiểm bằng marker giả; không dùng secret thật."
+        }
+      ]
     },
     "P14.C02.L03": {
       "parent": "P14.C02",
@@ -5373,16 +5424,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C02/L03.md",
+      "sha256": "e74dd347ea5b7a855f1079c46f266d06ae9ec9fd07f69552c675a11207fc241c",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-KMS",
+        "W2-SA",
+        "W2-SECRET"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C02.L03.Q01",
+          "publication_id": "P14.C02.L03.Q01",
+          "question": "Backup còn byte mã hóa nhưng quyền decrypt/key đã mất. Có đạt phục hồi không?",
+          "answer": "Chưa. Cần key và quyền giải mã còn hữu dụng, thử restore trong môi trường tách biệt và kiểm dữ liệu; backup byte riêng không chứng minh RTO/RPO."
+        }
+      ]
     },
     "P14.C03.L01": {
       "parent": "P14.C03",
@@ -5395,16 +5457,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C03/L01.md",
+      "sha256": "a556d4fae1724335afb0575a53ee06b4cbc67e3c27afeca7c57fbe4f0ad018e8",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "SL1",
+        "W2-RBDEF",
+        "W2-SPDX"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C03.L01.Q01",
+          "publication_id": "P14.C03.L01.Q01",
+          "question": "Cùng commit c84 nhưng base tag stable chuyển D1→D2, digest image đổi. Scan và chữ ký của D1 có áp cho D2 không?",
+          "answer": "Không. Khóa base digest, xác định lại input/provenance/SBOM gắn với artifact D2 và chạy gate trên chính byte đó; scan xanh không chứng minh an toàn tuyệt đối."
+        }
+      ]
     },
     "P14.C03.L02": {
       "parent": "P14.C03",
@@ -5415,16 +5488,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C03/L02.md",
+      "sha256": "ceb8ce38d221825fb1dc8a0145dad2a38356c3d320ee0a48ed46d3bd52277086",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "SL1",
+        "W2-RBDEF"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C03.L02.Q01",
+          "publication_id": "P14.C03.L02.Q01",
+          "question": "Provenance ký hợp lệ cho H84 nhưng tag prod trỏ H84b. Có thể deploy không?",
+          "answer": "Không. Subject digest không khớp artifact đích; dừng, kiểm registry/tag và builder, chạy gate trên đúng digest sẽ triển khai, không sửa bản ghi cho khớp tag."
+        }
+      ]
     },
     "P14.C03.L03": {
       "parent": "P14.C03",
@@ -5435,16 +5518,28 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C03/L03.md",
+      "sha256": "0d184a6d0a1714301f46b97acf9dd9ca281e50418ae574e15550cdcdbd23a9c1",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "OCI5",
+        "OCI6",
+        "OCI7",
+        "W2-ADMIT"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C03.L03.Q01",
+          "publication_id": "P14.C03.L03.Q01",
+          "question": "Deployment spec H84 nhưng còn Pod H83 Ready trong rollout. Có thể nói 100% request dùng H84 chưa?",
+          "answer": "Chưa. Kiểm Pod imageID, endpoint/traffic theo revision và request đại diện; admission cho spec mới không thay Pod cũ đang chạy."
+        }
+      ]
     },
     "P14.C04.L01": {
       "parent": "P14.C04",
@@ -5457,16 +5552,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C04/L01.md",
+      "sha256": "add528d48b78c3bcb27c38274c98d5024ae7961495cbcb3ab2869957fb10c254",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-ADMIT",
+        "W2-PSSA"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C04.L01.Q01",
+          "publication_id": "P14.C04.L01.Q01",
+          "question": "Pod privileged nhận warning nhưng vẫn được tạo. Chính sách đã chặn thành công chưa?",
+          "answer": "Chưa. Kiểm mode enforce, nhãn/version namespace, response, object và audit; warning đơn thuần không là denial."
+        }
+      ]
     },
     "P14.C04.L02": {
       "parent": "P14.C04",
@@ -5477,16 +5582,28 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C04/L02.md",
+      "sha256": "ea67b8264bd067d7337cc28ef7e58ec2a27b43d849772b9f08b7a6976e83d5d6",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "OCI2",
+        "W2-PSSA",
+        "W2-RBAC",
+        "W2-SA"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C04.L02.Q01",
+          "publication_id": "P14.C04.L02.Q01",
+          "question": "Pod non-root vẫn đọc được Secret. Đây có phải mâu thuẫn không?",
+          "answer": "Không. UID trong container khác quyền SA/RBAC hoặc Secret volume đã mount. Kiểm SA, automount, binding, volume, user process và ca âm list secrets."
+        }
+      ]
     },
     "P14.C04.L03": {
       "parent": "P14.C04",
@@ -5497,16 +5614,28 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P14/C04/L03.md",
+      "sha256": "e8c61ee9ae875b872e4f479aa8622e7a22d7c08f2c786c40ee91bb41fb88bd84",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "AWS2",
+        "AWS4",
+        "AWS6",
+        "KU18"
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C04.L03.Q01",
+          "publication_id": "P14.C04.L03.Q01",
+          "question": "Pod Ready, DNS và TCP tới endpoint đã qua nhưng S3 trả AccessDenied. Mở SG 0.0.0.0/0 có chữa đúng nguyên nhân không?",
+          "answer": "Không. Kiểm role session, action/object, explicit Deny và resource policy; mở SG rộng không cấp IAM Allow và làm tăng bề mặt tấn công."
+        }
+      ]
     },
     "P15.C01.L01": {
       "parent": "P15.C01",

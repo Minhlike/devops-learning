@@ -18,6 +18,15 @@
     "W2-TFMOVED": "https://developer.hashicorp.com/terraform/language/modules/develop/refactoring",
     "W2-TFSTATEMV": "https://developer.hashicorp.com/terraform/cli/commands/state/mv",
     "W2-ANSVAULT": "https://docs.ansible.com/projects/ansible-core/2.16/vault_guide/vault.html",
-    "W2-AMAGER": "https://prometheus.io/docs/alerting/latest/alertmanager/"
+    "W2-AMAGER": "https://prometheus.io/docs/alerting/latest/alertmanager/",
+    "W2-NIST30": "https://csrc.nist.gov/pubs/sp/800/30/r1/final",
+    "W2-ASVS": "https://owasp.org/projects/asvs",
+    "W2-KMS": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html",
+    "W2-SPDX": "https://spdx.github.io/spdx-spec/v3.0.1/",
+    "W2-PSSA": "https://v1-34.docs.kubernetes.io/docs/concepts/security/pod-security-admission/",
+    "W2-RBAC": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/rbac/",
+    "W2-SA": "https://v1-34.docs.kubernetes.io/docs/concepts/security/service-accounts/",
+    "W2-SECRET": "https://v1-34.docs.kubernetes.io/docs/concepts/security/secrets-good-practices/",
+    "W2-ADMIT": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/admission-controllers/"
   }
 }

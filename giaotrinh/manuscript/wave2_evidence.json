@@ -97,6 +97,51 @@
       "type": "Prometheus Alertmanager documentation",
       "version": "checked 2026-10-20; rolling page",
       "url": "https://prometheus.io/docs/alerting/latest/alertmanager/"
+    },
+    "W2-NIST30": {
+      "type": "NIST risk assessment guide",
+      "version": "SP 800-30 Rev. 1, 2012",
+      "url": "https://csrc.nist.gov/pubs/sp/800/30/r1/final"
+    },
+    "W2-ASVS": {
+      "type": "OWASP Application Security Verification Standard",
+      "version": "ASVS 5.0.0, checked 2026-10-20",
+      "url": "https://owasp.org/projects/asvs"
+    },
+    "W2-KMS": {
+      "type": "AWS KMS developer guide",
+      "version": "checked 2026-10-20; rolling service documentation",
+      "url": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html"
+    },
+    "W2-SPDX": {
+      "type": "SPDX specification",
+      "version": "SPDX 3.0.1",
+      "url": "https://spdx.github.io/spdx-spec/v3.0.1/"
+    },
+    "W2-PSSA": {
+      "type": "Kubernetes documentation",
+      "version": "Kubernetes v1.34 snapshot",
+      "url": "https://v1-34.docs.kubernetes.io/docs/concepts/security/pod-security-admission/"
+    },
+    "W2-RBAC": {
+      "type": "Kubernetes documentation",
+      "version": "Kubernetes v1.34 snapshot",
+      "url": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/rbac/"
+    },
+    "W2-SA": {
+      "type": "Kubernetes documentation",
+      "version": "Kubernetes v1.34 snapshot",
+      "url": "https://v1-34.docs.kubernetes.io/docs/concepts/security/service-accounts/"
+    },
+    "W2-SECRET": {
+      "type": "Kubernetes documentation",
+      "version": "Kubernetes v1.34 snapshot",
+      "url": "https://v1-34.docs.kubernetes.io/docs/concepts/security/secrets-good-practices/"
+    },
+    "W2-ADMIT": {
+      "type": "Kubernetes documentation",
+      "version": "Kubernetes v1.34 snapshot",
+      "url": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/admission-controllers/"
     }
   },
   "lessons": {
@@ -745,6 +790,388 @@
           "publication_id": "P12.C04.L02.Q01",
           "question": "Không có page khi cluster mất scrape. Có thể kết luận healthy không? Truy vết các ranh giới nào?",
           "answer": "Không. Kiểm target/discovery, rule firing, alert tới Alertmanager, route/group/inhibition/silence, receiver giao hàng và người trực xác nhận; xét trường hợp thiếu nhãn hoặc alert nguồn không đến."
+        }
+      ]
+    },
+    "P14.C01.L01": {
+      "claims": [
+        {
+          "anchor": "Thiết kế bảo mật bắt đầu bằng tài sản và đường đi",
+          "sources": [
+            "W2-NIST30"
+          ],
+          "source_location": "SP 800-30 Rev.1, risk assessment framing",
+          "support": "Đánh giá rủi ro xét tài sản, threat, vulnerability và tác động trước lựa chọn control.",
+          "limits": "Luồng orders-api là mô hình suy luận, không là hệ đã kiểm."
+        },
+        {
+          "anchor": "thiếu object-level authorization ở API",
+          "sources": [
+            "W2-ASVS"
+          ],
+          "source_location": "ASVS 5.0.0, access control requirements",
+          "support": "ASVS dùng kiểm thử ủy quyền theo đối tượng và ngữ cảnh ứng dụng.",
+          "limits": "User/đơn trong bài là fixture, không là log thật."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C01.L01.Q01",
+          "publication_id": "P14.C01.L01.Q01",
+          "question": "Token user 7 hợp lệ nhưng đơn 41 thuộc user 8. TLS, WAF và private subnet đều hoạt động. Control nào còn thiếu, và hai phép thử nào cần có?",
+          "answer": "API thiếu kiểm chủ sở hữu từng object. Thử user 8 đọc được đơn 41 và user 7 bị từ chối; kiểm cache không dùng kết quả của user khác."
+        }
+      ]
+    },
+    "P14.C01.L02": {
+      "claims": [
+        {
+          "anchor": "Quyền truy cập là quan hệ giữa principal, action, resource và context",
+          "sources": [
+            "AWS2"
+          ],
+          "source_location": "IAM policy evaluation, request context",
+          "support": "IAM đánh giá principal/action/resource/context và explicit deny thắng allow.",
+          "limits": "Kubernetes RBAC là cơ chế riêng, không suy quyền từ AWS."
+        },
+        {
+          "anchor": "Role/ClusterRole và binding quyết định các verb",
+          "sources": [
+            "W2-RBAC",
+            "W2-SA"
+          ],
+          "source_location": "RBAC role/rolebinding and Service Accounts",
+          "support": "RBAC ràng verb/resource/namespace cho subject; Pod có ServiceAccount identity.",
+          "limits": "Quyền cloud của workload cần kiểm theo provider riêng."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C01.L02.Q01",
+          "publication_id": "P14.C01.L02.Q01",
+          "question": "Pod đọc được ConfigMap. Có thể kết luận Pod cũng đọc được S3 không? Nêu ca âm least privilege.",
+          "answer": "Không. K8s RBAC và AWS IAM là hai chính sách. Kiểm role session thực và thử Pod bị từ chối PutObject hoặc prefix S3 ngoài phạm vi, đồng thời vẫn đọc object cần thiết."
+        }
+      ]
+    },
+    "P14.C01.L03": {
+      "claims": [
+        {
+          "anchor": "Một control chỉ đáng tin khi có chứng cứ nó đã chặn hành vi",
+          "sources": [
+            "W2-ASVS"
+          ],
+          "source_location": "ASVS 5.0.0, verification purpose",
+          "support": "ASVS nhấn mạnh yêu cầu có thể kiểm thử cho control ứng dụng.",
+          "limits": "Audit log là một nguồn quan sát có thể không đầy đủ."
+        },
+        {
+          "anchor": "Một ca âm thử `PutObject` vào prefix khác",
+          "sources": [
+            "AWS2"
+          ],
+          "source_location": "IAM policy evaluation, explicit deny and request context",
+          "support": "Phép thử yêu cầu action/resource ngoài phạm vi bị từ chối theo policy có hiệu lực.",
+          "limits": "Simulator hoặc log không thay request thật trên đúng identity."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C01.L03.Q01",
+          "publication_id": "P14.C01.L03.Q01",
+          "question": "PR thêm s3:* để sửa AccessDenied. Chứng cứ nào cần trước và sau khi cấp quyền?",
+          "answer": "Trước: request lỗi, identity/action/object và đường mạng. Sau: policy hẹp, request hợp lệ thành công, ca âm PutObject/prefix khác bị chặn, audit và thời điểm được ghi; không duyệt wildcard chỉ vì status hết lỗi."
+        }
+      ]
+    },
+    "P14.C02.L01": {
+      "claims": [
+        {
+          "anchor": "Secret có vòng đời gồm phát hành, phân phối, lưu trữ, sử dụng, xoay và thu hồi",
+          "sources": [
+            "W2-ANSVAULT",
+            "W2-KMS"
+          ],
+          "source_location": "Ansible Vault overview; KMS key lifecycle",
+          "support": "Hai nguồn mô tả lưu trữ/giải mã và quản lý lifecycle key; bài tổng hợp thành chuỗi vận hành.",
+          "limits": "Chuỗi không khẳng định mọi sản phẩm hỗ trợ dual credential."
+        },
+        {
+          "anchor": "Encryption at rest của state hoặc volume chỉ che một lớp lưu trữ",
+          "sources": [
+            "W2-ANSVAULT"
+          ],
+          "source_location": "Ansible Vault warning, data at rest only",
+          "support": "Vault chỉ bảo vệ at rest; plaintext phải dùng trong runtime.",
+          "limits": "Các kênh lộ runtime là phân tích threat model."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C02.L01.Q01",
+          "publication_id": "P14.C02.L01.Q01",
+          "question": "Đổi token A thành B trong CI nhưng container cũ vẫn chạy. Có thể kết luận rotation hoàn tất không?",
+          "answer": "Không. Xác định instance còn dùng A, rollout và kiểm B, revoke A ở backend rồi chạy ca âm A bị từ chối; ghi thời điểm và phạm vi nếu hệ không hỗ trợ hai credential."
+        }
+      ]
+    },
+    "P14.C02.L02": {
+      "claims": [
+        {
+          "anchor": "không thêm token, mật khẩu",
+          "sources": [
+            "OT11",
+            "WC1"
+          ],
+          "source_location": "OpenTelemetry sensitive data guidance; Trace Context privacy",
+          "support": "Telemetry và propagated context cần giới hạn dữ liệu nhạy cảm, lọc từ nguồn.",
+          "limits": "Không có phép lọc nào thu hồi bản sao đã gửi trước đó."
+        },
+        {
+          "anchor": "Terraform state có thể chứa giá trị nhạy cảm",
+          "sources": [
+            "TF9"
+          ],
+          "source_location": "Manage sensitive data, state",
+          "support": "Sensitive output không ngăn secret xuất hiện trong state/backends.",
+          "limits": "Phải xét quyền state cụ thể."
+        },
+        {
+          "anchor": "layer cũ trong image vẫn chứa byte",
+          "sources": [
+            "W2-OCILAYER",
+            "DD1"
+          ],
+          "source_location": "OCI layer changeset; Docker storage overview",
+          "support": "Layer cũ không bị xóa byte chỉ vì layer sau ghi whiteout/xóa.",
+          "limits": "Token và image trong bài là fixture giả định."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C02.L02.Q01",
+          "publication_id": "P14.C02.L02.Q01",
+          "question": "File .env đã COPY vào image rồi xóa bằng RUN ở layer sau. Container cuối không thấy file. Có thể giữ image không?",
+          "answer": "Không; layer cũ có thể còn byte. Dựng lại từ context sạch, thu hồi token, truy registry/cache và nơi image đã phân phối, kiểm bằng marker giả; không dùng secret thật."
+        }
+      ]
+    },
+    "P14.C02.L03": {
+      "claims": [
+        {
+          "anchor": "Mô hình envelope encryption phân biệt data key",
+          "sources": [
+            "W2-KMS"
+          ],
+          "source_location": "AWS KMS keys, key hierarchy and customer data keys",
+          "support": "KMS có customer data keys ở dạng plaintext/ciphertext cho ứng dụng được phép.",
+          "limits": "KMS key rotation không tự rotate token ứng dụng."
+        },
+        {
+          "anchor": "Pod identity chỉ đọc đúng đường đó",
+          "sources": [
+            "W2-SECRET",
+            "W2-SA"
+          ],
+          "source_location": "Kubernetes Secret good practices and Service Accounts",
+          "support": "Quyền đọc Secret cần giới hạn; workload identity phải đối chiếu SA/binding.",
+          "limits": "db/orders/v3 là đường giả định, không là API Kubernetes chính thức."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C02.L03.Q01",
+          "publication_id": "P14.C02.L03.Q01",
+          "question": "Backup còn byte mã hóa nhưng quyền decrypt/key đã mất. Có đạt phục hồi không?",
+          "answer": "Chưa. Cần key và quyền giải mã còn hữu dụng, thử restore trong môi trường tách biệt và kiểm dữ liệu; backup byte riêng không chứng minh RTO/RPO."
+        }
+      ]
+    },
+    "P14.C03.L01": {
+      "claims": [
+        {
+          "anchor": "Một commit ID không mô tả toàn bộ đầu vào build",
+          "sources": [
+            "W2-RBDEF",
+            "SL1"
+          ],
+          "source_location": "Reproducible Builds definition; SLSA provenance buildDefinition",
+          "support": "Build environment/dependencies ngoài source và provenance materials cần được xác định.",
+          "limits": "Không chứng minh gói đã pin là an toàn."
+        },
+        {
+          "anchor": "SBOM là bản kê các component theo một định dạng có cấu trúc",
+          "sources": [
+            "W2-SPDX"
+          ],
+          "source_location": "SPDX Specification 3.0.1, software package data model",
+          "support": "SPDX là đặc tả để biểu diễn thành phần/bản kê phần mềm.",
+          "limits": "Một SBOM cụ thể có thể thiếu component; không tự bảo đảm độ phủ."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C03.L01.Q01",
+          "publication_id": "P14.C03.L01.Q01",
+          "question": "Cùng commit c84 nhưng base tag stable chuyển D1→D2, digest image đổi. Scan và chữ ký của D1 có áp cho D2 không?",
+          "answer": "Không. Khóa base digest, xác định lại input/provenance/SBOM gắn với artifact D2 và chạy gate trên chính byte đó; scan xanh không chứng minh an toàn tuyệt đối."
+        }
+      ]
+    },
+    "P14.C03.L02": {
+      "claims": [
+        {
+          "anchor": "Provenance mô tả artifact được tạo bởi builder nào",
+          "sources": [
+            "SL1"
+          ],
+          "source_location": "SLSA v1.1 provenance, subject/buildDefinition/runDetails",
+          "support": "Schema ghi subject digest, builder, input và tham số build.",
+          "limits": "Builder/key bị chiếm có thể tạo attestation hợp lệ nhưng sai."
+        },
+        {
+          "anchor": "một bên so byte của hai build, bên kia chứng minh ai đã ký",
+          "sources": [
+            "W2-RBDEF",
+            "SL1"
+          ],
+          "source_location": "Reproducible Builds definition; SLSA attestation",
+          "support": "Tái lập so byte còn attestation/provenance ghi và có thể ký phát biểu về nguồn gốc.",
+          "limits": "Không bên nào chứng minh ứng dụng không có bug."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C03.L02.Q01",
+          "publication_id": "P14.C03.L02.Q01",
+          "question": "Provenance ký hợp lệ cho H84 nhưng tag prod trỏ H84b. Có thể deploy không?",
+          "answer": "Không. Subject digest không khớp artifact đích; dừng, kiểm registry/tag và builder, chạy gate trên đúng digest sẽ triển khai, không sửa bản ghi cho khớp tag."
+        }
+      ]
+    },
+    "P14.C03.L03": {
+      "claims": [
+        {
+          "anchor": "Registry trả manifest/index với digest",
+          "sources": [
+            "OCI5",
+            "OCI6",
+            "OCI7"
+          ],
+          "source_location": "OCI distribution/image manifest/index",
+          "support": "OCI định nghĩa manifest/index và truy xuất theo digest.",
+          "limits": "Pod thực tế phải được kiểm imageID; tag có thể di chuyển."
+        },
+        {
+          "anchor": "admission chỉ xét request tạo/cập nhật",
+          "sources": [
+            "W2-ADMIT"
+          ],
+          "source_location": "Admission Control, lifecycle of API request",
+          "support": "Admission xử lý API create/update trước lưu object, không tự kiểm mọi process cũ.",
+          "limits": "Policy engine cụ thể phải được kiểm riêng."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C03.L03.Q01",
+          "publication_id": "P14.C03.L03.Q01",
+          "question": "Deployment spec H84 nhưng còn Pod H83 Ready trong rollout. Có thể nói 100% request dùng H84 chưa?",
+          "answer": "Chưa. Kiểm Pod imageID, endpoint/traffic theo revision và request đại diện; admission cho spec mới không thay Pod cũ đang chạy."
+        }
+      ]
+    },
+    "P14.C04.L01": {
+      "claims": [
+        {
+          "anchor": "Pod Security Admission có thể áp mức baseline/restricted",
+          "sources": [
+            "W2-PSSA"
+          ],
+          "source_location": "Pod Security Admission, modes and namespace labels",
+          "support": "PSA hỗ trợ enforce/audit/warn theo policy level/version.",
+          "limits": "warn/audit không từ chối object; phải xem mode thực."
+        },
+        {
+          "anchor": "Admission webhook hoặc policy engine là dependency của control plane",
+          "sources": [
+            "W2-ADMIT"
+          ],
+          "source_location": "Dynamic admission control, failure policy and timeout",
+          "support": "Webhook timeout/failurePolicy ảnh hưởng xử lý API request.",
+          "limits": "Bài không giả định một policy engine cụ thể đã cài."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C04.L01.Q01",
+          "publication_id": "P14.C04.L01.Q01",
+          "question": "Pod privileged nhận warning nhưng vẫn được tạo. Chính sách đã chặn thành công chưa?",
+          "answer": "Chưa. Kiểm mode enforce, nhãn/version namespace, response, object và audit; warning đơn thuần không là denial."
+        }
+      ]
+    },
+    "P14.C04.L02": {
+      "claims": [
+        {
+          "anchor": "Role cho phép `get secrets` trong namespace",
+          "sources": [
+            "W2-RBAC",
+            "W2-SA"
+          ],
+          "source_location": "RBAC Role/Binding; ServiceAccounts",
+          "support": "SA là identity của Pod và RBAC điều khiển verb/resource trên API.",
+          "limits": "runAsNonRoot không thay quyền API của SA."
+        },
+        {
+          "anchor": "Security context còn kiểm capabilities",
+          "sources": [
+            "W2-PSSA",
+            "OCI2"
+          ],
+          "source_location": "Pod Security Admission/Standards; OCI runtime Linux config",
+          "support": "Pod/runtime config có controls về privilege/capabilities/seccomp.",
+          "limits": "Hiệu lực seccomp cụ thể phụ thuộc node/runtime/profile."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C04.L02.Q01",
+          "publication_id": "P14.C04.L02.Q01",
+          "question": "Pod non-root vẫn đọc được Secret. Đây có phải mâu thuẫn không?",
+          "answer": "Không. UID trong container khác quyền SA/RBAC hoặc Secret volume đã mount. Kiểm SA, automount, binding, volume, user process và ca âm list secrets."
+        }
+      ]
+    },
+    "P14.C04.L03": {
+      "claims": [
+        {
+          "anchor": "NetworkPolicy chọn Pod theo label",
+          "sources": [
+            "KU18"
+          ],
+          "source_location": "Kubernetes v1.34 Network Policies, selectors and CNI requirement",
+          "support": "Policy chọn Pod/traffic và cần network plugin hỗ trợ để có hiệu lực.",
+          "limits": "Không thay route, SG hoặc IAM."
+        },
+        {
+          "anchor": "IAM Allow không tạo route qua NAT/endpoint",
+          "sources": [
+            "AWS2",
+            "AWS4",
+            "AWS6"
+          ],
+          "source_location": "IAM evaluation; VPC route tables; S3 endpoint",
+          "support": "IAM authorization và VPC routing là các điều kiện riêng.",
+          "limits": "Sự cố AccessDenied/timeout trong bài là giả định, cần quan sát thực để phân loại."
+        }
+      ],
+      "qa": [
+        {
+          "id": "W2.P14.C04.L03.Q01",
+          "publication_id": "P14.C04.L03.Q01",
+          "question": "Pod Ready, DNS và TCP tới endpoint đã qua nhưng S3 trả AccessDenied. Mở SG 0.0.0.0/0 có chữa đúng nguyên nhân không?",
+          "answer": "Không. Kiểm role session, action/object, explicit Deny và resource policy; mở SG rộng không cấp IAM Allow và làm tăng bề mặt tấn công."
         }
       ]
     }

@@ -33,9 +33,11 @@ class ManuscriptContract(unittest.TestCase):
         self.assertEqual(len(self.manifest["lessons"]), 178)
         wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
         reviewed = len(wave2["lessons"])
+        fragment_reviewed = int("P14.C02.L02" in wave2["lessons"])
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
                          Counter({"migrated_draft": 136, "reviewed": reviewed,
-                                  "pending_authorship": 41 - reviewed, "migration_fragment": 1}))
+                                  "pending_authorship": 41 - reviewed + fragment_reviewed,
+                                  "migration_fragment": 1 - fragment_reviewed}))
         self.assertEqual(sum(len(ls) for _, chapters in build.published_lessons(self.tree, self.manifest)
                              for _, ls in chapters), 136 + reviewed)
 
