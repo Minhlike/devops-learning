@@ -40,9 +40,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P01/C01/L02.md",
       "sha256": "1526a056a4ce3ce797a10b12f2524bcb6edab5a4cf8445285d27a7e10db26e0d",
       "legacy_units": [
@@ -100,9 +100,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P01/C02/L01.md",
       "sha256": "1694f9818d6f76550d23750675ee276019589f5464217361fecde9391fade6ea",
       "legacy_units": [
@@ -134,9 +134,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P01/C02/L02.md",
       "sha256": "a8ca6fc5c273e8e1769cf439dbba51eda8fe4115b4d6a91ef1490ce1a40f509d",
       "legacy_units": [
@@ -176,9 +176,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P01/C02/L03.md",
       "sha256": "49dc1d7854db5207111dbc84c8e1876a7b46fab7b1f29662483ee0f0853c3a3b",
       "legacy_units": [
@@ -205,9 +205,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C01/L01.md",
       "sha256": "916e200163677b4db0c2299376021473da82878dafbcb3d51431762bcbb4e375",
       "legacy_units": [
@@ -232,9 +232,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C01/L02.md",
       "sha256": "73f72d148a3d5bd7c744724887f3d24c71fbed9aba51123bd6f57fe497959cf5",
       "legacy_units": [
@@ -245,6 +245,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "R7",
         "R8"
       ],
       "qa": [
@@ -265,9 +266,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C01/L03.md",
       "sha256": "1e98f4d55cd3fe4e3dadfdfba35dbe816ccc2d4c3ac48ed61678938617bf2a1c",
       "legacy_units": [
@@ -302,9 +303,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C02/L01.md",
       "sha256": "118eddd404b9bb867b2bb0631969499e352a6ee22fbee45fe35e713ece1c5b87",
       "legacy_units": [
@@ -315,7 +316,9 @@
       ],
       "examples": [],
       "source_ids": [
-        "R4"
+        "R1",
+        "R4",
+        "R7"
       ],
       "qa": []
     },
@@ -328,9 +331,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C02/L02.md",
       "sha256": "b833a576838c183ff3c5f9bc403959912300745fad16d32df3d36330e77c136b",
       "legacy_units": [
@@ -393,9 +396,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C03/L01.md",
       "sha256": "c8ac765404fa036c221bf05ef84d071758c330cc37ea03c592d170a9a68380e9",
       "legacy_units": [
@@ -423,9 +426,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C03/L02.md",
       "sha256": "1cd96890c57dce9aa81e678a57ba77979c3bbcc75744668f7e3bf1b3575c1a5f",
       "legacy_units": [
@@ -488,9 +491,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C03/L04.md",
       "sha256": "3eb64e3363d82eae77b5e57b43c79c1278f39664edaf5725a16d1ede8eb7ebd0",
       "legacy_units": [
@@ -528,9 +531,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C04/L01.md",
       "sha256": "b4f26934037cb300ab0d884c5b62a0a74445a83381d8c5852d51e77270a1951b",
       "legacy_units": [
@@ -560,9 +563,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C04/L02.md",
       "sha256": "bf39135fa89a2b1bc973b4177b826491caac27b794477a695fd43d0f01103d2b",
       "legacy_units": [
@@ -599,9 +602,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_editorial_evidence",
+      "editorial_override": true,
       "content": "manuscript/P02/C04/L03.md",
       "sha256": "647e29f85173992950041f58517b4071d40522402c2a6f72f0593bd96ab957fc",
       "legacy_units": [
@@ -611,7 +614,9 @@
       ],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "S5"
+      ],
       "qa": [
         {
           "id": "C3.3",
@@ -4997,9 +5002,9 @@
         ],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C01/L01.md",
       "sha256": "0a45adf06adfc17f8cc4adb3ffd77aa27aa5e1236690cf7a387791317c6c92ce",
       "legacy_units": [
@@ -5019,9 +5024,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C01/L02.md",
       "sha256": "c5e28bea8d073d167536a5b7c7e6f76cdda2b9e06e79b7f8d9c2dbf4b99a7d0f",
       "legacy_units": [
@@ -5041,9 +5046,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C01/L03.md",
       "sha256": "73776f7d0aeffebb9e3171466867b2ac7e3c882197b69f68eaf7882298f16612",
       "legacy_units": [
@@ -5084,9 +5089,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C02/L01.md",
       "sha256": "cdd4071364ebe5afd3171794e82ed974346657bb8bf4a413bfce04dc5fb88b78",
       "legacy_units": [
@@ -5106,9 +5111,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C02/L02.md",
       "sha256": "3bec984de9d10b529d3d0bb784fbd6c4bd162d0538d6c666545a65a543949c8a",
       "legacy_units": [
@@ -5128,9 +5133,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C02/L03.md",
       "sha256": "fff0d1f7b0a849ef7867429de06386bc5dd0e0f7eed25cbecacd11ca1c5adae9",
       "legacy_units": [
@@ -5171,9 +5176,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C03/L01.md",
       "sha256": "83e9b2cbf1e608257a552cb5c88e32c3364d0e9b4639f498d374189c913a4a15",
       "legacy_units": [
@@ -5193,9 +5198,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C03/L02.md",
       "sha256": "a8e0882d3ae41924ace3edeff61dd930c7726b34cf41ea596a36294fea26a9d9",
       "legacy_units": [
@@ -5215,9 +5220,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C03/L03.md",
       "sha256": "33507001b52310d29693f46f02bebe8cf6403ad4e8bc24343ed39fa940102b9d",
       "legacy_units": [
@@ -5258,9 +5263,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C04/L01.md",
       "sha256": "f8561eb2191041c7159c5b5782838d626efcb759020ac05ff2229f38b9c04690",
       "legacy_units": [
@@ -5280,9 +5285,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C04/L02.md",
       "sha256": "7e0c8fe34f78c922d0299294c3ea1d470b948dd7a86cd39df89d4e7f718b26db",
       "legacy_units": [
@@ -5302,9 +5307,9 @@
         "helpful": [],
         "extension": []
       },
-      "status": "migrated_draft",
-      "verification": "reviewed_baseline_migration",
-      "editorial_override": false,
+      "status": "reviewed",
+      "verification": "reviewed_p13_publication_contract",
+      "editorial_override": true,
       "content": "manuscript/P13/C04/L03.md",
       "sha256": "183a0bd220cba5bdc0e272fb92f95a78fdc260993e0482230f4d767b1a9eb502",
       "legacy_units": [

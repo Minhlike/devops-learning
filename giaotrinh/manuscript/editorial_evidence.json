@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-20",
+  "purpose": "Per-lesson semantic review outside PDF render path; source IDs resolve through source_map and wave2_evidence",
+  "lessons": {
+    "P01.C01.L02": {
+      "content_sha256": "1526a056a4ce3ce797a10b12f2524bcb6edab5a4cf8445285d27a7e10db26e0d",
+      "editorial_decision": "Ví dụ giả định tính đúng 40+60=100 ms và 20+60=80 ms; tách latency, CPU time và throughput. Không diễn giải như số đo thực.",
+      "checks": [
+        {
+          "anchor": "Nếu chỉ giảm thời gian CPU một nửa",
+          "kind": "derived",
+          "sources": [],
+          "support": "40/2 + 60 = 80 ms theo dữ kiện của ví dụ.",
+          "limits": "Không dự đoán hàng đợi hoặc tải thực."
+        },
+        {
+          "anchor": "Thông lượng là số công việc hoàn thành",
+          "kind": "inference",
+          "sources": [],
+          "support": "Định nghĩa và suy luận định tính từ đơn vị công việc/thời gian và thời gian một yêu cầu.",
+          "limits": "Không có mô hình định lượng của hàng đợi."
+        }
+      ]
+    },
+    "P01.C02.L01": {
+      "content_sha256": "1694f9818d6f76550d23750675ee276019589f5464217361fecde9391fade6ea",
+      "editorial_decision": "Phân biệt source, executable và process; ví dụ build/deploy nêu rõ giới hạn của artifact so với dịch vụ đang chạy.",
+      "checks": [
+        {
+          "anchor": "một tiến trình có thể thay chương trình đang thực thi mà vẫn giữ định danh tiến trình",
+          "kind": "documented",
+          "sources": [
+            "R2"
+          ],
+          "source_location": "execve(2), DESCRIPTION và Effect on process attributes",
+          "support": "execve thay process image của tiến trình gọi, không tạo PID mới.",
+          "limits": "Thuộc tính tiến trình có ngoại lệ được liệt kê trong manual."
+        },
+        {
+          "anchor": "Build xác nhận một số tính chất của artifact",
+          "kind": "inference",
+          "sources": [],
+          "support": "Build kiểm tra artifact ở thời điểm tạo; readiness là trạng thái của lần chạy cụ thể.",
+          "limits": "Mức đảm bảo tùy phép build/test và cơ chế triển khai."
+        }
+      ]
+    },
+    "P01.C02.L02": {
+      "content_sha256": "a8ca6fc5c273e8e1769cf439dbba51eda8fe4115b4d6a91ef1490ce1a40f509d",
+      "editorial_decision": "Đối chiếu giá trị fork, COW Linux, đường thành công/lỗi execve, trạng thái waitpid và cảnh báo Python đa luồng; ví dụ đã được reviewer trước tái hiện trên Linux.",
+      "checks": [
+        {
+          "anchor": "Tiến trình cha nhận PID của con, còn con nhận số 0",
+          "kind": "documented",
+          "sources": [
+            "R1"
+          ],
+          "source_location": "fork(2), RETURN VALUE",
+          "support": "Giá trị cha là PID con, con là 0, lỗi là -1 ở giao diện C.",
+          "limits": "Không bảo đảm lịch chạy cha/con."
+        },
+        {
+          "anchor": "triển khai Linux dùng các trang copy-on-write",
+          "kind": "documented",
+          "sources": [
+            "R1"
+          ],
+          "source_location": "fork(2), NOTES",
+          "support": "Linux fork dùng copy-on-write pages.",
+          "limits": "Chi tiết triển khai Linux, không phải đặc tả chung."
+        },
+        {
+          "anchor": "Nếu lỗi, lời gọi trả về `-1`, đặt `errno`",
+          "kind": "documented",
+          "sources": [
+            "R2"
+          ],
+          "source_location": "execve(2), RETURN VALUE",
+          "support": "Thành công không trở về; thất bại trả -1 và đặt errno.",
+          "limits": "Đây là giao diện C; Python biểu diễn bằng OSError."
+        },
+        {
+          "anchor": "cha nhận mã ấy qua `waitpid`",
+          "kind": "documented",
+          "sources": [
+            "R5"
+          ],
+          "source_location": "wait(2), DESCRIPTION và WEXITSTATUS",
+          "support": "Cha lấy trạng thái kết thúc của con bằng waitpid.",
+          "limits": "127 do ví dụ tự chọn, không phải mã mặc định của execve."
+        },
+        {
+          "anchor": "`os.fork()` có thể phát `DeprecationWarning`",
+          "kind": "documented",
+          "sources": [
+            "P1"
+          ],
+          "source_location": "Python 3.12 os.fork, Changed in version 3.12",
+          "support": "Python cảnh báo nếu phát hiện tiến trình đa luồng tại fork.",
+          "limits": "Khả năng phát hiện không bao trùm mọi tình huống đa luồng."
+        }
+      ]
+    },
+    "P01.C02.L03": {
+      "content_sha256": "49dc1d7854db5207111dbc84c8e1876a7b46fab7b1f29662483ee0f0853c3a3b",
+      "editorial_decision": "Phân biệt descriptor và open file description; hệ quả rename/unlink cho log được phát biểu theo điều kiện tiến trình còn giữ descriptor.",
+      "checks": [
+        {
+          "anchor": "Nó tham chiếu tới một open file description do nhân quản lý",
+          "kind": "documented",
+          "sources": [
+            "R3"
+          ],
+          "source_location": "open(2), DESCRIPTION và Open file descriptions",
+          "support": "Descriptor là chỉ số trong bảng của tiến trình, tham chiếu tới open file description với offset và cờ trạng thái.",
+          "limits": "Hai lần open tạo hai description khác nhau; dup/fork có thể chia sẻ một description."
+        },
+        {
+          "anchor": "descriptor đang mở vẫn có thể trỏ tới đối tượng cũ",
+          "kind": "documented",
+          "sources": [
+            "R3"
+          ],
+          "source_location": "open(2), DESCRIPTION, path removal/change",
+          "support": "Thay đổi đường dẫn sau open không đổi tham chiếu của descriptor.",
+          "limits": "Việc giải phóng dung lượng còn phụ thuộc hard link, descriptor khác và filesystem."
+        }
+      ]
+    },
+    "P02.C01.L01": {
+      "content_sha256": "916e200163677b4db0c2299376021473da82878dafbcb3d51431762bcbb4e375",
+      "editorial_decision": "Phân biệt ranh giới syscall, nhân và systemd; EACCES/ENOENT/ENOTDIR không bị suy quá mức từ thông báo ứng dụng.",
+      "checks": [
+        {
+          "anchor": "nhân phân giải đường dẫn, kiểm tra quyền",
+          "kind": "documented",
+          "sources": [
+            "R7"
+          ],
+          "source_location": "path_resolution(7): Step 2",
+          "support": "path components are looked up with directory search permission",
+          "limits": "Applications may translate kernel errors"
+        }
+      ]
+    },
+    "P02.C01.L02": {
+      "content_sha256": "73f72d148a3d5bd7c744724887f3d24c71fbed9aba51123bd6f57fe497959cf5",
+      "editorial_decision": "Ví dụ mode 0644/0700 giả định đúng quan hệ tra cứu đường dẫn; bổ sung nguồn cho quyền tìm kiếm thư mục.",
+      "checks": [
+        {
+          "anchor": "Một hard link khác có thể trỏ tới cùng inode",
+          "kind": "documented",
+          "sources": [
+            "R8"
+          ],
+          "source_location": "inode(7): Inode number and Link count",
+          "support": "hard links are names referring to one inode",
+          "limits": "Cannot normally cross filesystems"
+        },
+        {
+          "anchor": "nó cần quyền tìm kiếm trên từng thư mục cha",
+          "kind": "documented",
+          "sources": [
+            "R7"
+          ],
+          "source_location": "path_resolution(7), Step 2 and Permissions",
+          "support": "Tra cứu thành phần trung gian đòi quyền search; thiếu quyền trả EACCES.",
+          "limits": "ACL, capability và mount policy có thể đổi kết quả."
+        }
+      ]
+    },
+    "P02.C01.L03": {
+      "content_sha256": "1e98f4d55cd3fe4e3dadfdfba35dbe816ccc2d4c3ac48ed61678938617bf2a1c",
+      "editorial_decision": "Page cache, dirty writeback và fsync được tách khỏi lời hứa sống sót mất điện; nêu đúng nhu cầu fsync thư mục khi tạo tên.",
+      "checks": [
+        {
+          "anchor": "Đọc một tệp thường đi qua page cache",
+          "kind": "documented",
+          "sources": [
+            "K2"
+          ],
+          "source_location": "Concepts overview: Page cache",
+          "support": "file reads populate page cache for subsequent reads",
+          "limits": "Direct I/O and other paths are exceptions"
+        },
+        {
+          "anchor": "`fsync` yêu cầu đồng bộ dữ liệu cùng metadata của tệp",
+          "kind": "documented",
+          "sources": [
+            "R6"
+          ],
+          "source_location": "fsync(2): DESCRIPTION",
+          "support": "fsync flushes modified file data and associated metadata",
+          "limits": "Directory entry may require separate directory fsync"
+        }
+      ]
+    },
+    "P02.C02.L01": {
+      "content_sha256": "118eddd404b9bb867b2bb0631969499e352a6ee22fbee45fe35e713ece1c5b87",
+      "editorial_decision": "Phân biệt kiểm quyền với tầm nhìn namespace; lỗi fork do giới hạn được nêu như điều kiện chứ không như kết quả cố định.",
+      "checks": [
+        {
+          "anchor": "Một namespace có thể cho tiến trình một góc nhìn riêng",
+          "kind": "documented",
+          "sources": [
+            "R4"
+          ],
+          "source_location": "namespaces(7): DESCRIPTION",
+          "support": "namespace wraps global resources to present isolated instances",
+          "limits": "Does not itself prove security isolation"
+        },
+        {
+          "anchor": "Một lần tạo tiến trình con có thể thất bại",
+          "kind": "documented",
+          "sources": [
+            "R1"
+          ],
+          "source_location": "fork(2), ERRORS",
+          "support": "fork có thể thất bại do giới hạn tài nguyên hoặc tác vụ.",
+          "limits": "Mã lỗi cụ thể phụ thuộc giới hạn và thời điểm."
+        },
+        {
+          "anchor": "Có quyền đọc một đường dẫn không đồng nghĩa có quyền thực thi tệp",
+          "kind": "documented",
+          "sources": [
+            "R7"
+          ],
+          "source_location": "path_resolution(7), Permissions",
+          "support": "Bit đọc và thực thi/tìm kiếm có nghĩa khác nhau theo loại đối tượng.",
+          "limits": "Quyền hiệu lực có thể chịu ACL hoặc capability."
+        }
+      ]
+    },
+    "P02.C02.L02": {
+      "content_sha256": "b833a576838c183ff3c5f9bc403959912300745fad16d32df3d36330e77c136b",
+      "editorial_decision": "Ví dụ tệp 0640 và thư mục 0700 cho thấy điểm chặn là thành phần cha; chỉ dẫn sửa theo quyền tối thiểu.",
+      "checks": [
+        {
+          "anchor": "trên thư mục, bit `x` là quyền tìm kiếm/đi qua",
+          "kind": "documented",
+          "sources": [
+            "R7"
+          ],
+          "source_location": "path_resolution(7): Permissions",
+          "support": "execute bit on directory grants search permission",
+          "limits": "ACL and further policies may apply"
+        }
+      ]
+    },
+    "P02.C03.L01": {
+      "content_sha256": "c8ac765404fa036c221bf05ef84d071758c330cc37ea03c592d170a9a68380e9",
+      "editorial_decision": "Phân rã latency thành CPU, chờ lịch và chờ phụ thuộc; thuật toán EEVDF chỉ nêu theo phiên bản, không khái quát quá mức.",
+      "checks": [
+        {
+          "anchor": "Tài liệu Linux mô tả quá trình chuyển từ CFS sang EEVDF",
+          "kind": "documented",
+          "sources": [
+            "K1"
+          ],
+          "source_location": "EEVDF Scheduler: introduction",
+          "support": "kernel began transition to EEVDF in 6.6, away from CFS",
+          "limits": "Scheduler details vary by kernel release"
+        }
+      ]
+    },
+    "P02.C03.L02": {
+      "content_sha256": "1cd96890c57dce9aa81e678a57ba77979c3bbcc75744668f7e3bf1b3575c1a5f",
+      "editorial_decision": "Địa chỉ ảo, cấp trang theo nhu cầu và page fault được phân biệt với lỗi truy cập; không đồng nhất virtual size với RAM.",
+      "checks": [
+        {
+          "anchor": "vùng ánh xạ ẩn danh có thể được tạo trước",
+          "kind": "documented",
+          "sources": [
+            "K2"
+          ],
+          "source_location": "Concepts overview: Anonymous Memory",
+          "support": "mapping defines virtual area before regular physical page allocation on write",
+          "limits": "Not all mappings or access patterns"
+        }
+      ]
+    },
+    "P02.C03.L04": {
+      "content_sha256": "3eb64e3363d82eae77b5e57b43c79c1278f39664edaf5725a16d1ede8eb7ebd0",
+      "editorial_decision": "Bảng số liệu giả định tính đúng 0,30/0,32 lõi và PSI 2%/30%; kết luận chỉ ưu tiên điều tra I/O, không khẳng định ổ hỏng.",
+      "checks": [
+        {
+          "anchor": "`nr_throttled` không tăng",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Control Group v2: cpu.stat",
+          "support": "nr_throttled counts throttled CPU periods",
+          "limits": "Only measured cgroup and interval"
+        },
+        {
+          "anchor": "không có sự kiện `high` hay `oom`",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Control Group v2: memory.events",
+          "support": "high and oom counters record relevant memory events",
+          "limits": "No exclusion of host or ancestor pressure"
+        },
+        {
+          "anchor": "có ít nhất một tác vụ trong nhóm bị nghẽn I/O",
+          "kind": "documented",
+          "sources": [
+            "K4"
+          ],
+          "source_location": "PSI: Pressure interface",
+          "support": "some total records microseconds with at least one stalled task",
+          "limits": "Does not attribute to request or device"
+        }
+      ]
+    },
+    "P02.C04.L01": {
+      "content_sha256": "b4f26934037cb300ab0d884c5b62a0a74445a83381d8c5852d51e77270a1951b",
+      "editorial_decision": "Ranh giới tiến trình và readiness được giữ; After/Wants/Requires và hai network target được phân biệt.",
+      "checks": [
+        {
+          "anchor": "`After=network.target` trong unit chỉ đặt thứ tự",
+          "kind": "documented",
+          "sources": [
+            "S3"
+          ],
+          "source_location": "systemd.unit: After=, Wants=, Requires=",
+          "support": "ordering and requirement dependencies are independent; After does not pull in unit",
+          "limits": "Ordering applies when both jobs are scheduled"
+        },
+        {
+          "anchor": "`network.target` là mốc thụ động",
+          "kind": "documented",
+          "sources": [
+            "S4"
+          ],
+          "source_location": "systemd.special: network.target and network-online.target",
+          "support": "network.target is passive and does not ensure completed IP configuration; online target is pulled by consumers",
+          "limits": "Online readiness depends on network manager, not remote service"
+        }
+      ]
+    },
+    "P02.C04.L02": {
+      "content_sha256": "bf39135fa89a2b1bc973b4177b826491caac27b794477a695fd43d0f01103d2b",
+      "editorial_decision": "Type=exec, user/group, restart và readiness được giải thích theo đường lỗi; không coi active là healthcheck.",
+      "checks": [
+        {
+          "anchor": "`Type=exec` khiến thao tác khởi động chờ tới khi thực thi được binary",
+          "kind": "documented",
+          "sources": [
+            "S1"
+          ],
+          "source_location": "systemd.service: Type=exec",
+          "support": "start waits until service binary has executed and reports setup failures",
+          "limits": "Does not signal application readiness"
+        },
+        {
+          "anchor": "`Restart=on-failure` yêu cầu thử chạy lại",
+          "kind": "documented",
+          "sources": [
+            "S1"
+          ],
+          "source_location": "systemd.service: Restart=",
+          "support": "on-failure restarts after nonzero exit or abnormal termination",
+          "limits": "Rate limiting and persistent failures remain"
+        },
+        {
+          "anchor": "`User=atlas` và `Group=atlas`",
+          "kind": "documented",
+          "sources": [
+            "S2"
+          ],
+          "source_location": "systemd.exec: User= and Group=",
+          "support": "these options set Unix credentials for executed processes",
+          "limits": "Account must exist on target host"
+        }
+      ]
+    },
+    "P02.C04.L03": {
+      "content_sha256": "647e29f85173992950041f58517b4071d40522402c2a6f72f0593bd96ab957fc",
+      "editorial_decision": "Runbook theo thứ tự artifact-process-socket-request; systemd-analyze verify chỉ được mô tả như kiểm tra cú pháp/một phần tham chiếu.",
+      "checks": [
+        {
+          "anchor": "Unit có thể được kiểm tra cú pháp và một phần tham chiếu bằng `systemd-analyze verify`",
+          "kind": "documented",
+          "sources": [
+            "S5"
+          ],
+          "source_location": "systemd-analyze(1), verify FILE",
+          "support": "verify nạp unit và cảnh báo chỉ thị sai, dependency/command thiếu.",
+          "limits": "Cảnh báo không chứng minh dịch vụ chạy hay sẵn sàng; mã thoát mặc định không đủ để xét mọi warning."
+        }
+      ]
+    }
+  }
+}

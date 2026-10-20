@@ -32,6 +32,7 @@ class ManuscriptContract(unittest.TestCase):
         self.assertEqual(sum(len(p["chapters"]) for p in self.tree["parts"]), 58)
         self.assertEqual(len(self.manifest["lessons"]), 178)
         wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+        editorial = json.loads((ROOT / "manuscript" / "editorial_evidence.json").read_text(encoding="utf-8"))
         reviewed = len(wave2["lessons"])
         synthesis_ids = {
             "P06.C02.L02", "P06.C03.L03", "P06.C04.L02", "P08.C02.L02",
@@ -39,11 +40,18 @@ class ManuscriptContract(unittest.TestCase):
             "P11.C06.L01", "P12.C01.L01", "P12.C04.L03",
         }
         self.assertTrue(synthesis_ids <= set(wave2["lessons"]))
+        p13_reviewed = {lid for lid, row in self.manifest["lessons"].items()
+                        if lid.startswith("P13.") and row["status"] == "reviewed" and
+                        row["verification"] == "reviewed_p13_publication_contract"}
+        self.assertEqual(len(p13_reviewed), 12)
+        reviewed_ids = set(wave2["lessons"]) | p13_reviewed | set(editorial["lessons"])
+        self.assertEqual({lid for lid, row in self.manifest["lessons"].items()
+                          if row["status"] == "reviewed"}, reviewed_ids)
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
-                         Counter({"migrated_draft": 136 - len(synthesis_ids),
-                                  "reviewed": reviewed}))
+                         Counter({"migrated_draft": 178 - len(reviewed_ids),
+                                  "reviewed": len(reviewed_ids)}))
         self.assertEqual(sum(len(ls) for _, chapters in build.published_lessons(self.tree, self.manifest)
-                             for _, ls in chapters), 136 - len(synthesis_ids) + reviewed)
+                             for _, ls in chapters), 178)
 
     def test_legacy_sections_and_split_paragraphs_are_preserved(self):
         migration = [r for r in ledger("legacy_migration.csv") if r["action"] != "move_rekey_after_review"]
@@ -164,6 +172,26 @@ class ManuscriptContract(unittest.TestCase):
         ledger["sources"]["W2-CLK"]["url"] = "https://example.invalid/changed"
         with self.assertRaisesRegex(ValueError, "đổi ID hoặc URL khóa"):
             build.check_wave2_evidence(self.manifest, ledger)
+
+    def test_editorial_review_cannot_outlive_or_misattribute_evidence(self):
+        review = json.loads((ROOT / "manuscript" / "editorial_evidence.json").read_text(
+            encoding="utf-8"))
+        broken = copy.deepcopy(review)
+        del broken["lessons"]["P01.C02.L03"]
+        with self.assertRaisesRegex(ValueError, "thiếu biên bản biên tập"):
+            build.check_editorial_evidence(self.manifest, broken)
+        broken = copy.deepcopy(review)
+        broken["lessons"]["P01.C02.L03"]["checks"][0]["anchor"] = "not in manuscript"
+        with self.assertRaisesRegex(ValueError, "thiếu neo hoặc biên"):
+            build.check_editorial_evidence(self.manifest, broken)
+        broken = copy.deepcopy(review)
+        broken["lessons"]["P01.C02.L03"]["checks"][0]["sources"] = ["R1"]
+        with self.assertRaisesRegex(ValueError, "Nguồn bài không khớp"):
+            build.check_editorial_evidence(self.manifest, broken)
+        broken_manifest = copy.deepcopy(self.manifest)
+        broken_manifest["lessons"]["P03.C01.L01"]["status"] = "reviewed"
+        with self.assertRaisesRegex(ValueError, "thiếu hợp đồng kiểm chứng"):
+            build.load_manuscript(self.tree, broken_manifest)
 
     def test_bookmark_same_count_but_wrong_destination_fails(self):
         with pymupdf.open(build.OUTPUT) as doc:

@@ -20,6 +20,7 @@
     "S2": "https://www.freedesktop.org/software/systemd/man/257/systemd.exec.html",
     "S3": "https://www.freedesktop.org/software/systemd/man/257/systemd.unit.html",
     "S4": "https://www.freedesktop.org/software/systemd/man/257/systemd.special.html",
+    "S5": "https://www.freedesktop.org/software/systemd/man/257/systemd-analyze.html",
     "N1": "https://www.rfc-editor.org/rfc/rfc5737.html",
     "N2": "https://www.rfc-editor.org/rfc/rfc4632.html",
     "N3": "https://www.rfc-editor.org/rfc/rfc826.html",

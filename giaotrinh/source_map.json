@@ -20,6 +20,7 @@
     "S2": {"type": "official upstream manual", "version": "systemd 257.13", "url": "https://www.freedesktop.org/software/systemd/man/257/systemd.exec.html"},
     "S3": {"type": "official upstream manual", "version": "systemd 257.13", "url": "https://www.freedesktop.org/software/systemd/man/257/systemd.unit.html"},
     "S4": {"type": "official upstream manual", "version": "systemd 257.13", "url": "https://www.freedesktop.org/software/systemd/man/257/systemd.special.html"},
+    "S5": {"type": "official upstream manual", "version": "systemd 257.13", "url": "https://www.freedesktop.org/software/systemd/man/257/systemd-analyze.html"},
     "N1": {"type": "IETF RFC", "version": "RFC 5737 (2010)", "url": "https://www.rfc-editor.org/rfc/rfc5737.html"},
     "N2": {"type": "IETF RFC", "version": "RFC 4632 (2006)", "url": "https://www.rfc-editor.org/rfc/rfc4632.html"},
     "N3": {"type": "IETF RFC", "version": "RFC 826 (1982)", "url": "https://www.rfc-editor.org/rfc/rfc826.html"},

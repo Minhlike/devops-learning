@@ -465,6 +465,13 @@ def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> t
             raise ValueError(f"Metadata parent hoặc tiên quyết sai: {lid}")
         if row["status"] not in ("migrated_draft", "migration_fragment", "pending_authorship", "reviewed"):
             raise ValueError(f"Trạng thái bài sai: {lid}")
+        if row["status"] == "reviewed" and row["verification"] not in (
+            "source_reviewed_wave2", "reviewed_p13_publication_contract",
+            "reviewed_editorial_evidence",
+        ):
+            raise ValueError(f"Bài được đánh dấu reviewed nhưng thiếu hợp đồng kiểm chứng: {lid}")
+        if row["verification"] == "reviewed_p13_publication_contract" and not lid.startswith("P13."):
+            raise ValueError(f"Hợp đồng Phần XIII gắn sai bài: {lid}")
         if row["content"]:
             path = (ROOT / row["content"]).resolve()
             if not path.is_relative_to(ROOT / "manuscript") or not path.is_file():
@@ -478,6 +485,7 @@ def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> t
             raise ValueError(f"Bài hoàn thành nhưng thiếu nội dung: {lid}")
     check_migration_evidence(manifest)
     check_wave2_evidence(manifest)
+    check_editorial_evidence(manifest)
     return tree, manifest
 
 
@@ -559,6 +567,51 @@ def check_wave2_evidence(manifest: dict, ledger: dict | None = None) -> None:
     for lid, row in manifest["lessons"].items():
         if row["verification"] == "source_reviewed_wave2" and lid not in ledger["lessons"]:
             raise ValueError(f"Bài Đợt 2 thiếu ledger: {lid}")
+
+
+def check_editorial_evidence(manifest: dict, ledger: dict | None = None) -> None:
+    """Require an anchored, versioned review before graduating inherited prose."""
+    if ledger is None:
+        ledger = json.loads((ROOT / "manuscript" / "editorial_evidence.json").read_text(
+            encoding="utf-8"))
+    if ledger.get("schema_version") != 1 or not ledger.get("checked_on"):
+        raise ValueError("Biên bản biên tập thiếu phiên bản hoặc ngày kiểm")
+    old = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))["sources"]
+    wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(
+        encoding="utf-8"))["sources"]
+    sources = old | wave2
+    for lid, review in ledger.get("lessons", {}).items():
+        if lid not in manifest["lessons"]:
+            raise ValueError(f"Biên bản biên tập trỏ ngoài cây: {lid}")
+        row = manifest["lessons"][lid]
+        if row["status"] != "reviewed" or row["verification"] != "reviewed_editorial_evidence":
+            raise ValueError(f"Bài biên tập chưa có trạng thái kiểm chứng: {lid}")
+        if review.get("content_sha256") != row["sha256"]:
+            raise ValueError(f"Biên bản biên tập không khớp nội dung: {lid}")
+        body = (ROOT / row["content"]).read_text(encoding="utf-8")
+        checks = review.get("checks")
+        if not isinstance(checks, list) or not checks or not review.get("editorial_decision"):
+            raise ValueError(f"Biên bản biên tập thiếu đánh giá: {lid}")
+        used = set()
+        for check in checks:
+            if check.get("anchor") not in body or not all(
+                check.get(key) for key in ("kind", "support", "limits")):
+                raise ValueError(f"Biên bản biên tập thiếu neo hoặc biên: {lid}")
+            cited = check.get("sources", [])
+            if check["kind"] == "documented" and not cited:
+                raise ValueError(f"Claim tài liệu thiếu nguồn: {lid}")
+            if check["kind"] not in ("documented", "derived", "inference"):
+                raise ValueError(f"Loại bằng chứng không hợp lệ: {lid}")
+            if any(sid not in sources for sid in cited):
+                raise ValueError(f"Biên bản biên tập dùng nguồn không khai báo: {lid}")
+            if cited and not check.get("source_location"):
+                raise ValueError(f"Biên bản biên tập thiếu vị trí nguồn: {lid}")
+            used.update(cited)
+        if used != set(row["source_ids"]):
+            raise ValueError(f"Nguồn bài không khớp biên bản biên tập: {lid}")
+    for lid, row in manifest["lessons"].items():
+        if row["verification"] == "reviewed_editorial_evidence" and lid not in ledger.get("lessons", {}):
+            raise ValueError(f"Bài đã duyệt thiếu biên bản biên tập: {lid}")
 
 
 def published_lessons(tree: dict, manifest: dict):
