@@ -17,7 +17,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
-    BaseDocTemplate, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
+    BaseDocTemplate, CondPageBreak, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
     Preformatted, Spacer, LongTable, TableStyle, KeepTogether,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
@@ -605,7 +605,11 @@ def build() -> None:
         story.append(Paragraph(paragraph_markup(part["mental_model"]), styles["part_intro"]))
         story.append(PartPlate(part, chapters, styles))
         story.append(PageBreak())
-        for chapter, lessons in chapters:
+        for chapter_index, (chapter, lessons) in enumerate(chapters):
+            if chapter_index:
+                # Keep a chapter heading with enough text while avoiding a
+                # near-empty page just for the preceding chapter's last task.
+                story.append(CondPageBreak(280))
             story.append(Heading(f"Chương {chapter['id']} — {chapter['title']}", 2, chapter["id"], styles))
             story.append(Paragraph(paragraph_markup(chapter["objective"]), styles["body"]))
             for lesson in lessons:
@@ -617,7 +621,7 @@ def build() -> None:
                         continue  # Reviewed P13 questions are already inside the lesson.
                     story.append(Paragraph(paragraph_markup(f"Bài tập {qa['publication_id']}"), styles["exercise"]))
                     story.append(Paragraph(paragraph_markup(qa["question"]), styles["body"]))
-            story.append(PageBreak())
+        story.append(PageBreak())
     story.append(Heading("Lời giải", 1, "answers", styles, include_in_toc=False))
     for part, chapters in publication:
         for chapter, lessons in chapters:
@@ -701,6 +705,9 @@ def audit_document(doc: pymupdf.Document) -> None:
     for level, title, page in toc_entries[:len(expected)]:
         if page < 3 or page > len(doc) or title not in doc[page - 1].get_text():
             raise RuntimeError(f"Bookmark trỏ sai trang: {title} -> {page}")
+    for index, (level, title, page) in enumerate(toc_entries[:len(expected) - 1]):
+        if level == 2 and toc_entries[index + 1][2] != page:
+            raise RuntimeError(f"Tiêu đề Chương bị tách khỏi Bài đầu: {title}")
     issues = source_free_pdf_issues(doc)
     if issues:
         raise RuntimeError(f"Nguồn tham khảo lọt vào PDF: {issues}")

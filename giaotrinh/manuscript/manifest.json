@@ -236,7 +236,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P02/C01/L02.md",
-      "sha256": "abd740fa13d3ff05c5498dd27ed31ca93972cbb68f25208ed2a6cf7dc5d303ca",
+      "sha256": "73f72d148a3d5bd7c744724887f3d24c71fbed9aba51123bd6f57fe497959cf5",
       "legacy_units": [
         "TXT-3e420d52e556ac64"
       ],
@@ -750,7 +750,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P03/C01/L02.md",
-      "sha256": "88afb638e1474829f12a973ddecc499c47df641bb3f81aba4e9bd2ae2c40befb",
+      "sha256": "1111c42972f9dfb49bfc041845390cd49091801121485a0e7fdf80122b1142dd",
       "legacy_units": [
         "TXT-8262a667798b516d"
       ],
@@ -1113,7 +1113,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P03/C04/L01.md",
-      "sha256": "363ad511a91f9825eddd491e481b0f16581a450a8f48b9f6788da0b98aef2761",
+      "sha256": "3efebbb9fba07c71c5c2252f461746ea78b2cc4570193f0cc514b0b55e43e0cd",
       "legacy_units": [
         "TXT-c396fb6c5104e267"
       ],
@@ -1687,7 +1687,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P05/C03/L02.md",
-      "sha256": "6404680b355ea1cf0253331c5187bb49649556b9b4f036f68a3139111a5ca50f",
+      "sha256": "e90dffcd52c3800410b6bf478ae0e52c0130fe38a4495972725b4245d0a05319",
       "legacy_units": [
         "TXT-6a765ad5128ce205"
       ],
@@ -1788,7 +1788,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P06/C01/L02.md",
-      "sha256": "75d93783f9dc5b924dbf86ff6e3bd987e01c9617566462c5abb9face0d7fda01",
+      "sha256": "15236a161fe9657fbe31fc1a619a4933a51d333fbb7dc2b56bcc2366f6973c36",
       "legacy_units": [
         "TXT-b45d88f46d10254b"
       ],
@@ -1854,7 +1854,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P06/C02/L01.md",
-      "sha256": "791b6785764ccaac127cf1c239322933abf30a014438b7cd9c379ea2b8614e14",
+      "sha256": "2ca4b0e4704be030ed24725fd2b997b484b6b2058f37324f4b1e009a87b2ecc4",
       "legacy_units": [
         "TXT-ed9cf720ad1c5a87",
         "chapters/09-build-test-phat-hanh-rollback.md#9.2:claim:CLM-2c9bcd6c338337a7"
@@ -1946,7 +1946,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P06/C03/L01.md",
-      "sha256": "c7b922da8f7cfe99fb65498adb2e64ef327249a85a54e5717f887987ac1d065c",
+      "sha256": "fe503bd3cf1258177b16c27f65ef2c6c373e8dca2835863a3e0ded6f3b112414",
       "legacy_units": [
         "TXT-940ab8ea3fab6a62",
         "chapters/09-build-test-phat-hanh-rollback.md#9.3:claim:CLM-ca7ef798debd846b"
@@ -1985,7 +1985,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P06/C03/L02.md",
-      "sha256": "8b903efbdcdefe7bb5858bf9c1972f1a877809d43af51fa66a297501d27e617a",
+      "sha256": "d9d4aa00bf19174590dc94931a2071439b47e70e94cae06431339592146f2368",
       "legacy_units": [
         "TXT-9128dfb9a2419e9e"
       ],
@@ -2276,7 +2276,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P07/C02/L01.md",
-      "sha256": "695409b86097038e3bc53ad0e48e81ef7c8a44fbd76efc0b27b5c1cbce1d511a",
+      "sha256": "d7b9fd67a0c38cdd5ff07da3bc1b6572bbb766b208bfa0758979fb0d440fd058",
       "legacy_units": [
         "TXT-6b6e27357bc3b549"
       ],
@@ -2335,7 +2335,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P07/C02/L03.md",
-      "sha256": "7f9b2627790fe6cf9a9a5c8425078daf697f8daa51b4e1d00c77755c8f089920",
+      "sha256": "f20080cbd160cb509d4623edfce41628ea67d44ee2e1ffc97d7b31bfd5ad6c25",
       "legacy_units": [
         "TXT-8d26599c67f03df4"
       ],
@@ -2477,7 +2477,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P07/C04/L01.md",
-      "sha256": "317b45fc9652851a233776eeb2a4ac14f74e74efe2f8f29658a690b1c840fa20",
+      "sha256": "51ff9c559cc4120c1e9f1307205a2beed16aed241060496dddcc721ae5e6af7e",
       "legacy_units": [
         "TXT-4dc6e58a9621b706",
         "TXT-35b14eeafdcc995e"
@@ -2821,7 +2821,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P08/C03/L02.md",
-      "sha256": "335b16633b926a4f7b64e59acf24c4fe288f1d6e50a832816e11846ca59a67de",
+      "sha256": "76ccf2d78a3e802eb09317bfc51105761a9b0bfd937396b4884559e1e4f6e0ac",
       "legacy_units": [
         "TXT-7f624d98e45713f8"
       ],
@@ -2882,7 +2882,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P08/C04/L01.md",
-      "sha256": "d49248eefaa429ee7c8a607ce66f2043df7bc6491aa6ec6449134379f1d16f25",
+      "sha256": "f081227628938dac520989187d6cee5d26353186798245d916565156f47c9929",
       "legacy_units": [
         "TXT-5f073958f741fde6"
       ],
@@ -2910,7 +2910,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P08/C04/L02.md",
-      "sha256": "d97a44b94fd6360f1cf7cf9f4a822ffe93e0714157862ebbd91ee6bbeec00f1a",
+      "sha256": "11073d0d57c8e256bd0fa3fdf1858fe78bf6fb01bdbacdc81c52fa2535533847",
       "legacy_units": [
         "TXT-9e5b8ea87f273714"
       ],
@@ -2937,7 +2937,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P08/C04/L03.md",
-      "sha256": "9729f4c24c7fd2565f5c42a02351ec42deef20d39f86a1fb21ded76fcf7dde12",
+      "sha256": "9a7d29679009e2306de3fd14b803d99c39254536c127701d68603a288c9c9ad7",
       "legacy_units": [
         "TXT-0cabe9ab1eec4396"
       ],
@@ -3081,7 +3081,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P09/C02/L01.md",
-      "sha256": "f4c7f92e97d0897c264535d3b6d4b3813101797f1f25da3f22e0140ad93f2162",
+      "sha256": "f10ae61d5e9c1167a12c251d0c869a2d9c652cfc115c892da43b16b3d9816166",
       "legacy_units": [
         "TXT-3d63d47ddff53d59"
       ],
@@ -3557,7 +3557,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P10/C02/L03.md",
-      "sha256": "661ea1ebab9a5dbdcc6d6c27caeaa31c2a00eaf05bee3015defda8b68842dfd7",
+      "sha256": "6126837b232aaa3d79008b12a8ff57c66e3a6f492eeb7d112a3a4d905d05fda4",
       "legacy_units": [
         "TXT-3af2e2e52ba52dde",
         "chapters/14-ansible-hoi-tu-cau-hinh.md#14.2:claim:CLM-f16f075e3e64227c"
@@ -3596,7 +3596,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P10/C03/L01.md",
-      "sha256": "69380d378c63eab9b6c2ae4d7c4eb416d323a5083c93101b12dc228db19f6c74",
+      "sha256": "d074550af8f57a46d52da3181633bb037c52d55acae1db47f6524effb288288b",
       "legacy_units": [
         "TXT-ebcfbada9a333b0d"
       ],
@@ -3724,7 +3724,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C01/L02.md",
-      "sha256": "7c50eca34dba119a5fde2f1191a0e8a4670b0753ab4081983e2bba61e93820b1",
+      "sha256": "8505d5725cac4c4925e6f8ee8796bd2c4c9ad5751cff54e48382660916ec9e37",
       "legacy_units": [
         "TXT-92c85c3a5823a77d"
       ],
@@ -3759,7 +3759,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C01/L03.md",
-      "sha256": "15b92f133ab508f38ba0e5cb3ef610de071c138ff544b11180b3968a72c0df6e",
+      "sha256": "d300efe0ffb35aeafc115d18a4bb7c554bcf24ab755571ccc6454b8a42d64cb2",
       "legacy_units": [
         "TXT-d2e8e1cfa3ee6ddb",
         "chapters/15-kubernetes-trang-thai-mong-muon.md#15.1:claim:CLM-10013f41425f84cf",
@@ -3790,7 +3790,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C02/L01.md",
-      "sha256": "218c794e4713e2a6bde332b27fa682e608fb440988468fb6d7725f2714c6fecb",
+      "sha256": "307e3bae895dfeb204acc9a45fa0f89dafda64dc9811dd6463f49673e417267e",
       "legacy_units": [
         "TXT-1ef72086f62ddee7",
         "chapters/15-kubernetes-trang-thai-mong-muon.md#15.2:claim:CLM-6a2839918c3e6996"
@@ -3967,7 +3967,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C03/L03.md",
-      "sha256": "6919609b66c07bd0c813091ca098c9b5f3eb5ec33da2ab3b8847d6e5846a4b3b",
+      "sha256": "3e934a3d09e5b17f784defde842043c5ccfa4e83c36e1cfbb0cfd611d7e9d692",
       "legacy_units": [
         "TXT-59498918c83df953"
       ],
@@ -4062,7 +4062,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C04/L03.md",
-      "sha256": "2fcc08c4b32c36108330d2fd12aec1506f33210ecefaaba45001a7f812ddc983",
+      "sha256": "e3419e5bb24fbe2252ed97d964af876978de6e18db794e2d5d14b5c73a0f353e",
       "legacy_units": [
         "TXT-db5de72ceb8f6471",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.3:claim:CLM-d3754b92ce88cb96"
@@ -4128,7 +4128,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C05/L02.md",
-      "sha256": "4a45c1898a493b124ced486aac6e3185a852b66ae69e594a6bd814916382e82b",
+      "sha256": "2a1317296266b4e011300560259891bfa7ab22a991f1db25417c9990c0075cee",
       "legacy_units": [
         "TXT-2675e3b61c0278d7",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.4:claim:CLM-cf957a5ab18c9a0e"
@@ -4271,7 +4271,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C06/L03.md",
-      "sha256": "ac1e4681b56431f939886772262aead4d14fa9a8bab96cb77602186057120548",
+      "sha256": "97c7603587189fd300f65e0d8a6dd860a9af26196a5642509f76c8c4c9f28b62",
       "legacy_units": [
         "TXT-2a0b0963f5d75b8a"
       ],
@@ -4475,7 +4475,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P11/C08/L02.md",
-      "sha256": "95477940fbdf26fa1dc19dd3c23be6da136070f0f06022d507102e3a3f3e4fc4",
+      "sha256": "2cb527e347fc458c276802e20f28f227cc928e2f9352c29bff56d26c1d17444d",
       "legacy_units": [
         "TXT-55a87dd9e03e4886",
         "chapters/17-gateway-api-helm.md#17.3:claim:CLM-76985836c4d60842"
@@ -4907,7 +4907,7 @@
       "verification": "reviewed_baseline_migration",
       "editorial_override": false,
       "content": "manuscript/P12/C04/L01.md",
-      "sha256": "3404a420deab5e3b41aa90e677e9a66b44401a153def7a89eb9d3a9e154521c0",
+      "sha256": "7486c543c7220047c1f5a6b6c7b39f635e48e113ae10fc9d8fda74b8a3e97e16",
       "legacy_units": [
         "TXT-6910b730fe68fda0",
         "chapters/18-metrics-prometheus-grafana.md#18.1:claim:CLM-04bb47b429753cbe"
