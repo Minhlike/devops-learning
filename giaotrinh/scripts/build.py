@@ -406,10 +406,15 @@ def check_migration_evidence(manifest: dict) -> None:
         raise ValueError("Mã bài tập xuất bản thiếu hoặc trùng")
 
 
-def check_wave2_evidence(manifest: dict) -> None:
-    ledger = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+def check_wave2_evidence(manifest: dict, ledger: dict | None = None) -> None:
+    if ledger is None:
+        ledger = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
     if ledger.get("schema_version") != 1 or not ledger.get("checked_on"):
         raise ValueError("Ledger Đợt 2 thiếu phiên bản hoặc ngày kiểm")
+    locked = json.loads((ROOT / "manuscript" / "wave2_source_ids.lock.json").read_text(
+        encoding="utf-8"))["urls"]
+    if {sid: source.get("url") for sid, source in ledger["sources"].items()} != locked:
+        raise ValueError("Nguồn Đợt 2 đã đổi ID hoặc URL khóa")
     old_sources = json.loads((ROOT / "source_map.json").read_text(encoding="utf-8"))["sources"]
     sources = dict(old_sources)
     for sid, source in ledger["sources"].items():

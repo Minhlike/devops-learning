@@ -1,0 +1,7 @@
+{
+  "urls": {
+    "W2-CLK": "https://man7.org/linux/man-pages/man2/clock_gettime.2.html",
+    "W2-PG17": "https://www.postgresql.org/docs/17/backup-file.html",
+    "W2-LOG322": "https://github.com/logrotate/logrotate/blob/3.22.0/logrotate.8.in"
+  }
+}

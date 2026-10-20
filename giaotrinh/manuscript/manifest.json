@@ -363,16 +363,25 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P02/C02/L03.md",
+      "sha256": "25c8068b9b8ac448d46dac8dd734f595113e6181072d08dfd406a1bffd174937",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "R7"
+      ],
+      "qa": [
+        {
+          "id": "W2.P02.C02.L03.Q01",
+          "publication_id": "P02.C02.L03.Q01",
+          "question": "Dịch vụ thuộc nhóm atlas vẫn nhận EACCES với cây 0700 root:root /srv/atlas, 0750 root:atlas /srv/atlas/config, 0640 root:atlas app.toml. Chỉ ra điểm chặn, cách kiểm lại và vì sao chmod 777 cho tệp không giúp.",
+          "answer": "Điểm chặn đầu là quyền tìm kiếm ở /srv/atlas. Kiểm dưới đúng danh tính và ngữ cảnh dịch vụ sau một thay đổi quyền hẹp được duyệt. chmod 777 cho tệp cuối không cấp quyền đi qua thư mục cha."
+        }
+      ]
     },
     "P02.C03.L01": {
       "parent": "P02.C03",
@@ -449,16 +458,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P02/C03/L03.md",
+      "sha256": "9678353197df3e158cb743a14adb3f2f05e102bda565f49122ca45d2acee27de",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "K2",
+        "R6"
+      ],
+      "qa": [
+        {
+          "id": "W2.P02.C03.L03.Q01",
+          "publication_id": "P02.C03.L03.Q01",
+          "question": "Trong 10 giây, ứng dụng báo ghi 120 MiB, thiết bị báo ghi 40 MiB, Dirty tăng 80 MiB và latency tăng. Nêu một giả thuyết phù hợp, một phép đo bổ sung và điều chưa thể quy cho request.",
+          "answer": "Writeback chậm là một giả thuyết. Cần ghép thời điểm request và thời gian fsync/I/O cùng ranh giới process, cgroup, thiết bị. Chưa thể quy toàn bộ 80 MiB dirty hay độ trễ cho request này vì các counter có thể gồm tác vụ khác."
+        }
+      ]
     },
     "P02.C03.L04": {
       "parent": "P02.C03",
@@ -612,16 +631,25 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P02/C05/L01.md",
+      "sha256": "4f7a77d94c2af792ccb8e83f7b9ae801447f9b51db5cf8547821fd9e465bcb5d",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "S1"
+      ],
+      "qa": [
+        {
+          "id": "W2.P02.C05.L01.Q01",
+          "publication_id": "P02.C05.L01.Q01",
+          "question": "Atlas vẫn active sau restart nhưng request đọc dữ liệu lỗi. Nêu ba chứng cứ trước thay đổi và hai hậu điều kiện trước khi tuyên bố xong.",
+          "answer": "Trước thay đổi cần ít nhất revision đang chạy, hash/diff cấu hình và trạng thái dữ liệu hoặc bản sao có thể restore. Sau thay đổi cần request qua đường thật thành công và dữ liệu đọc đúng; active riêng lẻ chưa đủ."
+        }
+      ]
     },
     "P02.C05.L02": {
       "parent": "P02.C05",
@@ -632,16 +660,26 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P02/C05/L02.md",
+      "sha256": "297f1935a1516dcb5519f9cffbe87173f173c03ea742c81d15a02640f6de2638",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-LOG322",
+        "W2-PG17"
+      ],
+      "qa": [
+        {
+          "id": "W2.P02.C05.L02.Q01",
+          "publication_id": "P02.C05.L02.Q01",
+          "question": "Một file tar của thư mục PostgreSQL được tạo khi server đang ghi, hash tar khớp sau copy. Điều gì đã được kiểm, điều gì chưa, và phép thử restore nên diễn ra ở đâu?",
+          "answer": "Hash chỉ kiểm byte archive không đổi sau tạo; nó không chứng minh snapshot nhất quán hay đủ WAL. Phải theo cơ chế backup hỗ trợ của PostgreSQL và restore thử ở đường dẫn/môi trường cô lập, không đè server đang chạy."
+        }
+      ]
     },
     "P02.C05.L03": {
       "parent": "P02.C05",
@@ -652,16 +690,25 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P02/C05/L03.md",
+      "sha256": "08aa9097fb4b1bea8fb37b0e971de46baecf110b2d2d77be413af1f3608316fc",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "S1"
+      ],
+      "qa": [
+        {
+          "id": "W2.P02.C05.L03.Q01",
+          "publication_id": "P02.C05.L03.Q01",
+          "question": "Sau khi hoàn nguyên config, r-03 trả HTTP thành công nhưng bản ghi order-7 khác trước. Có được báo phục hồi hoàn tất không? Cần thêm chứng cứ nào?",
+          "answer": "Chưa. Cần đối chiếu nội dung bản ghi cũ, kiểm ghi/đọc mới trong phạm vi an toàn, xác nhận revision phục vụ và quyền còn hẹp. Rollback config không tự phục hồi dữ liệu."
+        }
+      ]
     },
     "P03.C01.L01": {
       "parent": "P03.C01",

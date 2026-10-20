@@ -31,11 +31,13 @@ class ManuscriptContract(unittest.TestCase):
         self.assertEqual(len(self.tree["parts"]), 15)
         self.assertEqual(sum(len(p["chapters"]) for p in self.tree["parts"]), 58)
         self.assertEqual(len(self.manifest["lessons"]), 178)
+        wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+        reviewed = len(wave2["lessons"])
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
-                         Counter({"migrated_draft": 136, "reviewed": 2,
-                                  "pending_authorship": 39, "migration_fragment": 1}))
+                         Counter({"migrated_draft": 136, "reviewed": reviewed,
+                                  "pending_authorship": 41 - reviewed, "migration_fragment": 1}))
         self.assertEqual(sum(len(ls) for _, chapters in build.published_lessons(self.tree, self.manifest)
-                             for _, ls in chapters), 138)
+                             for _, ls in chapters), 136 + reviewed)
 
     def test_legacy_sections_and_split_paragraphs_are_preserved(self):
         migration = [r for r in ledger("legacy_migration.csv") if r["action"] != "move_rekey_after_review"]
@@ -74,9 +76,11 @@ class ManuscriptContract(unittest.TestCase):
                 self.assertIn("{{code:" + row["old_id"] + "}}", manuscript)
             else:
                 self.assertEqual(sum(q["id"] == row["old_id"] for q in owner["qa"]), 1)
-        self.assertEqual(sum(len(x["qa"]) for x in self.manifest["lessons"].values()), 93)
+        wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+        expected_count = 91 + sum(len(x["qa"]) for x in wave2["lessons"].values())
+        self.assertEqual(sum(len(x["qa"]) for x in self.manifest["lessons"].values()), expected_count)
         publication_ids = [qa["publication_id"] for x in self.manifest["lessons"].values() for qa in x["qa"]]
-        self.assertEqual(len(set(publication_ids)), 93)
+        self.assertEqual(len(set(publication_ids)), expected_count)
         p13_claims = 0
         for i in range(1, 5):
             with (ROOT / "authoring" / "P13" / f"C{i:02d}" / "claims.csv").open(
@@ -131,6 +135,12 @@ class ManuscriptContract(unittest.TestCase):
         broken["lessons"]["P01.C01.L03"]["qa"].clear()
         with self.assertRaisesRegex(ValueError, "Bài tập Đợt 2"):
             build.load_manuscript(self.tree, broken)
+
+    def test_wave2_source_id_url_is_immutable(self):
+        ledger = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
+        ledger["sources"]["W2-CLK"]["url"] = "https://example.invalid/changed"
+        with self.assertRaisesRegex(ValueError, "đổi ID hoặc URL khóa"):
+            build.check_wave2_evidence(self.manifest, ledger)
 
     def test_bookmark_same_count_but_wrong_destination_fails(self):
         with pymupdf.open(build.OUTPUT) as doc:
