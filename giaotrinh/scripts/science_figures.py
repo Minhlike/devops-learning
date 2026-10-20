@@ -16,9 +16,9 @@ MID = colors.HexColor("#777777")
 LIGHT = colors.HexColor("#f0f0f0")
 
 FIGURES = {
-    "V02": ("Hình I.2.1 — fork/execve/wait: nhánh thành công và lỗi là hai lần chạy khác nhau.", 236),
+    "V02": ("Hình I.2.1 — fork/execve/wait: PID giả định; nhánh thành công và lỗi là hai lần chạy khác nhau.", 236),
     "V07": ("Hình III.2.1 — TCP: sequence đếm byte, ACK cộng dồn; số liệu giả định.", 242),
-    "V20": ("Hình IX.2.1 — Terraform: cấu hình, state và API thực có thể lệch nhau.", 220),
+    "V20": ("Hình IX.2.1 — Terraform: cấu hình, state và API thực có thể lệch nhau; CPU là dữ kiện giả định.", 220),
     "V23": ("Hình XI.1.1 — Vòng điều khiển Kubernetes và đường request tách biệt.", 226),
 }
 

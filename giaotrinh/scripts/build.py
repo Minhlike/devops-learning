@@ -170,6 +170,42 @@ class PartPlate(Flowable):
         c.restoreState()
 
 
+class CoverPlate(Flowable):
+    """A source-editable monochrome cover motif for the book's learning arc."""
+
+    def __init__(self):
+        super().__init__()
+        self.width = PAGE_W - LEFT - RIGHT
+        self.height = 252
+
+    def draw(self):
+        c = self.canv
+        c.saveState()
+        ink = colors.HexColor("#222222")
+        light = colors.HexColor("#ececec")
+        nodes = ["MÃ NGUỒN", "ARTIFACT", "RUNTIME", "TÍN HIỆU", "PHỤC HỒI"]
+        c.setStrokeColor(ink)
+        c.setLineWidth(1.3)
+        c.line(30, 148, self.width - 30, 148)
+        for index, label in enumerate(nodes):
+            x = 47 + index * 94
+            c.setFillColor(ink if index in (0, 4) else light)
+            c.circle(x, 148, 17, stroke=1, fill=1)
+            c.setFillColor(colors.white if index in (0, 4) else ink)
+            c.setFont("BodyBold", 10)
+            c.drawCentredString(x, 144, str(index + 1))
+            c.setFillColor(ink)
+            c.setFont("BodyBold", 8)
+            c.drawCentredString(x, 110, label)
+        c.setLineWidth(0.5)
+        c.line(0, 208, self.width, 208)
+        c.line(0, 67, self.width, 67)
+        c.setFont("Body", 11)
+        c.drawCentredString(self.width / 2, 37,
+                            "Từ thay đổi có kiểm chứng đến hệ thống có thể vận hành và phục hồi")
+        c.restoreState()
+
+
 class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
@@ -184,6 +220,13 @@ class Book(BaseDocTemplate):
         self.part_opening_page = None
         self.addPageTemplates(PageTemplate(id="normal", frames=[frame],
                                            onPageEnd=self.page_decoration))
+
+    def beforeDocument(self):
+        # multiBuild renders the TOC more than once using the same template.
+        # Running heads must never inherit the final section of an earlier pass.
+        self.running_part = None
+        self.running_chapter = None
+        self.part_opening_page = None
 
     @staticmethod
     def page_decoration(canvas, doc):
@@ -211,6 +254,10 @@ class Book(BaseDocTemplate):
             self.running_part = flowable.bookmark_key
             self.running_chapter = None
             self.part_opening_page = self.page
+        elif flowable.bookmark_key == "answers":
+            self.running_part = "LỜI GIẢI"
+            self.running_chapter = None
+            self.part_opening_page = None
         elif flowable.level == 2 and flowable.bookmark_key.startswith("P"):
             self.running_chapter = flowable.bookmark_key
         key = flowable.bookmark_key
@@ -544,6 +591,8 @@ def build() -> None:
         Paragraph(f"Bản thảo tích hợp Đợt 2 · {count}/178 bài có nội dung", styles["subtitle"]),
         Spacer(1, 10),
         Paragraph("Chưa phải bản phát hành hoàn chỉnh", styles["subtitle"]),
+        Spacer(1, 34),
+        CoverPlate(),
         PageBreak(),
         Paragraph("MỤC LỤC", styles["toc"]),
         toc,

@@ -66,6 +66,23 @@ class ManuscriptContract(unittest.TestCase):
             self.assertIn(unit["old_id"], owner["legacy_units"])
             self.assertIn(paragraph, (ROOT / owner["content"]).read_text(encoding="utf-8"))
 
+    def test_each_lesson_first_and_last_prose_reaches_candidate(self):
+        with pymupdf.open(build.OUTPUT) as doc:
+            pdf_text = " ".join(" ".join(page.get_text().split()) for page in doc)
+        for lid, row in self.manifest["lessons"].items():
+            manuscript = (ROOT / row["content"]).read_text(encoding="utf-8")
+            paragraphs = []
+            for block in re.split(r"\n\s*\n", manuscript):
+                block = block.strip()
+                if not block or block.startswith(("{{", "```", "#", "|")):
+                    continue
+                plain = " ".join(re.sub(r"[`*]", "", block).split())
+                if len(plain) > 70:
+                    paragraphs.append(plain)
+            self.assertTrue(paragraphs, lid)
+            for paragraph in (paragraphs[0], paragraphs[-1]):
+                self.assertIn(paragraph[:65], pdf_text, lid)
+
     def test_claims_examples_and_question_answer_pairs_have_one_owner(self):
         evidence = ledger("evidence_ownership.csv")
         self.assertEqual(Counter(r["kind"] for r in evidence),
