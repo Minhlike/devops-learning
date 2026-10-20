@@ -816,16 +816,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P03/C01/L04.md",
+      "sha256": "854ef6c98e12af77d5fa7a3face1c749d2ffd0f02e83793561adf6eda6d1f7dc",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-IP6",
+        "W2-MTU4",
+        "W2-MTU6"
+      ],
+      "qa": [
+        {
+          "id": "W2.P03.C01.L04.Q01",
+          "publication_id": "P03.C01.L04.Q01",
+          "question": "Gói IPv4 1480 byte có DF đi qua hop MTU 1400. Dự đoán hành vi router và tính payload TCP tối đa nếu IP/TCP header đều 20 byte, không option. Vì sao ping nhỏ thành công chưa bác giả thuyết PMTU?",
+          "answer": "Router bỏ gói quá lớn và có thể trả ICMP fragmentation needed; nguồn phải giảm ước lượng PMTU. Payload tối đa 1400 - 20 - 20 = 1360 byte theo giả định. Ping nhỏ không thử ngưỡng 1400 và không chứng minh ICMP cần thiết quay về được."
+        }
+      ]
     },
     "P03.C02.L01": {
       "parent": "P03.C02",
@@ -957,16 +968,27 @@
         "helpful": [],
         "extension": []
       },
-      "status": "pending_authorship",
-      "verification": "not_reviewed",
-      "editorial_override": false,
-      "content": null,
-      "sha256": null,
+      "status": "reviewed",
+      "verification": "source_reviewed_wave2",
+      "editorial_override": true,
+      "content": "manuscript/P03/C02/L04.md",
+      "sha256": "f6a8e07a00cb3949ea6499e8dac526966ce1352da408ef7a74e021934956d0de",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
-      "qa": []
+      "source_ids": [
+        "W2-IP6",
+        "W2-ND6",
+        "W2-UDP"
+      ],
+      "qa": [
+        {
+          "id": "W2.P03.C02.L04.Q01",
+          "publication_id": "P03.C02.L04.Q01",
+          "question": "Client thấy DNS datagram đi, resolver thấy request và gửi response, nhưng client timeout. Điều gì đã được loại trừ, điểm nào cần quan sát tiếp, và vì sao retry không chứng minh UDP tự truyền lại?",
+          "answer": "Đã có bằng chứng request tới resolver và resolver phát response ở điểm capture ấy. Cần kiểm tuple sau NAT, route/filter chiều về và capture gần client; timeout chưa định vị nơi mất. Retry là chính sách ứng dụng hoặc thư viện, không là bảo đảm của UDP."
+        }
+      ]
     },
     "P03.C03.L01": {
       "parent": "P03.C03",

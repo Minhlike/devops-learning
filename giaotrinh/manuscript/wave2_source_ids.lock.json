@@ -2,6 +2,11 @@
   "urls": {
     "W2-CLK": "https://man7.org/linux/man-pages/man2/clock_gettime.2.html",
     "W2-PG17": "https://www.postgresql.org/docs/17/backup-file.html",
-    "W2-LOG322": "https://github.com/logrotate/logrotate/blob/3.22.0/logrotate.8.in"
+    "W2-LOG322": "https://github.com/logrotate/logrotate/blob/3.22.0/logrotate.8.in",
+    "W2-MTU4": "https://www.rfc-editor.org/rfc/rfc1191.html",
+    "W2-MTU6": "https://www.rfc-editor.org/rfc/rfc8201.html",
+    "W2-IP6": "https://www.rfc-editor.org/rfc/rfc8200.html",
+    "W2-UDP": "https://www.rfc-editor.org/rfc/rfc8085.html",
+    "W2-ND6": "https://www.rfc-editor.org/rfc/rfc4861.html"
   }
 }
