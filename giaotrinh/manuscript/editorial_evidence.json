@@ -3560,8 +3560,8 @@
       ]
     },
     "P12.C04.L01": {
-      "content_sha256": "29d195c57e34a8de9247008a3d46a9254b470fd5aa03bc18ccb420c1d849e92b",
-      "editorial_decision": "Alert rule đánh giá theo cửa sổ; firing không chỉ ra nguyên nhân gốc.",
+      "content_sha256": "b90e6f994dd321ac61e11742b19d682b46629a2eabd43b2f7eaa88a0364d742d",
+      "editorial_decision": "Giữ các neo migration; thêm phép tính hai target để giải thích pending, mất telemetry và giới hạn của rate trước khi diễn giải alert.",
       "checks": [
         {
           "anchor": "alerting rule đánh giá điều kiện",
@@ -3572,6 +3572,17 @@
           "source_location": "alerting rules and for clause",
           "support": "Alerts evaluate expressions with pending duration",
           "limits": "An alert does not prove root cause"
+        },
+        {
+          "anchor": "target A có 500 request/2 lỗi",
+          "kind": "documented",
+          "sources": [
+            "PM6",
+            "PM9"
+          ],
+          "source_location": "Prometheus 3.7 alerting rules: for clause; query functions: rate()",
+          "support": "The example derives a 2% aggregate and 0.4% surviving-target error ratio from explicitly hypothetical counters; for requires persistent expression output; rate adjusts counter resets per series before aggregation.",
+          "limits": "The 1% threshold and 10m wait are teaching assumptions, not an operational SLO; rate cannot restore missing target data."
         }
       ]
     }

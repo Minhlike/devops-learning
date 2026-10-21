@@ -4928,7 +4928,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C04/L01.md",
-      "sha256": "29d195c57e34a8de9247008a3d46a9254b470fd5aa03bc18ccb420c1d849e92b",
+      "sha256": "b90e6f994dd321ac61e11742b19d682b46629a2eabd43b2f7eaa88a0364d742d",
       "legacy_units": [
         "TXT-6910b730fe68fda0",
         "chapters/18-metrics-prometheus-grafana.md#18.1:claim:CLM-04bb47b429753cbe"
@@ -4938,7 +4938,8 @@
       ],
       "examples": [],
       "source_ids": [
-        "PM6"
+        "PM6",
+        "PM9"
       ],
       "qa": []
     },
