@@ -293,8 +293,8 @@
       ]
     },
     "P02.C02.L02": {
-      "content_sha256": "b833a576838c183ff3c5f9bc403959912300745fad16d32df3d36330e77c136b",
-      "editorial_decision": "Ví dụ tệp 0640 và thư mục 0700 cho thấy điểm chặn là thành phần cha; chỉ dẫn sửa theo quyền tối thiểu.",
+      "content_sha256": "0a9fbf3dee1a0639f0f21f99890f6abb618d491e4d48782484a4be09d7f1f08f",
+      "editorial_decision": "Ví dụ tệp 0640 và thư mục 0700 cho thấy điểm chặn là thành phần cha; chỉ dẫn sửa theo quyền tối thiểu. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "trên thư mục, bit `x` là quyền tìm kiếm/đi qua",
@@ -305,6 +305,16 @@
           "source_location": "path_resolution(7): Permissions",
           "support": "execute bit on directory grants search permission",
           "limits": "ACL and further policies may apply"
+        },
+        {
+          "anchor": "quyền tìm kiếm tối thiểu trên thư mục",
+          "kind": "documented",
+          "sources": [
+            "R7"
+          ],
+          "source_location": "path_resolution(7): Step 2 and Permissions",
+          "support": "Path walk checks search permission for every nonfinal directory.",
+          "limits": "ACL, credentials and mount policy may change access."
         }
       ]
     },
@@ -398,8 +408,8 @@
       ]
     },
     "P02.C04.L01": {
-      "content_sha256": "b4f26934037cb300ab0d884c5b62a0a74445a83381d8c5852d51e77270a1951b",
-      "editorial_decision": "Ranh giới tiến trình và readiness được giữ; After/Wants/Requires và hai network target được phân biệt.",
+      "content_sha256": "10b5f7cda6df501216aa8299182519d5dbd65aa7fa1cc8348810b7f6d0186fa4",
+      "editorial_decision": "Ranh giới tiến trình và readiness được giữ; After/Wants/Requires và hai network target được phân biệt. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "`After=network.target` trong unit chỉ đặt thứ tự",
@@ -420,6 +430,26 @@
           "source_location": "systemd.special: network.target and network-online.target",
           "support": "network.target is passive and does not ensure completed IP configuration; online target is pulled by consumers",
           "limits": "Online readiness depends on network manager, not remote service"
+        },
+        {
+          "anchor": "`Type=exec` cho systemd biết khởi động đạt mốc",
+          "kind": "documented",
+          "sources": [
+            "S1"
+          ],
+          "source_location": "systemd.service(5): Type=exec",
+          "support": "Type=exec reports start after executable is invoked, not application readiness.",
+          "limits": "Own startup code may still fail after execve."
+        },
+        {
+          "anchor": "`Restart=on-failure` yêu cầu thử khởi động lại",
+          "kind": "documented",
+          "sources": [
+            "S1"
+          ],
+          "source_location": "systemd.service(5): Restart and RestartSec",
+          "support": "Restart=on-failure covers selected service failures with RestartSec delay.",
+          "limits": "Not all exits cause restart and restart does not repair config."
         }
       ]
     },
@@ -642,8 +672,8 @@
       ]
     },
     "P03.C02.L03": {
-      "content_sha256": "fd524887ef00babc892f4490435a5209d342a186d032b09425ebf9404beed70a",
-      "editorial_decision": "NAPT đổi nguồn và conntrack được giải thích theo ví dụ giả định; return mapping không hàm ý ứng dụng trả HTTP.",
+      "content_sha256": "31a82df150d2962dc97e45f28d8d1d959e8a393bb8f8368ddc723fd31c411478",
+      "editorial_decision": "NAPT đổi nguồn và conntrack được giải thích theo ví dụ giả định; return mapping không hàm ý ứng dụng trả HTTP. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "gateway trong ví dụ thực hiện NAPT",
@@ -664,6 +694,23 @@
           "source_location": "nf_conntrack sysctl: count, max, TCP timeouts",
           "support": "Linux netfilter maintains flow entries for original and reply directions",
           "limits": "A flow entry is not proof of application acceptance"
+        },
+        {
+          "anchor": "gateway phải nhận đúng phản hồi ấy rồi đảo ánh xạ",
+          "kind": "documented",
+          "sources": [
+            "N5"
+          ],
+          "source_location": "RFC 3022: NAPT operation and limitations",
+          "support": "NAPT uses per-session mapping for outbound and inbound translation.",
+          "limits": "Exact mapping and timeout depend on device and traffic."
+        },
+        {
+          "anchor": "capture trước và sau gateway",
+          "kind": "inference",
+          "sources": [],
+          "support": "Two observation points distinguish translation from subsequent forwarding.",
+          "limits": "Packet capture absence only narrows interval between observation points."
         }
       ]
     },
@@ -788,8 +835,8 @@
       ]
     },
     "P03.C04.L02": {
-      "content_sha256": "b6a61c5276a368b05b678627eaf4730ec2a2112bc59a0bb12fc9308e08d33c00",
-      "editorial_decision": "Trace giả định GET /report và body 9 byte được gắn nhãn; Host hai chặng, TLS và nguồn tạo status tách rõ.",
+      "content_sha256": "06f486ae82bc540d1afdda634201d2f482cc5998308bcaf330d48a15d692b0e0",
+      "editorial_decision": "Trace giả định GET /report và body 9 byte được gắn nhãn; Host hai chặng, TLS và nguồn tạo status tách rõ. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "Trace dưới đây là dữ liệu giả định",
@@ -813,6 +860,24 @@
           "source_location": "RFC 9110 sections 3.7 and 7.2; RFC 9112 section 3.2",
           "support": "an intermediary can generate the request on the next hop and the HTTP/1.1 Host field identifies its target authority",
           "limits": "Whether Host is rewritten is a deployment configuration choice"
+        },
+        {
+          "anchor": "chưa có HTTP request bên trong kết nối được xác lập",
+          "kind": "documented",
+          "sources": [
+            "T1",
+            "H1"
+          ],
+          "source_location": "RFC 8446: authentication/handshake; RFC 9110: HTTP semantics",
+          "support": "Failed TLS authentication prevents protected HTTP exchange in this modeled path.",
+          "limits": "Other clients or retries can produce independent HTTP requests."
+        },
+        {
+          "anchor": "upstream có thể tiếp tục và gây tác dụng phụ",
+          "kind": "inference",
+          "sources": [],
+          "support": "Proxy timeout stops waiting at proxy; it is not proof that upstream execution was canceled.",
+          "limits": "Must inspect upstream state and idempotency contract for actual request."
         }
       ]
     },
@@ -933,8 +998,8 @@
       ]
     },
     "P04.C02.L02": {
-      "content_sha256": "e5288b1f6dd1d63c44c71ff6a1deb64afdbb80ee011fe7c9367a6652500485cd",
-      "editorial_decision": "Rebase tạo commit mới trên D và đổi đồ thị; giới hạn an toàn khi lịch sử đã chia sẻ được nêu rõ.",
+      "content_sha256": "8e69c8c8064a61f80a7954c4c1730542f9ac7a07d287a2995f8c05cf40732f3a",
+      "editorial_decision": "Rebase tạo commit mới trên D và đổi đồ thị; giới hạn an toàn khi lịch sử đã chia sẻ được nêu rõ. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "tạo commit mới `C′` có cha là `D`",
@@ -945,6 +1010,16 @@
           "source_location": "git-rebase(1): DESCRIPTION and NOTES",
           "support": "rebase reapplies commits onto new base and writes new commits, changing branch history",
           "limits": "Empty or duplicate commits can be dropped under options; example has one nonempty conflict"
+        },
+        {
+          "anchor": "Rebase lần lượt thử tạo bản mới của `C1` trên `D`",
+          "kind": "documented",
+          "sources": [
+            "G5"
+          ],
+          "source_location": "git-rebase(1): DESCRIPTION; resolving conflicts",
+          "support": "Rebase reapplies commits on a new base and may stop for conflict resolution.",
+          "limits": "Exact commit sequence depends on branch and selected rebase mode."
         }
       ]
     },
@@ -1236,8 +1311,8 @@
       ]
     },
     "P05.C03.L02": {
-      "content_sha256": "e90dffcd52c3800410b6bf478ae0e52c0130fe38a4495972725b4245d0a05319",
-      "editorial_decision": "Hợp đồng chạy lại kiểm tra tên đích, marker và hậu điều kiện; giới hạn idempotency được suy luận từ trạng thái bền vững.",
+      "content_sha256": "046d9a88657cced36122dc3d136650067d81f08fa2b36ae506dafd7f854beb69",
+      "editorial_decision": "Hợp đồng chạy lại kiểm tra tên đích, marker và hậu điều kiện; giới hạn idempotency được suy luận từ trạng thái bền vững. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "Khi script chạy lại, phải định nghĩa rõ trạng thái nào có thể tái sử dụng",
@@ -1245,6 +1320,23 @@
           "sources": [],
           "support": "Một tên đích tồn tại không chứng minh nội dung hợp lệ; ví dụ kiểm trạng thái trước khi ghi đè.",
           "limits": "Hợp đồng phụ thuộc filesystem và utility thực tế."
+        },
+        {
+          "anchor": "`rename()` thông thường **có thể thay thế** tên đích",
+          "kind": "documented",
+          "sources": [
+            "R17"
+          ],
+          "source_location": "rename(2): DESCRIPTION; RENAME_NOREPLACE",
+          "support": "rename replaces an existing destination atomically; renameat2 RENAME_NOREPLACE refuses replacement if supported.",
+          "limits": "Does not guarantee durable bytes after power loss or work across mount points."
+        },
+        {
+          "anchor": "đúng một bản cuối được chấp nhận",
+          "kind": "inference",
+          "sources": [],
+          "support": "Publication contract must distinguish retry from a conflicting identity.",
+          "limits": "Requires implementation-specific atomicity and verification."
         }
       ]
     },
@@ -1312,8 +1404,8 @@
       ]
     },
     "P06.C01.L02": {
-      "content_sha256": "17687c386aa847561ee2b71920a38e14ca33c5f5238a76c2b2e44a4f2a8d3e6b",
-      "editorial_decision": "Digest artifact gắn chính byte đã test, không suy từ tag; phép kiểm danh tính nằm ở artifact được triển khai.",
+      "content_sha256": "25c9028159f84635762d86cb57f973796528ae97fdcd8fea25bafd20e1e9ccf5",
+      "editorial_decision": "Digest artifact gắn chính byte đã test, không suy từ tag; phép kiểm danh tính nằm ở artifact được triển khai. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "descriptor chứa digest và kích thước",
@@ -1334,12 +1426,23 @@
           "source_location": "Provenance v1.1: subject, buildDefinition, runDetails",
           "support": "Provenance describes artifact subject and build process inputs",
           "limits": "Trust depends on builder and verifier policy"
+        },
+        {
+          "anchor": "`commit c1 → build run b7 → artifact d1",
+          "kind": "derived",
+          "sources": [
+            "OCI1",
+            "SL1"
+          ],
+          "source_location": "OCI descriptor: digest; SLSA provenance: subject and invocation",
+          "support": "Descriptor digest identifies artifact bytes; provenance subject can bind digest to build inputs.",
+          "limits": "The chain is an illustrative ledger, not observed deployment evidence."
         }
       ]
     },
     "P06.C02.L01": {
-      "content_sha256": "2ca4b0e4704be030ed24725fd2b997b484b6b2058f37324f4b1e009a87b2ecc4",
-      "editorial_decision": "CI/CD và approval được tách khỏi readiness; gate bảo vệ đường phát hành nhưng không chứng minh hậu điều kiện production.",
+      "content_sha256": "2fec7438f36907e37948ee0f0000064c59104a32f8b3a664b525415be22b039a",
+      "editorial_decision": "CI/CD và approval được tách khỏi readiness; gate bảo vệ đường phát hành nhưng không chứng minh hậu điều kiện production. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "Môi trường triển khai có schema dữ liệu, cấu hình, quyền, secret, quota và lưu lượng riêng",
@@ -1350,6 +1453,23 @@
           "source_location": "Using environments; required reviews; secrets; concurrency",
           "support": "Deployment environments have protection rules, secrets and concurrency controls",
           "limits": "Schema, traffic and quota are application-specific design concerns"
+        },
+        {
+          "anchor": "10 instance đang phục vụ `d0`",
+          "kind": "derived",
+          "sources": [],
+          "support": "Rolling scenario computes 4 new and 6 old instances after two batches of two.",
+          "limits": "Readiness and serving traffic require runtime observation; counts are hypothetical."
+        },
+        {
+          "anchor": "CI xanh chỉ chứng minh các phép kiểm đã chạy",
+          "kind": "inference",
+          "sources": [
+            "GH1"
+          ],
+          "source_location": "GitHub Actions deployment controls: review and protection rules",
+          "support": "Deployment gates record decisions and scope; a green workflow does not imply readiness.",
+          "limits": "Actual guarantee depends on concrete tests, artifact identity and environment."
         }
       ]
     },
@@ -1844,8 +1964,8 @@
       ]
     },
     "P07.C04.L02": {
-      "content_sha256": "bdb5b38c848a204379edd9bb770c2462d6aabc81357bfd8c65f75f52e991da96",
-      "editorial_decision": "Compose YAML cho thấy mount dữ liệu và phụ thuộc startup; depends_on không mặc nhiên bảo đảm ứng dụng khỏe.",
+      "content_sha256": "f4c0b3630520d204d8d8aeb2669ff779cce9512435e5d9bac966171f4c2a40ba",
+      "editorial_decision": "Compose YAML cho thấy mount dữ liệu và phụ thuộc startup; depends_on không mặc nhiên bảo đảm ứng dụng khỏe. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
           "anchor": "`depends_on` mặc định giải quyết thứ tự khởi động",
@@ -1866,6 +1986,36 @@
           "source_location": "Use Compose in production: Running Compose on a single server",
           "support": "Compose can deploy to one remote Engine; multi-node scale requires additional Swarm or orchestration mechanisms",
           "limits": "Compose configuration may be used with Swarm, but Compose CLI alone is not a multi-node scheduler"
+        },
+        {
+          "anchor": "đường ấy được volume `orders_data` che lên",
+          "kind": "documented",
+          "sources": [
+            "DD2"
+          ],
+          "source_location": "Docker volumes: mount behavior and lifecycle",
+          "support": "Docker volume mounted at container path persists independently of container writable layer.",
+          "limits": "Named volume identity depends on Compose project and configuration."
+        },
+        {
+          "anchor": "Bind mount `./config:/etc/orders:ro`",
+          "kind": "documented",
+          "sources": [
+            "DD3"
+          ],
+          "source_location": "Docker bind mounts: considerations and read-only option",
+          "support": "Bind mount maps host path into container and ro restricts container writes.",
+          "limits": "Host access still changes source; daemon host determines source path."
+        },
+        {
+          "anchor": "project `orders-case`",
+          "kind": "documented",
+          "sources": [
+            "DD8"
+          ],
+          "source_location": "Compose project name: precedence",
+          "support": "Project name scopes Compose resources and can be overridden by -p or environment.",
+          "limits": "Volume can be declared external or explicitly named, so check resolved config."
         }
       ]
     },

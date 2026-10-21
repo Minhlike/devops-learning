@@ -338,7 +338,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C02/L02.md",
-      "sha256": "b833a576838c183ff3c5f9bc403959912300745fad16d32df3d36330e77c136b",
+      "sha256": "0a9fbf3dee1a0639f0f21f99890f6abb618d491e4d48782484a4be09d7f1f08f",
       "legacy_units": [
         "TXT-0745a0131bd44b04",
         "TXT-44442a22d4c268d7",
@@ -541,7 +541,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C04/L01.md",
-      "sha256": "b4f26934037cb300ab0d884c5b62a0a74445a83381d8c5852d51e77270a1951b",
+      "sha256": "10b5f7cda6df501216aa8299182519d5dbd65aa7fa1cc8348810b7f6d0186fa4",
       "legacy_units": [
         "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.5",
         "TXT-d8c0ad1c91585c3b",
@@ -555,6 +555,7 @@
         "examples/atlas.service"
       ],
       "source_ids": [
+        "S1",
         "S3",
         "S4"
       ],
@@ -950,7 +951,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C02/L03.md",
-      "sha256": "fd524887ef00babc892f4490435a5209d342a186d032b09425ebf9404beed70a",
+      "sha256": "31a82df150d2962dc97e45f28d8d1d959e8a393bb8f8368ddc723fd31c411478",
       "legacy_units": [
         "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.4"
       ],
@@ -1152,7 +1153,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L02.md",
-      "sha256": "b6a61c5276a368b05b678627eaf4730ec2a2112bc59a0bb12fc9308e08d33c00",
+      "sha256": "06f486ae82bc540d1afdda634201d2f482cc5998308bcaf330d48a15d692b0e0",
       "legacy_units": [
         "TXT-a63786cb740f452f",
         "TXT-f14caf422b31bdc6",
@@ -1357,7 +1358,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C02/L02.md",
-      "sha256": "e5288b1f6dd1d63c44c71ff6a1deb64afdbb80ee011fe7c9367a6652500485cd",
+      "sha256": "8e69c8c8064a61f80a7954c4c1730542f9ac7a07d287a2995f8c05cf40732f3a",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.4"
       ],
@@ -1700,13 +1701,15 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C03/L02.md",
-      "sha256": "e90dffcd52c3800410b6bf478ae0e52c0130fe38a4495972725b4245d0a05319",
+      "sha256": "046d9a88657cced36122dc3d136650067d81f08fa2b36ae506dafd7f854beb69",
       "legacy_units": [
         "TXT-6a765ad5128ce205"
       ],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "R17"
+      ],
       "qa": [
         {
           "id": "C8.4",
@@ -1801,7 +1804,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P06/C01/L02.md",
-      "sha256": "17687c386aa847561ee2b71920a38e14ca33c5f5238a76c2b2e44a4f2a8d3e6b",
+      "sha256": "25c9028159f84635762d86cb57f973796528ae97fdcd8fea25bafd20e1e9ccf5",
       "legacy_units": [
         "TXT-b45d88f46d10254b"
       ],
@@ -1867,7 +1870,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P06/C02/L01.md",
-      "sha256": "2ca4b0e4704be030ed24725fd2b997b484b6b2058f37324f4b1e009a87b2ecc4",
+      "sha256": "2fec7438f36907e37948ee0f0000064c59104a32f8b3a664b525415be22b039a",
       "legacy_units": [
         "TXT-ed9cf720ad1c5a87",
         "chapters/09-build-test-phat-hanh-rollback.md#9.2:claim:CLM-2c9bcd6c338337a7"
@@ -2521,7 +2524,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C04/L02.md",
-      "sha256": "bdb5b38c848a204379edd9bb770c2462d6aabc81357bfd8c65f75f52e991da96",
+      "sha256": "f4c0b3630520d204d8d8aeb2669ff779cce9512435e5d9bac966171f4c2a40ba",
       "legacy_units": [
         "TXT-16713322237a72fd",
         "TXT-b0784a8e3d3ed653"
@@ -2532,8 +2535,11 @@
       ],
       "examples": [],
       "source_ids": [
+        "DD2",
+        "DD3",
         "DD6",
-        "DD7"
+        "DD7",
+        "DD8"
       ],
       "qa": [
         {
