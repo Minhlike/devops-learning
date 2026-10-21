@@ -145,7 +145,7 @@
       ]
     },
     "P02.C01.L02": {
-      "content_sha256": "73f72d148a3d5bd7c744724887f3d24c71fbed9aba51123bd6f57fe497959cf5",
+      "content_sha256": "33ddef9025c19740e043589b36172d1cc813d38b4c6c2e13e9efaf7d5d9c7b71",
       "editorial_decision": "Ví dụ mode 0644/0700 giả định đúng quan hệ tra cứu đường dẫn; bổ sung nguồn cho quyền tìm kiếm thư mục.",
       "checks": [
         {
@@ -379,7 +379,7 @@
       ]
     },
     "P02.C04.L03": {
-      "content_sha256": "647e29f85173992950041f58517b4071d40522402c2a6f72f0593bd96ab957fc",
+      "content_sha256": "40faf9138e0103185071cad7ec7c1c487bfa790d583bb2c0806fd9b6d46491f2",
       "editorial_decision": "Runbook theo thứ tự artifact-process-socket-request; systemd-analyze verify chỉ được mô tả như kiểm tra cú pháp/một phần tham chiếu.",
       "checks": [
         {
@@ -592,7 +592,7 @@
       ]
     },
     "P03.C03.L02": {
-      "content_sha256": "357e9f71854a03af90baab37382ad23b4d58bd04de19b579ef1f88efbdaa26a3",
+      "content_sha256": "7b33991df90f9cac2e90396f0de61c6d6f74a79586c2ec7693eeb6f3aaa78c07",
       "editorial_decision": "TLS 1.3 và xác minh danh tính được đặt đúng ranh giới client–proxy; đoạn proxy–upstream cần hợp đồng riêng.",
       "checks": [
         {
@@ -704,7 +704,7 @@
       ]
     },
     "P03.C04.L03": {
-      "content_sha256": "6dbfa08b9aa9a154272b763b3507790e37c62160004b0cce3862732f597ff2c9",
+      "content_sha256": "77b68e48dfa2c93dec620891a9c8a8cffe463679a89fc9b6632a16af135dc8fc",
       "editorial_decision": "Sự cố DNS/TCP/TLS/502/504 được chẩn đoán theo bằng chứng từng tầng; status không bị đồng nhất với nguyên nhân gốc.",
       "checks": [
         {
@@ -810,7 +810,7 @@
       ]
     },
     "P04.C02.L02": {
-      "content_sha256": "d9c346a975340375a2a32854251a537d7c419780858489a620c7e7b6f8539917",
+      "content_sha256": "e5288b1f6dd1d63c44c71ff6a1deb64afdbb80ee011fe7c9367a6652500485cd",
       "editorial_decision": "Rebase tạo commit mới trên D và đổi đồ thị; giới hạn an toàn khi lịch sử đã chia sẻ được nêu rõ.",
       "checks": [
         {
@@ -888,7 +888,7 @@
       ]
     },
     "P05.C01.L02": {
-      "content_sha256": "a1102c65dd790f3ecdfa0a61f18bd0040ab59b46f9149ada25d85400e8dd7f86",
+      "content_sha256": "0abb467716f390a9d50747e8fc8af617bf9b0c6cccf2a7dc7d37b4eabefe9727",
       "editorial_decision": "Redirection và pipe được phân biệt theo file descriptor; mã lỗi của utility và pipeline được kiểm theo hợp đồng riêng.",
       "checks": [
         {
@@ -960,7 +960,7 @@
       ]
     },
     "P05.C02.L01": {
-      "content_sha256": "656c88482e14584f05e094dba07fd340cdf25dd6a715809f007e3a50a96df576",
+      "content_sha256": "8595045da72f37cccf01a2df402611d57f7ab202671cf7cd81cfc9f32ba5738e",
       "editorial_decision": "Lựa chọn Bash/Python/Go dựa trên trạng thái và môi trường chạy; binary hoặc virtual environment không được coi tự di động.",
       "checks": [
         {
@@ -976,7 +976,7 @@
       ]
     },
     "P05.C02.L02": {
-      "content_sha256": "58069a960fb5e6c7ed0c344475e60f7577325ba275e4b3315e196eecb1516e14",
+      "content_sha256": "d5b5ccbb333855ed856ad9fdcc71ac94cbc5cedacb70af752c840db4cb67d53c",
       "editorial_decision": "argv, môi trường và API subprocess được tách khỏi shell parsing; ví dụ Python/Go kiểm returncode và trạng thái cuối.",
       "checks": [
         {
@@ -1024,7 +1024,7 @@
       ]
     },
     "P05.C02.L03": {
-      "content_sha256": "9e1f7ecddceb03d46d95838cb2a7261341231b7ab85eaef6bcb481012d613c7f",
+      "content_sha256": "818861463545ab3ff06911e2404aea59100f8365ac7a164d7453478e6fd9c89e",
       "editorial_decision": "READY tách startup khỏi timeout tác vụ; cancellation chỉ quản lý process trực tiếp và không rollback partial side effects.",
       "checks": [
         {
@@ -1101,7 +1101,7 @@
       ]
     },
     "P05.C03.L03": {
-      "content_sha256": "6829e124de2313b69b8b049f09d465b80beed404f67c7d074833e317c468b525",
+      "content_sha256": "10ce02e581881bf8945f5d32bed765379b33e56b0968048ec2a88f946d730a1b",
       "editorial_decision": "Bản sửa dùng staging và publish có điều kiện; restore trên đường tạm và cleanup chỉ được xác nhận trong phạm vi fixture.",
       "checks": [
         {
@@ -1137,7 +1137,7 @@
       ]
     },
     "P06.C01.L01": {
-      "content_sha256": "b394543c42647eee30a851375a05466b5602ee68773582eb8d3e58012560dd91",
+      "content_sha256": "441d986d5af4b3f85554d13ea70a56b1bdb1a4646500f76847f37156e703bab1",
       "editorial_decision": "Chuỗi commit→artifact→runtime nêu rõ commit không định danh binary; tái lập byte cần khóa và đo toàn bộ đầu vào.",
       "checks": [
         {
@@ -1164,7 +1164,7 @@
       ]
     },
     "P06.C01.L02": {
-      "content_sha256": "15236a161fe9657fbe31fc1a619a4933a51d333fbb7dc2b56bcc2366f6973c36",
+      "content_sha256": "17687c386aa847561ee2b71920a38e14ca33c5f5238a76c2b2e44a4f2a8d3e6b",
       "editorial_decision": "Digest artifact gắn chính byte đã test, không suy từ tag; phép kiểm danh tính nằm ở artifact được triển khai.",
       "checks": [
         {
@@ -1384,7 +1384,7 @@
       ]
     },
     "P07.C01.L02": {
-      "content_sha256": "4c603f6792a25632fd44a49e33f7909b585ff126a22a5137714cbb728f94833b",
+      "content_sha256": "281d05a4ea39eacf6a86d109285f4fd5a8ad777af3a20086f0c6d4f480234c78",
       "editorial_decision": "Namespace là góc nhìn, cgroup là kiểm soát tài nguyên; không suy container là ranh giới bảo mật tuyệt đối.",
       "checks": [
         {
@@ -1497,7 +1497,7 @@
       ]
     },
     "P07.C02.L01": {
-      "content_sha256": "d7b9fd67a0c38cdd5ff07da3bc1b6572bbb766b208bfa0758979fb0d440fd058",
+      "content_sha256": "640603888563ca2f731385da37601ac9ca0582234f0cdbbccde7b0443e9e6060",
       "editorial_decision": "Cache build gắn đầu vào và layer; không khẳng định cache hit đồng nghĩa byte đầu ra an toàn hoặc tái lập.",
       "checks": [
         {
@@ -1513,7 +1513,7 @@
       ]
     },
     "P07.C02.L02": {
-      "content_sha256": "8136c95d90efb8c6082fbce6313206a024142cac4efd84d1daf7e3f75415a854",
+      "content_sha256": "b97de1e1c64fbbd4ee71c8c09b4e3ba32dff0463611f313ba0abddccc2595beb",
       "editorial_decision": "Image OCI, config, layer và runtime được tách; cùng tag đa nền tảng cần xác định manifest con.",
       "checks": [
         {
@@ -1566,7 +1566,7 @@
       ]
     },
     "P07.C03.L01": {
-      "content_sha256": "45e68ee09be50065d5567320a10703f984a266f1872d626ddbb1ae4036fe2343",
+      "content_sha256": "24c0d8f54732cf800e7e32fd594805257316044ae4248e722895d9072719aa50",
       "editorial_decision": "Vòng đời container và writable layer tách khỏi readiness; thêm giới hạn rằng container có thể chứa tiến trình con.",
       "checks": [
         {
@@ -1593,7 +1593,7 @@
       ]
     },
     "P07.C03.L03": {
-      "content_sha256": "40bfcd4cba338fc48a84b1d7d7e097cac3a91fb9426b7efefef23f3a1eff147a",
+      "content_sha256": "355046a7ea3e0443001b12d2d9bbaa940ea540ffbaa1de02aa708fc25a7d079e",
       "editorial_decision": "Volume/bind mount và quyền trên host được phân biệt; không hứa dữ liệu bền vững chỉ vì tên mount.",
       "checks": [
         {
@@ -1656,7 +1656,7 @@
       ]
     },
     "P07.C04.L02": {
-      "content_sha256": "c22921e5242e49d4cd9d4491d1de7229e45ef6b185b91cbe8cfed4ef7cd321ad",
+      "content_sha256": "bdb5b38c848a204379edd9bb770c2462d6aabc81357bfd8c65f75f52e991da96",
       "editorial_decision": "Compose YAML cho thấy mount dữ liệu và phụ thuộc startup; depends_on không mặc nhiên bảo đảm ứng dụng khỏe.",
       "checks": [
         {
@@ -1816,7 +1816,7 @@
       ]
     },
     "P08.C02.L03": {
-      "content_sha256": "f3f8bcdfc676b4ba6c0bdace21b105ef069b723a2a9da7f6ee791687f43bee92",
+      "content_sha256": "30aaa251dd4283bff022c970001639d4adc25d39a891e36088fe0fb6986b0600",
       "editorial_decision": "DNS, route, SG, NACL, Flow Logs và endpoint S3/STS được tách; ba câu đã chuyển claim được gộp theo đường đi.",
       "checks": [
         {
@@ -2213,7 +2213,7 @@
       ]
     },
     "P10.C02.L02": {
-      "content_sha256": "4967b006946b317a74f28451de9e8f2fff387c5ad8a265ef023a1b377f2be2e2",
+      "content_sha256": "23701af93f7ebc1edd35526503d925c8f1792517889a7a714ca7027cc931f8d9",
       "editorial_decision": "Task order, changed, notify và handler flush được phân biệt; không coi force_handlers là cách chữa mọi lỗi.",
       "checks": [
         {
@@ -2330,7 +2330,7 @@
       ]
     },
     "P11.C01.L01": {
-      "content_sha256": "728430258bb723d246695f01d722559b25b4282103d189a7c2402b2a52d408d2",
+      "content_sha256": "72f4cd758b9fb055613058ee2630e16b5426e9c307e2fe0634da7bd6368724f3",
       "editorial_decision": "API server, etcd và controller manager có trách nhiệm riêng; apply ghi ý định.",
       "checks": [
         {
@@ -2504,7 +2504,7 @@
       ]
     },
     "P11.C03.L01": {
-      "content_sha256": "262893a9bbe07cd64bccfa086d15344c5d51e9fe25ff3d4e5cdd4336a3132343",
+      "content_sha256": "ed311291dc633f28e27951c95a453b120645bb26f3d7766043387097f3529788",
       "editorial_decision": "Placement dựa requests, allocatable và ràng buộc node.",
       "checks": [
         {
@@ -2543,7 +2543,7 @@
       ]
     },
     "P11.C03.L02": {
-      "content_sha256": "ee44e422b5b3f6b0624cc0dcb7f10cf916b206ed32a3dca9a8c32bd900b4c508",
+      "content_sha256": "57227a1f2fa595a5392db5299c98f3fd478f34deccd27286c0c99da4bd2ae9ea",
       "editorial_decision": "CPU request/limit/throttling và memory OOM được phân biệt với lỗi ứng dụng.",
       "checks": [
         {
@@ -2805,7 +2805,7 @@
       ]
     },
     "P11.C06.L03": {
-      "content_sha256": "97c7603587189fd300f65e0d8a6dd860a9af26196a5642509f76c8c4c9f28b62",
+      "content_sha256": "04e78eaccb8639c9c8a7ff0610a69724f39861aa9c03a221cd2715cf60f999fa",
       "editorial_decision": "9 giây CPU/10 giây/3 Pod là 0,3 lõi; desired=4 không chứng minh Ready.",
       "checks": [
         {
@@ -2818,7 +2818,7 @@
       ]
     },
     "P11.C07.L01": {
-      "content_sha256": "a330f3beb0410b6de9f080194bcfb755b23bcc11aedea468fcafdc20ffda985d",
+      "content_sha256": "600e77ea54226aca2096376d35b89d18da1e283cb92b491578b27d020b747450",
       "editorial_decision": "GatewayClass, Gateway, HTTPRoute và controller khác vai trò.",
       "checks": [
         {
@@ -2931,7 +2931,7 @@
       ]
     },
     "P11.C08.L01": {
-      "content_sha256": "cfc155f907f57cbae73e615c069f7309d122bca0e28b4381f86be51fb2c899ae",
+      "content_sha256": "b0e5ccf72e93e27bd5ed2b6f2c606172d749cb7a2a3329bcb3e38a856fa97008",
       "editorial_decision": "Chart và values render YAML; controller vẫn phải hội tụ.",
       "checks": [
         {
@@ -3050,7 +3050,7 @@
       ]
     },
     "P12.C01.L03": {
-      "content_sha256": "9b2645f3c160d8e3005817fe02ec015fefa909924a9f906e2b6fb670a755363d",
+      "content_sha256": "d6428f624edd882723d49f9d5dc631fc08d914d894c97f7cab1c6366f4f0ba2d",
       "editorial_decision": "Scrape, up metric và TSDB là các bước khác nhau.",
       "checks": [
         {
@@ -3196,7 +3196,7 @@
       ]
     },
     "P12.C03.L01": {
-      "content_sha256": "348cc98e2d5543af375907e6f9d2577dfbc5425363199a12a0cc49a441cdf0aa",
+      "content_sha256": "3a68f129ab7ed09bc6b7b74df98887e1362240f26bd23ee377bf76f08dd08be9",
       "editorial_decision": "Log record, event time và trace_id phục vụ tương quan.",
       "checks": [
         {
@@ -3233,7 +3233,7 @@
       ]
     },
     "P12.C03.L02": {
-      "content_sha256": "45377960f86e812161a8180157a93cfcd477438f05a55dd98b4947921edb336e",
+      "content_sha256": "7bbbb3bac98bf108ff6826d527805df8ff2522d6e9c43c95c7084f275cc31b88",
       "editorial_decision": "Traceparent và span graph cho thấy critical path; không cộng span lồng nhau.",
       "checks": [
         {

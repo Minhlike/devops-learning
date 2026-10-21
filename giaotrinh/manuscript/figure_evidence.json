@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-21",
+  "render_source": "scripts/science_figures.py",
+  "storyboard": "architecture/visual_storyboard.md",
+  "figures": {
+    "V03": {
+      "lesson_id": "P02.C01.L02",
+      "claim": "rename đổi tên, FD đang mở vẫn tới inode cũ",
+      "source_ids": [
+        "R7",
+        "R8"
+      ],
+      "input_fixture": null,
+      "limits": "Không suy ra quyền truy cập mới chỉ từ inode; kiểm đường dẫn."
+    },
+    "V09": {
+      "lesson_id": "P04.C02.L02",
+      "claim": "merge có hai cha; rebase tạo commit mới trên D",
+      "source_ids": [
+        "G5"
+      ],
+      "input_fixture": null,
+      "limits": "Cùng snapshot cuối không làm lịch sử giống nhau."
+    },
+    "V10": {
+      "lesson_id": "P05.C01.L02",
+      "claim": "pipeline mặc định lấy status lệnh cuối; pipefail đổi status",
+      "source_ids": [
+        "SH1",
+        "TA1"
+      ],
+      "input_fixture": null,
+      "limits": "Hình không chứng minh backup đã bền hoặc restore được."
+    },
+    "V12": {
+      "lesson_id": "P06.C01.L02",
+      "claim": "commit, inputs, digest, gate, release và instance là các danh tính tách biệt",
+      "source_ids": [
+        "OCI1",
+        "SL1"
+      ],
+      "input_fixture": null,
+      "limits": "Sơ đồ chứng cứ, không khẳng định CI hay deploy đã chạy."
+    },
+    "V16": {
+      "lesson_id": "P07.C03.L03",
+      "claim": "writable layer, volume và bind mount khác vòng đời",
+      "source_ids": [
+        "DD2",
+        "DD3"
+      ],
+      "input_fixture": null,
+      "limits": "Named volume không tự là backup; dữ liệu ví dụ giả định."
+    },
+    "V18": {
+      "lesson_id": "P08.C02.L03",
+      "claim": "S3 gateway endpoint không cấp route tới STS; IAM là ranh giới khác",
+      "source_ids": [
+        "AWS4",
+        "AWS5",
+        "AWS6",
+        "AWS7"
+      ],
+      "input_fixture": null,
+      "limits": "Đường NAT/interface là phương án tùy VPC và Region, không giả định đã cấu hình."
+    },
+    "V22": {
+      "lesson_id": "P10.C02.L02",
+      "claim": "template changed notify handler; drift quyền riêng không notify",
+      "source_ids": [
+        "AS14",
+        "AS6",
+        "AS8",
+        "AS9"
+      ],
+      "input_fixture": null,
+      "limits": "Bốn lượt là tình huống giả định, không phải recap POSIX thực nghiệm."
+    },
+    "V29": {
+      "lesson_id": "P12.C03.L02",
+      "claim": "span lồng nhau trên trục 0–420 ms; log cùng request",
+      "source_ids": [
+        "OT2",
+        "OT3",
+        "OT4",
+        "OT6",
+        "WC1"
+      ],
+      "input_fixture": "examples/trace-ch19.csv + examples/logs-ch19.json",
+      "limits": "Thời gian từ fixture, không là trace cluster thật; không suy DB server latency."
+    },
+    "V33": {
+      "lesson_id": "P14.C03.L03",
+      "claim": "attestation subject gắn digest, verifier và admission xét từng ranh giới",
+      "source_ids": [
+        "OCI5",
+        "OCI6",
+        "OCI7",
+        "W2-ADMIT"
+      ],
+      "input_fixture": null,
+      "limits": "Chữ ký không chứng minh test đủ hay runtime khỏe."
+    },
+    "V43": {
+      "lesson_id": "P15.C03.L04",
+      "claim": "ledger tách artifact, kiểm chứng và quyết định dừng",
+      "source_ids": [
+        "KU4",
+        "SL1",
+        "W2-SRESLO",
+        "W2-WAREL"
+      ],
+      "input_fixture": null,
+      "limits": "Trạng thái CHƯA ĐO là mẫu, không phải kết quả capstone."
+    }
+  }
+}

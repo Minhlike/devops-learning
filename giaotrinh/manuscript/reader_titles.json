@@ -51,7 +51,7 @@
     "P11.C05": "PVC, CSI và dữ liệu của ứng dụng",
     "P11.C06": "HPA và điều khiển mở rộng",
     "P11.C07": "Gateway API và ranh giới yêu cầu ngoài cụm",
-    "P11.C08": "Biểu đồ Helm và vòng đời bản phát hành",
+    "P11.C08": "Gói Helm (Helm chart) và vòng đời bản phát hành",
     "P12.C01": "Phép đo, nhãn và chuỗi thời gian",
     "P12.C02": "Prometheus, PromQL và Grafana",
     "P12.C03": "Nhật ký, vết truy cập và OpenTelemetry",

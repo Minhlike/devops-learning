@@ -236,7 +236,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C01/L02.md",
-      "sha256": "73f72d148a3d5bd7c744724887f3d24c71fbed9aba51123bd6f57fe497959cf5",
+      "sha256": "33ddef9025c19740e043589b36172d1cc813d38b4c6c2e13e9efaf7d5d9c7b71",
       "legacy_units": [
         "TXT-3e420d52e556ac64"
       ],
@@ -465,7 +465,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P02/C03/L03.md",
-      "sha256": "9678353197df3e158cb743a14adb3f2f05e102bda565f49122ca45d2acee27de",
+      "sha256": "f0dd2514aaa672772076179de2da4ceef3810ccdf5dcfdee88a19b8f6b220733",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -516,7 +516,7 @@
         {
           "id": "C2.4",
           "publication_id": "P02.C03.L04.Q01",
-          "question": "Dùng số liệu giả định ở mục 2.5: tính mức dùng CPU trung bình và tỷ phần thời gian `io.pressure some` của hai cửa sổ; nêu dấu vết cho hoặc chống lại ba giả thuyết quota CPU, giới hạn bộ nhớ và chờ I/O. Chỉ ra một điều bảng chưa thể kết luận và phép đo kế tiếp.",
+          "question": "Dùng số liệu giả định ở {{xref:P02.C03.L04}}: tính mức dùng CPU trung bình và tỷ phần thời gian `io.pressure some` của hai cửa sổ; nêu dấu vết cho hoặc chống lại ba giả thuyết quota CPU, giới hạn bộ nhớ và chờ I/O. Chỉ ra một điều bảng chưa thể kết luận và phép đo kế tiếp.",
           "answer": "`cpu.stat usage_usec` chia cho 60.000.000 µs cho 0,30 và 0,32 lõi trung bình; `nr_throttled` không tăng nên chưa có dấu vết quota CPU tại cgroup đã đo. `memory.current` cuối kỳ tăng 5 MiB, còn `memory.events high` và `oom` không tăng; chưa thấy chạm hai ngưỡng này, nhưng chưa loại trừ thu hồi ở máy hoặc cgroup tổ tiên. `io.pressure some total` chia cho 60.000.000 µs cho 2% và 30% thời gian có ít nhất một tác vụ nghẽn I/O. Cùng với p95 tăng, đó là lý do ưu tiên điều tra I/O. PSI không gắn thời gian chờ với từng yêu cầu hay thiết bị; bước tiếp theo là đo thời gian thao tác đọc theo yêu cầu, đối chiếu `io.stat` và tình trạng thiết bị trong cùng cửa sổ. Chưa thể quy toàn bộ độ trễ cho I/O."
         }
       ]
@@ -606,7 +606,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C04/L03.md",
-      "sha256": "647e29f85173992950041f58517b4071d40522402c2a6f72f0593bd96ab957fc",
+      "sha256": "40faf9138e0103185071cad7ec7c1c487bfa790d583bb2c0806fd9b6d46491f2",
       "legacy_units": [
         "TXT-11a17d62e575bab3",
         "TXT-ed088662c3a52f0e",
@@ -876,7 +876,7 @@
         {
           "id": "C4.6",
           "publication_id": "P03.C02.L01.Q01",
-          "question": "Trong trace mục 4.3, vì sao SYN của client được đáp bằng `ack=1001`, còn bốn byte ở `seq=1001` được đáp bằng `ack=1005`? Nếu ACK đầu cho dữ liệu bị mất, client truyền lại cùng bốn byte thì server nên báo số ACK nào, và vì sao ứng dụng không nhận dữ liệu hai lần?",
+          "question": "Trong trace {{xref:P03.C02.L01}}, vì sao SYN của client được đáp bằng `ack=1001`, còn bốn byte ở `seq=1001` được đáp bằng `ack=1005`? Nếu ACK đầu cho dữ liệu bị mất, client truyền lại cùng bốn byte thì server nên báo số ACK nào, và vì sao ứng dụng không nhận dữ liệu hai lần?",
           "answer": "SYN chiếm một vị trí nên sau `seq=1000`, byte hoặc số thứ tự tiếp theo của client là 1001; server báo `ack=1001`. Bốn byte ở 1001–1004 làm số tiếp theo là 1005, nên ACK cộng dồn là 1005. Nếu ACK mất rồi cùng đoạn dữ liệu được gửi lại với `seq=1001`, server vẫn báo `ack=1005` vì không xuất hiện byte mới liên tục; TCP nhận diện đoạn lặp và không giao bốn byte lần hai cho ứng dụng. Không thể suy từ một capture đơn lẻ rằng mất ACK là nguyên nhân duy nhất của retransmission."
         }
       ]
@@ -1047,7 +1047,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L02.md",
-      "sha256": "357e9f71854a03af90baab37382ad23b4d58bd04de19b579ef1f88efbdaa26a3",
+      "sha256": "7b33991df90f9cac2e90396f0de61c6d6f74a79586c2ec7693eeb6f3aaa78c07",
       "legacy_units": [
         "chapters/05-dns-http-tls-reverse-proxy.md#5.2"
       ],
@@ -1177,7 +1177,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L03.md",
-      "sha256": "6dbfa08b9aa9a154272b763b3507790e37c62160004b0cce3862732f597ff2c9",
+      "sha256": "77b68e48dfa2c93dec620891a9c8a8cffe463679a89fc9b6632a16af135dc8fc",
       "legacy_units": [
         "TXT-8be99ac2c30b5b4e",
         "TXT-9e160630c5500711",
@@ -1349,7 +1349,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C02/L02.md",
-      "sha256": "d9c346a975340375a2a32854251a537d7c419780858489a620c7e7b6f8539917",
+      "sha256": "e5288b1f6dd1d63c44c71ff6a1deb64afdbb80ee011fe7c9367a6652500485cd",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.4"
       ],
@@ -1455,7 +1455,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C01/L02.md",
-      "sha256": "a1102c65dd790f3ecdfa0a61f18bd0040ab59b46f9149ada25d85400e8dd7f86",
+      "sha256": "0abb467716f390a9d50747e8fc8af617bf9b0c6cccf2a7dc7d37b4eabefe9727",
       "legacy_units": [
         "chapters/07-bash-ranh-gioi-loi.md#7.2"
       ],
@@ -1530,7 +1530,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C02/L01.md",
-      "sha256": "656c88482e14584f05e094dba07fd340cdf25dd6a715809f007e3a50a96df576",
+      "sha256": "8595045da72f37cccf01a2df402611d57f7ab202671cf7cd81cfc9f32ba5738e",
       "legacy_units": [
         "chapters/08-python-go-tu-dong-hoa.md#intro",
         "chapters/08-python-go-tu-dong-hoa.md#8.1",
@@ -1558,7 +1558,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C02/L02.md",
-      "sha256": "58069a960fb5e6c7ed0c344475e60f7577325ba275e4b3315e196eecb1516e14",
+      "sha256": "d5b5ccbb333855ed856ad9fdcc71ac94cbc5cedacb70af752c840db4cb67d53c",
       "legacy_units": [
         "TXT-fc5895d37f9caf41",
         "TXT-f4ce9167bd160ba7",
@@ -1612,7 +1612,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C02/L03.md",
-      "sha256": "9e1f7ecddceb03d46d95838cb2a7261341231b7ab85eaef6bcb481012d613c7f",
+      "sha256": "818861463545ab3ff06911e2404aea59100f8365ac7a164d7453478e6fd9c89e",
       "legacy_units": [
         "TXT-9c77b833c0906c0b",
         "TXT-74953ab7173f15fb",
@@ -1721,7 +1721,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C03/L03.md",
-      "sha256": "6829e124de2313b69b8b049f09d465b80beed404f67c7d074833e317c468b525",
+      "sha256": "10ce02e581881bf8945f5d32bed765379b33e56b0968048ec2a88f946d730a1b",
       "legacy_units": [
         "TXT-968e5a21663de378",
         "TXT-4d404ac156e8252a",
@@ -1762,7 +1762,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P06/C01/L01.md",
-      "sha256": "b394543c42647eee30a851375a05466b5602ee68773582eb8d3e58012560dd91",
+      "sha256": "441d986d5af4b3f85554d13ea70a56b1bdb1a4646500f76847f37156e703bab1",
       "legacy_units": [
         "chapters/09-build-test-phat-hanh-rollback.md#intro",
         "TXT-00267ee7dc6ef1ec",
@@ -1793,7 +1793,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P06/C01/L02.md",
-      "sha256": "15236a161fe9657fbe31fc1a619a4933a51d333fbb7dc2b56bcc2366f6973c36",
+      "sha256": "17687c386aa847561ee2b71920a38e14ca33c5f5238a76c2b2e44a4f2a8d3e6b",
       "legacy_units": [
         "TXT-b45d88f46d10254b"
       ],
@@ -2188,7 +2188,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C01/L02.md",
-      "sha256": "4c603f6792a25632fd44a49e33f7909b585ff126a22a5137714cbb728f94833b",
+      "sha256": "281d05a4ea39eacf6a86d109285f4fd5a8ad777af3a20086f0c6d4f480234c78",
       "legacy_units": [
         "chapters/10-namespace-cgroup-container.md#intro",
         "TXT-910af039bc09331e",
@@ -2281,7 +2281,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C02/L01.md",
-      "sha256": "d7b9fd67a0c38cdd5ff07da3bc1b6572bbb766b208bfa0758979fb0d440fd058",
+      "sha256": "640603888563ca2f731385da37601ac9ca0582234f0cdbbccde7b0443e9e6060",
       "legacy_units": [
         "TXT-6b6e27357bc3b549"
       ],
@@ -2307,7 +2307,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C02/L02.md",
-      "sha256": "8136c95d90efb8c6082fbce6313206a024142cac4efd84d1daf7e3f75415a854",
+      "sha256": "b97de1e1c64fbbd4ee71c8c09b4e3ba32dff0463611f313ba0abddccc2595beb",
       "legacy_units": [
         "chapters/11-image-registry-compose-du-lieu.md#intro",
         "TXT-13cf51f71705a39f",
@@ -2374,7 +2374,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C03/L01.md",
-      "sha256": "45e68ee09be50065d5567320a10703f984a266f1872d626ddbb1ae4036fe2343",
+      "sha256": "24c0d8f54732cf800e7e32fd594805257316044ae4248e722895d9072719aa50",
       "legacy_units": [
         "TXT-71314a8d07ce3604",
         "TXT-3681079078927fff",
@@ -2444,7 +2444,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C03/L03.md",
-      "sha256": "40bfcd4cba338fc48a84b1d7d7e097cac3a91fb9426b7efefef23f3a1eff147a",
+      "sha256": "355046a7ea3e0443001b12d2d9bbaa940ea540ffbaa1de02aa708fc25a7d079e",
       "legacy_units": [
         "TXT-da52033bbb1d18b9",
         "TXT-47acdbafd6e67680"
@@ -2511,7 +2511,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C04/L02.md",
-      "sha256": "c22921e5242e49d4cd9d4491d1de7229e45ef6b185b91cbe8cfed4ef7cd321ad",
+      "sha256": "bdb5b38c848a204379edd9bb770c2462d6aabc81357bfd8c65f75f52e991da96",
       "legacy_units": [
         "TXT-16713322237a72fd",
         "TXT-b0784a8e3d3ed653"
@@ -2750,7 +2750,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C02/L03.md",
-      "sha256": "f3f8bcdfc676b4ba6c0bdace21b105ef069b723a2a9da7f6ee791687f43bee92",
+      "sha256": "30aaa251dd4283bff022c970001639d4adc25d39a891e36088fe0fb6986b0600",
       "legacy_units": [
         "TXT-b7f804098fe0fee7",
         "TXT-3a0de5559bf00ab3",
@@ -2776,7 +2776,7 @@
         {
           "id": "C12.1",
           "publication_id": "P08.C02.L03.Q01",
-          "question": "Với cấu hình ở mục 12.4, DNS trả địa chỉ S3 nhưng TCP 443 timeout. Hãy nêu ba phép kiểm tra phân biệt route, SG/NACL và DNS. Vì sao tăng quyền role chưa phải phép sửa có căn cứ?",
+          "question": "Với cấu hình ở {{xref:P08.C02.L03}}, DNS trả địa chỉ S3 nhưng TCP 443 timeout. Hãy nêu ba phép kiểm tra phân biệt route, SG/NACL và DNS. Vì sao tăng quyền role chưa phải phép sửa có căn cứ?",
           "answer": "Xác nhận instance dùng đúng DNS resolver và đúng S3 regional endpoint; so địa chỉ trả về với Region cấu hình. Đọc route table thực sự gắn với subnet và liên kết gateway endpoint S3, không suy từ việc endpoint tồn tại trong VPC. Kiểm tra SG outbound TCP 443 và NACL ở cả hai chiều, đặc biệt inbound ephemeral khi instance là client; nếu có flow logs ở đúng ENI/cửa sổ, dùng chúng làm dấu vết phụ. DNS đã trả địa chỉ chỉ loại bớt lỗi phân giải ở lượt ấy; timeout xảy ra trước khi có phản hồi dịch vụ, nên chưa có bằng chứng IAM đã được xét. Trong dữ kiện đề, thiếu tuyến endpoint và không có NAT giải thích timeout."
         }
       ]
@@ -3518,7 +3518,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P10/C02/L02.md",
-      "sha256": "4967b006946b317a74f28451de9e8f2fff387c5ad8a265ef023a1b377f2be2e2",
+      "sha256": "23701af93f7ebc1edd35526503d925c8f1792517889a7a714ca7027cc931f8d9",
       "legacy_units": [
         "TXT-0454162910cfb6f3",
         "TXT-ca4f957f6e2a03a3",
@@ -3646,7 +3646,7 @@
         {
           "id": "C14.3",
           "publication_id": "P10.C03.L02.Q01",
-          "question": "Playbook lỗi ở mục 14.4 báo task `chmod` changed và restart hai máy. Hãy dựng chuỗi nguyên nhân có thể dẫn đến gián đoạn, nêu bằng chứng cần thu để phân biệt lỗi quyền với lỗi nội dung config, và đề xuất thứ tự sửa trên từng máy.",
+          "question": "Playbook lỗi ở {{xref:P10.C03.L02}} báo task `chmod` changed và restart hai máy. Hãy dựng chuỗi nguyên nhân có thể dẫn đến gián đoạn, nêu bằng chứng cần thu để phân biệt lỗi quyền với lỗi nội dung config, và đề xuất thứ tự sửa trên từng máy.",
           "answer": "Task `chmod 0700` có thể bỏ quyền đi qua của group service; template `root:root 0600` có thể khiến user `atlas` không đọc được config. Task command báo changed rồi notify restart; khi process cũ còn chạy nó có thể chưa cần mở lại file, nhưng sau restart sẽ gặp lỗi quyền. Nếu hai máy cùng restart, không còn target phục vụ. Thu mode/owner/group và UID/GID tại từng host, diff config, recap task/handler, log systemd và thử request; không suy từ mỗi chữ changed. Sửa quyền và nội dung có kiểm tra trước, chỉ restart máy thử khi config thật sự đổi, xác nhận request rồi lần lượt tới máy khác; nếu host lỗi, dừng rollout và ghi trạng thái từng máy."
         }
       ]
@@ -3695,7 +3695,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C01/L01.md",
-      "sha256": "728430258bb723d246695f01d722559b25b4282103d189a7c2402b2a52d408d2",
+      "sha256": "72f4cd758b9fb055613058ee2630e16b5426e9c307e2fe0634da7bd6368724f3",
       "legacy_units": [
         "chapters/15-kubernetes-trang-thai-mong-muon.md#intro",
         "TXT-a23b33d4221de423",
@@ -3900,7 +3900,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C03/L01.md",
-      "sha256": "262893a9bbe07cd64bccfa086d15344c5d51e9fe25ff3d4e5cdd4336a3132343",
+      "sha256": "ed311291dc633f28e27951c95a453b120645bb26f3d7766043387097f3529788",
       "legacy_units": [
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#intro",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.1",
@@ -3940,7 +3940,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C03/L02.md",
-      "sha256": "ee44e422b5b3f6b0624cc0dcb7f10cf916b206ed32a3dca9a8c32bd900b4c508",
+      "sha256": "57227a1f2fa595a5392db5299c98f3fd478f34deccd27286c0c99da4bd2ae9ea",
       "legacy_units": [
         "TXT-772a5ceafcfbcca0",
         "TXT-b7c4cb374f6a3fbd"
@@ -4276,7 +4276,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L03.md",
-      "sha256": "97c7603587189fd300f65e0d8a6dd860a9af26196a5642509f76c8c4c9f28b62",
+      "sha256": "04e78eaccb8639c9c8a7ff0610a69724f39861aa9c03a221cd2715cf60f999fa",
       "legacy_units": [
         "TXT-2a0b0963f5d75b8a"
       ],
@@ -4307,7 +4307,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C07/L01.md",
-      "sha256": "a330f3beb0410b6de9f080194bcfb755b23bcc11aedea468fcafdc20ffda985d",
+      "sha256": "600e77ea54226aca2096376d35b89d18da1e283cb92b491578b27d020b747450",
       "legacy_units": [
         "chapters/17-gateway-api-helm.md#intro",
         "TXT-36642cf0c7947c4c",
@@ -4436,7 +4436,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L01.md",
-      "sha256": "cfc155f907f57cbae73e615c069f7309d122bca0e28b4381f86be51fb2c899ae",
+      "sha256": "b0e5ccf72e93e27bd5ed2b6f2c606172d749cb7a2a3329bcb3e38a856fa97008",
       "legacy_units": [
         "TXT-fd1b185a294a1221",
         "TXT-b64705f3b0f22752",
@@ -4619,7 +4619,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C01/L03.md",
-      "sha256": "9b2645f3c160d8e3005817fe02ec015fefa909924a9f906e2b6fb670a755363d",
+      "sha256": "d6428f624edd882723d49f9d5dc631fc08d914d894c97f7cab1c6366f4f0ba2d",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#intro",
         "TXT-46113dae7de0e91a",
@@ -4774,7 +4774,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C03/L01.md",
-      "sha256": "348cc98e2d5543af375907e6f9d2577dfbc5425363199a12a0cc49a441cdf0aa",
+      "sha256": "3a68f129ab7ed09bc6b7b74df98887e1362240f26bd23ee377bf76f08dd08be9",
       "legacy_units": [
         "chapters/19-logs-traces-opentelemetry.md#intro",
         "chapters/19-logs-traces-opentelemetry.md#19.1",
@@ -4807,7 +4807,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C03/L02.md",
-      "sha256": "45377960f86e812161a8180157a93cfcd477438f05a55dd98b4947921edb336e",
+      "sha256": "7bbbb3bac98bf108ff6826d527805df8ff2522d6e9c43c95c7084f275cc31b88",
       "legacy_units": [
         "chapters/19-logs-traces-opentelemetry.md#19.2",
         "TXT-af4ce76ed2bc2add",
@@ -5608,7 +5608,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C03/L03.md",
-      "sha256": "0d184a6d0a1714301f46b97acf9dd9ca281e50418ae574e15550cdcdbd23a9c1",
+      "sha256": "2f99f8b41ecaa6226a3973bb2594f5f2e7dc08e04aa38a31bdddc3a24c4b78e3",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -6016,7 +6016,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L04.md",
-      "sha256": "449dc944f46820d48eced84b62584c463f7646bd7a15f019d0b23ab36330d85a",
+      "sha256": "ed4344e64e34f02cdba4992d9ac125feb6475f69fd429983a86eb1fa217bc74c",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],

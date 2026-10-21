@@ -28,6 +28,13 @@ class ManuscriptContract(unittest.TestCase):
     def setUpClass(cls):
         cls.tree, cls.manifest = build.load_manuscript()
 
+    @staticmethod
+    def current_references(lid, text):
+        contract = json.loads((ROOT / "manuscript" / "cross_references.json").read_text(encoding="utf-8"))
+        for old, new in contract["legacy_rewrites"].get(lid, []):
+            text = text.replace(old, new)
+        return text
+
     def test_all_ids_have_exact_parent_and_no_fake_completed_lesson(self):
         self.assertEqual(len(self.tree["parts"]), 15)
         self.assertEqual(sum(len(p["chapters"]) for p in self.tree["parts"]), 58)
@@ -68,7 +75,9 @@ class ManuscriptContract(unittest.TestCase):
                           [u["old_location"].split(":")[0] for u in units
                            if u["primary_lesson_id"] == row["primary_text_owner"]])
             if row["action"] != "split":
-                self.assertIn(original, (ROOT / owner["content"]).read_text(encoding="utf-8"))
+                body = (ROOT / owner["content"]).read_text(encoding="utf-8")
+                for paragraph in re.split(r"\n\s*\n", original):
+                    self.assertIn(self.current_references(row["primary_text_owner"], paragraph), body)
         for unit in units:
             old, rest = unit["old_location"].split("#")
             section, ordinal = rest.split(":")
@@ -106,9 +115,11 @@ class ManuscriptContract(unittest.TestCase):
                     paragraph = paragraph.replace(sentence + " ", "", 1) if sentence + " " in paragraph else (
                         paragraph.replace(" " + sentence, "", 1) if " " + sentence in paragraph else
                         paragraph.replace(sentence, "", 1))
+            paragraph = self.current_references(unit["primary_lesson_id"], paragraph)
             self.assertIn(" ".join(paragraph.split()), " ".join(migrated.split()))
 
     def test_each_lesson_first_and_last_prose_reaches_candidate(self):
+        labels = build.publication_labels(self.tree)[1]
         with pymupdf.open(build.OUTPUT) as doc:
             pdf_text = " ".join(" ".join(page.get_text().split()) for page in doc)
         for lid, row in self.manifest["lessons"].items():
@@ -118,12 +129,38 @@ class ManuscriptContract(unittest.TestCase):
                 block = block.strip()
                 if not block or block.startswith(("{{", "```", "#", "|")):
                     continue
-                plain = " ".join(re.sub(r"[`*]", "", block).split())
+                plain = " ".join(re.sub(r"[`*]", "", build.expand_references(block, labels)).split())
                 if len(plain) > 70:
                     paragraphs.append(plain)
             self.assertTrue(paragraphs, lid)
             for paragraph in (paragraphs[0], paragraphs[-1]):
                 self.assertIn(paragraph[:65], pdf_text, lid)
+
+    def test_cross_references_follow_tree_and_fail_on_wrong_topic(self):
+        contract = json.loads((ROOT / "manuscript" / "cross_references.json").read_text(encoding="utf-8"))
+        self.assertEqual(build.validate_cross_references(self.tree, self.manifest, contract), 43)
+        labels = build.publication_labels(self.tree)[1]
+        self.assertEqual(build.expand_references("{{xref:P03.C02.L01}}", labels), "Bài 9.1")
+        reordered = copy.deepcopy(self.tree)
+        chapters = reordered["parts"][2]["chapters"]
+        chapters[0], chapters[1] = chapters[1], chapters[0]
+        shifted = build.publication_labels(reordered)[1]
+        self.assertEqual(build.expand_references("{{xref:P03.C02.L01}}", shifted), "Bài 8.1")
+        with self.assertRaisesRegex(ValueError, "không có đích"):
+            build.expand_references("{{xref:P99.C01}}", labels)
+        target_path = ROOT / self.manifest["lessons"]["P03.C03.L02"]["content"]
+        original_read = Path.read_text
+
+        def changed_source(path, *args, **kwargs):
+            body = original_read(path, *args, **kwargs)
+            if path == target_path:
+                return body.replace("{{xref:P03.C01}}", "{{xref:P03.C03}}", 1)
+            return body
+
+        with patch.object(Path, "read_text", changed_source):
+            with self.assertRaisesRegex(ValueError, "sai đích hoặc sai chủ đề"):
+                build.validate_cross_references(self.tree, self.manifest, contract)
+        self.assertNotIn("Chương 4", original_read(target_path, encoding="utf-8"))
 
     def test_claims_examples_and_question_answer_pairs_have_one_owner(self):
         evidence = ledger("evidence_ownership.csv")
@@ -266,6 +303,27 @@ class ManuscriptContract(unittest.TestCase):
             self.assertNotRegex(printed_toc, r"\bP\d{2}\.C\d{2}")
             doc[1].insert_text((72, 800), "P01.C01.L01", fontsize=8)
             with self.assertRaisesRegex(RuntimeError, "Mục lục in lộ mã"):
+                build.audit_document(doc)
+
+    def test_chapters_open_at_top_and_answer_toc_page_is_verified(self):
+        with pymupdf.open(build.OUTPUT) as doc:
+            chapters = [(title, page) for level, title, page in doc.get_toc()
+                        if level == 2 and title.startswith("Chương ")]
+            self.assertEqual(len(chapters), 58)
+            for title, page in chapters:
+                self.assertLess(doc[page - 1].search_for(title)[0].y0, 100, title)
+            answer_page = next(page for level, title, page in doc.get_toc()
+                               if title == "Lời giải bài tập")
+            first_part = doc.get_toc()[0][2]
+            toc_page = next(page for page in list(doc)[1:first_part - 1]
+                            if "Lời giải bài tập" in page.get_text())
+            title_rect = toc_page.search_for("Lời giải bài tập")[0]
+            number = next(word for word in toc_page.get_text("words")
+                          if word[4] == str(answer_page) and word[0] > 490
+                          and abs(word[1] - title_rect.y0) < 14)
+            toc_page.add_redact_annot(pymupdf.Rect(number[:4]))
+            toc_page.apply_redactions()
+            with self.assertRaisesRegex(RuntimeError, "Số trang mục lục in sai"):
                 build.audit_document(doc)
 
     def test_reader_exercise_names_cover_every_question_and_answer(self):

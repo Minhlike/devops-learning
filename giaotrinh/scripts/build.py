@@ -17,7 +17,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
-    BaseDocTemplate, CondPageBreak, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
+    BaseDocTemplate, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
     Preformatted, Spacer, LongTable, TableStyle, KeepTogether,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
@@ -46,6 +46,12 @@ SOURCE_HEADING_RE = re.compile(
 )
 REFERENCE_SIGNATURE_RE = re.compile(
     r"(?i)\b(?:RFC\s+\d{3,5}|Linux man-pages 6\.19|Operating Systems: Three Easy Pieces|source_map\.json|docs\.kernel\.org|man7\.org)\b"
+)
+XREF_RE = re.compile(r"\{\{xref:(P\d{2}(?:\.C\d{2})?(?:\.L\d{2})?)\}\}")
+LEGACY_XREF_RE = re.compile(
+    r"(?i)\b(?:chương\s+\d+(?:[–-]\d+)?|mục\s+\d+\.\d+(?:[–-]\d+)?|"
+    r"bài\s+\d+\.\d+|hình\s+(?:\d+|[IVX]+)\.\d+(?:\.\d+)?|"
+    r"bảng\s+\d+(?:\.\d+)?|phần\s+[IVX]+)\b"
 )
 
 
@@ -81,7 +87,7 @@ def style() -> dict[str, ParagraphStyle]:
                              backColor=colors.HexColor("#eeeeee"),
                              keepWithNext=True),
         "body": ParagraphStyle("body", fontName="Body", fontSize=11.7,
-                               leading=17.5, alignment=TA_LEFT, spaceAfter=7.5),
+                               leading=16.8, alignment=TA_LEFT, spaceAfter=6.5),
         "p13body": ParagraphStyle("p13body", fontName="Body", fontSize=11.7,
                                   leading=17, alignment=TA_LEFT, spaceAfter=6.5),
         "answerbody": ParagraphStyle("answerbody", fontName="Body", fontSize=10.8,
@@ -342,7 +348,87 @@ class Book(BaseDocTemplate):
                                       flowable.heading_text, self.page, key))
 
 
-def paragraph_markup(text: str) -> str:
+def short_reference(target: str, labels: dict[str, str]) -> str:
+    if target not in labels:
+        raise ValueError(f"Tham chiếu không có đích: {target}")
+    short = labels[target].split(" — ", 1)[0]
+    return "Phần " + short[5:] if short.startswith("PHẦN ") else short
+
+
+def expand_references(text: str, labels: dict[str, str]) -> str:
+    result = XREF_RE.sub(lambda match: short_reference(match.group(1), labels), text)
+    if "{{xref:" in result:
+        raise ValueError(f"Tham chiếu sai cú pháp: {result[:120]}")
+    return result
+
+
+def validate_cross_references(tree: dict, manifest: dict,
+                              contract: dict | None = None) -> int:
+    """Pin each semantic destination to its source so a valid but wrong ID fails."""
+    if contract is None:
+        contract = json.loads((ROOT / "manuscript" / "cross_references.json").read_text(encoding="utf-8"))
+    if contract.get("schema_version") != 1:
+        raise ValueError("Hợp đồng tham chiếu thiếu phiên bản")
+    _, labels = publication_labels(tree)
+    found: dict[str, list[str]] = {}
+    for lid, row in manifest["lessons"].items():
+        body = (ROOT / row["content"]).read_text(encoding="utf-8")
+        source = f"lesson:{lid}"
+        targets = XREF_RE.findall(body)
+        if "{{xref:" in XREF_RE.sub("", body):
+            raise ValueError(f"Tham chiếu sai cú pháp trong {source}")
+        if targets:
+            found[source] = targets
+        if LEGACY_XREF_RE.search(body):
+            raise ValueError(f"Tham chiếu số cũ còn trong {source}")
+        for qa in row["qa"]:
+            for field in ("question", "answer"):
+                source = f"qa:{qa['publication_id']}:{field}"
+                body = qa[field]
+                targets = XREF_RE.findall(body)
+                if "{{xref:" in XREF_RE.sub("", body):
+                    raise ValueError(f"Tham chiếu sai cú pháp trong {source}")
+                if targets:
+                    found[source] = targets
+                if LEGACY_XREF_RE.search(body):
+                    raise ValueError(f"Tham chiếu số cũ còn trong {source}")
+    expected = contract["sources"]
+    if found != expected:
+        raise ValueError(f"Tham chiếu sai đích hoặc sai chủ đề: {set(found) ^ set(expected)}")
+    for source, targets in found.items():
+        for target in targets:
+            if target not in labels:
+                raise ValueError(f"Tham chiếu không có đích: {source} -> {target}")
+    return sum(map(len, found.values()))
+
+
+def reference_contexts(manifest: dict, labels: dict[str, str]):
+    """Text around each rendered reference, for rejecting a stale PDF."""
+    for lid, row in manifest["lessons"].items():
+        bodies = [(lid, (ROOT / row["content"]).read_text(encoding="utf-8"))]
+        bodies.extend((qa["publication_id"] + ":" + field, qa[field])
+                      for qa in row["qa"] for field in ("question", "answer"))
+        for source, body in bodies:
+            for match in XREF_RE.finditer(body):
+                preceding_break = body.rfind("\n\n", 0, match.start())
+                paragraph_start = 0 if preceding_break < 0 else preceding_break + 2
+                paragraph_end = body.find("\n\n", match.end())
+                if paragraph_end < 0:
+                    paragraph_end = len(body)
+                paragraph = body[paragraph_start:paragraph_end]
+                expanded = expand_references(paragraph, labels)
+                start = len(expand_references(body[paragraph_start:match.start()], labels))
+                end = start + len(short_reference(match.group(1), labels))
+                excerpt = expanded[max(0, start - 24):end + 24]
+                plain = re.sub(r"[`*]", "", excerpt)
+                yield source, re.sub(r"\s+", " ", plain)
+
+
+def paragraph_markup(text: str, labels: dict[str, str] | None = None) -> str:
+    if labels is not None:
+        text = expand_references(text, labels)
+    elif "{{xref:" in text:
+        raise ValueError("Thiếu cây nhãn để dựng tham chiếu")
     escaped = html.escape(text)
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", escaped)
     escaped = re.sub(r"`([^`]+)`", r'<font name="Mono">\1</font>', escaped)
@@ -419,7 +505,8 @@ def source_free_issues(text: str) -> list[str]:
 
 
 def read_markdown(path: Path, styles: dict[str, ParagraphStyle],
-                  exercise_labels: dict[str, str] | None = None) -> list[Flowable]:
+                  exercise_labels: dict[str, str] | None = None,
+                  xref_labels: dict[str, str] | None = None) -> list[Flowable]:
     if not path.is_file():
         raise FileNotFoundError(path)
     raw = path.read_text(encoding="utf-8")
@@ -459,7 +546,7 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle],
                 heading = heading[4:]
             story.append(Paragraph(paragraph_markup(heading), styles["exercise"]))
             if rest.strip():
-                story.append(Paragraph(paragraph_markup(" ".join(rest.splitlines())), styles["body"]))
+                story.append(Paragraph(paragraph_markup(" ".join(rest.splitlines()), xref_labels), styles["body"]))
         elif block.startswith("# "):
             story.append(Heading(block[2:].strip(), 1, key, styles))
         elif block.startswith("## "):
@@ -511,7 +598,7 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle],
             if block.startswith("-"):
                 raise ValueError(f"Chưa hỗ trợ bảng hoặc list trong PDF: {path}")
             paragraph = " ".join(line.strip() for line in block.splitlines())
-            story.append(Paragraph(paragraph_markup(paragraph), styles["body"]))
+            story.append(Paragraph(paragraph_markup(paragraph, xref_labels), styles["body"]))
     return story
 
 
@@ -724,6 +811,7 @@ def build() -> None:
     register_fonts()
     tree, manifest = load_manuscript()
     chapter_numbers, labels = publication_labels(tree)
+    validate_cross_references(tree, manifest)
     exercise_labels = publication_exercises(tree, manifest)
     publication = list(published_lessons(tree, manifest))
     count = sum(len(lessons) for _, chapters in publication for _, lessons in chapters)
@@ -755,24 +843,22 @@ def build() -> None:
         story.append(PageBreak())
         for chapter_index, (chapter, lessons) in enumerate(chapters):
             if chapter_index:
-                # Keep a chapter heading with enough text while avoiding a
-                # near-empty page just for the preceding chapter's last task.
-                story.append(CondPageBreak(280))
+                story.append(PageBreak())
             story.append(Heading(labels[chapter["id"]], 2, chapter["id"], styles))
             story.append(Paragraph(paragraph_markup(chapter["objective"]), styles["body"]))
             for lesson in lessons:
                 lid = lesson["id"]
                 story.append(Heading(labels[lid], 3, lid, styles, include_in_toc=False))
                 story.extend(read_markdown(ROOT / manifest["lessons"][lid]["content"], styles,
-                                           exercise_labels))
+                                           exercise_labels, labels))
                 for qa in manifest["lessons"][lid]["qa"]:
                     if lid.startswith("P13."):
                         continue  # Reviewed P13 questions are already inside the lesson.
                     story.append(Paragraph(paragraph_markup(exercise_labels[qa["publication_id"]]),
                                            styles["exercise"]))
-                    story.append(Paragraph(paragraph_markup(qa["question"]), styles["body"]))
+                    story.append(Paragraph(paragraph_markup(qa["question"], labels), styles["body"]))
         story.append(PageBreak())
-    story.append(Heading("Lời giải", 1, "answers", styles, include_in_toc=False))
+    story.append(Heading("Lời giải bài tập", 1, "answers", styles))
     for part, chapters in publication:
         for chapter, lessons in chapters:
             entries = [(lid["id"], qa) for lid in lessons for qa in manifest["lessons"][lid["id"]]["qa"]]
@@ -782,7 +868,7 @@ def build() -> None:
                                  f"{chapter['id']}.answers", styles, include_in_toc=False))
             for _, qa in entries:
                 label = exercise_labels[qa["publication_id"]]
-                story.append(Paragraph(f"<b>{html.escape(label)}</b><br/>{paragraph_markup(qa['answer'])}",
+                story.append(Paragraph(f"<b>{html.escape(label)}</b><br/>{paragraph_markup(qa['answer'], labels)}",
                                        styles["answerbody"]))
     try:
         Book(NEXT).multiBuild(story)
@@ -835,6 +921,9 @@ def audit_document(doc: pymupdf.Document) -> None:
                         raise RuntimeError(f"Thiếu bài tập hoặc lời giải: {display}")
     if re.search(r"\bP\d{2}\.C\d{2}\.L\d{2}\.Q\d{2}\b|\bC13\.\d+\b", text):
         raise RuntimeError("Mã bài tập nội bộ lọt vào PDF")
+    for source, context in reference_contexts(manifest, labels):
+        if context not in normalized_text:
+            raise RuntimeError(f"Tham chiếu chưa cập nhật trong PDF: {source}: {context}")
     for figure in ("Hình XIII.1.1", "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
         if figure not in text:
             raise RuntimeError(f"Thiếu hình đã duyệt: {figure}")
@@ -860,6 +949,10 @@ def audit_document(doc: pymupdf.Document) -> None:
     for level, title, page in toc_entries[:len(expected)]:
         if page < 3 or page > len(doc) or title not in doc[page - 1].get_text():
             raise RuntimeError(f"Bookmark trỏ sai trang: {title} -> {page}")
+        if level == 2 and title.startswith("Chương "):
+            locations = doc[page - 1].search_for(title)
+            if len(locations) != 1 or locations[0].y0 > 100:
+                raise RuntimeError(f"Chương không mở rõ ở đầu trang: {title} -> {page}")
     for index, (level, title, page) in enumerate(toc_entries[:len(expected) - 1]):
         if level == 2 and toc_entries[index + 1][2] != page:
             raise RuntimeError(f"Tiêu đề Chương bị tách khỏi Bài đầu: {title}")
@@ -872,6 +965,21 @@ def audit_document(doc: pymupdf.Document) -> None:
     for level, label in expected:
         if level <= 2 and label not in printed_toc:
             raise RuntimeError(f"Mục lục in thiếu nhãn: {label}")
+    printed_entries = [(level, title, page) for level, title, page in toc_entries
+                       if level <= 2 and not title.startswith("Đáp án chương")]
+    if not any(title == "Lời giải bài tập" for _, title, _ in printed_entries):
+        raise RuntimeError("Mục lục in thiếu Lời giải bài tập")
+    toc_pages = [(doc[index], doc[index].get_text("words"))
+                 for index in range(1, first_part_page - 1)]
+    for _, title, destination in printed_entries:
+        matched = 0
+        for page, words in toc_pages:
+            for rect in page.search_for(title):
+                if any(word[4] == str(destination) and word[0] > PAGE_W - RIGHT - 45
+                       and abs(word[1] - rect.y0) < 14 for word in words):
+                    matched += 1
+        if matched != 1:
+            raise RuntimeError(f"Số trang mục lục in sai: {title} -> {destination}")
     issues = source_free_pdf_issues(doc)
     if issues:
         raise RuntimeError(f"Nguồn tham khảo lọt vào PDF: {issues}")

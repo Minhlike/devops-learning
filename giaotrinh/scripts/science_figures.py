@@ -1,4 +1,4 @@
-"""Editable monochrome mechanism diagrams for the four foundational models.
+"""Editable monochrome mechanism diagrams for the textbook's causal models.
 
 The labels and edges are source, not screenshots; ReportLab keeps them as PDF
 vector objects. Each diagram is deliberately scoped to one lesson claim.
@@ -6,7 +6,10 @@ vector objects. Each diagram is deliberately scoped to one lesson claim.
 
 from __future__ import annotations
 
+import csv
+import json
 import math
+from pathlib import Path
 
 from reportlab.lib import colors
 from reportlab.platypus import Flowable, KeepTogether, Paragraph
@@ -14,12 +17,23 @@ from reportlab.platypus import Flowable, KeepTogether, Paragraph
 INK = colors.HexColor("#242424")
 MID = colors.HexColor("#777777")
 LIGHT = colors.HexColor("#f0f0f0")
+ROOT = Path(__file__).resolve().parents[1]
 
 FIGURES = {
     "V02": ("Hình I.2.1 — fork/execve/wait: PID giả định; nhánh thành công và lỗi là hai lần chạy khác nhau.", 236),
+    "V03": ("Hình II.1.1 — Đổi tên thay mục thư mục; descriptor đang mở vẫn tới cùng inode.", 228),
     "V07": ("Hình III.2.1 — TCP: sequence đếm byte, ACK cộng dồn; số liệu giả định.", 242),
+    "V09": ("Hình IV.2.1 — Cùng nhánh ban đầu, merge thêm commit hai cha; rebase tạo commit mới.", 224),
+    "V10": ("Hình V.1.1 — Trạng thái pipeline không mặc nhiên là trạng thái của tar.", 218),
+    "V12": ("Hình VI.1.1 — Từ commit đến tiến trình phục vụ: mỗi cổng giữ một bằng chứng riêng.", 230),
+    "V16": ("Hình VII.3.1 — Vòng đời image, writable layer và nơi lưu độc lập; dữ liệu giả định.", 238),
+    "V18": ("Hình VIII.2.1 — Đường tới S3 và STS khác nhau; DNS, mạng và IAM là các ranh giới riêng.", 234),
     "V20": ("Hình IX.2.1 — Terraform: cấu hình, state và API thực có thể lệch nhau; CPU là dữ kiện giả định.", 220),
+    "V22": ("Hình X.2.1 — Handler chỉ chạy khi task phù hợp báo changed; các lượt là tình huống giả định.", 222),
     "V23": ("Hình XI.1.1 — Vòng điều khiển Kubernetes và đường request tách biệt.", 226),
+    "V29": ("Hình XII.3.1 — Năm span trên một trục 420 ms; số liệu từ fixture trace và log.", 244),
+    "V33": ("Hình XIV.3.1 — Chứng cứ nguồn, build và deploy: chữ ký không chứng minh chất lượng ứng dụng.", 232),
+    "V43": ("Hình XV.3.1 — Ledger capstone: mỗi hậu điều kiện cần phép kiểm và trạng thái riêng.", 248),
 }
 
 
@@ -92,6 +106,101 @@ class MechanismFigure(Flowable):
         self.box(17, y0 + 24, 190, 34, "waitpid(4201)", "nhận status 0 hoặc 127")
         self.text(15, y0 + 10, "fork lỗi: cha nhận -1, không có tiến trình con để wait.", 8)
 
+    def draw_V03(self, y0):
+        self.text(15, y0 + 207, "Trước rename: hai đường tham chiếu cùng đối tượng", 10, True)
+        self.box(15, y0 + 148, 132, 36, "Tên cũ", "/srv/log/current")
+        self.box(170, y0 + 148, 132, 36, "Mục thư mục", "entry → inode 42", fill=True)
+        self.box(325, y0 + 148, 132, 36, "inode 42", "nội dung + metadata")
+        self.line(147, y0 + 166, 170, y0 + 166, arrow=True)
+        self.line(302, y0 + 166, 325, y0 + 166, arrow=True)
+        self.box(15, y0 + 86, 132, 36, "FD 7 · process", "đã mở trước rename")
+        self.box(170, y0 + 86, 132, 36, "Open file desc.", "offset + flags", fill=True)
+        self.line(147, y0 + 104, 170, y0 + 104, arrow=True)
+        self.line(302, y0 + 104, 390, y0 + 148, arrow=True)
+        self.line(10, y0 + 69, 461, y0 + 69)
+        self.text(15, y0 + 49, "Sau rename: entry mang tên mới; FD 7 vẫn tới inode 42.", 9, True)
+        self.text(15, y0 + 32, "Hard link: entry khác → cùng inode; symlink: nội dung là đường dẫn.", 8)
+        self.text(15, y0 + 14, "Quyền tìm kiếm thư mục vẫn cần khi mở bằng tên mới.", 8)
+
+    def draw_V09(self, y0):
+        self.text(15, y0 + 201, "MERGE", 10, True)
+        self.text(257, y0 + 201, "REBASE", 10, True)
+        for x, y, label in ((34, 145, "B"), (110, 173, "D"), (110, 112, "C"),
+                            (195, 145, "M"), (276, 145, "B"), (355, 173, "D"),
+                            (433, 173, "C′")):
+            self.canv.circle(x, y0 + y, 13, stroke=1, fill=0)
+            self.text(x - 5, y0 + y - 3, label, 9, True)
+        for a, b in (((47,145),(96,173)),((47,145),(96,112)),((123,173),(182,145)),
+                     ((123,112),(182,145)),((289,145),(342,173)),((368,173),(420,173))):
+            self.line(a[0], y0+a[1], b[0], y0+b[1], arrow=True)
+        self.text(17, y0 + 75, "M có hai cha D và C; giữ nguyên commit C.", 8.5)
+        self.text(257, y0 + 75, "C′ có cha D và ID mới; C không đổi.", 8.5)
+        self.line(10, y0 + 58, 461, y0 + 58)
+        self.text(15, y0 + 37, "Cả hai cách đều cần giải conflict và chạy kiểm thử trên kết quả.", 8.5)
+        self.text(15, y0 + 19, "Đồ thị giả định: B là merge base, main đi B→D, feature đi B→C.", 8)
+
+    def draw_V10(self, y0):
+        self.text(15, y0 + 197, "Một pipeline Bash bị hiểu nhầm", 10, True)
+        self.box(15, y0 + 137, 125, 45, "tar", "exit 2; stderr")
+        self.box(177, y0 + 137, 125, 45, "tee", "exit 0; in log", fill=True)
+        self.box(337, y0 + 137, 120, 45, "pipeline", "mặc định: exit 0")
+        self.line(140, y0 + 159, 177, y0 + 159, arrow=True)
+        self.line(302, y0 + 159, 337, y0 + 159, arrow=True)
+        self.text(21, y0 + 119, "2>&1 đưa stderr của tar vào pipe; tee nhận được lỗi.", 8.5)
+        self.line(10, y0 + 101, 461, y0 + 101)
+        self.box(15, y0 + 42, 205, 42, "Không pipefail", "set -e thấy 0 → BACKUP_OK")
+        self.box(248, y0 + 42, 208, 42, "Có pipefail", "pipeline thấy 2 → dừng lỗi", fill=True)
+        self.text(15, y0 + 19, "Vẫn phải kiểm archive và hậu điều kiện; pipefail không chứng minh backup tốt.", 8)
+
+    def draw_V12(self, y0):
+        self.text(15, y0 + 209, "Một thay đổi chỉ an toàn khi nối được các định danh", 10, True)
+        nodes = [(14, "Commit c84", "source"), (128, "Inputs", "toolchain / deps"),
+                 (242, "Artifact H84", "digest"), (356, "Test gate", "đúng H84")]
+        for x, title, small in nodes:
+            self.box(x, y0 + 143, 101, 42, title, small, fill=x in (242, 356))
+        for x in (115, 229, 343): self.line(x, y0 + 164, x + 13, y0 + 164, arrow=True)
+        self.box(51, y0 + 65, 164, 47, "Release record", "chọn H84; approval")
+        self.box(258, y0 + 65, 164, 47, "Instance phục vụ", "imageID H84; request", fill=True)
+        self.line(407, y0 + 143, 133, y0 + 112, arrow=True)
+        self.line(215, y0 + 89, 258, y0 + 89, arrow=True)
+        self.text(15, y0 + 40, "Tag là nhãn có thể đổi; digest gắn với byte artifact đã kiểm.", 8.5)
+        self.text(15, y0 + 21, "Deploy xong ≠ Ready; kiểm revision và request ở đường phục vụ.", 8.5)
+
+    def draw_V16(self, y0):
+        self.text(15, y0 + 215, "Tạo lại container từ image mới · dữ liệu giả định", 10, True)
+        self.box(14, y0 + 158, 136, 43, "Image H1 → H2", "artifact bất biến")
+        self.box(167, y0 + 158, 136, 43, "Container A → B", "writable layer mới", fill=True)
+        self.box(320, y0 + 158, 137, 43, "App path", "/var/lib/orders")
+        self.line(150, y0 + 179, 167, y0 + 179, arrow=True)
+        self.line(303, y0 + 179, 320, y0 + 179, arrow=True)
+        self.text(15, y0 + 139, "Một trong ba nơi lưu, tùy cấu hình mount:", 8.5, True)
+        self.box(15, y0 + 83, 136, 43, "Writable A", "mất khi xóa A")
+        self.box(168, y0 + 83, 136, 43, "Named volume", "vẫn gắn lại được", fill=True)
+        self.box(321, y0 + 83, 136, 43, "Bind mount", "đường dẫn host")
+        self.line(389, y0 + 158, 389, y0 + 132)
+        self.line(83, y0 + 132, 389, y0 + 132)
+        for x in (83,236,389): self.line(x, y0 + 132, x, y0 + 126, arrow=True)
+        self.line(10, y0 + 65, 461, y0 + 65)
+        self.text(15, y0 + 45, "Project khác có thể chọn tên volume khác; volume cũ chưa bị xóa.", 8)
+        self.text(15, y0 + 29, "Stopped/removed khác xóa volume; down mặc định không xóa named volume.", 8)
+        self.text(15, y0 + 13, "Persist không phải backup: cần snapshot/restore kiểm chứng riêng.", 8)
+
+    def draw_V18(self, y0):
+        self.text(15, y0 + 212, "Private EC2: cùng nguồn, hai đích dịch vụ khác nhau", 10, True)
+        self.box(15, y0 + 153, 104, 38, "EC2 private", "DNS chọn đích")
+        self.box(156, y0 + 153, 137, 38, "DNS result", "IP / tên dịch vụ", fill=True)
+        self.box(330, y0 + 153, 127, 38, "Route table", "subnet association")
+        self.line(119, y0 + 172, 156, y0 + 172, arrow=True)
+        self.line(293, y0 + 172, 330, y0 + 172, arrow=True)
+        self.box(14, y0 + 77, 210, 45, "S3 gateway endpoint", "prefix route → S3 cùng Region", fill=True)
+        self.box(248, y0 + 77, 209, 45, "STS regional endpoint", "cần đường riêng: NAT/IGW hoặc interface")
+        self.line(368, y0 + 153, 120, y0 + 122, arrow=True)
+        self.line(401, y0 + 153, 352, y0 + 122, arrow=True)
+        self.line(10, y0 + 60, 461, y0 + 60)
+        self.text(15, y0 + 40, "SG tại ENI và NACL tại subnet phải cho phép gói đi/về.", 8)
+        self.text(15, y0 + 24, "Sau TCP/HTTP: IAM xét principal, action, resource, context riêng.", 8)
+        self.text(15, y0 + 9, "Timeout trước HTTP không phải bằng chứng AccessDenied.", 8)
+
     def draw_V07(self, y0):
         self.text(15, y0 + 220, "CLIENT", 9, True)
         self.text(379, y0 + 220, "SERVER", 9, True)
@@ -122,6 +231,95 @@ class MechanismFigure(Flowable):
         self.line(388, y0 + 125, 295, y0 + 66, arrow=True)
         self.box(103, y0 + 32, 270, 34, "provider read / refresh / plan", "so A, state mới và B; có thể đề xuất thay", fill=False)
         self.text(15, y0 + 12, "Plan không khóa API và không bảo đảm apply thành công.", 8)
+
+    def draw_V22(self, y0):
+        self.text(15, y0 + 202, "Cùng playbook trên fixture POSIX · tình huống giả định", 10, True)
+        columns = (20, 120, 236, 348)
+        for x, label in zip(columns, ("Lượt", "file: mode 0750", "template", "handler")):
+            self.text(x, y0 + 176, label, 8, True)
+        rows = (
+            ("1 · tạo mới", "changed", "changed → notify", "chạy 1 lần"),
+            ("2 · chạy lại", "ok", "ok", "không chạy"),
+            ("Drift quyền", "changed", "ok", "không chạy"),
+            ("Drift config", "ok", "changed → notify", "chạy 1 lần"),
+        )
+        for index, row in enumerate(rows):
+            y = y0 + 146 - index * 30
+            if index % 2 == 0:
+                self.canv.setFillColor(LIGHT)
+                self.canv.rect(12, y - 9, 447, 28, fill=1, stroke=0)
+            for x, value in zip(columns, row): self.text(x, y, value, 8)
+            self.line(12, y - 10, 459, y - 10)
+        self.text(15, y0 + 18, "check mode chỉ dự báo thay đổi; apply thật và request vẫn cần hậu kiểm.", 8)
+
+    def draw_V29(self, y0):
+        with (ROOT / "examples" / "trace-ch19.csv").open(encoding="utf-8", newline="") as stream:
+            spans = list(csv.DictReader(stream))
+        logs = json.loads((ROOT / "examples" / "logs-ch19.json").read_text(encoding="utf-8"))
+        if [(s["alias"], int(s["start_ms"]), int(s["end_ms"])) for s in spans] != [
+            ("G", 0, 420), ("A", 12, 405), ("D", 30, 280),
+            ("U1", 285, 335), ("U2", 345, 385),
+        ] or [int(x["time"][20:23]) for x in logs] != [30, 335, 405]:
+            raise ValueError("Fixture trace/log thay đổi; phải kiểm lại hình V29")
+        self.text(15, y0 + 224, "Cùng request req-17 · trục thời gian 0–420 ms", 10, True)
+        x0, scale = 96, 345 / 420
+        for tick in (0, 100, 200, 300, 420):
+            x = x0 + tick * scale
+            self.line(x, y0 + 43, x, y0 + 199, dashed=True)
+            self.text(x - 8, y0 + 31, str(tick), 7)
+        for index, span in enumerate(spans):
+            y = y0 + 182 - index * 28
+            start, end = int(span["start_ms"]), int(span["end_ms"])
+            self.text(17, y + 5, span["alias"] + " " + span["stage"], 8)
+            self.canv.setFillColor(LIGHT if index % 2 else colors.white)
+            self.canv.setStrokeColor(INK)
+            self.canv.rect(x0 + start * scale, y, (end-start)*scale, 16, fill=1, stroke=1)
+            if span["status"] == "ERROR":
+                self.text(x0 + start*scale + 3, y + 4, "ERROR", 7, True)
+        for point in (30, 335, 405):
+            self.canv.setFillColor(INK)
+            self.canv.circle(x0 + point * scale, y0 + 48, 2.8, fill=1, stroke=0)
+        self.text(15, y0 + 12, "Log: 30 / 335 / 405 ms; HTTP 200 cuối. Span lồng nhau không cộng duration.", 7.8)
+
+    def draw_V33(self, y0):
+        self.text(15, y0 + 211, "Đường chứng cứ qua ba ranh giới", 10, True)
+        self.box(15, y0 + 148, 135, 40, "Nguồn", "commit + dependency lock")
+        self.box(168, y0 + 148, 135, 40, "Build", "input + SBOM", fill=True)
+        self.box(321, y0 + 148, 135, 40, "Artifact", "image digest H84")
+        self.line(150, y0 + 168, 168, y0 + 168, arrow=True)
+        self.line(303, y0 + 168, 321, y0 + 168, arrow=True)
+        self.box(15, y0 + 78, 135, 40, "Attestation", "subject = H84")
+        self.box(168, y0 + 78, 135, 40, "Verifier", "key + subject", fill=True)
+        self.box(321, y0 + 78, 135, 40, "Admission", "spec dùng H84")
+        self.line(389, y0 + 148, 83, y0 + 118, arrow=True)
+        self.line(150, y0 + 98, 168, y0 + 98, arrow=True)
+        self.line(303, y0 + 98, 321, y0 + 98, arrow=True)
+        self.line(10, y0 + 60, 461, y0 + 60)
+        self.text(15, y0 + 41, "Verifier kiểm chữ ký và digest; admission xét request theo policy.", 8)
+        self.text(15, y0 + 25, "Pod thực, request và dữ liệu cần hậu kiểm sau admission.", 8)
+        self.text(15, y0 + 10, "Chữ ký không chứng minh test đã đủ hoặc mã không có lỗi.", 8)
+
+    def draw_V43(self, y0):
+        self.text(15, y0 + 228, "Một thay đổi · mỗi hàng có chứng cứ và quy tắc dừng", 10, True)
+        headers = ("Bước", "Artifact/ID", "Phép kiểm", "Trạng thái")
+        xs = (17, 113, 236, 383)
+        for x, label in zip(xs, headers): self.text(x, y0 + 202, label, 8, True)
+        rows = (
+            ("Build", "commit → digest", "tính lại SHA-256", "CHƯA ĐO"),
+            ("Deploy", "revision → imageID", "Pod + request", "CHƯA ĐO"),
+            ("Quyền", "role + secret ID", "ca âm/ca dương", "CHƯA ĐO"),
+            ("Quan sát", "request_id", "metric/log/trace", "CHƯA ĐO"),
+            ("Sự cố", "injection ID", "stop / rollback", "CHƯA ĐO"),
+            ("Dữ liệu", "backup ID", "restore + SLI", "CHƯA ĐO"),
+        )
+        for index, row in enumerate(rows):
+            y = y0 + 177 - index * 26
+            if index % 2 == 0:
+                self.canv.setFillColor(LIGHT)
+                self.canv.rect(12, y - 8, 447, 25, fill=1, stroke=0)
+            for x, value in zip(xs, row): self.text(x, y, value, 7.8)
+            self.line(12, y - 9, 459, y - 9)
+        self.text(15, y0 + 14, "Thiếu identity, restore hoặc hậu trạng thái dữ liệu → DỪNG; SKIP có lý do.", 7.8)
 
     def draw_V23(self, y0):
         self.text(15, y0 + 206, "ĐƯỜNG ĐIỀU KHIỂN", 9, True)
