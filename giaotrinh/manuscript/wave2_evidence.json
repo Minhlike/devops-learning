@@ -182,6 +182,16 @@
       "type": "OpenTelemetry Collector documentation",
       "version": "rolling documentation checked 2026-10-20",
       "url": "https://opentelemetry.io/docs/collector/troubleshooting/"
+    },
+    "W2-PYSQL": {
+      "type": "Official versioned Python documentation",
+      "version": "Python 3.12",
+      "url": "https://docs.python.org/3.12/library/sqlite3.html"
+    },
+    "W2-PYHTTP": {
+      "type": "Official versioned Python documentation",
+      "version": "Python 3.12",
+      "url": "https://docs.python.org/3.12/library/http.server.html"
     }
   },
   "lessons": {
@@ -1430,6 +1440,15 @@
           "source_location": "Reliability Pillar, test recovery strategy",
           "support": "Bản sao cần được thử khôi phục theo mục tiêu recovery.",
           "limits": "Fixture cục bộ không chứng nhận production DR."
+        },
+        {
+          "anchor": "SQLite trong thư mục tạm",
+          "sources": [
+            "W2-PYSQL"
+          ],
+          "source_location": "sqlite3.connect and Connection.backup",
+          "support": "Python documents on-disk SQLite connections and the API for copying a database to another connection.",
+          "limits": "Temporary-directory cleanup is behavior of the local fixture; backup API is not proof of power-loss durability or production DR."
         }
       ],
       "qa": [
@@ -1461,6 +1480,15 @@
           "source_location": "Service Level Objectives, success fraction and measurement window",
           "support": "SRE định nghĩa SLI theo numerator/denominator và cửa sổ; số là phép tính minh họa.",
           "limits": "1.000 request là dữ liệu giả định, không là đo."
+        },
+        {
+          "anchor": "Server của bài chỉ dùng thư viện HTTP tối giản",
+          "sources": [
+            "W2-PYHTTP"
+          ],
+          "source_location": "http.server module overview and production warning",
+          "support": "The standard module implements basic HTTP server handlers and is explicitly not recommended for production.",
+          "limits": "Loopback binding and example status/data behavior are checked by the local fixture, not by the documentation."
         }
       ],
       "qa": [
@@ -1491,6 +1519,15 @@
           "source_location": "Reliability Pillar, recovery time objective",
           "support": "RTO là thời gian tối đa/được đo cho khôi phục phục vụ theo định nghĩa.",
           "limits": "Điểm bắt đầu/kết thúc phải quy định theo hợp đồng dịch vụ."
+        },
+        {
+          "anchor": "đọc bản backup vào database tách biệt",
+          "sources": [
+            "W2-PYSQL"
+          ],
+          "source_location": "sqlite3 Connection.backup examples",
+          "support": "The documented backup API copies a live source connection into a separate destination connection.",
+          "limits": "The expected 200/404 results come from executing this fixture; they do not estimate real RPO/RTO."
         }
       ],
       "qa": [

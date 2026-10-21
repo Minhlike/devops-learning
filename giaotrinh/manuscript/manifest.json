@@ -5940,12 +5940,13 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L01.md",
-      "sha256": "706dd277c78ead5c3ce1526cbaf19cf134a64e7b115f98c9236a53f65dd411a6",
+      "sha256": "d6b2cf2c93001d121b8d54c5545a5d0b5e4cebd4b87d1efbfafc45f5302ca34d",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
         "SL1",
+        "W2-PYSQL",
         "W2-RBDEF",
         "W2-WADR"
       ],
@@ -5971,13 +5972,14 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L02.md",
-      "sha256": "bd3ad0784257b231bf9b4acdfca85200c5582aa1eeb55806b6765ede6ee3d016",
+      "sha256": "06c82f589b3ac57c1451f01c676374c044cbb173f0ab6b266b53816b978cbe68",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
         "KU4",
         "SL1",
+        "W2-PYHTTP",
         "W2-SRESLO"
       ],
       "qa": [
@@ -6002,11 +6004,12 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L03.md",
-      "sha256": "454df6dc67b79c9641aa06cd7122c7e34f71c736b971775e6bb0a9c18c7234ba",
+      "sha256": "ed9f6163092ef01d6007e4ee5d9a9a719fe584e8427cd2b18cfbf70b21e37956",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
+        "W2-PYSQL",
         "W2-WADR"
       ],
       "qa": [
@@ -6031,7 +6034,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L04.md",
-      "sha256": "289199550e80917b5d6a2bd8460242173ef3f51f5af961bedfe25e20115780ab",
+      "sha256": "6a82f4c2e3b4db1b06841e846bd564ad832981d9d5cbc0a40d04462fc574083a",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],

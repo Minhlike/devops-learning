@@ -35,6 +35,8 @@
     "W2-WADR": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_planning_for_recovery_disaster_recovery.html",
     "W2-GHACT": "https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments",
     "W2-KREAD": "https://v1-34.docs.kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/",
-    "W2-OTELCOL": "https://opentelemetry.io/docs/collector/troubleshooting/"
+    "W2-OTELCOL": "https://opentelemetry.io/docs/collector/troubleshooting/",
+    "W2-PYSQL": "https://docs.python.org/3.12/library/sqlite3.html",
+    "W2-PYHTTP": "https://docs.python.org/3.12/library/http.server.html"
   }
 }
