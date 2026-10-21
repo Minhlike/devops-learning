@@ -104,7 +104,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P01/C02/L01.md",
-      "sha256": "1694f9818d6f76550d23750675ee276019589f5464217361fecde9391fade6ea",
+      "sha256": "7fb32e95c594d36fe453f5e8c8a0be6652c142305a76b2b6904b30f912dfdcb8",
       "legacy_units": [
         "chapters/01-tu-chuong-trinh-den-tien-trinh.md#intro",
         "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.1"
@@ -237,7 +237,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C01/L02.md",
-      "sha256": "33ddef9025c19740e043589b36172d1cc813d38b4c6c2e13e9efaf7d5d9c7b71",
+      "sha256": "1a6eac3c64800395c0caa233090ea3bd04d44117c7991085c2582552097bd1bd",
       "legacy_units": [
         "TXT-3e420d52e556ac64"
       ],
@@ -761,7 +761,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C01/L02.md",
-      "sha256": "1111c42972f9dfb49bfc041845390cd49091801121485a0e7fdf80122b1142dd",
+      "sha256": "4f4fd92f991a2ebde6af61ce64c7efc9e68e4e99dc8059f8fe03c7583a668a27",
       "legacy_units": [
         "TXT-8262a667798b516d"
       ],
@@ -772,7 +772,9 @@
       "examples": [],
       "source_ids": [
         "I1",
-        "N2"
+        "I2",
+        "N2",
+        "N3"
       ],
       "qa": [
         {
@@ -1255,7 +1257,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C01/L02.md",
-      "sha256": "5417488f046c27976e268d02a2275f1d55db02a9877ddf3734aa5dff8925b11d",
+      "sha256": "a287c78c9b7e497832fa4eafce857ea0d6dec0335c8d32636a6ff5122f50fbc2",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.2"
       ],
@@ -1461,7 +1463,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C01/L02.md",
-      "sha256": "0abb467716f390a9d50747e8fc8af617bf9b0c6cccf2a7dc7d37b4eabefe9727",
+      "sha256": "b2d5679ed83edfff2d6f72323e8372a46262d7704a1495464ae674f690bd52b7",
       "legacy_units": [
         "chapters/07-bash-ranh-gioi-loi.md#7.2"
       ],
@@ -2022,7 +2024,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P06/C03/L03.md",
-      "sha256": "1f3b0ec44c9d04828dbce38ddd38eba9a51b59a8ea53854aeeda9be2058068e1",
+      "sha256": "8f9a145913ded5426416b009aaf49b99aea19c84860ed5071058a03948c13210",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -2346,7 +2348,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C02/L03.md",
-      "sha256": "5a4c0801d1dc41395f13daae245dd8075e9705a83e9885f7bdc59d60a49dc89d",
+      "sha256": "060d3c58e41608ff6c5fd3286caca66a39fcda29ac5808a22372285a86a19e99",
       "legacy_units": [
         "TXT-8d26599c67f03df4"
       ],
@@ -2355,7 +2357,9 @@
       ],
       "examples": [],
       "source_ids": [
-        "OCI5"
+        "OCI5",
+        "OCI6",
+        "OCI7"
       ],
       "qa": [
         {
@@ -2833,13 +2837,16 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C03/L02.md",
-      "sha256": "76ccf2d78a3e802eb09317bfc51105761a9b0bfd937396b4884559e1e4f6e0ac",
+      "sha256": "9735dc157c3518815312d2ca413afafb86c550038169ece334f3e13159db0273",
       "legacy_units": [
         "TXT-7f624d98e45713f8"
       ],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "AWS2",
+        "AWS6"
+      ],
       "qa": [
         {
           "id": "C12.4",
@@ -3094,7 +3101,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P09/C02/L01.md",
-      "sha256": "52ec9dba2cb06d356aa39b59ff1ed198cea0c58bf66239ee14e0c2c3363d51d1",
+      "sha256": "62041b5a31f643a73d8873cafc9af91b0b43dd68b29e669fdb33c3d919dbcd3e",
       "legacy_units": [
         "TXT-3d63d47ddff53d59"
       ],
@@ -3103,7 +3110,9 @@
       ],
       "examples": [],
       "source_ids": [
-        "TF1"
+        "TF1",
+        "TF5",
+        "W2-TFMOVED"
       ],
       "qa": []
     },
@@ -3528,7 +3537,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P10/C02/L02.md",
-      "sha256": "23701af93f7ebc1edd35526503d925c8f1792517889a7a714ca7027cc931f8d9",
+      "sha256": "4fb8a33dc95f88c7533899cf5475459409a6526a9d9143621fbd2a77d1bff532",
       "legacy_units": [
         "TXT-0454162910cfb6f3",
         "TXT-ca4f957f6e2a03a3",
@@ -4117,7 +4126,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C05/L01.md",
-      "sha256": "4010d529934febf83bdde1837c4f23e60ce21980e0c21368a3ca73db42c30212",
+      "sha256": "32e407135839c373004b294e094bd8941724cd2f3867e7a3017e75a745849e29",
       "legacy_units": [
         "TXT-5077a330d6f2f3f0",
         "TXT-81d50c5799498d33"
@@ -4636,7 +4645,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C01/L03.md",
-      "sha256": "d6428f624edd882723d49f9d5dc631fc08d914d894c97f7cab1c6366f4f0ba2d",
+      "sha256": "d26a7b11df8d384ca7cc874a9a9e903ddd436b233ba6b856203f1b7dc95c298b",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#intro",
         "TXT-46113dae7de0e91a",
@@ -4651,7 +4660,8 @@
       "source_ids": [
         "PM1",
         "PM11",
-        "PM4"
+        "PM4",
+        "PM9"
       ],
       "qa": []
     },
@@ -6037,7 +6047,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L04.md",
-      "sha256": "6a82f4c2e3b4db1b06841e846bd564ad832981d9d5cbc0a40d04462fc574083a",
+      "sha256": "4b177e60a56399e19aa0bb9287ac592763ed36efc98324e90a43580bdea8e30a",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],

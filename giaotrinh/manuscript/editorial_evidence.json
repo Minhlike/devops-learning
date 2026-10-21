@@ -31,8 +31,8 @@
       ]
     },
     "P01.C02.L01": {
-      "content_sha256": "1694f9818d6f76550d23750675ee276019589f5464217361fecde9391fade6ea",
-      "editorial_decision": "Phân biệt source, executable và process; ví dụ build/deploy nêu rõ giới hạn của artifact so với dịch vụ đang chạy.",
+      "content_sha256": "7fb32e95c594d36fe453f5e8c8a0be6652c142305a76b2b6904b30f912dfdcb8",
+      "editorial_decision": "Phân biệt source, executable và process; ví dụ build/deploy nêu rõ giới hạn của artifact so với dịch vụ đang chạy. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "một tiến trình có thể thay chương trình đang thực thi mà vẫn giữ định danh tiến trình",
@@ -50,6 +50,16 @@
           "sources": [],
           "support": "Build kiểm tra artifact ở thời điểm tạo; readiness là trạng thái của lần chạy cụ thể.",
           "limits": "Mức đảm bảo tùy phép build/test và cơ chế triển khai."
+        },
+        {
+          "anchor": "PID có thể giữ nguyên qua bước `execve`",
+          "kind": "documented",
+          "sources": [
+            "R2"
+          ],
+          "source_location": "execve(2): DESCRIPTION; Effect on process attributes",
+          "support": "execve thay image trong tiến trình gọi; PID không được tạo mới bởi syscall này.",
+          "limits": "Không suy readiness từ execve thành công."
         }
       ]
     },
@@ -163,8 +173,8 @@
       ]
     },
     "P02.C01.L02": {
-      "content_sha256": "33ddef9025c19740e043589b36172d1cc813d38b4c6c2e13e9efaf7d5d9c7b71",
-      "editorial_decision": "Ví dụ mode 0644/0700 giả định đúng quan hệ tra cứu đường dẫn; bổ sung nguồn cho quyền tìm kiếm thư mục.",
+      "content_sha256": "1a6eac3c64800395c0caa233090ea3bd04d44117c7991085c2582552097bd1bd",
+      "editorial_decision": "Ví dụ mode 0644/0700 giả định đúng quan hệ tra cứu đường dẫn; bổ sung nguồn cho quyền tìm kiếm thư mục. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "Một hard link khác có thể trỏ tới cùng inode",
@@ -185,6 +195,16 @@
           "source_location": "path_resolution(7), Step 2 and Permissions",
           "support": "Tra cứu thành phần trung gian đòi quyền search; thiếu quyền trả EACCES.",
           "limits": "ACL, capability và mount policy có thể đổi kết quả."
+        },
+        {
+          "anchor": "Quyền `x` trên thư mục cho phép đi qua nó",
+          "kind": "documented",
+          "sources": [
+            "R7"
+          ],
+          "source_location": "path_resolution(7): Step 2; Permissions",
+          "support": "Search permission áp dụng khi tra cứu thành phần đường dẫn.",
+          "limits": "ACL, capability, mount namespace hoặc policy có thể đổi kết quả."
         }
       ]
     },
@@ -472,8 +492,8 @@
       ]
     },
     "P03.C01.L02": {
-      "content_sha256": "1111c42972f9dfb49bfc041845390cd49091801121485a0e7fdf80122b1142dd",
-      "editorial_decision": "Thứ tự longest-prefix, next hop và phép quan sát route được tách khỏi bảo đảm gói thực đến đích.",
+      "content_sha256": "4f4fd92f991a2ebde6af61ce64c7efc9e68e4e99dc8059f8fe03c7583a668a27",
+      "editorial_decision": "Thứ tự longest-prefix, next hop và phép quan sát route được tách khỏi bảo đảm gói thực đến đích. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "prefix cụ thể hơn thắng prefix ngắn hơn",
@@ -494,6 +514,27 @@
           "source_location": "ip-route(8): ip route get",
           "support": "get resolves route for a specified destination rather than only listing route entries",
           "limits": "Local lookup is not proof of successful forwarding"
+        },
+        {
+          "anchor": "máy còn cần địa chỉ lớp liên kết của next hop",
+          "kind": "documented",
+          "sources": [
+            "N3",
+            "I2"
+          ],
+          "source_location": "RFC 826: abstract; ip-neighbour(8): neighbour states",
+          "support": "ARP ánh xạ địa chỉ IP cần truyền trên Ethernet; ip-neighbour nêu trạng thái cache neighbor.",
+          "limits": "Ví dụ mô tả IPv4 trên Ethernet; các liên kết khác có cơ chế khác."
+        },
+        {
+          "anchor": "ip route get 198.51.100.20 from 10.20.1.50",
+          "kind": "documented",
+          "sources": [
+            "I1"
+          ],
+          "source_location": "ip-route(8): route get",
+          "support": "ip route get cho phép chỉ rõ nguồn khi tra cứu route.",
+          "limits": "Kết quả tra cứu không chứng minh gói đã tới đích."
         }
       ]
     },
@@ -829,8 +870,8 @@
       ]
     },
     "P04.C01.L02": {
-      "content_sha256": "5417488f046c27976e268d02a2275f1d55db02a9877ddf3734aa5dff8925b11d",
-      "editorial_decision": "Ví dụ HEAD 1000, index 2000, working tree 3000 cho thấy chính xác sự khác biệt sau git add.",
+      "content_sha256": "a287c78c9b7e497832fa4eafce857ea0d6dec0335c8d32636a6ff5122f50fbc2",
+      "editorial_decision": "Ví dụ HEAD 1000, index 2000, working tree 3000 cho thấy chính xác sự khác biệt sau git add. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "`git add` chép nội dung hiện tại của đường dẫn vào index",
@@ -851,6 +892,16 @@
           "source_location": "Git References: The HEAD",
           "support": "HEAD commonly refers symbolically to the current branch and commit advances that branch ref",
           "limits": "Detached HEAD is an exception"
+        },
+        {
+          "anchor": "git show :setting.txt",
+          "kind": "documented",
+          "sources": [
+            "G3"
+          ],
+          "source_location": "Git user manual: index and revisions",
+          "support": "Revision :path trỏ nội dung index của đường dẫn; HEAD:path trỏ tree tại HEAD.",
+          "limits": "Tình huống cần chạy trên repository thử, không phải output đã đo."
         }
       ]
     },
@@ -960,8 +1011,8 @@
       ]
     },
     "P05.C01.L02": {
-      "content_sha256": "0abb467716f390a9d50747e8fc8af617bf9b0c6cccf2a7dc7d37b4eabefe9727",
-      "editorial_decision": "Redirection và pipe được phân biệt theo file descriptor; mã lỗi của utility và pipeline được kiểm theo hợp đồng riêng.",
+      "content_sha256": "b2d5679ed83edfff2d6f72323e8372a46262d7704a1495464ae674f690bd52b7",
+      "editorial_decision": "Redirection và pipe được phân biệt theo file descriptor; mã lỗi của utility và pipeline được kiểm theo hợp đồng riêng. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "cả pipeline có status 0",
@@ -992,6 +1043,23 @@
           "source_location": "General Synopsis of tar: exit status",
           "support": "Tar manual defines 0, 1 for changed input during create/append/update, and 2 fatal",
           "limits": "Other options give status 1 different meaning; child status can propagate"
+        },
+        {
+          "anchor": "`pipefail` phát hiện pipeline có lệnh lỗi",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Bash manual: Pipelines; The Set Builtin",
+          "support": "Pipeline status theo pipefail khác trạng thái lệnh cuối mặc định.",
+          "limits": "Không bảo đảm nội dung backup nhất quán hoặc khôi phục được."
+        },
+        {
+          "anchor": "giải nén thử vào thư mục tạm",
+          "kind": "inference",
+          "sources": [],
+          "support": "Kiểm đọc archive giúp phát hiện một lớp lỗi đầu ra mà exit status pipeline không đủ chứng minh.",
+          "limits": "Không chứng minh tính nhất quán dữ liệu ứng dụng."
         }
       ]
     },
@@ -1650,8 +1718,8 @@
       ]
     },
     "P07.C02.L03": {
-      "content_sha256": "5a4c0801d1dc41395f13daae245dd8075e9705a83e9885f7bdc59d60a49dc89d",
-      "editorial_decision": "Registry tag có thể dịch, digest định danh byte; pull không chứng minh tiến trình đang dùng image mới.",
+      "content_sha256": "060d3c58e41608ff6c5fd3286caca66a39fcda29ac5808a22372285a86a19e99",
+      "editorial_decision": "Registry tag có thể dịch, digest định danh byte; pull không chứng minh tiến trình đang dùng image mới. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "Tag như `orders:2.1` là tên thuận tiện trỏ tới manifest",
@@ -1662,6 +1730,26 @@
           "source_location": "distribution-spec: Definitions, Tag; Content Discovery",
           "support": "A tag is a human-readable pointer to a manifest, while digest addresses content",
           "limits": "orders:2.1 is illustrative; registry access and authorization are separate"
+        },
+        {
+          "anchor": "Index chọn manifest phù hợp platform",
+          "kind": "documented",
+          "sources": [
+            "OCI7"
+          ],
+          "source_location": "image-index.md: Image Index Property Descriptions",
+          "support": "Image index chứa descriptors của manifests và platform.",
+          "limits": "Platform selection còn phụ thuộc runtime và dữ liệu descriptor."
+        },
+        {
+          "anchor": "manifest tham chiếu config và các layer blob",
+          "kind": "documented",
+          "sources": [
+            "OCI6"
+          ],
+          "source_location": "manifest.md: Image Manifest Property Descriptions",
+          "support": "OCI image manifest references config descriptor and layer descriptors.",
+          "limits": "Digest index khác digest manifest con hoặc layer."
         }
       ]
     },
@@ -1986,8 +2074,8 @@
       ]
     },
     "P08.C03.L02": {
-      "content_sha256": "76ccf2d78a3e802eb09317bfc51105761a9b0bfd937396b4884559e1e4f6e0ac",
-      "editorial_decision": "Sự cố ALB→EC2→S3 hoàn toàn giả định; endpoint route sửa reachability nhưng explicit Deny còn nguyên.",
+      "content_sha256": "9735dc157c3518815312d2ca413afafb86c550038169ece334f3e13159db0273",
+      "editorial_decision": "Sự cố ALB→EC2→S3 hoàn toàn giả định; endpoint route sửa reachability nhưng explicit Deny còn nguyên. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "Đây là dữ kiện thiết kế giả định, không phải kết quả AWS đã đo",
@@ -1995,6 +2083,26 @@
           "sources": [],
           "support": "Tình huống gắn kết các cơ chế được kiểm ở các bài IAM/VPC/S3 trước; kết quả dự đoán theo dữ kiện giả định.",
           "limits": "Không có request AWS, ALB hoặc S3 thực được chạy."
+        },
+        {
+          "anchor": "tuyến tới prefix list của S3 phải hiện trong route table",
+          "kind": "documented",
+          "sources": [
+            "AWS6"
+          ],
+          "source_location": "Gateway endpoints for Amazon S3: Associate route tables",
+          "support": "Gateway endpoint cho S3 được liên kết với route tables và thêm tuyến đến prefix list dịch vụ.",
+          "limits": "Chỉ đúng với subnet/route table liên kết và Region phù hợp."
+        },
+        {
+          "anchor": "explicit `Deny` trong identity policy đủ để chặn",
+          "kind": "documented",
+          "sources": [
+            "AWS2"
+          ],
+          "source_location": "IAM policy evaluation: Deny evaluation",
+          "support": "Applicable explicit Deny overrides Allow in IAM evaluation.",
+          "limits": "Các policy khác có thể bổ sung hạn chế; tình huống chỉ giả định Deny nêu trong bài."
         }
       ]
     },
@@ -2105,8 +2213,8 @@
       ]
     },
     "P09.C02.L01": {
-      "content_sha256": "52ec9dba2cb06d356aa39b59ff1ed198cea0c58bf66239ee14e0c2c3363d51d1",
-      "editorial_decision": "State là ánh xạ và có thể chứa secret; locking chặn apply đồng thời chứ không thay backup/versioning.",
+      "content_sha256": "62041b5a31f643a73d8873cafc9af91b0b43dd68b29e669fdb33c3d919dbcd3e",
+      "editorial_decision": "State là ánh xạ và có thể chứa secret; locking chặn apply đồng thời chứ không thay backup/versioning. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "State ánh xạ địa chỉ `resource` trong cấu hình tới ID object thực",
@@ -2117,6 +2225,26 @@
           "source_location": "Purpose of Terraform State: Mapping to the Real World",
           "support": "State maps config addresses to remote identities",
           "limits": "State also contains cached attributes and metadata"
+        },
+        {
+          "anchor": "Terraform có thể xem đây là một object bị bỏ",
+          "kind": "documented",
+          "sources": [
+            "W2-TFMOVED"
+          ],
+          "source_location": "Refactor modules: Move a resource or module",
+          "support": "Đổi resource address không khai báo move có thể dẫn tới destroy/create theo plan.",
+          "limits": "Action còn phụ thuộc state và provider; phải đọc plan cụ thể."
+        },
+        {
+          "anchor": "đọc ký hiệu action và trường gây thay đổi",
+          "kind": "documented",
+          "sources": [
+            "TF5"
+          ],
+          "source_location": "terraform plan: description and output",
+          "support": "Plan trình bày proposed actions và diff trước apply.",
+          "limits": "Plan không bảo đảm apply thành công hoặc trạng thái remote còn nguyên."
         }
       ]
     },
@@ -2324,8 +2452,8 @@
       ]
     },
     "P10.C02.L02": {
-      "content_sha256": "23701af93f7ebc1edd35526503d925c8f1792517889a7a714ca7027cc931f8d9",
-      "editorial_decision": "Task order, changed, notify và handler flush được phân biệt; không coi force_handlers là cách chữa mọi lỗi.",
+      "content_sha256": "4fb8a33dc95f88c7533899cf5475459409a6526a9d9143621fbd2a77d1bff532",
+      "editorial_decision": "Task order, changed, notify và handler flush được phân biệt; không coi force_handlers là cách chữa mọi lỗi. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "`notify` chỉ xếp handler khi task báo changed",
@@ -2358,6 +2486,23 @@
           "source_location": "stat module: mode; check mode caveat",
           "support": "stat reports file mode after real task",
           "limits": "9p/DrvFS may not preserve POSIX mode"
+        },
+        {
+          "anchor": "task sửa thư mục phải báo `changed`, nhưng template vẫn `ok`",
+          "kind": "derived",
+          "sources": [],
+          "support": "Trong fixture, chỉ mode thư mục đổi; task template không notify khi nội dung và mode đích không đổi.",
+          "limits": "Cần xác nhận trên filesystem POSIX và phiên bản Ansible thực tế."
+        },
+        {
+          "anchor": "handler mặc định có thể không chạy như kỳ vọng",
+          "kind": "documented",
+          "sources": [
+            "AS8"
+          ],
+          "source_location": "Ansible handlers: When handlers run",
+          "support": "Failure trước handler flush ảnh hưởng notification; force_handlers có điều kiện riêng.",
+          "limits": "Phụ thuộc task failure và chiến lược play."
         }
       ]
     },
@@ -2823,8 +2968,8 @@
       ]
     },
     "P11.C05.L01": {
-      "content_sha256": "4010d529934febf83bdde1837c4f23e60ce21980e0c21368a3ca73db42c30212",
-      "editorial_decision": "PV/PVC/StorageClass và access mode tách cấp phát khỏi mount.",
+      "content_sha256": "32e407135839c373004b294e094bd8941724cd2f3867e7a3017e75a745849e29",
+      "editorial_decision": "PV/PVC/StorageClass và access mode tách cấp phát khỏi mount. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "PersistentVolume (PV) là object tài nguyên lưu trữ",
@@ -2856,6 +3001,23 @@
           "source_location": "Storage Classes: Volume binding mode",
           "support": "WFFC delays binding for scheduler topology; direct nodeName bypass can leave PVC Pending",
           "limits": "CSI driver must support relevant mode"
+        },
+        {
+          "anchor": "PVC đã Bound nhưng Pod còn `ContainerCreating`",
+          "kind": "derived",
+          "sources": [],
+          "support": "Binding và attach/mount là các bước khác nhau, nên Pending Pod có thể xảy ra sau Bound.",
+          "limits": "Event cụ thể và CSI driver mới xác định nguyên nhân."
+        },
+        {
+          "anchor": "`ReadWriteOnce` có thể được mount cùng lúc",
+          "kind": "documented",
+          "sources": [
+            "KU20"
+          ],
+          "source_location": "Persistent Volumes: Access Modes",
+          "support": "RWO giới hạn một node, không nhất thiết một Pod.",
+          "limits": "Khả năng mount thực tế còn phụ thuộc driver/backend."
         }
       ]
     },
@@ -3213,8 +3375,8 @@
       ]
     },
     "P12.C01.L03": {
-      "content_sha256": "d6428f624edd882723d49f9d5dc631fc08d914d894c97f7cab1c6366f4f0ba2d",
-      "editorial_decision": "Scrape, up metric và TSDB là các bước khác nhau.",
+      "content_sha256": "d26a7b11df8d384ca7cc874a9a9e903ddd436b233ba6b856203f1b7dc95c298b",
+      "editorial_decision": "Scrape, up metric và TSDB là các bước khác nhau. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
           "anchor": "Prometheus chọn target bằng cấu hình hoặc service discovery",
@@ -3245,6 +3407,26 @@
           "source_location": "On-disk layout and retention",
           "support": "Local TSDB uses WAL and blocks with retention configuration",
           "limits": "Retention is not an independent backup"
+        },
+        {
+          "anchor": "B bị loại khỏi discovery",
+          "kind": "documented",
+          "sources": [
+            "PM11"
+          ],
+          "source_location": "Jobs and instances: up metric and target lifecycle",
+          "support": "Target không còn được theo dõi khác target đang được theo dõi nhưng scrape thất bại.",
+          "limits": "Staleness và thời điểm truy vấn ảnh hưởng chuỗi còn thấy trong kết quả."
+        },
+        {
+          "anchor": "`rate` ước lượng tốc độ từ các mẫu",
+          "kind": "documented",
+          "sources": [
+            "PM9"
+          ],
+          "source_location": "Prometheus 3.7 query functions: rate()",
+          "support": "rate computes per-second average increase of counter over range and accounts for resets.",
+          "limits": "Cửa sổ quá ngắn hoặc dữ liệu thiếu làm kết quả khó diễn giải."
         }
       ]
     },

@@ -1560,6 +1560,16 @@
           "source_location": "Reliability review and SLI measurement principles",
           "support": "Thiếu phép đo không đủ chứng minh SLO/control; bài quy định trạng thái kiểm toán trung thực.",
           "limits": "PASS/FAIL/SKIP/UNKNOWN là rubric sách, không là thuật ngữ AWS bắt buộc."
+        },
+        {
+          "anchor": "Nếu thiếu liên kết request–instance, ghi UNKNOWN",
+          "sources": [
+            "KU4",
+            "SL1"
+          ],
+          "source_location": "SLSA provenance subject; Kubernetes Deployment and Pod lifecycle",
+          "support": "Artifact subject và revision/running workload là các mắt xích cần thu thập để truy vết; UNKNOWN là quy tắc kiểm toán suy ra.",
+          "limits": "Không có request hoặc cluster thật được kiểm trong ví dụ."
         }
       ],
       "qa": [
@@ -1602,6 +1612,15 @@
           "source_location": "Using environments; Using concurrency",
           "support": "GitHub phân biệt environment approval và concurrency group; nhóm đồng thời giới hạn một deployment đang chạy.",
           "limits": "R1/R2 là suy luận về race, không phải log hoặc bảo đảm cho mọi bộ điều phối."
+        },
+        {
+          "anchor": "Cả hai job có thể báo success",
+          "sources": [
+            "W2-GHACT"
+          ],
+          "source_location": "Using environments; Using concurrency",
+          "support": "Approval và concurrency là hai cơ chế riêng; ví dụ R1/R2 là suy luận race từ hai deployment độc lập.",
+          "limits": "H1/H2 và mốc thời gian là dữ kiện giả định, không phải log CI thực."
         }
       ],
       "qa": [
