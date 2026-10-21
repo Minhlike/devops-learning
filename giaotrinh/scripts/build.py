@@ -31,6 +31,7 @@ except ImportError:  # direct execution: python giaotrinh/scripts/build.py
 
 ROOT = Path(__file__).resolve().parents[1]
 READER_TITLES = json.loads((ROOT / "manuscript" / "reader_titles.json").read_text(encoding="utf-8"))
+EXERCISE_TITLES = json.loads((ROOT / "manuscript" / "exercise_titles.json").read_text(encoding="utf-8"))
 OUTPUT = ROOT / "Cam_nang_devops.candidate.pdf"
 NEXT = ROOT / "Cam_nang_devops.candidate.next.pdf"
 FONT_DIR = Path("C:/Windows/Fonts")
@@ -166,6 +167,27 @@ def publication_labels(tree: dict) -> tuple[dict[str, int], dict[str, str]]:
     if set(READER_TITLES["chapters"]) != valid["chapters"]:
         raise ValueError("Thiếu nhãn Chương dành cho người đọc")
     return chapter_numbers, labels
+
+
+def publication_exercises(tree: dict, manifest: dict) -> dict[str, str]:
+    """Number exercises for readers without changing their stable ledger IDs."""
+    expected_ids = {qa["publication_id"] for row in manifest["lessons"].values() for qa in row["qa"]}
+    if set(EXERCISE_TITLES) != expected_ids or any(not value.strip() for value in EXERCISE_TITLES.values()):
+        raise ValueError("Tên bài tập dành cho người đọc thiếu, thừa hoặc rỗng")
+    chapter_numbers, _ = publication_labels(tree)
+    labels: dict[str, str] = {}
+    for part in tree["parts"]:
+        for chapter in part["chapters"]:
+            number = chapter_numbers[chapter["id"]]
+            exercise_number = 0
+            for lesson in chapter["lessons"]:
+                for qa in manifest["lessons"][lesson["id"]]["qa"]:
+                    exercise_number += 1
+                    identifier = qa["publication_id"]
+                    if identifier in labels:
+                        raise ValueError(f"Trùng mã bài tập nội bộ: {identifier}")
+                    labels[identifier] = f"Bài tập {number}.{exercise_number} — {EXERCISE_TITLES[identifier]}"
+    return labels
 
 
 class PartPlate(Flowable):
@@ -305,6 +327,10 @@ class Book(BaseDocTemplate):
             self.running_part = "LỜI GIẢI"
             self.running_chapter = None
             self.part_opening_page = None
+        elif flowable.level == 2 and flowable.bookmark_key.endswith(".answers"):
+            # Several answer groups can share one page; a page-end callback
+            # must not label the whole page with its final group.
+            self.running_chapter = None
         elif flowable.level == 2 and flowable.bookmark_key.startswith("P"):
             self.running_chapter = flowable.heading_text.split(" — ", 1)[0]
         key = flowable.bookmark_key
@@ -392,7 +418,8 @@ def source_free_issues(text: str) -> list[str]:
     return issues
 
 
-def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowable]:
+def read_markdown(path: Path, styles: dict[str, ParagraphStyle],
+                  exercise_labels: dict[str, str] | None = None) -> list[Flowable]:
     if not path.is_file():
         raise FileNotFoundError(path)
     raw = path.read_text(encoding="utf-8")
@@ -423,7 +450,14 @@ def read_markdown(path: Path, styles: dict[str, ParagraphStyle]) -> list[Flowabl
                 story.append(Preformatted("\n".join(code_lines[start:start + 42]), styles["p13code"]))
         elif block.startswith("### Bài tập "):
             heading, _, rest = block.partition("\n")
-            story.append(Paragraph(paragraph_markup(heading[4:]), styles["exercise"]))
+            identifier = heading[len("### Bài tập "):].strip()
+            if exercise_labels is not None:
+                if identifier not in exercise_labels:
+                    raise ValueError(f"Bài tập trong bản thảo chưa có tên đọc: {identifier}")
+                heading = exercise_labels[identifier]
+            else:
+                heading = heading[4:]
+            story.append(Paragraph(paragraph_markup(heading), styles["exercise"]))
             if rest.strip():
                 story.append(Paragraph(paragraph_markup(" ".join(rest.splitlines())), styles["body"]))
         elif block.startswith("# "):
@@ -690,6 +724,7 @@ def build() -> None:
     register_fonts()
     tree, manifest = load_manuscript()
     chapter_numbers, labels = publication_labels(tree)
+    exercise_labels = publication_exercises(tree, manifest)
     publication = list(published_lessons(tree, manifest))
     count = sum(len(lessons) for _, chapters in publication for _, lessons in chapters)
     if count < 100:
@@ -728,11 +763,13 @@ def build() -> None:
             for lesson in lessons:
                 lid = lesson["id"]
                 story.append(Heading(labels[lid], 3, lid, styles, include_in_toc=False))
-                story.extend(read_markdown(ROOT / manifest["lessons"][lid]["content"], styles))
+                story.extend(read_markdown(ROOT / manifest["lessons"][lid]["content"], styles,
+                                           exercise_labels))
                 for qa in manifest["lessons"][lid]["qa"]:
                     if lid.startswith("P13."):
                         continue  # Reviewed P13 questions are already inside the lesson.
-                    story.append(Paragraph(paragraph_markup(f"Bài tập {qa['publication_id']}"), styles["exercise"]))
+                    story.append(Paragraph(paragraph_markup(exercise_labels[qa["publication_id"]]),
+                                           styles["exercise"]))
                     story.append(Paragraph(paragraph_markup(qa["question"]), styles["body"]))
         story.append(PageBreak())
     story.append(Heading("Lời giải", 1, "answers", styles, include_in_toc=False))
@@ -744,7 +781,9 @@ def build() -> None:
             story.append(Heading(f"Đáp án chương {chapter_numbers[chapter['id']]} — {READER_TITLES['chapters'][chapter['id']]}", 2,
                                  f"{chapter['id']}.answers", styles, include_in_toc=False))
             for _, qa in entries:
-                story.append(Paragraph(paragraph_markup(qa["publication_id"] + ". " + qa["answer"]), styles["answerbody"]))
+                label = exercise_labels[qa["publication_id"]]
+                story.append(Paragraph(f"<b>{html.escape(label)}</b><br/>{paragraph_markup(qa['answer'])}",
+                                       styles["answerbody"]))
     try:
         Book(NEXT).multiBuild(story)
         audit(NEXT)
@@ -776,11 +815,13 @@ def audit_document(doc: pymupdf.Document) -> None:
     if len(doc) < 8:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
+    normalized_text = re.sub(r"\s+", " ", text)
     for phrase in ("CẨM NANG", "MỤC LỤC", "Lời giải", "Chưa phải bản phát hành"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     tree, manifest = load_manuscript()
     _, labels = publication_labels(tree)
+    exercise_labels = publication_exercises(tree, manifest)
     expected = []
     for part, chapters in published_lessons(tree, manifest):
         expected.append((1, labels[part["id"]]))
@@ -789,8 +830,11 @@ def audit_document(doc: pymupdf.Document) -> None:
             expected.extend((3, labels[lesson["id"]]) for lesson in lessons)
             for lesson in lessons:
                 for qa in manifest["lessons"][lesson["id"]]["qa"]:
-                    if qa["publication_id"] not in text:
-                        raise RuntimeError(f"Thiếu bài tập/đáp án {qa['publication_id']}")
+                    display = exercise_labels[qa["publication_id"]]
+                    if normalized_text.count(display) != 2:
+                        raise RuntimeError(f"Thiếu bài tập hoặc lời giải: {display}")
+    if re.search(r"\bP\d{2}\.C\d{2}\.L\d{2}\.Q\d{2}\b|\bC13\.\d+\b", text):
+        raise RuntimeError("Mã bài tập nội bộ lọt vào PDF")
     for figure in ("Hình XIII.1.1", "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
         if figure not in text:
             raise RuntimeError(f"Thiếu hình đã duyệt: {figure}")

@@ -11,7 +11,7 @@ import pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build import audit, publication_labels, source_free_pdf_issues  # noqa: E402
+from build import audit, publication_exercises, publication_labels, source_free_pdf_issues  # noqa: E402
 
 PART = ROOT / "authoring" / "P13"
 PDF = ROOT / "Cam_nang_devops.candidate.pdf"
@@ -80,12 +80,14 @@ class PublicationPart13(unittest.TestCase):
             self.assertEqual(set(migrated_ids), old_question_ids)
             self.assertEqual(len(migrated_ids), 79)
             self.assertEqual(len(set(publication_ids)), len(publication_ids))
+            exercise_labels = publication_exercises(tree, manifest)
+            normalized = re.sub(r"\s+", " ", full)
             for answer_id in publication_ids:
-                self.assertRegex(full, rf"(?m)^{re.escape(answer_id)}\. ")
+                self.assertEqual(normalized.count(exercise_labels[answer_id]), 2)
             self.assertIn("Lời giải", full)
             for i in range(1, 13):
-                self.assertIn(f"Bài tập C13.{i}", full)
-                self.assertRegex(full, rf"(?m)^C13\.{i}\. ")
+                self.assertEqual(normalized.count(exercise_labels[f"C13.{i}"]), 2)
+            self.assertNotRegex(full, r"\bP\d{2}\.C\d{2}\.L\d{2}\.Q\d{2}\b|\bC13\.\d+\b")
             for caption in ("Hình XIII.1.1", "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
                 pages = [page for page in doc if caption in page.get_text()]
                 self.assertEqual(len(pages), 1)

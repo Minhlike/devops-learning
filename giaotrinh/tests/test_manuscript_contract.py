@@ -268,6 +268,25 @@ class ManuscriptContract(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "Mục lục in lộ mã"):
                 build.audit_document(doc)
 
+    def test_reader_exercise_names_cover_every_question_and_answer(self):
+        labels = build.publication_exercises(self.tree, self.manifest)
+        self.assertEqual(len(labels), 144)
+        self.assertEqual(labels["P07.C04.L03.Q01"],
+                         "Bài tập 24.2 — Dữ liệu khi đổi image và tên project")
+        self.assertTrue(labels["C13.1"].startswith("Bài tập 48.1 —"))
+        with pymupdf.open(build.OUTPUT) as doc:
+            text = "\n".join(page.get_text() for page in doc)
+            normalized = re.sub(r"\s+", " ", text)
+            self.assertTrue(all(normalized.count(label) == 2 for label in labels.values()))
+            self.assertNotRegex(text, r"\bP\d{2}\.C\d{2}\.L\d{2}\.Q\d{2}\b|\bC13\.\d+\b")
+            doc[1].insert_text((72, 800), "P07.C04.L03.Q01", fontsize=8)
+            with self.assertRaisesRegex(RuntimeError, "Mã bài tập nội bộ"):
+                build.audit_document(doc)
+
+        with patch.dict(build.EXERCISE_TITLES, {"P07.C04.L03.Q01": ""}):
+            with self.assertRaisesRegex(ValueError, "Tên bài tập"):
+                build.publication_exercises(self.tree, self.manifest)
+
 
 if __name__ == "__main__":
     unittest.main()
