@@ -4412,7 +4412,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C07/L03.md",
-      "sha256": "f6180be852db2350be1e8f2df96259feecae7a89f0f52ef4a8f925ab17cc58b8",
+      "sha256": "8d28d05ba5db6f1424d12994aeab57531af821372525d89bad3e47d74c1bff36",
       "legacy_units": [
         "TXT-a17f3780fdc2252a",
         "TXT-3004c013547ecb9f"
@@ -4423,7 +4423,8 @@
       "examples": [],
       "source_ids": [
         "GW5",
-        "KU25"
+        "KU25",
+        "GW2"
       ],
       "qa": [
         {

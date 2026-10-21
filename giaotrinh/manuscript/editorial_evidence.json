@@ -3057,8 +3057,8 @@
       ]
     },
     "P11.C07.L03": {
-      "content_sha256": "f6180be852db2350be1e8f2df96259feecae7a89f0f52ef4a8f925ab17cc58b8",
-      "editorial_decision": "Đường request qua listener, route, backend và endpoint cần kiểm từng chặng.",
+      "content_sha256": "8d28d05ba5db6f1424d12994aeab57531af821372525d89bad3e47d74c1bff36",
+      "editorial_decision": "Giữ giải thích condition; thêm ca địa chỉ Gateway và DNS client không khớp để học viên tách quan sát khỏi kết luận.",
       "checks": [
         {
           "anchor": "Ingress vẫn là API Kubernetes đang tồn tại",
@@ -3070,6 +3070,16 @@
           "source_location": "Ingress: introduction; Gateway API overview",
           "support": "Ingress remains an existing API alongside Gateway API",
           "limits": "Controller support and migration behavior vary"
+        },
+        {
+          "anchor": "Gateway báo địa chỉ đã bind",
+          "kind": "documented",
+          "sources": [
+            "GW2"
+          ],
+          "source_location": "Gateway API v1.3.0 Gateway Status: Addresses, Listeners, Conditions",
+          "support": "GatewayStatus exposes addresses bound to Gateway and per-listener/overall conditions; comparison with client DNS can guide diagnosis.",
+          "limits": "The addresses are not a guarantee of public reachability or a proof of DNS root cause; NAT, split DNS and load balancers may intervene."
         }
       ]
     },
