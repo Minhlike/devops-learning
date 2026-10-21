@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "checked_on": "2026-10-20",
+  "checked_on": "2026-10-21",
   "purpose": "Per-lesson semantic review outside PDF render path; source IDs resolve through source_map and wave2_evidence",
   "lessons": {
     "P01.C01.L02": {
-      "content_sha256": "1526a056a4ce3ce797a10b12f2524bcb6edab5a4cf8445285d27a7e10db26e0d",
+      "content_sha256": "edddbaadf4ea58be2e696a1973c1498c60c97ad388204c33bdd8a0c5ad2acb77",
       "editorial_decision": "Ví dụ giả định tính đúng 40+60=100 ms và 20+60=80 ms; tách latency, CPU time và throughput. Không diễn giải như số đo thực.",
       "checks": [
         {
@@ -20,6 +20,13 @@
           "sources": [],
           "support": "Định nghĩa và suy luận định tính từ đơn vị công việc/thời gian và thời gian một yêu cầu.",
           "limits": "Không có mô hình định lượng của hàng đợi."
+        },
+        {
+          "anchor": "cần khoảng sáu giây để xóa backlog",
+          "kind": "derived",
+          "sources": [],
+          "support": "After a one-second 240-request burst at 120 requests/s, backlog is 120; normal arrival 100/s leaves 20/s net drain, so 120/20=6 seconds.",
+          "limits": "Fluid model with fixed capacity and arrivals; not a measured p95 or queueing distribution."
         }
       ]
     },
@@ -103,7 +110,7 @@
       ]
     },
     "P01.C02.L03": {
-      "content_sha256": "49dc1d7854db5207111dbc84c8e1876a7b46fab7b1f29662483ee0f0853c3a3b",
+      "content_sha256": "99fcfc01e87a51dc7a08fd060e68ad88757c28399fdf2b0f8b27cfba176c6ebb",
       "editorial_decision": "Phân biệt descriptor và open file description; hệ quả rename/unlink cho log được phát biểu theo điều kiện tiến trình còn giữ descriptor.",
       "checks": [
         {
@@ -125,6 +132,17 @@
           "source_location": "open(2), DESCRIPTION, path removal/change",
           "support": "Thay đổi đường dẫn sau open không đổi tham chiếu của descriptor.",
           "limits": "Việc giải phóng dung lượng còn phụ thuộc hard link, descriptor khác và filesystem."
+        },
+        {
+          "anchor": "descriptor đang mở vẫn có thể trỏ tới đối tượng cũ",
+          "kind": "documented",
+          "sources": [
+            "R3",
+            "R8"
+          ],
+          "source_location": "open(2): DESCRIPTION; inode(7): Inode number and Link count",
+          "support": "open(2) describes the open file description; inode(7) separates links and inode identity.",
+          "limits": "The suggested /proc observation was not executed for this revision; do not generalize across all filesystems."
         }
       ]
     },
@@ -171,7 +189,7 @@
       ]
     },
     "P02.C01.L03": {
-      "content_sha256": "1e98f4d55cd3fe4e3dadfdfba35dbe816ccc2d4c3ac48ed61678938617bf2a1c",
+      "content_sha256": "9c928b1dbc71c4f01b3683ba821afc4dc93d8da71dbfdb7b9ac82a87555687b7",
       "editorial_decision": "Page cache, dirty writeback và fsync được tách khỏi lời hứa sống sót mất điện; nêu đúng nhu cầu fsync thư mục khi tạo tên.",
       "checks": [
         {
@@ -193,11 +211,22 @@
           "source_location": "fsync(2): DESCRIPTION",
           "support": "fsync flushes modified file data and associated metadata",
           "limits": "Directory entry may require separate directory fsync"
+        },
+        {
+          "anchor": "đồng bộ descriptor của thư mục chứa tên đó",
+          "kind": "documented",
+          "sources": [
+            "R6",
+            "R17"
+          ],
+          "source_location": "fsync(2) DESCRIPTION; rename(2) DESCRIPTION and EXDEV",
+          "support": "rename atomically replaces an existing destination on the same mounted filesystem; fsync of the file does not necessarily persist its directory entry, so directory fsync is needed.",
+          "limits": "The write and rename sequence is explanatory. Durability depends on filesystem, device and errors at every step."
         }
       ]
     },
     "P02.C02.L01": {
-      "content_sha256": "118eddd404b9bb867b2bb0631969499e352a6ee22fbee45fe35e713ece1c5b87",
+      "content_sha256": "2e936110db657babce7321e62b367f678c829c973e9601db761f004181c7946e",
       "editorial_decision": "Phân biệt kiểm quyền với tầm nhìn namespace; lỗi fork do giới hạn được nêu như điều kiện chứ không như kết quả cố định.",
       "checks": [
         {
@@ -229,6 +258,17 @@
           "source_location": "path_resolution(7), Permissions",
           "support": "Bit đọc và thực thi/tìm kiếm có nghĩa khác nhau theo loại đối tượng.",
           "limits": "Quyền hiệu lực có thể chịu ACL hoặc capability."
+        },
+        {
+          "anchor": "kiểm tra quyền tệp trên Linux dùng filesystem UID/GID",
+          "kind": "documented",
+          "sources": [
+            "R16",
+            "R7"
+          ],
+          "source_location": "credentials(7): User and group identifiers; path_resolution(7): Permissions",
+          "support": "credentials(7) explains real/effective/filesystem IDs and supplementary groups; path_resolution(7) explains path search permission.",
+          "limits": "ACL, capabilities and other policy layers may change the result; sample UID/GID and mode are hypothetical."
         }
       ]
     },
@@ -249,7 +289,7 @@
       ]
     },
     "P02.C03.L01": {
-      "content_sha256": "c8ac765404fa036c221bf05ef84d071758c330cc37ea03c592d170a9a68380e9",
+      "content_sha256": "2d862547849c087e86c8e35ae7060493438cb35699ebc19b10c7df7b89937d23",
       "editorial_decision": "Phân rã latency thành CPU, chờ lịch và chờ phụ thuộc; thuật toán EEVDF chỉ nêu theo phiên bản, không khái quát quá mức.",
       "checks": [
         {
@@ -261,11 +301,22 @@
           "source_location": "EEVDF Scheduler: introduction",
           "support": "kernel began transition to EEVDF in 6.6, away from CFS",
           "limits": "Scheduler details vary by kernel release"
+        },
+        {
+          "anchor": "CPU `some total` tăng 2.400.000 µs",
+          "kind": "documented",
+          "sources": [
+            "K3",
+            "K4"
+          ],
+          "source_location": "cgroup v2: cpu.stat; PSI: Pressure interface",
+          "support": "cgroup v2 documents cpu.stat and cpu.pressure; PSI total counts microseconds stalled. 3e6/10e6=0.3 core and 2.4e6/10e6=24% window pressure.",
+          "limits": "Synthetic window; counters cannot attribute individual request latency or prove quota throttling without matching evidence."
         }
       ]
     },
     "P02.C03.L02": {
-      "content_sha256": "1cd96890c57dce9aa81e678a57ba77979c3bbcc75744668f7e3bf1b3575c1a5f",
+      "content_sha256": "5b90b957460ec7138b69f6c682704e9280ae98bddcea925ab5424b199da98008",
       "editorial_decision": "Địa chỉ ảo, cấp trang theo nhu cầu và page fault được phân biệt với lỗi truy cập; không đồng nhất virtual size với RAM.",
       "checks": [
         {
@@ -277,6 +328,16 @@
           "source_location": "Concepts overview: Anonymous Memory",
           "support": "mapping defines virtual area before regular physical page allocation on write",
           "limits": "Not all mappings or access patterns"
+        },
+        {
+          "anchor": "phần tăng chủ yếu ở `file`",
+          "kind": "documented",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "cgroup v2: memory.stat, memory.events and memory.pressure",
+          "support": "cgroup v2 memory.stat separates anon and file accounting; memory.events and memory.pressure expose different failure signals.",
+          "limits": "file accounting is not exclusively useful page cache; snapshot and synthetic values cannot prove absence of a leak."
         }
       ]
     },
@@ -437,7 +498,7 @@
       ]
     },
     "P03.C01.L03": {
-      "content_sha256": "e41937232d131b3639ea44fabfb82b15228573b4e55e7d00178afa8666022cb9",
+      "content_sha256": "2e158267d564aca51351652ccbcfbefec5f91db749462376e57a507663f735e5",
       "editorial_decision": "ARP chỉ áp cho IPv4 trên liên kết; neighbor entry không chứng minh server ứng dụng khỏe.",
       "checks": [
         {
@@ -450,6 +511,17 @@
           "source_location": "RFC 826 packet reception and request; ip-neighbour(8) DESCRIPTION",
           "support": "ARP resolves protocol address to link address on local link; Linux neighbour table stores bindings",
           "limits": "IPv6 uses different neighbor discovery"
+        },
+        {
+          "anchor": "bảng neighbor ghi `10.20.1.1 dev eth0 FAILED`",
+          "kind": "documented",
+          "sources": [
+            "I2",
+            "N3"
+          ],
+          "source_location": "ip-neighbour(8) states and RFC 826 local-link resolution",
+          "support": "FAILED records exhausted neighbor resolution; ARP resolves a next-hop link address on the local link.",
+          "limits": "The route and neighbor rows are hypothetical; a single snapshot cannot establish persistent gateway failure."
         }
       ]
     },
@@ -1206,7 +1278,7 @@
       ]
     },
     "P06.C02.L03": {
-      "content_sha256": "f940b22408997fe28bb21d3eaee344e8cc851c16ac26700e899f074f4e150f72",
+      "content_sha256": "bbf10b2318791e7b86e7fbcf2ec4a176daf7b69426769306b54c2afe2093d389",
       "editorial_decision": "Đồ thị job và phụ thuộc môi trường được mô tả như điều kiện chạy test; output xanh không thay chứng cứ artifact/secret.",
       "checks": [
         {
@@ -1218,6 +1290,16 @@
           "source_location": "Using concurrency",
           "support": "Concurrency groups serialize jobs for a deployment environment",
           "limits": "External deployment paths need destination-side conditional update"
+        },
+        {
+          "anchor": "lỗi nằm ở cạnh phụ thuộc",
+          "kind": "derived",
+          "sources": [
+            "GH1"
+          ],
+          "source_location": "GitHub Enterprise Server 3.17 deployment environments and concurrency",
+          "support": "Jobs and deployment gates have explicit ordering and protection rules; a gate that does not depend on a failing test is not proven by that test.",
+          "limits": "The d1/d2 pipeline is a hypothetical dependency graph, not a measured GitHub Actions run."
         }
       ]
     },
@@ -1737,7 +1819,7 @@
       ]
     },
     "P08.C01.L02": {
-      "content_sha256": "d7ecfed313779af0d64a9ca3b494e2c90cffa33f05b633ea04fd8f28431bdddb",
+      "content_sha256": "cd9b4bec8f0e9d8d661260ded8ecec282508150f3c83ab26b5fa77c9ad632400",
       "editorial_decision": "Role session, action, resource và explicit Deny được phân biệt; không suy từ tên role rằng GetObject được phép.",
       "checks": [
         {
@@ -1759,6 +1841,17 @@
           "source_location": "Resource-based policies: IAM role and IAM role session",
           "support": "Grant to role session can bypass implicit denies that constrain grant to role ARN",
           "limits": "Explicit denies still apply; cross-account and service rules differ"
+        },
+        {
+          "anchor": "Với `public/raw/orders.csv`, cả hai khớp",
+          "kind": "documented",
+          "sources": [
+            "AWS2",
+            "AWS20"
+          ],
+          "source_location": "IAM policy evaluation: explicit Deny; Resource: S3 object ARN and wildcards",
+          "support": "IAM policy evaluation gives explicit Deny precedence; Resource element documents S3 object ARN and wildcard matching.",
+          "limits": "Only the assumed identity policy is evaluated; real requests can involve bucket, endpoint, boundary, session, organization and KMS policies."
         }
       ]
     },
@@ -2657,7 +2750,7 @@
       ]
     },
     "P11.C04.L02": {
-      "content_sha256": "dea1716334dc4bd4e1564cb67abbe612f5b7edd57da5abe88a2efeecd7c5d323",
+      "content_sha256": "21a37b500f8e881bbdc33d9b7396e3786dfdb91d452bb7ac3f9d28879f274a08",
       "editorial_decision": "CNI triển khai dataplane; spec không chứng minh traffic đã đi được.",
       "checks": [
         {
@@ -2670,6 +2763,18 @@
           "source_location": "Cluster Architecture: network plugins; CNI spec: Overview and Summary",
           "support": "CNI defines runtime-to-plugin network interface; plugin implements network configuration",
           "limits": "Concrete dataplane varies by implementation"
+        },
+        {
+          "anchor": "mở ingress của `orders` không sửa egress của `client`",
+          "kind": "documented",
+          "sources": [
+            "KU7",
+            "KU8",
+            "KU18"
+          ],
+          "source_location": "Kubernetes v1.34: Network Policies, Service and EndpointSlices",
+          "support": "Kubernetes v1.34 documents Service/EndpointSlice selection and independent ingress and egress isolation on both endpoints.",
+          "limits": "Actual packet path and enforcement vary by network plugin; no cluster packet capture was run."
         }
       ]
     },
@@ -2743,7 +2848,7 @@
       ]
     },
     "P11.C05.L03": {
-      "content_sha256": "d7aa9f8f4c7f0e15ff70e422bc59d183e992e492b2c57794f7d851b5f292518a",
+      "content_sha256": "78c582700d1fb8b05f35446395020e6129ba9bdd625ec223f13457807137dd1f",
       "editorial_decision": "emptyDir, PVC và StatefulSet có vòng đời và định danh khác nhau.",
       "checks": [
         {
@@ -2765,6 +2870,16 @@
           "source_location": "StatefulSets: stable identity and volumeClaimTemplates",
           "support": "StatefulSet creates stable identity and per-ordinal claims",
           "limits": "Does not provide database replication or backup"
+        },
+        {
+          "anchor": "chính sách `persistentVolumeClaimRetentionPolicy` của StatefulSet",
+          "kind": "documented",
+          "sources": [
+            "KU22"
+          ],
+          "source_location": "StatefulSets v1.34: PersistentVolumeClaim retention",
+          "support": "StatefulSet volumeClaimTemplates create claims per ordinal; whenScaled and whenDeleted policies govern claim deletion.",
+          "limits": "The ledger example is hypothetical. Actual PVC and backing volume fate also depends on reclaim policy, controller state and observed object UIDs."
         }
       ]
     },
@@ -3024,7 +3139,7 @@
       ]
     },
     "P12.C01.L02": {
-      "content_sha256": "bd05d76878481137d87f64d8d869d50447260b902661ef8beab7538af4ff9235",
+      "content_sha256": "83800cc124a9f160ab80f37fa492ac01b5e712d0c700f5004b1bd0f6d904b9de",
       "editorial_decision": "Tổ hợp label quyết định cardinality; request_id/user_id không hợp làm label.",
       "checks": [
         {
@@ -3046,6 +3161,16 @@
           "source_location": "Do not use labels to store dimensions with high cardinality",
           "support": "Unbounded identifiers make many series",
           "limits": "50,000 in chapter is illustrative arithmetic, not benchmark"
+        },
+        {
+          "anchor": "Hiệu `5-120` âm không phải tốc độ request âm",
+          "kind": "documented",
+          "sources": [
+            "PM2"
+          ],
+          "source_location": "Prometheus metric types: Counter",
+          "support": "A counter is cumulative and can reset to zero on restart; raw subtraction across a reset is not a valid event rate.",
+          "limits": "The three counter samples are illustrative, not measured production data."
         }
       ]
     },

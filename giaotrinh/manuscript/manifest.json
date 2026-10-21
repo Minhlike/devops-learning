@@ -44,7 +44,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P01/C01/L02.md",
-      "sha256": "1526a056a4ce3ce797a10b12f2524bcb6edab5a4cf8445285d27a7e10db26e0d",
+      "sha256": "edddbaadf4ea58be2e696a1973c1498c60c97ad388204c33bdd8a0c5ad2acb77",
       "legacy_units": [
         "TXT-7722128509f15211",
         "TXT-e4d944f808d66390"
@@ -180,7 +180,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P01/C02/L03.md",
-      "sha256": "49dc1d7854db5207111dbc84c8e1876a7b46fab7b1f29662483ee0f0853c3a3b",
+      "sha256": "99fcfc01e87a51dc7a08fd060e68ad88757c28399fdf2b0f8b27cfba176c6ebb",
       "legacy_units": [
         "TXT-e62d27fca4a7d217",
         "TXT-859314ab5cb6dff9",
@@ -192,7 +192,8 @@
       ],
       "examples": [],
       "source_ids": [
-        "R3"
+        "R3",
+        "R8"
       ],
       "qa": []
     },
@@ -270,7 +271,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C01/L03.md",
-      "sha256": "1e98f4d55cd3fe4e3dadfdfba35dbe816ccc2d4c3ac48ed61678938617bf2a1c",
+      "sha256": "9c928b1dbc71c4f01b3683ba821afc4dc93d8da71dbfdb7b9ac82a87555687b7",
       "legacy_units": [
         "TXT-ebdbc3b9bec4fe86",
         "TXT-ebe473193eceef01",
@@ -283,6 +284,7 @@
       "examples": [],
       "source_ids": [
         "K2",
+        "R17",
         "R6"
       ],
       "qa": [
@@ -307,7 +309,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C02/L01.md",
-      "sha256": "118eddd404b9bb867b2bb0631969499e352a6ee22fbee45fe35e713ece1c5b87",
+      "sha256": "2e936110db657babce7321e62b367f678c829c973e9601db761f004181c7946e",
       "legacy_units": [
         "chapters/01-tu-chuong-trinh-den-tien-trinh.md#1.4"
       ],
@@ -317,6 +319,7 @@
       "examples": [],
       "source_ids": [
         "R1",
+        "R16",
         "R4",
         "R7"
       ],
@@ -400,7 +403,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C03/L01.md",
-      "sha256": "c8ac765404fa036c221bf05ef84d071758c330cc37ea03c592d170a9a68380e9",
+      "sha256": "2d862547849c087e86c8e35ae7060493438cb35699ebc19b10c7df7b89937d23",
       "legacy_units": [
         "chapters/02-cpu-bo-nho-io.md#intro",
         "TXT-833f7c166dcc22a5",
@@ -413,7 +416,9 @@
       ],
       "examples": [],
       "source_ids": [
-        "K1"
+        "K1",
+        "K3",
+        "K4"
       ],
       "qa": []
     },
@@ -430,7 +435,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P02/C03/L02.md",
-      "sha256": "1cd96890c57dce9aa81e678a57ba77979c3bbcc75744668f7e3bf1b3575c1a5f",
+      "sha256": "5b90b957460ec7138b69f6c682704e9280ae98bddcea925ab5424b199da98008",
       "legacy_units": [
         "TXT-99a747281ea2e1db",
         "TXT-92d4860f95141055",
@@ -441,7 +446,8 @@
       ],
       "examples": [],
       "source_ids": [
-        "K2"
+        "K2",
+        "K3"
       ],
       "qa": [
         {
@@ -790,7 +796,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C01/L03.md",
-      "sha256": "e41937232d131b3639ea44fabfb82b15228573b4e55e7d00178afa8666022cb9",
+      "sha256": "2e158267d564aca51351652ccbcfbefec5f91db749462376e57a507663f735e5",
       "legacy_units": [
         "TXT-d731fb15ba249371",
         "TXT-eef36bf05e5592d5"
@@ -1921,7 +1927,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P06/C02/L03.md",
-      "sha256": "f940b22408997fe28bb21d3eaee344e8cc851c16ac26700e899f074f4e150f72",
+      "sha256": "bbf10b2318791e7b86e7fbcf2ec4a176daf7b69426769306b54c2afe2093d389",
       "legacy_units": [
         "TXT-1bb2d234d781848d",
         "TXT-45e05aec965ee6eb"
@@ -2034,7 +2040,7 @@
           "id": "W2.P06.C03.L03.Q01",
           "publication_id": "P06.C03.L03.Q02",
           "question": "Vì sao hai release được phê duyệt vẫn có thể ghi đè nhau?",
-          "answer": "Approval là cổng quyền, còn serialization/CAS ở đích mới bảo vệ thứ tự cập nhật môi trường."
+          "answer": "Phê duyệt cho phép từng lượt đi tiếp nhưng không xếp thứ tự ghi vào môi trường. Nếu R2 hoàn tất trước rồi R1 ghi sau, bản cũ có thể thay bản mới. Cần điều phối theo đích và kiểm phiên bản/digest hiện tại ngay trước khi thay; nếu khác kỳ vọng thì dừng để đánh giá lại. Khóa trong CI không bảo vệ trước công cụ triển khai khác."
         }
       ]
     },
@@ -2082,7 +2088,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P06/C04/L02.md",
-      "sha256": "486efa07aa53686121978d7ea6ea2f288c2060b20500dde6156a62ed543246be",
+      "sha256": "850c3011c34e85fc8bc6f7407b56cbe1da761a1db5025df7c619009fee23220d",
       "legacy_units": [
         "chapters/09-build-test-phat-hanh-rollback.md#9.4:claim:CLM-df853ebb4ab7f0be"
       ],
@@ -2619,7 +2625,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C01/L02.md",
-      "sha256": "d7ecfed313779af0d64a9ca3b494e2c90cffa33f05b633ea04fd8f28431bdddb",
+      "sha256": "cd9b4bec8f0e9d8d661260ded8ecec282508150f3c83ab26b5fa77c9ad632400",
       "legacy_units": [
         "TXT-6da09605de7ad061"
       ],
@@ -2629,7 +2635,8 @@
       ],
       "examples": [],
       "source_ids": [
-        "AWS2"
+        "AWS2",
+        "AWS20"
       ],
       "qa": [
         {
@@ -2714,7 +2721,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P08/C02/L02.md",
-      "sha256": "ed489ebf72bd55d65cf551fe81196eb54edfa0a861da36f66fc0a5293a02eec4",
+      "sha256": "553c5ea4bda9f18ac41ea9505ebc08fd4befa3a1022457ad48736cecc289cabd",
       "legacy_units": [
         "chapters/12-aws-iam-vpc-storage.md#12.2:claim:CLM-af64660252f99eaf",
         "chapters/12-aws-iam-vpc-storage.md#12.2:claim:CLM-f6eca2b5c3480cc0"
@@ -2979,7 +2986,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C01/L01.md",
-      "sha256": "04d3f2cd5fedacdd25ad0b9cee8ae9a83adf58442a7e25e1d6424f1b8856c59d",
+      "sha256": "5daf1f55dca6d596b787452f90735bd2b00580a814efb2f5ecf9ffc9baad6630",
       "legacy_units": [
         "chapters/13-terraform-do-thi-state-drift.md#13.1:claim:CLM-7b1bc46f06f9c079"
       ],
@@ -2989,7 +2996,8 @@
       "examples": [],
       "source_ids": [
         "TF1",
-        "TF2"
+        "TF2",
+        "TF4"
       ],
       "qa": [
         {
@@ -3247,11 +3255,12 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C03/L03.md",
-      "sha256": "f9aa9cd436f50c0f04393c37b91166efdf93d3248d95117a7c7b531429ac473f",
+      "sha256": "3d3dd473beeaf5f6d063658fdf0ce4ab8562daaa2f1491fb1db24af3326dc879",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
+        "TF4",
         "W2-TFMOVED"
       ],
       "qa": [
@@ -3410,7 +3419,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P10/C01/L02.md",
-      "sha256": "ad9a49317ce3b2bb7b885b144eea46c28405f118fb9c2048f98bb46a878dffc0",
+      "sha256": "6df4acfc3830a024e70c74b6acbfde3bc24613093c17a73bb207544f36f39659",
       "legacy_units": [
         "chapters/14-ansible-hoi-tu-cau-hinh.md#14.1:claim:CLM-3b3f1eb3d83ffe45"
       ],
@@ -3419,6 +3428,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "AS15",
         "AS4"
       ],
       "qa": [
@@ -3426,7 +3436,7 @@
           "id": "W2.P10.C01.L02.Q01",
           "publication_id": "P10.C01.L02.Q01",
           "question": "Fact cache có đủ để xác nhận host sau drift không?",
-          "answer": "Không; xác định tuổi fact hoặc thu thập lại rồi kiểm trực tiếp hậu điều kiện quan trọng."
+          "answer": "Không. Fact cache là ảnh chụp tại thời điểm thu thập, nên một địa chỉ hay thuộc tính host có thể đã đổi sau đó. Xác định tuổi fact và host identity, thu thập lại khi cần, rồi kiểm trực tiếp nội dung, quyền và trạng thái dịch vụ là hậu điều kiện của task. Một recap ok chỉ phản ánh kết quả module ở lượt chạy ấy."
         }
       ]
     },
@@ -3443,7 +3453,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P10/C01/L03.md",
-      "sha256": "620a86cf35a46fe9a4d07e361627d1c9638ac2affa916ee7707ce8d74a6b0f7a",
+      "sha256": "757628b1e975eeaf7ef89bc9992296df6d26db1bf88e441b35251054e80691a0",
       "legacy_units": [
         "chapters/14-ansible-hoi-tu-cau-hinh.md#14.1:claim:CLM-2f066d8c9cf0e092"
       ],
@@ -3459,7 +3469,7 @@
           "id": "W2.P10.C01.L03.Q01",
           "publication_id": "P10.C01.L03.Q01",
           "question": "Nếu task thiếu quyền, bật become có tự giải quyết không?",
-          "answer": "Không; cần kiểm connection user, become user, policy trên host và hậu điều kiện file."
+          "answer": "Không. become chỉ yêu cầu dùng cơ chế escalation sẵn có trên host; nó không cấp thêm quyền nếu policy sudo từ chối. Xác định connection user, become user, phương thức escalation và lỗi xảy ra trước hay trong module. Sau khi task chạy, kiểm owner, mode và khả năng dịch vụ đọc file, thay vì suy từ recap."
         }
       ]
     },
@@ -4040,7 +4050,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C04/L02.md",
-      "sha256": "dea1716334dc4bd4e1564cb67abbe612f5b7edd57da5abe88a2efeecd7c5d323",
+      "sha256": "21a37b500f8e881bbdc33d9b7396e3786dfdb91d452bb7ac3f9d28879f274a08",
       "legacy_units": [
         "TXT-445b9558deea7c90"
       ],
@@ -4050,7 +4060,10 @@
       "examples": [],
       "source_ids": [
         "CN1",
-        "KU1"
+        "KU1",
+        "KU18",
+        "KU7",
+        "KU8"
       ],
       "qa": []
     },
@@ -4167,7 +4180,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C05/L03.md",
-      "sha256": "d7aa9f8f4c7f0e15ff70e422bc59d183e992e492b2c57794f7d851b5f292518a",
+      "sha256": "78c582700d1fb8b05f35446395020e6129ba9bdd625ec223f13457807137dd1f",
       "legacy_units": [
         "TXT-5075a73a8ebee66d",
         "TXT-6c9674353a84bb58"
@@ -4207,7 +4220,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L01.md",
-      "sha256": "c0c5b106d16f0f6cf9b31234bc55da2e8566bacb63a9b641b02a8257cf1a298b",
+      "sha256": "3286eefc3a7632cc7d961f0860f2c9ba25824b6c3c9119bc2bce7267ff85ceec",
       "legacy_units": [
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.5:claim:CLM-590ed69919bb6008"
       ],
@@ -4216,14 +4229,15 @@
       ],
       "examples": [],
       "source_ids": [
-        "KU23"
+        "KU23",
+        "KU24"
       ],
       "qa": [
         {
           "id": "W2.P11.C06.L01.Q01",
           "publication_id": "P11.C06.L01.Q01",
           "question": "CPU 80% request có nghĩa dùng 80% node không?",
-          "answer": "Không; mẫu số là requests.cpu phù hợp, cần biết mức request và cửa sổ metric."
+          "answer": "Không. Với CPU utilization, mẫu số là CPU request của container được xét, không phải tổng CPU node hay CPU limit. Ví dụ usage 80 millicore trên request 100 millicore cho 80% request, dù node có thể còn nhiều CPU rảnh. Muốn dự đoán HPA cần kiểm tra request, metric có đủ mẫu, trạng thái Pod và chính sách scale."
         }
       ]
     },
@@ -4548,7 +4562,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P12/C01/L01.md",
-      "sha256": "134ebb331c0e089d691c1f52833097a61ee0734094255f944c83f2ea28c80931",
+      "sha256": "e632ae286905b336bb8291f831b11c107b6b68499c1600bb13a6e05a690cfcf6",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#18.1:claim:CLM-4640ce1d0450e1ba",
         "chapters/18-metrics-prometheus-grafana.md#18.1:claim:CLM-35881d38ef827fa0"
@@ -4566,7 +4580,7 @@
           "id": "W2.P12.C01.L01.Q01",
           "publication_id": "P12.C01.L01.Q01",
           "question": "Vì sao không lấy trung bình p95 của hai Summary?",
-          "answer": "Quantile từng phân phối không cộng tuyến tính; dùng histogram với bucket và phép tổng hợp phù hợp."
+          "answer": "p95 của từng Summary là quantile trên hai phân phối riêng, không cộng tuyến tính; trung bình hai con số ấy không cho p95 của tập request gộp, nhất là khi cỡ mẫu khác nhau. Nếu cần quantile gộp, dùng histogram với cùng ranh giới bucket và tập nhãn phù hợp, cộng tốc độ bucket trước rồi ước lượng quantile. Kết quả vẫn bị giới hạn bởi độ rộng bucket."
         }
       ]
     },
@@ -4583,7 +4597,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C01/L02.md",
-      "sha256": "bd05d76878481137d87f64d8d869d50447260b902661ef8beab7538af4ff9235",
+      "sha256": "83800cc124a9f160ab80f37fa492ac01b5e712d0c700f5004b1bd0f6d904b9de",
       "legacy_units": [
         "TXT-34f4a5f5539ec3d3",
         "TXT-197e0629916b2f81"
@@ -4594,6 +4608,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "PM2",
         "PM3",
         "PM7"
       ],
@@ -4986,7 +5001,7 @@
           "id": "W2.P12.C04.L03.Q01",
           "publication_id": "P12.C04.L03.Q02",
           "question": "Metric p95 cao nhưng trace thấy nhanh: được kết luận metric sai không?",
-          "answer": "Không; kiểm sampling, queue/drop và cùng population/cửa sổ trước khi kết luận."
+          "answer": "Chưa thể kết luận metric sai. Trace lưu có thể bị thiên lệch do sampling, mất span ở Collector hoặc chỉ bao gồm route, instance, phiên bản và cửa sổ thời gian khác. Đối chiếu cùng population và time range, kiểm tỷ lệ sampling, queue/drop và request đại diện trước khi quy lỗi cho phép đo."
         }
       ]
     },
@@ -5006,7 +5021,7 @@
       "verification": "reviewed_p13_publication_contract",
       "editorial_override": true,
       "content": "manuscript/P13/C01/L01.md",
-      "sha256": "0a45adf06adfc17f8cc4adb3ffd77aa27aa5e1236690cf7a387791317c6c92ce",
+      "sha256": "aef11b6a7f2c76af35cfd0f3e2db18ef960c8f505ea9f98a0e4e62e379267ffd",
       "legacy_units": [
         "authoring/P13/C01/manuscript.md#P13.C01.L01"
       ],
@@ -6016,7 +6031,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L04.md",
-      "sha256": "ed4344e64e34f02cdba4992d9ac125feb6475f69fd429983a86eb1fa217bc74c",
+      "sha256": "289199550e80917b5d6a2bd8460242173ef3f51f5af961bedfe25e20115780ab",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],

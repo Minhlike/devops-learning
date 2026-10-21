@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_on": "2026-10-20",
+  "checked_on": "2026-10-21",
   "purpose": "Scientific claim and exercise ledger outside the PDF render path",
   "sources": {
     "W2-CLK": {
@@ -723,6 +723,16 @@
           "source_location": "Refactor modules, Enable count or for_each for a resource",
           "support": "Ví dụ chuyển instance từ count index sang for_each key qua moved blocks.",
           "limits": "Rủi ro reorder là suy luận vận hành từ địa chỉ index và danh sách đầu vào."
+        },
+        {
+          "anchor": "A có phép chuyển trong state, B có thể cần create",
+          "sources": [
+            "W2-TFMOVED",
+            "TF4"
+          ],
+          "source_location": "Refactor modules: Move a resource or module; terraform_data",
+          "support": "Refactor modules documents old-address state movement and new instances ignoring the move; terraform_data is a local built-in resource.",
+          "limits": "Only a moved block is shown; a complete runnable module configuration and CLI plan are not asserted."
         }
       ],
       "qa": [
@@ -1562,7 +1572,7 @@
           "id": "W2.P06.C03.L03.Q01",
           "publication_id": "P06.C03.L03.Q02",
           "question": "Vì sao hai release được phê duyệt vẫn có thể ghi đè nhau?",
-          "answer": "Approval là cổng quyền, còn serialization/CAS ở đích mới bảo vệ thứ tự cập nhật môi trường."
+          "answer": "Phê duyệt cho phép từng lượt đi tiếp nhưng không xếp thứ tự ghi vào môi trường. Nếu R2 hoàn tất trước rồi R1 ghi sau, bản cũ có thể thay bản mới. Cần điều phối theo đích và kiểm phiên bản/digest hiện tại ngay trước khi thay; nếu khác kỳ vọng thì dừng để đánh giá lại. Khóa trong CI không bảo vệ trước công cụ triển khai khác."
         }
       ]
     },
@@ -1598,6 +1608,16 @@
           "source_location": "Compare security groups and network ACLs; flow log records",
           "support": "AWS mô tả SG stateful, NACL subnet-level stateless và bản ghi flow log ACCEPT/REJECT.",
           "limits": "Flow log không giải thích IAM hoặc nội dung application request; không suy ra nguyên nhân chỉ từ action."
+        },
+        {
+          "anchor": "luật chỉ mở `443` theo một chiều chưa đủ cho cả hai chiều",
+          "sources": [
+            "AWS8",
+            "AWS18"
+          ],
+          "source_location": "VPC infrastructure security: SG stateful versus NACL stateless; flow log record fields",
+          "support": "A stateless NACL evaluates return packets separately; source/destination ports and traffic direction must be compared.",
+          "limits": "The addresses and ports are a hypothetical packet pair, not an AWS flow log; a timeout alone does not prove an ACL drop."
         }
       ],
       "qa": [
@@ -1620,6 +1640,16 @@
           "source_location": "Purpose of state; Dependency Graph",
           "support": "Terraform dùng resource/state để quản lý object và đồ thị suy ra phụ thuộc từ tham chiếu.",
           "limits": "Cấu hình HCL không tự chứng minh API đã tạo đúng object; cần đối chiếu plan/apply/state và hạ tầng thật."
+        },
+        {
+          "anchor": "expression của `input` đọc `output`",
+          "sources": [
+            "TF2",
+            "TF4"
+          ],
+          "source_location": "Dependency Graph: resource references; terraform_data: input/output",
+          "support": "Terraform dependency graph derives edges from expressions; terraform_data exposes output for use by another resource.",
+          "limits": "Example has not been run with Terraform CLI in this revision; ordering alone does not prove service readiness."
         }
       ],
       "qa": [
@@ -1662,6 +1692,15 @@
           "source_location": "Facts and fact caching",
           "support": "Ansible thu thập facts và có thể cache; cached facts có thể cũ so với trạng thái hiện tại.",
           "limits": "Recap ok/changed/failed phụ thuộc module và lần chạy cụ thể; không chứng minh mọi hậu điều kiện ngoài module."
+        },
+        {
+          "anchor": "A bị loại khỏi các task còn lại của play",
+          "sources": [
+            "AS15"
+          ],
+          "source_location": "Ansible playbooks: Task execution and recap",
+          "support": "ansible-core 2.16 playbook guide says each task runs for matched hosts and a failed host leaves the rotation by default; unreachable is counted separately.",
+          "limits": "Other strategies or explicit failure-handling directives change this behavior; scenario output is hypothetical."
         }
       ],
       "qa": [
@@ -1669,7 +1708,7 @@
           "id": "W2.P10.C01.L02.Q01",
           "publication_id": "P10.C01.L02.Q01",
           "question": "Fact cache có đủ để xác nhận host sau drift không?",
-          "answer": "Không; xác định tuổi fact hoặc thu thập lại rồi kiểm trực tiếp hậu điều kiện quan trọng."
+          "answer": "Không. Fact cache là ảnh chụp tại thời điểm thu thập, nên một địa chỉ hay thuộc tính host có thể đã đổi sau đó. Xác định tuổi fact và host identity, thu thập lại khi cần, rồi kiểm trực tiếp nội dung, quyền và trạng thái dịch vụ là hậu điều kiện của task. Một recap ok chỉ phản ánh kết quả module ở lượt chạy ấy."
         }
       ]
     },
@@ -1683,6 +1722,15 @@
           "source_location": "Understanding privilege escalation: become",
           "support": "Ansible dùng cơ chế privilege escalation hiện có của host; become không tự cấp quyền.",
           "limits": "Quyền cụ thể và sudo policy tùy host; không khẳng định thực thi thành công nếu chưa chạy."
+        },
+        {
+          "anchor": "policy sudo của host từ chối chuyển danh tính",
+          "sources": [
+            "AS2"
+          ],
+          "source_location": "ansible-core 2.16 Understanding privilege escalation: become",
+          "support": "Ansible uses an existing privilege escalation method and cannot grant a capability absent on the managed host.",
+          "limits": "The deploy/root scenario is illustrative; no live host or sudo policy was tested."
         }
       ],
       "qa": [
@@ -1690,7 +1738,7 @@
           "id": "W2.P10.C01.L03.Q01",
           "publication_id": "P10.C01.L03.Q01",
           "question": "Nếu task thiếu quyền, bật become có tự giải quyết không?",
-          "answer": "Không; cần kiểm connection user, become user, policy trên host và hậu điều kiện file."
+          "answer": "Không. become chỉ yêu cầu dùng cơ chế escalation sẵn có trên host; nó không cấp thêm quyền nếu policy sudo từ chối. Xác định connection user, become user, phương thức escalation và lỗi xảy ra trước hay trong module. Sau khi task chạy, kiểm owner, mode và khả năng dịch vụ đọc file, thay vì suy từ recap."
         }
       ]
     },
@@ -1704,6 +1752,16 @@
           "source_location": "Algorithm details, resource metrics",
           "support": "HPA CPU utilization tính theo CPU request của container được xét, không theo node CPU hoặc limit.",
           "limits": "Metric thiếu, Pod chưa Ready và cấu hình behavior ảnh hưởng phép tính thực tế; bài không giả định có cluster chạy."
+        },
+        {
+          "anchor": "phép chia usage/request không xác định",
+          "sources": [
+            "KU23",
+            "KU24"
+          ],
+          "source_location": "Horizontal Pod Autoscaling: metrics APIs, missing CPU requests and multiple metrics",
+          "support": "Kubernetes v1.34 HPA documentation describes CPU request as the denominator, missing requests, metric APIs and multi-metric behavior.",
+          "limits": "Exact final replica decision depends on readiness, missing samples, tolerance and HPA behavior settings."
         }
       ],
       "qa": [
@@ -1711,7 +1769,7 @@
           "id": "W2.P11.C06.L01.Q01",
           "publication_id": "P11.C06.L01.Q01",
           "question": "CPU 80% request có nghĩa dùng 80% node không?",
-          "answer": "Không; mẫu số là requests.cpu phù hợp, cần biết mức request và cửa sổ metric."
+          "answer": "Không. Với CPU utilization, mẫu số là CPU request của container được xét, không phải tổng CPU node hay CPU limit. Ví dụ usage 80 millicore trên request 100 millicore cho 80% request, dù node có thể còn nhiều CPU rảnh. Muốn dự đoán HPA cần kiểm tra request, metric có đủ mẫu, trạng thái Pod và chính sách scale."
         }
       ]
     },
@@ -1725,6 +1783,15 @@
           "source_location": "Histogram and summary metric types",
           "support": "Prometheus định nghĩa classic histogram với bucket le, sum, count và summary với quantile client-side.",
           "limits": "Khả năng aggregate quantile cần tài liệu practices bổ sung; không suy ra percentile toàn cụm bằng trung bình quantile."
+        },
+        {
+          "anchor": "Thời gian trung bình là `22/100=0,22` giây",
+          "sources": [
+            "PM2"
+          ],
+          "source_location": "Prometheus Metric types: Counter and classic histogram",
+          "support": "Prometheus classic histogram count, sum and cumulative le buckets support mean 22/100 and 90 of 100 requests no slower than 0.5 s.",
+          "limits": "Synthetic buckets; no exact p95 without observations and bucket layout, and counter reset or label mismatch would invalidate a naive delta."
         }
       ],
       "qa": [
@@ -1732,7 +1799,7 @@
           "id": "W2.P12.C01.L01.Q01",
           "publication_id": "P12.C01.L01.Q01",
           "question": "Vì sao không lấy trung bình p95 của hai Summary?",
-          "answer": "Quantile từng phân phối không cộng tuyến tính; dùng histogram với bucket và phép tổng hợp phù hợp."
+          "answer": "p95 của từng Summary là quantile trên hai phân phối riêng, không cộng tuyến tính; trung bình hai con số ấy không cho p95 của tập request gộp, nhất là khi cỡ mẫu khác nhau. Nếu cần quantile gộp, dùng histogram với cùng ranh giới bucket và tập nhãn phù hợp, cộng tốc độ bucket trước rồi ước lượng quantile. Kết quả vẫn bị giới hạn bởi độ rộng bucket."
         }
       ]
     },
@@ -1753,7 +1820,7 @@
           "id": "W2.P12.C04.L03.Q01",
           "publication_id": "P12.C04.L03.Q02",
           "question": "Metric p95 cao nhưng trace thấy nhanh: được kết luận metric sai không?",
-          "answer": "Không; kiểm sampling, queue/drop và cùng population/cửa sổ trước khi kết luận."
+          "answer": "Chưa thể kết luận metric sai. Trace lưu có thể bị thiên lệch do sampling, mất span ở Collector hoặc chỉ bao gồm route, instance, phiên bản và cửa sổ thời gian khác. Đối chiếu cùng population và time range, kiểm tỷ lệ sampling, queue/drop và request đại diện trước khi quy lỗi cho phép đo."
         }
       ]
     }

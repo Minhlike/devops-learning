@@ -1,6 +1,6 @@
 # P13.C01 — SLI, SLO và ngân sách lỗi
 
-**Bản thảo nội dung A1; dữ liệu dưới đây là giả định để học, không phải phép đo production.**
+**Các số liệu trong chương là ví dụ giả định để học, không phải phép đo từ hệ thống production.**
 
 ## P13.C01.L01 — Định nghĩa phép đo từ trải nghiệm
 
