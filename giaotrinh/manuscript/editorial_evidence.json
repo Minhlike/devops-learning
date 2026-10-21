@@ -1133,8 +1133,8 @@
       ]
     },
     "P05.C03.L01": {
-      "content_sha256": "2a05cc9e4f78783017cbaab8870b9b9dc13cdec507804d0674ae58bc0fcec978",
-      "editorial_decision": "Script backup lỗi được dán nhãn cố ý, chỉ chạy với fixture; success giả được chứng minh bằng status và file cuối.",
+      "content_sha256": "73e38fc9867850a7474ce874d66ac5ebc73b6b7687e0874f08d10ef9ac5e73e2",
+      "editorial_decision": "Giữ nguyên cả hai ví dụ migration; giải thích hợp đồng chung giữa exit/status và hậu trạng thái để chuyển ca Bash sang Python/Go có chủ đích.",
       "checks": [
         {
           "anchor": "`tar` không thể đổi sang nguồn và thoát 2",
@@ -1156,6 +1156,14 @@
           "source_location": "tests/test_orchestration_example.py",
           "support": "Tests assert success, false success, failure, timeout and final ready/partial state",
           "limits": "Demonstration only; not production safety proof"
+        },
+        {
+          "anchor": "kết quả tiến trình",
+          "kind": "derived",
+          "sources": [],
+          "source_location": "",
+          "support": "The backup and orchestration fixtures independently show that a reported success must be checked against the persisted artifact or ready/partial state.",
+          "limits": "A readable archive and a ready marker are only the stated fixture postconditions, not proof of production recovery or application readiness."
         }
       ]
     },
@@ -1304,8 +1312,8 @@
       ]
     },
     "P06.C03.L01": {
-      "content_sha256": "fe503bd3cf1258177b16c27f65ef2c6c373e8dca2835863a3e0ded6f3b112414",
-      "editorial_decision": "Rolling, blue-green và canary nêu thời điểm chuyển traffic, điều kiện dừng và nguồn quan sát; không áp quota hoặc tỉ lệ cố định.",
+      "content_sha256": "51051c94cf5c840445416431c532a20f4b08c10532f0cc8c1d6069c5dafb94d0",
+      "editorial_decision": "Giữ đoạn migration; thêm ví dụ bốn replica để suy luận surge, availability, rollout stall và giới hạn suy từ số Pod sang tỷ lệ canary.",
       "checks": [
         {
           "anchor": "Rolling update thay dần instance cũ bằng mới",
@@ -1346,6 +1354,16 @@
           "source_location": "Rolling Back a Deployment",
           "support": "Deployment rollback restores previous Pod template revision",
           "limits": "Does not reverse external state or committed database writes"
+        },
+        {
+          "anchor": "Controller có thể tạo Pod mới thứ năm",
+          "kind": "documented",
+          "sources": [
+            "KD1"
+          ],
+          "source_location": "Kubernetes v1.34 Deployments, Rolling Update Deployment, maxSurge, maxUnavailable, progressDeadlineSeconds",
+          "support": "Kubernetes v1.34 rolling update with four desired replicas, maxSurge one and maxUnavailable zero permits one new replica while maintaining four Available before scaling down old ones.",
+          "limits": "Replica availability does not determine exact request share; terminating Pods can temporarily consume extra resources."
         }
       ]
     },
@@ -2381,8 +2399,8 @@
       ]
     },
     "P10.C03.L01": {
-      "content_sha256": "86956a69797f9a680ca1e141a68e78174c4b26887041a1779eea9d9bf0ae76bf",
-      "editorial_decision": "Variable precedence, facts và roles có phạm vi; fact cache không được coi luôn mới.",
+      "content_sha256": "8551ab688d25f0b8164b475680dad2e3d2f1201858f39a24e330ea8795fcf82a",
+      "editorial_decision": "Giữ đoạn migration và bổ sung phép lần theo role defaults, group vars, role vars và extra vars để người học dự đoán giá trị trước khi kiểm trên host.",
       "checks": [
         {
           "anchor": "Role gom task, handler, template và biến",
@@ -2393,6 +2411,16 @@
           "source_location": "Roles: role directory structure",
           "support": "Roles package tasks, handlers, templates and defaults",
           "limits": "Role reuse does not confer permissions"
+        },
+        {
+          "anchor": "extra vars có ưu tiên cao nhất trong ba nguồn",
+          "kind": "documented",
+          "sources": [
+            "AS3"
+          ],
+          "source_location": "Using Variables, Understanding variable precedence and Defining variables at runtime",
+          "support": "ansible-core 2.16 orders role defaults below group vars, role vars above group vars, and extra vars above all; key=value extra vars are strings.",
+          "limits": "The worked values assume one group and no other declaration; rendered config and listener still require host-specific verification."
         }
       ]
     },
