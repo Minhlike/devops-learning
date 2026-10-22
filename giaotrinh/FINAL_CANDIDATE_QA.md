@@ -1,17 +1,17 @@
-# Kiểm toán PDF candidate — 2026-10-21
+# Kiểm toán PDF candidate — 2026-10-22
 
 ## Phạm vi
 
-- Cây xuất bản: **15 Phần, 58 Chương, 178 Bài**; cả 178 bài có văn bản và trạng thái `reviewed`.
-- Hồ sơ migration giữ 88 mục, 216 đoạn, 267 claim, 23 ví dụ và 79 cặp bài tập–đáp án cũ. Khóa ID/URL nguồn không thay đổi.
+- Cây xuất bản: **15 Phần, 58 Chương, 178 Bài**; cả 178 bài có văn bản và trạng thái `reviewed` trong manifest. Trạng thái này là hợp đồng cấu trúc và hồ sơ biên tập, không tự chứng nhận chất lượng khoa học của từng bài.
+- Hồ sơ migration giữ 88 mục, 216 đoạn, 267 claim, 23 ví dụ và 79 cặp bài tập–đáp án cũ. URL của các ID nguồn cũ vẫn được khóa; nguồn mới chỉ được thêm ID mới.
 - 144 bài tập và lời giải dùng cùng số và tiêu đề tiếng Việt dành cho người đọc; ID nội bộ chỉ còn trong manifest và hồ sơ ngoài PDF.
 
 ## PDF và điều hướng
 
 - Tệp: `Cam_nang_devops.candidate.pdf`.
-- SHA-256: `08f0700dbe5548b43613faa2cb35ca1e0823647e8a32d48615fa69ed230cc3de`.
-- **208 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. Times New Roman Regular/Bold và Consolas được nhúng. Có thêm Helvetica cho thành phần PDF hệ thống; nội dung sách dùng các font đã quy định.
-- Trích xuất 478.389 ký tự, không có ký tự Unicode thay thế. Bộ dựng báo `CANDIDATE_OK pages=208 bookmarks=310 source_leaks=0`.
+- SHA-256: `61d218d18351803f2636515e402e7c3e0a5830f66fd6bcf54b786ec7b4eff5a5`.
+- **237 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. Times New Roman Regular/Bold và Consolas được nhúng. Có thêm Helvetica cho thành phần PDF hệ thống; nội dung sách dùng các font đã quy định.
+- Trích xuất 595.352 ký tự, không có ký tự Unicode thay thế. Bộ dựng báo `CANDIDATE_OK pages=237 bookmarks=310 source_leaks=0`. Kiểm tra hình học độc lập tìm thấy 0 khối chữ vượt biên 15 pt và 0 trang sai khổ A4.
 - Mục lục in liệt kê 15 Phần, 58 Chương và **Lời giải bài tập** với số trang đối chiếu được với bookmark. Bookmark vẫn có cấp Bài; mục lục in giữ hai cấp để người đọc quét nhanh. Tất cả tiêu đề Chương bắt đầu gần đầu trang và running header mang số Chương tương ứng.
 - 43 tham chiếu chéo ở 28 vị trí bản thảo dùng ID ngữ nghĩa và được renderer tạo nhãn đọc từ cây xuất bản. Bộ dựng từ chối tham chiếu số chương cũ, ID không tồn tại hoặc ID lệch hợp đồng; ca âm kiểm tra trỏ sang chủ đề sai, thiếu đích và số trang mục lục sai.
 - 14 hình cơ chế dạng vector từ `scripts/science_figures.py`, trong đó 10 hình mới có hồ sơ claim, chủ sở hữu, nguồn và giới hạn ở `manuscript/figure_evidence.json`. Cùng với 4 hình Phần XIII, PDF có 18 hình khoa học. Mỗi Phần trước đây không có hình đã được xem xét và thêm một hình có vai trò giải thích cơ chế hoặc suy luận vận hành. Không có quota hình.
@@ -19,9 +19,9 @@
 
 ## Kiểm thử và QA hình ảnh
 
-- `python -m unittest discover -s giaotrinh/tests -q`: **43 test, 42 PASS, 1 SKIP** (thiếu Go toolchain). Kiểm thử bao gồm ca âm về tham chiếu, trang mục lục, hình/caption, source leak và hợp đồng bản thảo.
-- Đã render **toàn bộ 208 trang** từ PDF cuối và rà 13 contact sheet. Xem chi tiết mục lục trang 2–3, trang bài tập 7, các trang hình/bảng/code tiêu biểu 13, 45, 49, 63, 80, 88, 110, 145, 173, 186; các trang hình bị tác động bởi lần sửa cuối đã được render và xem lại riêng. Contact sheet không bộc lộ tràn lề hoặc hình bị cắt; phép kiểm tự động còn đối chiếu chiều rộng mã, bảng và kích thước trang.
-- Một số trang chỉ có bài tập cuối Chương và nhiều chỗ trống, ví dụ trang 7, 34, 40, 83, 89, 103, 115. Đây là hệ quả của việc mở Chương tiếp theo trên trang mới; vẫn là giới hạn biên tập cần cân nhắc ở vòng duyệt bản in, không được mô tả là bố cục đã hoàn hảo.
+- `python -X utf8 -m unittest discover -s giaotrinh/tests -q`: **44 test, 43 PASS, 1 SKIP** (không có Go toolchain trong PATH). Kiểm thử bao gồm ca âm về tham chiếu, trang mục lục, hình/caption, source leak và hợp đồng bản thảo; hồi quy mới yêu cầu mỗi caption Phần XIII chỉ xuất hiện đúng một lần.
+- Đã render **toàn bộ 237 trang** từ PDF này, rà 6 contact sheet bao phủ tất cả trang và xem chi tiết các trang 32, 103, 108, 146–147, 166, 179, 183, 186, 189, 198–199. Bốn hình Phần XIII không bị cắt và mỗi nhãn caption xuất hiện đúng một lần trong văn bản trích xuất. Contact sheet không bộc lộ tràn lề hoặc hình bị cắt; mức thu nhỏ của contact sheet không thay phép đọc chi tiết từng trang.
+- Một số trang chỉ có bài tập cuối Chương và nhiều chỗ trống, ví dụ trang 26, 103 và 147. Đây là hệ quả của việc mở Chương tiếp theo trên trang mới; vẫn là giới hạn biên tập cần cân nhắc ở vòng duyệt bản in, không được mô tả là bố cục đã hoàn hảo.
 
 ## Giới hạn và quyết định
 

@@ -589,8 +589,8 @@
       ]
     },
     "P03.C01.L03": {
-      "content_sha256": "2e158267d564aca51351652ccbcfbefec5f91db749462376e57a507663f735e5",
-      "editorial_decision": "ARP chỉ áp cho IPv4 trên liên kết; neighbor entry không chứng minh server ứng dụng khỏe.",
+      "content_sha256": "dfcf7865c24a93e3631658823dc3eaadd6a3eb50b74f79685f80b715d46bf6ac",
+      "editorial_decision": "Trace ARP và SYN phân biệt IP đích xuyên mạng với MAC next hop trên liên kết cục bộ; FAILED là ảnh chụp, không phải kết luận gateway chết.",
       "checks": [
         {
           "anchor": "ARP của IPv4 hỏi",
@@ -613,6 +613,17 @@
           "source_location": "ip-neighbour(8) states and RFC 826 local-link resolution",
           "support": "FAILED records exhausted neighbor resolution; ARP resolves a next-hop link address on the local link.",
           "limits": "The route and neighbor rows are hypothetical; a single snapshot cannot establish persistent gateway failure."
+        },
+        {
+          "anchor": "Lần theo byte địa chỉ trong một lượt",
+          "kind": "documented",
+          "sources": [
+            "N3",
+            "I2"
+          ],
+          "source_location": "RFC 826: request/reply address resolution; ip-neighbour(8): neighbor binding and state",
+          "support": "ARP request resolves the IPv4 next-hop address on the local Ethernet link; the resulting Ethernet frame targets gateway MAC while IP destination remains the remote server.",
+          "limits": "MAC and IP values are a hypothetical trace; real captures must be taken in the workload network namespace and on the correct interface."
         }
       ]
     },
@@ -2461,8 +2472,8 @@
       ]
     },
     "P08.C04.L03": {
-      "content_sha256": "9a7d29679009e2306de3fd14b803d99c39254536c127701d68603a288c9c9ad7",
-      "editorial_decision": "S3 object theo key, Region và storage class; durability/availability/replication không bị đồng nhất với backup.",
+      "content_sha256": "9c3dff2a6179372b72fae32b6b35c15ce9400410f3065585be219ab30c7f4318",
+      "editorial_decision": "S3 object theo key, Region và storage class; dòng thời gian version/delete marker làm rõ khôi phục và giới hạn RPO, không đồng nhất durability/replication với backup.",
       "checks": [
         {
           "anchor": "S3 Standard được thiết kế phân tán qua nhiều AZ",
@@ -2484,6 +2495,16 @@
           "source_location": "What does Amazon S3 replicate: How delete operations affect replication; S3 Versioning",
           "support": "Delete markers may replicate depending on rule while versioning retains older versions unless permanently removed",
           "limits": "Behavior differs by replication rule, versioning state and retention controls"
+        },
+        {
+          "anchor": "Xét bucket **đã bật Versioning trước sự cố**",
+          "kind": "documented",
+          "sources": [
+            "AWS15"
+          ],
+          "source_location": "Retaining multiple versions of objects with S3 Versioning; delete markers and version IDs",
+          "support": "Versioning keeps overwritten versions; an unqualified delete creates a current delete marker, while explicit version deletion and lifecycle can remove recovery history",
+          "limits": "Timeline is illustrative; recovery depends on the bucket state, permissions, lifecycle, actual object versions and application read path"
         }
       ]
     },
@@ -3367,8 +3388,8 @@
       ]
     },
     "P11.C04.L03": {
-      "content_sha256": "e3419e5bb24fbe2252ed97d964af876978de6e18db794e2d5d14b5c73a0f353e",
-      "editorial_decision": "NetworkPolicy phụ thuộc plugin và phạm vi selector/hướng lưu lượng.",
+      "content_sha256": "be683ac1c44e29147c01c2b38f4d8cf21d96d3d9914da11eccd5172c95c5fca1",
+      "editorial_decision": "NetworkPolicy phụ thuộc plugin và phạm vi selector/hướng lưu lượng; ca hai selector làm rõ giao và hợp, policy cộng gộp và hai hướng cho phép.",
       "checks": [
         {
           "anchor": "`NetworkPolicy` là API chọn Pod",
@@ -3379,6 +3400,16 @@
           "source_location": "Network Policies: behavior and isolation",
           "support": "Policy selects Pods and ingress/egress allowances; requires implementing plugin",
           "limits": "API object alone does not prove enforcement"
+        },
+        {
+          "anchor": "Đọc policy như phép toán trên tập Pod",
+          "kind": "documented",
+          "sources": [
+            "KU18"
+          ],
+          "source_location": "Network Policies v1.34: the two sorts of pod isolation; behavior of to and from selectors",
+          "support": "A peer with both selectors is an intersection; separate peers form a union; policies are additive and both source egress and destination ingress must allow a Pod-to-Pod connection",
+          "limits": "Selector matching is not a live connectivity measurement; Service address translation and enforcement vary by dataplane"
         }
       ]
     },
@@ -3952,8 +3983,8 @@
       ]
     },
     "P12.C02.L02": {
-      "content_sha256": "fb1832c31ece7ee0c8e7dd1bf486042b306314a9b559668f373e5732f710aaef",
-      "editorial_decision": "Bucket histogram cộng dồn; quantile nội suy có giới hạn.",
+      "content_sha256": "56855a904b25b9a53aed60d710d4f72cdd2245a0b33a15f0502ceb49d91809d6",
+      "editorial_decision": "Histogram bucket chỉ ràng buộc khoảng của p95; hai phân bố cùng bucket có thể có p95 thực khác nhau.",
       "checks": [
         {
           "anchor": "Với giả định nội suy đều trong bucket của `histogram_quantile`",
@@ -3975,6 +4006,17 @@
           "source_location": "Text-based format: HELP TYPE sample syntax; Jobs and instances",
           "support": "Snapshot uses documented text exposition syntax; scrape adds target labels",
           "limits": "One snapshot cannot establish a rate"
+        },
+        {
+          "anchor": "Thử phản chứng bằng hai tập dữ liệu giả định",
+          "kind": "derived",
+          "sources": [
+            "PM9",
+            "PM12"
+          ],
+          "source_location": "Prometheus 3.7 histogram_quantile linear interpolation; Histograms and summaries: errors of quantile estimation",
+          "support": "Classic histogram interpolation assumes uniform observations within bucket; equal bucket counts cannot distinguish two different placements of the 95th observation within that bucket.",
+          "limits": "The two 240-request distributions are hypothetical counterexamples, not raw observations in the CSV fixture; cost depends on actual labels and bucket design."
         }
       ]
     },

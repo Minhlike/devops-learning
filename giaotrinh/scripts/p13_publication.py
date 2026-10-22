@@ -14,7 +14,7 @@ from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
-from reportlab.platypus import Flowable, KeepTogether, Paragraph
+from reportlab.platypus import Flowable, Paragraph
 
 PART = Path(__file__).resolve().parents[1] / "authoring" / "P13"
 INK = colors.HexColor("#202020")
@@ -188,13 +188,4 @@ def figure_story(chapter_id: str, styles: dict):
         "Hình XIII.3.1 — V31: WAL, điểm khôi phục và hậu kiểm ứng dụng; RPO/RTO giả định.",
         "Hình XIII.4.1 — Tải A/B/C: offered và completed; chênh lệch C là tổng outstanding.",
     )
-    leads = (
-        "Hình XIII.1.1 đặt ngân sách lỗi cạnh hai cửa sổ burn và 12 khoảng dữ liệu thực có trong fixture.",
-        "Hình XIII.2.1 giữ riêng quan sát, giả định, đề xuất và hậu kiểm còn thiếu.",
-        "Hình XIII.3.1 tách mốc replay database khỏi mốc ứng dụng được xác minh.",
-        "Hình XIII.4.1 đối chiếu tốc độ đến, tốc độ hoàn tất và độ trễ theo cùng pha tải.",
-    )
-    return KeepTogether([
-        Paragraph(markup(leads[n - 1]), styles["caption"]),
-        Figure(f"C{n:02d}", captions[n - 1], styles),
-    ])
+    return Figure(f"C{n:02d}", captions[n - 1], styles)

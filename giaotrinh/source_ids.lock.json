@@ -192,6 +192,7 @@
     "PM9": "https://prometheus.io/docs/prometheus/3.7/querying/functions/",
     "PM10": "https://prometheus.io/docs/instrumenting/exposition_formats/",
     "PM11": "https://prometheus.io/docs/concepts/jobs_instances/",
+    "PM12": "https://github.com/prometheus/docs/blob/218274e234f9725d6d971718e04ecc09b44e554c/docs/practices/histograms.md",
     "GF1": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/datasources/prometheus/_index.md",
     "GF2": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/dashboards/use-dashboards/index.md",
     "OT1": "https://github.com/open-telemetry/opentelemetry-specification/blob/v1.49.0/specification/logs/data-model.md",

@@ -1122,6 +1122,15 @@
           "source_location": "Reproducible Builds definition; SLSA attestation",
           "support": "Tái lập so byte còn attestation/provenance ghi và có thể ký phát biểu về nguồn gốc.",
           "limits": "Không bên nào chứng minh ứng dụng không có bug."
+        },
+        {
+          "anchor": "Ngay cả khi registry và subject đều là H84",
+          "sources": [
+            "SL1"
+          ],
+          "source_location": "SLSA v1.1 provenance: Model, BuildDefinition, RunDetails and resolvedDependencies",
+          "support": "Provenance distinguishes subject from buildType, external parameters, builder identity and resolved dependencies; downstream verifier must compare these against its policy.",
+          "limits": "c83/c84/H84 and policy are hypothetical; resolvedDependencies completeness is not guaranteed at all SLSA build levels; a valid signature does not attest builder honesty."
         }
       ],
       "qa": [

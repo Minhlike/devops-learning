@@ -91,6 +91,8 @@ class PublicationPart13(unittest.TestCase):
             for caption in ("Hình XIII.1.1", "Hình XIII.2.1", "Hình XIII.3.1", "Hình XIII.4.1"):
                 pages = [page for page in doc if caption in page.get_text()]
                 self.assertEqual(len(pages), 1)
+                self.assertEqual(full.count(caption), 1,
+                                 f"figure {caption} has a duplicated visible caption")
                 self.assertGreater(len(pages[0].get_drawings()), 6,
                                    f"figure {caption} has no vector drawing")
             self.assertFalse(source_free_pdf_issues(doc))

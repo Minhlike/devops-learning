@@ -802,7 +802,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C01/L03.md",
-      "sha256": "2e158267d564aca51351652ccbcfbefec5f91db749462376e57a507663f735e5",
+      "sha256": "dfcf7865c24a93e3631658823dc3eaadd6a3eb50b74f79685f80b715d46bf6ac",
       "legacy_units": [
         "TXT-d731fb15ba249371",
         "TXT-eef36bf05e5592d5"
@@ -2969,7 +2969,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C04/L03.md",
-      "sha256": "9a7d29679009e2306de3fd14b803d99c39254536c127701d68603a288c9c9ad7",
+      "sha256": "9c3dff2a6179372b72fae32b6b35c15ce9400410f3065585be219ab30c7f4318",
       "legacy_units": [
         "TXT-0cabe9ab1eec4396"
       ],
@@ -4108,7 +4108,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C04/L03.md",
-      "sha256": "e3419e5bb24fbe2252ed97d964af876978de6e18db794e2d5d14b5c73a0f353e",
+      "sha256": "be683ac1c44e29147c01c2b38f4d8cf21d96d3d9914da11eccd5172c95c5fca1",
       "legacy_units": [
         "TXT-db5de72ceb8f6471",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.3:claim:CLM-d3754b92ce88cb96"
@@ -4744,7 +4744,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C02/L02.md",
-      "sha256": "fb1832c31ece7ee0c8e7dd1bf486042b306314a9b559668f373e5732f710aaef",
+      "sha256": "56855a904b25b9a53aed60d710d4f72cdd2245a0b33a15f0502ceb49d91809d6",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#18.3"
       ],
@@ -4758,7 +4758,8 @@
       "source_ids": [
         "PM10",
         "PM11",
-        "PM9"
+        "PM9",
+        "PM12"
       ],
       "qa": [
         {
@@ -5633,7 +5634,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C03/L02.md",
-      "sha256": "ceb8ce38d221825fb1dc8a0145dad2a38356c3d320ee0a48ed46d3bd52277086",
+      "sha256": "2986e15b122156af86661ad4d2cd94b3ab4b9edd0d29f37aa208e3d000f47c8a",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],

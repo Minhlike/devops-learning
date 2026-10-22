@@ -194,6 +194,7 @@
     "PM9": {"type": "official documentation", "version": "Prometheus 3.7 query functions", "url": "https://prometheus.io/docs/prometheus/3.7/querying/functions/"},
     "PM10": {"type": "official documentation", "version": "Prometheus exposition formats checked 2026-10-19", "url": "https://prometheus.io/docs/instrumenting/exposition_formats/"},
     "PM11": {"type": "official documentation", "version": "Prometheus jobs and instances checked 2026-10-19", "url": "https://prometheus.io/docs/concepts/jobs_instances/"},
+    "PM12": {"type": "official Prometheus documentation", "version": "prometheus/docs commit 218274e234f9725d6d971718e04ecc09b44e554c, checked 2026-10-22", "url": "https://github.com/prometheus/docs/blob/218274e234f9725d6d971718e04ecc09b44e554c/docs/practices/histograms.md"},
     "GF1": {"type": "official documentation", "version": "Grafana v12.2.0 Prometheus data source", "url": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/datasources/prometheus/_index.md"},
     "GF2": {"type": "official documentation", "version": "Grafana v12.2.0 dashboard time range", "url": "https://github.com/grafana/grafana/blob/v12.2.0/docs/sources/dashboards/use-dashboards/index.md"},
     "OT1": {"type": "official specification or documentation", "version": "OpenTelemetry specification v1.49.0 Logs Data Model", "url": "https://github.com/open-telemetry/opentelemetry-specification/blob/v1.49.0/specification/logs/data-model.md"},
