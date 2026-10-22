@@ -1776,7 +1776,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P06/C01/L01.md",
-      "sha256": "441d986d5af4b3f85554d13ea70a56b1bdb1a4646500f76847f37156e703bab1",
+      "sha256": "af55f1619f82bdc35a58368121ad5e49f8c75a695b9004f23b0e0d660ee808e9",
       "legacy_units": [
         "chapters/09-build-test-phat-hanh-rollback.md#intro",
         "TXT-00267ee7dc6ef1ec",
@@ -2705,7 +2705,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C02/L01.md",
-      "sha256": "b21b6975ba1cbb381b1d2dc2bec74b3ba8cefbbe00cc949066215a066506279d",
+      "sha256": "a1d6e06e5e93af690cc677f6821db1782404d98d8c1e8c0c7fc1a7679bbccadc",
       "legacy_units": [
         "TXT-076846291816436b",
         "TXT-5e005f12d06e38db"
@@ -4401,7 +4401,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C07/L02.md",
-      "sha256": "eed335ad13b89ecc0eba2c14800a3a891e0a9dbd076c89af667e0f69fc0d105e",
+      "sha256": "b94d223c95da24efc4017a1ba81411ed9d598089098d3862f3f785d54ed09e2b",
       "legacy_units": [
         "TXT-270aeb66e3bd873d",
         "TXT-1ee3878722821b82",

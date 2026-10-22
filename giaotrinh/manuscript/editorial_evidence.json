@@ -1459,8 +1459,8 @@
       ]
     },
     "P06.C01.L01": {
-      "content_sha256": "441d986d5af4b3f85554d13ea70a56b1bdb1a4646500f76847f37156e703bab1",
-      "editorial_decision": "Chuỗi commit→artifact→runtime nêu rõ commit không định danh binary; tái lập byte cần khóa và đo toàn bộ đầu vào.",
+      "content_sha256": "af55f1619f82bdc35a58368121ad5e49f8c75a695b9004f23b0e0d660ee808e9",
+      "editorial_decision": "Bổ sung tình huống job test xanh nhưng artifact không có danh tính byte được kiểm; lần theo các gate từ build đến hậu kiểm dữ liệu.",
       "checks": [
         {
           "anchor": "module ghi yêu cầu ở `go.mod`, checksum dependency được quản lý ở `go.sum`",
@@ -1482,6 +1482,17 @@
           "source_location": "Git References; SLSA provenance subject/buildDefinition",
           "support": "Source revision and build output are separate identities linked by provenance",
           "limits": "Specific build variability is illustrated, not guaranteed for every toolchain"
+        },
+        {
+          "anchor": "job kiểm thử lấy commit `c7`, chạy test trên mã nguồn và báo xanh",
+          "kind": "inference",
+          "sources": [
+            "G2",
+            "SL1"
+          ],
+          "source_location": "Git References; SLSA provenance subject/buildDefinition",
+          "support": "Source revision, produced subject digest and execution record are distinct links; hypothetical green job lacks artifact subject evidence.",
+          "limits": "c7 and d8 are illustrative, not observed build records."
         }
       ]
     },
@@ -2290,8 +2301,8 @@
       ]
     },
     "P08.C02.L01": {
-      "content_sha256": "b21b6975ba1cbb381b1d2dc2bec74b3ba8cefbbe00cc949066215a066506279d",
-      "editorial_decision": "VPC/subnet/route/IGW/NAT/endpoint được nêu với Region, AZ và điều kiện public IPv4; không nói private subnet tự internet-ready.",
+      "content_sha256": "a1d6e06e5e93af690cc677f6821db1782404d98d8c1e8c0c7fc1a7679bbccadc",
+      "editorial_decision": "Thêm route trace hai AZ và failure domain của public NAT Gateway theo AZ, kèm giới hạn suy luận về firewall.",
       "checks": [
         {
           "anchor": "Route table gắn với subnet quy định đích IP/prefix đi tới target nào",
@@ -2323,6 +2334,26 @@
           "source_location": "Route table options: routing to NAT; NAT gateway basics",
           "support": "Private subnet routes egress via NAT; zonal NAT is an AZ dependency",
           "limits": "Regional NAT and IPv6 have distinct configuration; no price assumed"
+        },
+        {
+          "anchor": "Từ A tới B, đích `10.20.2.10` khớp `/16` cụ thể hơn `/0`",
+          "kind": "derived",
+          "sources": [
+            "AWS4"
+          ],
+          "source_location": "Subnet route tables: local route and longest prefix match",
+          "support": "Local VPC CIDR route is more specific than default IPv4 route in the stated fixture.",
+          "limits": "Illustrative address plan; does not prove SG or NACL allows traffic."
+        },
+        {
+          "anchor": "Nếu AZ A mất, B vẫn có thể chạy ứng dụng nhưng đường outbound qua `nat-a` bị mất",
+          "kind": "inference",
+          "sources": [
+            "AWS16"
+          ],
+          "source_location": "NAT gateway basics: AZ-local dependency when multiple AZs share one NAT gateway",
+          "support": "A zonal NAT gateway outage removes shared outbound path for other AZs.",
+          "limits": "Only public zonal NAT gateway architecture described; other endpoints/routes may provide different paths."
         }
       ]
     },
@@ -3709,8 +3740,8 @@
       ]
     },
     "P11.C07.L02": {
-      "content_sha256": "eed335ad13b89ecc0eba2c14800a3a891e0a9dbd076c89af667e0f69fc0d105e",
-      "editorial_decision": "Listener, allowedRoutes và attachment condition phải được đọc riêng.",
+      "content_sha256": "b94d223c95da24efc4017a1ba81411ed9d598089098d3862f3f785d54ed09e2b",
+      "editorial_decision": "Phân tách quyền Route gắn Gateway với quyền Route trỏ backend khác namespace qua ví dụ ba namespace.",
       "checks": [
         {
           "anchor": "`allowedRoutes`",
@@ -3744,6 +3775,18 @@
           "source_location": "HTTPRoute: status and backend reference validation; ReferenceGrant",
           "support": "False indicates unresolved or impermissible references",
           "limits": "Inspect parent and condition reason for exact field"
+        },
+        {
+          "anchor": "quyền gắn Route vào Gateway vẫn không cấp quyền trỏ backend",
+          "kind": "documented",
+          "sources": [
+            "GW2",
+            "GW3",
+            "GW4"
+          ],
+          "source_location": "Gateway allowedRoutes; HTTPRoute parentRefs/backendRefs; ReferenceGrant cross-namespace references",
+          "support": "Listener route attachment and cross-namespace backend reference permission are separate controls.",
+          "limits": "Status conditions are illustrative; implementation and supported features must be checked on actual controller."
         }
       ]
     },

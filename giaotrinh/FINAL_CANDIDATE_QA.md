@@ -9,9 +9,9 @@
 ## PDF và điều hướng
 
 - Tệp: `Cam_nang_devops.candidate.pdf`.
-- SHA-256: `a0e2fbb1d8c69c08ba1736d6a448e7ff3e6d690cf00d7d138eb715f6ea01a3db`.
-- **237 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. Times New Roman Regular/Bold và Consolas được nhúng. Có thêm Helvetica cho thành phần PDF hệ thống; nội dung sách dùng các font đã quy định.
-- Trích xuất 600.230 ký tự, không có ký tự Unicode thay thế. Bộ dựng báo `CANDIDATE_OK pages=237 bookmarks=310 source_leaks=0`. Kiểm tra hình học độc lập tìm thấy 0 khối chữ vượt biên 15 pt và 0 trang sai khổ A4.
+- SHA-256: `2b8b48376639c69b391af1b79fe8b1096ce57b7753a592645eaf90e64fb783b5`.
+- **238 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. Times New Roman Regular/Bold và Consolas được nhúng. Có thêm Helvetica cho thành phần PDF hệ thống; nội dung sách dùng các font đã quy định.
+- Trích xuất 603.821 ký tự, không có ký tự Unicode thay thế. Bộ dựng báo `CANDIDATE_OK pages=238 bookmarks=310 source_leaks=0`. Kiểm tra hình học độc lập tìm thấy 0 khối chữ vượt biên 15 pt và 0 trang sai khổ A4.
 - Mục lục in liệt kê 15 Phần, 58 Chương và **Lời giải bài tập** với số trang đối chiếu được với bookmark. Bookmark vẫn có cấp Bài; mục lục in giữ hai cấp để người đọc quét nhanh. Tất cả tiêu đề Chương bắt đầu gần đầu trang và running header mang số Chương tương ứng.
 - 43 tham chiếu chéo ở 28 vị trí bản thảo dùng ID ngữ nghĩa và được renderer tạo nhãn đọc từ cây xuất bản. Bộ dựng từ chối tham chiếu số chương cũ, ID không tồn tại hoặc ID lệch hợp đồng; ca âm kiểm tra trỏ sang chủ đề sai, thiếu đích và số trang mục lục sai.
 - 14 hình cơ chế dạng vector từ `scripts/science_figures.py`, trong đó 10 hình mới có hồ sơ claim, chủ sở hữu, nguồn và giới hạn ở `manuscript/figure_evidence.json`. Cùng với 4 hình Phần XIII, PDF có 18 hình khoa học. Mỗi Phần trước đây không có hình đã được xem xét và thêm một hình có vai trò giải thích cơ chế hoặc suy luận vận hành. Không có quota hình.
@@ -20,7 +20,7 @@
 ## Kiểm thử và QA hình ảnh
 
 - `python -X utf8 -m unittest discover -s giaotrinh/tests -q`: **44 test, 43 PASS, 1 SKIP** (không có Go toolchain trong PATH). Kiểm thử bao gồm ca âm về tham chiếu, trang mục lục, hình/caption, source leak và hợp đồng bản thảo; hồi quy mới yêu cầu mỗi caption Phần XIII chỉ xuất hiện đúng một lần.
-- Đã render **toàn bộ 237 trang** từ PDF này, rà 6 contact sheet bao phủ tất cả trang và xem chi tiết các trang đổi nội dung 41, 57, 88, 114, 136. Ảnh render các trang hình Phần XIII 179, 183, 186, 189 có SHA-256 trùng ảnh đã xem chi tiết ở lượt QA liền trước; mỗi nhãn caption xuất hiện đúng một lần trong văn bản trích xuất. Contact sheet không bộc lộ tràn lề hoặc hình bị cắt; mức thu nhỏ của contact sheet không thay phép đọc chi tiết từng trang.
+- Đã render **toàn bộ 238 trang** từ PDF này, rà 6 contact sheet bao phủ tất cả trang và xem chi tiết ba trang đổi nội dung 71, 101, 156. Mỗi nhãn caption Phần XIII xuất hiện đúng một lần trong văn bản trích xuất. Contact sheet không bộc lộ tràn lề hoặc hình bị cắt; mức thu nhỏ của contact sheet không thay phép đọc chi tiết từng trang. Đã bỏ bổ sung ở bài dashboard vì bản thử làm bài tập cuối chương rơi sang một trang gần như trống; trang 169 của bản này mở Chương 46.
 - Một số trang chỉ có bài tập cuối Chương và nhiều chỗ trống, ví dụ trang 26, 103 và 147. Đây là hệ quả của việc mở Chương tiếp theo trên trang mới; vẫn là giới hạn biên tập cần cân nhắc ở vòng duyệt bản in, không được mô tả là bố cục đã hoàn hảo.
 
 ## Giới hạn và quyết định
