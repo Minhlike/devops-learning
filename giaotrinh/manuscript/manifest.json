@@ -2670,7 +2670,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C01/L03.md",
-      "sha256": "1439c2151bf2afb74ad5215e1d301001413a3c292c33af9134d8dfe180b7cdfa",
+      "sha256": "32d4a7422fed7952bfd7f4a97e1216eab411bf91d886ad3d0b578b35f6168003",
       "legacy_units": [
         "TXT-005e09b342291632",
         "TXT-500778d3b0f94cfd"
@@ -2680,7 +2680,8 @@
       ],
       "examples": [],
       "source_ids": [
-        "AWS2"
+        "AWS2",
+        "AWS6"
       ],
       "qa": []
     },
@@ -2935,7 +2936,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C04/L02.md",
-      "sha256": "11073d0d57c8e256bd0fa3fdf1858fe78bf6fb01bdbacdc81c52fa2535533847",
+      "sha256": "ccb4e99d19e223178844be28826a94d1bb04cf597c52a375fb2abfc361c248e9",
       "legacy_units": [
         "TXT-9e5b8ea87f273714"
       ],
@@ -3302,7 +3303,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P09/C04/L01.md",
-      "sha256": "1dd7bfe423b8618fb4b65c1f4d54505e8fe96335762b4499ad187b6eadfc494d",
+      "sha256": "0c795a1c38d63f79ab41ab93ee09c3370b5e531ac67bd3375bc39396153d3977",
       "legacy_units": [
         "TXT-b0139f3ea45b9f75",
         "TXT-9dbf2e95775a5bc9",
@@ -3314,6 +3315,8 @@
       ],
       "examples": [],
       "source_ids": [
+        "AWS10",
+        "AWS11",
         "AWSTF1"
       ],
       "qa": [
@@ -3338,11 +3341,12 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C04/L02.md",
-      "sha256": "3166c33fb0c23d02e5b442166a16bbc09d2ae0237ec89e2b6d27d094a5d3bfe3",
+      "sha256": "5acf79fedf149fe82fc9bc82890297c29502c79474e1471e8e4a5071cfdfc6f8",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
+        "TF5",
         "TF8"
       ],
       "qa": [
@@ -3587,7 +3591,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P10/C02/L03.md",
-      "sha256": "6126837b232aaa3d79008b12a8ff57c66e3a6f492eeb7d112a3a4d905d05fda4",
+      "sha256": "e59e7310995d1580e463d7ce5169678938b2ee7bc518dc6c77ddec70affb3c8c",
       "legacy_units": [
         "TXT-3af2e2e52ba52dde",
         "chapters/14-ansible-hoi-tu-cau-hinh.md#14.2:claim:CLM-f16f075e3e64227c"
@@ -4162,7 +4166,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C05/L02.md",
-      "sha256": "2a1317296266b4e011300560259891bfa7ab22a991f1db25417c9990c0075cee",
+      "sha256": "64fee756ae8663aa60e56999ffd9d5c665bc3862cd5ecb5e82b31b04ba957ee8",
       "legacy_units": [
         "TXT-2675e3b61c0278d7",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.4:claim:CLM-cf957a5ab18c9a0e"
@@ -4172,7 +4176,8 @@
       ],
       "examples": [],
       "source_ids": [
-        "KU20"
+        "KU20",
+        "KU21"
       ],
       "qa": [
         {
@@ -4306,13 +4311,16 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L03.md",
-      "sha256": "04e78eaccb8639c9c8a7ff0610a69724f39861aa9c03a221cd2715cf60f999fa",
+      "sha256": "55bb2febada28dfa249158e5c8b0729c7066e4be6946db410b63ecea2c2612f5",
       "legacy_units": [
         "TXT-2a0b0963f5d75b8a"
       ],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "KU23",
+        "KU24"
+      ],
       "qa": [
         {
           "id": "C16.5",
@@ -4511,7 +4519,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L02.md",
-      "sha256": "2cb527e347fc458c276802e20f28f227cc928e2f9352c29bff56d26c1d17444d",
+      "sha256": "96ba7ccd29d69d2dfc8e5c4b4c2d41ed81c26646873debd65f957a73fd86f7be",
       "legacy_units": [
         "TXT-55a87dd9e03e4886",
         "chapters/17-gateway-api-helm.md#17.3:claim:CLM-76985836c4d60842"
@@ -4521,6 +4529,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "GW3",
         "HE4"
       ],
       "qa": []

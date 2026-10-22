@@ -2112,7 +2112,7 @@
       ]
     },
     "P08.C01.L03": {
-      "content_sha256": "1439c2151bf2afb74ad5215e1d301001413a3c292c33af9134d8dfe180b7cdfa",
+      "content_sha256": "32d4a7422fed7952bfd7f4a97e1216eab411bf91d886ad3d0b578b35f6168003",
       "editorial_decision": "Timeout rồi AccessDenied được diễn giải là hai quan sát ở hai ranh giới, không phải bằng chứng một lỗi duy nhất.",
       "checks": [
         {
@@ -2124,6 +2124,16 @@
           "source_location": "IAM enforcement code: Deny evaluation",
           "support": "Applicable explicit deny is final even with identity allow for same request",
           "limits": "In a real 403, evaluate actual principal and all applicable policies"
+        },
+        {
+          "anchor": "route table liên kết với subnet",
+          "kind": "documented",
+          "sources": [
+            "AWS6"
+          ],
+          "source_location": "S3 gateway endpoints: route table association and prefix-list routing",
+          "support": "A subnet route table must be associated with the S3 gateway endpoint for its route to apply.",
+          "limits": "Application proxy or custom DNS may change the actual path."
         }
       ]
     },
@@ -2283,7 +2293,7 @@
       ]
     },
     "P08.C04.L02": {
-      "content_sha256": "11073d0d57c8e256bd0fa3fdf1858fe78bf6fb01bdbacdc81c52fa2535533847",
+      "content_sha256": "ccb4e99d19e223178844be28826a94d1bb04cf597c52a375fb2abfc361c248e9",
       "editorial_decision": "EFS là NFS share, cần mount target/SG/quyền; phân biệt availability với backup và filesystem với block.",
       "checks": [
         {
@@ -2296,6 +2306,16 @@
           "source_location": "Managing mount targets: Availability Zones; Features of EFS: Regional and One Zone",
           "support": "Regional file system stores redundantly across AZs with mount targets in multiple AZs; One Zone uses one AZ",
           "limits": "Actual mount reachability still requires DNS, network and permissions"
+        },
+        {
+          "anchor": "EFS hỗ trợ khóa NFS",
+          "kind": "documented",
+          "sources": [
+            "AWS13"
+          ],
+          "source_location": "Features of Amazon EFS: Data consistency and File locking",
+          "support": "EFS provides close-to-open semantics and NFSv4 advisory locking.",
+          "limits": "Locking only coordinates applications that honor locks."
         }
       ]
     },
@@ -2503,7 +2523,7 @@
       ]
     },
     "P09.C04.L01": {
-      "content_sha256": "1dd7bfe423b8618fb4b65c1f4d54505e8fe96335762b4499ad187b6eadfc494d",
+      "content_sha256": "0c795a1c38d63f79ab41ab93ee09c3370b5e531ac67bd3375bc39396153d3977",
       "editorial_decision": "Quyết định không apply replacement trước snapshot/restore; không dùng refresh=false/ignore_changes để che drift.",
       "checks": [
         {
@@ -2525,6 +2545,26 @@
           "source_location": "aws_instance Argument Reference: user_data",
           "support": "Default user_data update triggers stop/start, option true triggers replacement",
           "limits": "Provider version pinned v6.19.0"
+        },
+        {
+          "anchor": "Root volume có thể đi theo vòng đời instance",
+          "kind": "documented",
+          "sources": [
+            "AWS10"
+          ],
+          "source_location": "EBS volume lifecycle: volumes and instance termination",
+          "support": "Delete-on-termination setting governs deletion of an attached EBS volume when its instance terminates.",
+          "limits": "Check the actual block-device mapping; scenario data is fictional."
+        },
+        {
+          "anchor": "snapshot/backup nào đã được restore thử",
+          "kind": "documented",
+          "sources": [
+            "AWS11"
+          ],
+          "source_location": "Amazon EBS snapshots: creating and restoring snapshots",
+          "support": "A snapshot is a separate backup artifact from which a new volume can be created.",
+          "limits": "A snapshot's existence does not prove an application-consistent restore."
         }
       ]
     },
@@ -2657,7 +2697,7 @@
       ]
     },
     "P10.C02.L03": {
-      "content_sha256": "6126837b232aaa3d79008b12a8ff57c66e3a6f492eeb7d112a3a4d905d05fda4",
+      "content_sha256": "e59e7310995d1580e463d7ce5169678938b2ee7bc518dc6c77ddec70affb3c8c",
       "editorial_decision": "Syntax/check/diff mode có giới hạn; handler có thể không chạy trên host lỗi, cần hậu kiểm ở lượt thực.",
       "checks": [
         {
@@ -2690,6 +2730,16 @@
           "source_location": "Validating tasks: diff mode",
           "support": "Supporting modules display before/after differences",
           "limits": "May expose sensitive data"
+        },
+        {
+          "anchor": "--check` không ghi file",
+          "kind": "documented",
+          "sources": [
+            "AS9"
+          ],
+          "source_location": "Check mode: simulating playbook execution",
+          "support": "Check mode predicts supported task changes without applying them.",
+          "limits": "A subsequent validation task can inspect old content and cannot prove real apply success."
         }
       ]
     },
@@ -3172,7 +3222,7 @@
       ]
     },
     "P11.C05.L02": {
-      "content_sha256": "2a1317296266b4e011300560259891bfa7ab22a991f1db25417c9990c0075cee",
+      "content_sha256": "64fee756ae8663aa60e56999ffd9d5c665bc3862cd5ecb5e82b31b04ba957ee8",
       "editorial_decision": "PVC Bound chưa chứng minh mount hay dữ liệu ứng dụng có mặt.",
       "checks": [
         {
@@ -3184,6 +3234,16 @@
           "source_location": "Persistent Volumes: Binding and Using",
           "support": "Binding and using/mounting are distinct stages",
           "limits": "Backup claim is operational inference, not a storage API guarantee"
+        },
+        {
+          "anchor": "StorageClass `WaitForFirstConsumer`",
+          "kind": "documented",
+          "sources": [
+            "KU21"
+          ],
+          "source_location": "Storage Classes: volumeBindingMode WaitForFirstConsumer",
+          "support": "Provisioning or binding is delayed until a consuming Pod is scheduled, accounting for topology.",
+          "limits": "Example event timestamps are hypothetical."
         }
       ]
     },
@@ -3260,7 +3320,7 @@
       ]
     },
     "P11.C06.L03": {
-      "content_sha256": "04e78eaccb8639c9c8a7ff0610a69724f39861aa9c03a221cd2715cf60f999fa",
+      "content_sha256": "55bb2febada28dfa249158e5c8b0729c7066e4be6946db410b63ecea2c2612f5",
       "editorial_decision": "9 giây CPU/10 giây/3 Pod là 0,3 lõi; desired=4 không chứng minh Ready.",
       "checks": [
         {
@@ -3269,6 +3329,26 @@
           "sources": [],
           "support": "(3,0+4,5+1,5)/10/3 = 0,3 lõi; 0,3/0,2 = 150% theo dữ kiện giả định.",
           "limits": "Không xác định CPU trống của node, latency thực hoặc Pod thứ tư được đặt chỗ."
+        },
+        {
+          "anchor": "công thức cơ sở cho `ceil(3 × 150/50)=9`",
+          "kind": "documented",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Horizontal Pod Autoscaling: algorithm details and min/max replicas",
+          "support": "Desired replicas derive from current replicas and current-to-target metric ratio, constrained by replica bounds.",
+          "limits": "Real controller also considers missing metrics, tolerance, behavior policies and stabilization."
+        },
+        {
+          "anchor": "Nếu thiếu Metrics API",
+          "kind": "documented",
+          "sources": [
+            "KU24"
+          ],
+          "source_location": "Resource metrics pipeline: Metrics API and metrics-server",
+          "support": "CPU resource metrics require a working metrics pipeline for HPA observation.",
+          "limits": "Paper calculation is not a cluster measurement."
         }
       ]
     },
@@ -3435,7 +3515,7 @@
       ]
     },
     "P11.C08.L02": {
-      "content_sha256": "2cb527e347fc458c276802e20f28f227cc928e2f9352c29bff56d26c1d17444d",
+      "content_sha256": "96ba7ccd29d69d2dfc8e5c4b4c2d41ed81c26646873debd65f957a73fd86f7be",
       "editorial_decision": "Helm revision và template khác trạng thái tài nguyên đang chạy.",
       "checks": [
         {
@@ -3447,6 +3527,16 @@
           "source_location": "helm template: Synopsis",
           "support": "Template command renders locally without server-side validity testing",
           "limits": "Does not prove API/controller acceptance"
+        },
+        {
+          "anchor": "status `observedGeneration` còn cũ",
+          "kind": "documented",
+          "sources": [
+            "GW3"
+          ],
+          "source_location": "Gateway API v1.3.0 HTTPRoute status, parent conditions and observedGeneration",
+          "support": "Route conditions are reported per parent and observedGeneration identifies the spec generation represented by a condition.",
+          "limits": "Controller status is still not proof of end-to-end traffic."
         }
       ]
     },

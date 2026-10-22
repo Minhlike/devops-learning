@@ -1727,6 +1727,15 @@
           "source_location": "State locking",
           "support": "Terraform khóa state với backend có hỗ trợ để tránh nhiều writer cùng ghi state.",
           "limits": "Lock không khóa API cloud và không ngăn drift ngoài Terraform; ví dụ hai pipeline là phân tích điều kiện."
+        },
+        {
+          "anchor": "Saved plan được lập theo configuration và state",
+          "sources": [
+            "TF5"
+          ],
+          "source_location": "terraform plan command: saved plans and planning mode",
+          "support": "A saved plan records the configuration and state context for a later apply; a prior approval must be reevaluated after state or remote infrastructure changes.",
+          "limits": "The prose does not claim Terraform rejects every stale remote change automatically; an out-of-band API edit may leave state serial unchanged."
         }
       ],
       "qa": [
