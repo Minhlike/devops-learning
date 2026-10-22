@@ -817,6 +817,15 @@
           "source_location": "Execution strategies, serial",
           "support": "serial giới hạn batch host của play.",
           "limits": "Không tự rút target khỏi load balancer hay xoay credential."
+        },
+        {
+          "anchor": "`serial: 1` chỉ giới hạn host được xử lý trong mỗi batch",
+          "sources": [
+            "AS13"
+          ],
+          "source_location": "Execution strategies: Setting the batch size with serial",
+          "support": "Serial constrains batch size but does not prove credential rotation or application readiness",
+          "limits": "K0/K1 timeline is a hypothetical deduction, not an Ansible run"
         }
       ],
       "qa": [

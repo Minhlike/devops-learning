@@ -792,8 +792,8 @@
       ]
     },
     "P03.C03.L03": {
-      "content_sha256": "d45c4fb4cf5151edb03fd4bc7c2adad285a78e7999b9108bbc42938d6b415808",
-      "editorial_decision": "Phân biệt ngữ nghĩa HTTP với transport HTTP/2, HTTP/3; status và cache không tự xác nhận nội dung đúng.",
+      "content_sha256": "4512b38a2f6f073b003980760415d23c5976bae0b91c5df9283c201a34e7d085",
+      "editorial_decision": "HTTP semantics and transport remain separate; public cache trace lets readers calculate freshness, Vary key selection, conditional validation and privacy limit.",
       "checks": [
         {
           "anchor": "HTTP/2 có thể ghép nhiều luồng trên một kết nối TCP",
@@ -815,6 +815,36 @@
           "source_location": "RFC 9111 sections 1, 3, 4.2 and 5.2",
           "support": "HTTP caches store eligible responses and use freshness or validation rules",
           "limits": "Application-level caches may have separate behavior; sensitive responses need explicit policy"
+        },
+        {
+          "anchor": "sau 30 giây, một GET cùng tên và cùng ngôn ngữ có thể dùng bản còn fresh",
+          "kind": "derived",
+          "sources": [
+            "H2"
+          ],
+          "source_location": "RFC 9111 sections 4.2, 5.2.2.1",
+          "support": "Under stated zero initial age, response max-age=60 remains fresh at 30 seconds",
+          "limits": "Real age depends on Date, Age, residence time and other directives"
+        },
+        {
+          "anchor": "trường `Vary` yêu cầu so giá trị header đã chọn",
+          "kind": "documented",
+          "sources": [
+            "H2"
+          ],
+          "source_location": "RFC 9111 section 4.1",
+          "support": "Selected request header fields nominated by Vary must match before reuse without revalidation",
+          "limits": "Header normalization and stored-response selection have additional rules"
+        },
+        {
+          "anchor": "cache có thể gửi `If-None-Match: \"v7\"` tới origin",
+          "kind": "documented",
+          "sources": [
+            "H2"
+          ],
+          "source_location": "RFC 9111 sections 4.3.1 and 4.3.4",
+          "support": "ETag can validate stale stored response; 304 updates metadata and permits body reuse",
+          "limits": "Hypothetical trace omits full Date/Age/header processing"
         }
       ]
     },

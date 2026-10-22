@@ -1094,7 +1094,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L03.md",
-      "sha256": "d45c4fb4cf5151edb03fd4bc7c2adad285a78e7999b9108bbc42938d6b415808",
+      "sha256": "4512b38a2f6f073b003980760415d23c5976bae0b91c5df9283c201a34e7d085",
       "legacy_units": [
         "TXT-8b531a1012421ef8",
         "TXT-d8b9895262113a63",
@@ -3694,7 +3694,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P10/C03/L03.md",
-      "sha256": "0d59913f0070dcee6de141ce7c9edeb624862a8c343bfecf2bddab912980024c",
+      "sha256": "c34295af9ce39d284e5adb1ead4531cd25a7abc4a210f1c0f204950354489d7e",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
