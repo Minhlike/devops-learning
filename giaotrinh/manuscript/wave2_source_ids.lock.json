@@ -39,6 +39,7 @@
     "W2-PYSQL": "https://docs.python.org/3.12/library/sqlite3.html",
     "W2-PYHTTP": "https://docs.python.org/3.12/library/http.server.html",
     "W2-DYNADMIT": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/",
-    "W2-WADROBJ": "https://docs.aws.amazon.com/wellarchitected/2024-06-27/framework/rel_planning_for_recovery_objective_defined_recovery.html"
+    "W2-WADROBJ": "https://docs.aws.amazon.com/wellarchitected/2024-06-27/framework/rel_planning_for_recovery_objective_defined_recovery.html",
+    "W2-PS": "https://man7.org/linux/man-pages/man1/ps.1.html"
   }
 }

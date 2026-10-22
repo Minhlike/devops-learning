@@ -1,6 +1,6 @@
 {
   "P01.C01.L01.Q01": "Thời gian CPU và thời gian chờ",
-  "P01.C01.L02.Q01": "Giới hạn khi chỉ tăng tốc CPU",
+  "P01.C01.L02.Q01": "CPU time, thời gian chờ và độ trễ",
   "P01.C01.L03.Q01": "Tên tệp sau mất điện",
   "P01.C02.L01.Q01": "Thay tệp chạy khi dịch vụ còn hoạt động",
   "P01.C02.L02.Q01": "Nhánh lỗi sau fork và execve",

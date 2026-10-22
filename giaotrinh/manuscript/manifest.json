@@ -44,20 +44,23 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P01/C01/L02.md",
-      "sha256": "edddbaadf4ea58be2e696a1973c1498c60c97ad388204c33bdd8a0c5ad2acb77",
+      "sha256": "39456e8ea2cc41aaf7e31f21075e5f0e2f4dd61b979e7fcd0c3240651f7eab64",
       "legacy_units": [
         "TXT-7722128509f15211",
         "TXT-e4d944f808d66390"
       ],
       "claim_ids": [],
       "examples": [],
-      "source_ids": [],
+      "source_ids": [
+        "W2-CLK",
+        "W2-PS"
+      ],
       "qa": [
         {
           "id": "C2.1",
           "publication_id": "P01.C01.L02.Q01",
-          "question": "Trong một ví dụ giả định, độ trễ yêu cầu là 100 ms gồm 40 ms CPU và 60 ms chờ. Nếu chỉ giảm phần CPU xuống 20 ms, độ trễ thấp nhất theo mô hình cộng đơn giản là bao nhiêu? Nêu một lý do khiến kết quả thực tế khác phép tính.",
-          "answer": "Theo mô hình cộng đã cho, độ trễ còn 20 + 60 = 80 ms. Trên hệ thống thật, thay đổi thời gian CPU có thể đổi lịch chạy, hành vi cache, mức cạnh tranh hoặc thời gian chờ của các yêu cầu khác; 80 ms chỉ là kết quả của giả định giữ mọi yếu tố kia cố định."
+          "question": "Trong ví dụ giả định, request mất 100 ms gồm 40 ms CPU và 60 ms chờ. Nếu chỉ giảm CPU xuống 20 ms, wall time thấp nhất theo mô hình cộng là bao nhiêu? Vì sao một lần thấy trạng thái R không chứng minh luồng chạy CPU suốt 100 ms? Nếu hai luồng cùng tiến trình mỗi luồng dùng 40 ms CPU trong 50 ms tường, CPU time của tiến trình tăng bao nhiêu và có được gọi đó là latency một request không?",
+          "answer": "Giữ nguyên 60 ms chờ thì wall time còn 20+60=80 ms trong mô hình; lịch chạy và I/O thật có thể thay đổi. R của ps gộp running và runnable, một snapshot không cho thời lượng mỗi trạng thái. Hai luồng cộng 80 ms CPU time của tiến trình trong 50 ms tường vì có thể chạy song song trên hai lõi. CPU time của toàn tiến trình không phải độ trễ của request riêng và có thể gồm việc của request khác."
         }
       ]
     },
@@ -2495,7 +2498,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C04/L01.md",
-      "sha256": "51ff9c559cc4120c1e9f1307205a2beed16aed241060496dddcc721ae5e6af7e",
+      "sha256": "89185dba4371ff09ce9f78939b5b6586873af515b32fe58599f6f4f0249d40f2",
       "legacy_units": [
         "TXT-4dc6e58a9621b706",
         "TXT-35b14eeafdcc995e"
@@ -2507,7 +2510,8 @@
       "examples": [],
       "source_ids": [
         "DD4",
-        "DD5"
+        "DD5",
+        "DD8"
       ],
       "qa": []
     },
@@ -5848,20 +5852,21 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C01/L03.md",
-      "sha256": "42206897cdf0a9726d2ae690ed41ccf80a6966552cd385fcfd9a3670755e14ec",
+      "sha256": "e6f100bc0035267a37f5b9b057080c2f948563bccb7734cf9e9bc53aa13fb9de",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
         "W2-WADR",
+        "W2-WADROBJ",
         "W2-WAREL"
       ],
       "qa": [
         {
           "id": "W2.P15.C01.L03.Q01",
           "publication_id": "P15.C01.L03.Q01",
-          "question": "H84 gây 2% lỗi trong 5 phút ở 360 rps nhưng /health xanh. Tính số lỗi theo giả định và nêu stop rule.",
-          "answer": "360×300×0,02=2.160 request lỗi. Dừng tăng canary, giữ evidence, kiểm request/data và tương thích schema trước quyết định rollback; đây là tính toán giả định."
+          "question": "H84 gây 2% lỗi trong 5 phút ở 360 rps nhưng /health xanh. Tính số lỗi theo giả định và nêu stop rule. Trong nhánh mất AZ lúc 10:00, B chỉ chứng minh dữ liệu nhất quán đến 09:58; request phục hồi 10:09. Có thể tuyên bố đạt yêu cầu không mất đơn đã xác nhận chưa? Nêu phép đối soát.",
+          "answer": "360×300×0,02=2.160 request lỗi giả định. Dừng tăng canary, giữ evidence, kiểm request/data và tương thích schema trước rollback. Nhánh AZ cho thời gian phục hồi 9 phút nếu hợp đồng coi 10:00–10:09 là gián đoạn; B có recovery point cách sự cố 2 phút, không chứng minh đã mất đúng 2 phút dữ liệu hay mất bao nhiêu đơn. So tập ID đơn đã xác nhận trước sự cố với tập đọc được ở B, phục hồi/replay mọi đơn thiếu từ nguồn độc lập và kiểm đọc lại. Khi chưa chứng minh đủ, yêu cầu zero-loss chưa đạt, dù request mới qua B đã thành công."
         }
       ]
     },

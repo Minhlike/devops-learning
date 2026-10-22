@@ -4,8 +4,8 @@
   "purpose": "Per-lesson semantic review outside PDF render path; source IDs resolve through source_map and wave2_evidence",
   "lessons": {
     "P01.C01.L02": {
-      "content_sha256": "edddbaadf4ea58be2e696a1973c1498c60c97ad388204c33bdd8a0c5ad2acb77",
-      "editorial_decision": "Ví dụ giả định tính đúng 40+60=100 ms và 20+60=80 ms; tách latency, CPU time và throughput. Không diễn giải như số đo thực.",
+      "content_sha256": "39456e8ea2cc41aaf7e31f21075e5f0e2f4dd61b979e7fcd0c3240651f7eab64",
+      "editorial_decision": "Giữ ví dụ 40+60 ms của bản gốc, rồi phân rã thời gian đợi lịch/I-O và phân biệt CPU của luồng với tiến trình đa luồng.",
       "checks": [
         {
           "anchor": "Nếu chỉ giảm thời gian CPU một nửa",
@@ -27,6 +27,26 @@
           "sources": [],
           "support": "After a one-second 240-request burst at 120 requests/s, backlog is 120; normal arrival 100/s leaves 20/s net drain, so 120/20=6 seconds.",
           "limits": "Fluid model with fixed capacity and arrivals; not a measured p95 or queueing distribution."
+        },
+        {
+          "anchor": "cột trạng thái của `ps` dùng `R` cho cả đang chạy lẫn đang đợi trên run queue",
+          "kind": "documented",
+          "sources": [
+            "W2-PS"
+          ],
+          "source_location": "ps(1), PROCESS STATE CODES, R/S/D",
+          "support": "R means running or runnable; S interruptible wait and D uninterruptible sleep, often I/O.",
+          "limits": "A snapshot state does not provide duration or identify which device caused delay."
+        },
+        {
+          "anchor": "đồng hồ CPU của tiến trình cộng các luồng",
+          "kind": "documented",
+          "sources": [
+            "W2-CLK"
+          ],
+          "source_location": "clock_gettime(2), CLOCK_PROCESS_CPUTIME_ID and CLOCK_THREAD_CPUTIME_ID",
+          "support": "Process CPU clock counts CPU time of all threads in the process, while thread CPU clock counts a thread.",
+          "limits": "The two-thread 80 ms versus 50 ms example is derived arithmetic under explicit parallel execution assumptions."
         }
       ]
     },
@@ -2008,8 +2028,8 @@
       ]
     },
     "P07.C04.L01": {
-      "content_sha256": "51ff9c559cc4120c1e9f1307205a2beed16aed241060496dddcc721ae5e6af7e",
-      "editorial_decision": "Compose xác định ứng dụng trong phạm vi project/host; mạng và volume mặc định không được suy là điều phối nhiều node.",
+      "content_sha256": "89185dba4371ff09ce9f78939b5b6586873af515b32fe58599f6f4f0249d40f2",
+      "editorial_decision": "Giới thiệu dữ kiện Compose trước khi phân tích dữ liệu; project hiệu lực còn phụ thuộc lựa chọn -p hoặc môi trường.",
       "checks": [
         {
           "anchor": "Compose file khai báo service, image hoặc cách build, port, network và volume",
@@ -2030,6 +2050,16 @@
           "source_location": "Networking in Compose: Default network and service discovery",
           "support": "Default network is project-scoped and service names resolve within it",
           "limits": "Host port publication and container-local loopback are separate"
+        },
+        {
+          "anchor": "`COMPOSE_PROJECT_NAME` có thể ghi đè",
+          "kind": "documented",
+          "sources": [
+            "DD8"
+          ],
+          "source_location": "Specify a project name: precedence order",
+          "support": "-p and COMPOSE_PROJECT_NAME take precedence over top-level name in the Compose file",
+          "limits": "Example values are hypothetical; actual project and volume identity must be checked against the resolved configuration"
         }
       ]
     },
