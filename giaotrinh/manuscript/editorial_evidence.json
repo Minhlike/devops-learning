@@ -1855,8 +1855,8 @@
       ]
     },
     "P07.C02.L01": {
-      "content_sha256": "640603888563ca2f731385da37601ac9ca0582234f0cdbbccde7b0443e9e6060",
-      "editorial_decision": "Cache build gắn đầu vào và layer; không khẳng định cache hit đồng nghĩa byte đầu ra an toàn hoặc tái lập.",
+      "content_sha256": "b085ee53307cf202fb0bdfc8d0e6a73035f0cc1f2ed80919120b3b48b30a72b6",
+      "editorial_decision": "Đồ thị cache cho thấy cache hit có thể giữ dependency cũ; phân biệt tái lập byte với cập nhật bảo mật và kiểm artifact thực.",
       "checks": [
         {
           "anchor": "Build cache tái dùng kết quả bước trước",
@@ -1867,6 +1867,16 @@
           "source_location": "Docker build cache: How the build cache works",
           "support": "Builder can reuse cached layer results for unchanged inputs; changed layer invalidates dependent steps",
           "limits": "Documentation page is rolling; cache hit is not a correctness proof"
+        },
+        {
+          "anchor": "Một bí mật dùng trong `RUN --mount=type=secret`",
+          "kind": "documented",
+          "sources": [
+            "DD11"
+          ],
+          "source_location": "Build cache invalidation: General rules, RUN instructions, Build secrets",
+          "support": "RUN cache is not invalidated by changes in remote package data or secret values; subsequent layers depend on invalidated predecessors.",
+          "limits": "The build graph and package-patch case are hypothetical; behavior depends on builder inputs and cache state; no Docker Engine execution is claimed."
         }
       ]
     },
@@ -2367,8 +2377,8 @@
       ]
     },
     "P08.C04.L01": {
-      "content_sha256": "f081227628938dac520989187d6cee5d26353186798245d916565156f47c9929",
-      "editorial_decision": "EC2 và EBS có vòng đời khác; dừng/thay instance không được suy là backup dữ liệu.",
+      "content_sha256": "aa02ba5be53b8f57b361a979c3b2f86669b7a9d736979c4a02b9bbca7a476566",
+      "editorial_decision": "Tách vòng đời EC2, EBS và snapshot; dạy đường phục hồi khác AZ, điểm dữ liệu có nguy cơ và điều kiện xác minh RTO.",
       "checks": [
         {
           "anchor": "Volume EBS thuộc một AZ",
@@ -2389,6 +2399,37 @@
           "source_location": "Amazon EBS snapshots: point-in-time copies",
           "support": "Snapshot provides incremental point-in-time block backup; AWS does not automatically back up EBS volumes",
           "limits": "Application-level transaction consistency and restore need separate validation"
+        },
+        {
+          "anchor": "Điều kiện `DeleteOnTermination` thuộc từng ánh xạ EBS",
+          "kind": "documented",
+          "sources": [
+            "AWS21"
+          ],
+          "source_location": "Preserve data when an instance is terminated: root/data volume behavior and default deletion settings",
+          "support": "DeleteOnTermination controls whether each mapped EBS volume is deleted or preserved, with defaults varying by attachment method.",
+          "limits": "Actual value must be inspected on the specific instance; no EC2 instance is operated in this exercise."
+        },
+        {
+          "anchor": "Một snapshot đã hoàn tất trong cùng Region",
+          "kind": "documented",
+          "sources": [
+            "AWS11",
+            "AWS10"
+          ],
+          "source_location": "EBS snapshots: restore volumes in any AZ in the Region; EBS volume lifecycle: attach within same AZ",
+          "support": "An EBS volume is AZ-scoped, while a snapshot can restore a new volume in another AZ of the same Region.",
+          "limits": "Availability of snapshot, permissions, encryption key, application consistency and actual recovery time require separate verification."
+        },
+        {
+          "anchor": "điểm khôi phục đang cách sự cố 15 phút",
+          "kind": "derived",
+          "sources": [
+            "AWS11"
+          ],
+          "source_location": "EBS snapshots: point-in-time backup semantics",
+          "support": "09:45 to 10:00 is a 15-minute recovery-point gap under the hypothetical completed snapshot and no later replay.",
+          "limits": "Gap is not an observed lost-order count; application consistency and RTO remain unverified."
         }
       ]
     },
@@ -3008,7 +3049,7 @@
       ]
     },
     "P11.C02.L01": {
-      "content_sha256": "307e3bae895dfeb204acc9a45fa0f89dafda64dc9811dd6463f49673e417267e",
+      "content_sha256": "d2457e651184c83f23bf6bd385607b33baeace49f7558309d3a312447386bf5f",
       "editorial_decision": "Selector khác owner reference; Running, Ready, Available khác nhau.",
       "checks": [
         {
@@ -3043,6 +3084,18 @@
           "source_location": "Pod Lifecycle: Pod phase and Pod conditions",
           "support": "Running phase does not imply Ready condition",
           "limits": "CLI STATUS column can show reason rather than phase"
+        },
+        {
+          "anchor": "Service có thể nhận bốn backend khớp nhãn",
+          "kind": "documented",
+          "sources": [
+            "KU7",
+            "KU9",
+            "KU5"
+          ],
+          "source_location": "Service: selector to EndpointSlice; Owners and Dependents; ReplicaSet selector",
+          "support": "A selector-based Service can include Ready Pods matching its labels independently of ReplicaSet ownership; RS uses its own selector and owner references.",
+          "limits": "Four backends is a hypothetical case with three API Pods and one independent Ready debug Pod; Service without selector is outside this case."
         }
       ]
     },
@@ -3187,7 +3240,7 @@
       ]
     },
     "P11.C03.L03": {
-      "content_sha256": "0e74f69e1e0334e94b895b17cf656b42cf271b66b46f57e3a9cdf602073afb5f",
+      "content_sha256": "4acab4f13636ef565fefb313a12483000e1f84d15e6b4a8b1e1d724abdd9817a",
       "editorial_decision": "Metric CPU và request được dạy trước HPA; utilization không phải latency.",
       "checks": [
         {
@@ -3210,6 +3263,18 @@
           "source_location": "Resource metrics pipeline: Metrics Server",
           "support": "Kubelet to Metrics Server to Metrics API for HPA and kubectl top",
           "limits": "Addon may be absent or samples stale"
+        },
+        {
+          "anchor": "Đọc hai cửa sổ liên tiếp",
+          "kind": "derived",
+          "sources": [
+            "K3",
+            "KU23",
+            "KU24"
+          ],
+          "source_location": "cgroup v2 cpu.stat usage_usec; HPA resource utilization relative to requests; resource metrics sampling",
+          "support": "Windowed CPU usage is derived from counter deltas; HPA resource utilization uses usage divided by request. The numerical values are explicit teaching assumptions.",
+          "limits": "Counter deltas must come from the same cgroup/container lifetime; one sample does not establish latency causation or actual HPA action."
         }
       ]
     },
