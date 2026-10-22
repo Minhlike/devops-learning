@@ -78,26 +78,27 @@ flowchart LR
 - **S35:** Ansible Advanced Inventory, Host Patterns, Multi-Host Groups, Variable Precedence & Limits — **COMPLETED**
 - **S36:** Ansible Deployment Strategy, Task Tags (`--tags`), Ansible Vault AES256 & Secrets Management — **COMPLETED**
 
-### Phase 9 — Container Orchestration with Kubernetes & Helm (S37 – S44) — CURRENT PHASE
+### Phase 9 — Container Orchestration with Kubernetes & Helm (S37 – S44) — COMPLETED
 - **S37:** Kubernetes Fundamentals: Multi-Node Kind Cluster, Pods, Deployments & Self-Healing — **COMPLETED**
 - **S38:** Kubernetes Service & Networking: ClusterIP, NodePort, CoreDNS Discovery & EndpointSlice — **COMPLETED**
 - **S39:** Kubernetes Configuration & Probes: ConfigMap, Secret (`0400`), Startup/Readiness/Liveness — **COMPLETED**
 - **S40:** Kubernetes Resources, Scheduling & Scaling: requests/limits, QoS, Taints/Tolerations — **IN PROGRESS / PARTIALLY VERIFIED** *(Tồn đọng sự cố HPA CPU `<unknown>/50%` được quản lý độc lập trong backlog; cụm Kind `s40` giữ nguyên)*
 - **S41:** Kubernetes Storage: Volumes, emptyDir, PV, Dynamic PVC, StorageClass, StatefulSet & PostgreSQL 16 Persistence — **COMPLETED / PASS** (15/10/2026)
+- **S42:** Kubernetes Gateway API & Application Exposure (Envoy Gateway, GatewayClass, HTTPRoute, Path/Host Routing, 503 Failure Injection) — **COMPLETED — LEARNING & ASSESSMENT PASS (7,7/10)** (15/10/2026)
 - **S43:** Helm Fundamentals (Charts, Values, Templates, Release Lifecycle & Helm Upgrades) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,3/10)** (19/10/2026)
-- **S44:** Kubernetes Troubleshooting & Cluster Defense (Cluster & Workload Recovery Simulation) — **NEXT SESSION**
+- **S44:** Kubernetes Troubleshooting & Cluster Defense (Cluster & Workload Recovery Simulation) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,6/10)** (21/10/2026)
 
-> **Mốc quan trọng (Milestone):** Còn đúng 1 buổi (**S44**) thuộc mảng Kubernetes & Helm trước khi chuyển tiếp sang mảng Observability. Không chèn thêm các buổi Kubernetes phát sinh. S45 bắt đầu học Prometheus. S46 bắt đầu học Grafana.
+> **Mốc quan trọng (Milestone):** Đã hoàn tất 100% Giai đoạn 9 (Kubernetes & Helm). Tốt nghiệp Phase 9 và chuyển sang Phase 10 — Observability & SRE.
 
-### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — UPCOMING
-- **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model)
-- **S46:** Grafana & Practical Dashboards (Visualization, Panels, Dashboard as Code, Querying)
-- **S47:** Logging & Centralized Logs (Log aggregation, Fluentbit/Loki, LogQL, Log shipping)
-- **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels)
-- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate)
-- **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem)
+### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — CURRENT PHASE
+- **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,7/10)** (21/10/2026)
+- **S46:** Grafana & Practical Dashboards (Visualization, Panels, Dashboard as Code, Querying) — **IN PROGRESS (22/10/2026 — Đang học)**
+- **S47:** Logging & Centralized Logs (Log aggregation, Fluentbit/Loki, LogQL, Log shipping) — **UPCOMING**
+- **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels) — **UPCOMING**
+- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **UPCOMING**
+- **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem) — **UPCOMING**
 
-> **Mốc quan trọng (Milestone):** **S45** bắt đầu học Prometheus. **S46** bắt đầu học Grafana. Không tự ý dời Prometheus hoặc Grafana sang buổi khác.
+> **Mốc quan trọng (Milestone):** Đang triển khai S46 trên cụm K3s máy ảo VMware; hoàn thiện Dashboard Podinfo (P95 latency, Fault injection) và đánh giá cuối buổi trước khi chuyển tiếp sang S47 Centralized Logging.
 
 ### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — UPCOMING
 - **S51:** Container & Image Security Scanning (Trivy, Grype, Base image hardening, Distroless)

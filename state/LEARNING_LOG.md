@@ -1145,3 +1145,96 @@
     - Phân biệt Release trạng thái thất bại với việc dịch vụ thực tế dừng phục vụ.
 - Trạng thái cluster: Cụm Kind `s40`, `s41`, namespace `s43` và các container DB được giữ nguyên tài nguyên.
 - Kết quả: **ĐẠT BUỔI 43 (COMPLETED — LEARNING & ASSESSMENT PASS: 9,3/10 — Ngày 19/10/2026)**.
+
+## [2026-10-21] Session 44: Kubernetes Troubleshooting & Cluster Defense
+
+- **Mục tiêu:** Nắm vững phương pháp luận và công cụ chẩn đoán sự cố theo bằng chứng (Evidence-Based Diagnostics) trên Kubernetes; xử lý triệt để 6 nhóm lỗi phổ biến (Pod Lifecycle, Probes, Resources, Network) mà không dùng thao tác restart mù quáng.
+- **Môi trường & Công cụ:** WSL2 Ubuntu 24.04, cụm Kind `s41` (v1.37.0), `kubectl` (`describe`, `logs -p`, `get events`, `get endpointslices`), `curl`.
+- **Thư mục lab:** `labs/s44-kubernetes-troubleshooting/`.
+- **Chuỗi Kịch bản Thực hành:**
+  - **Lab 44.1 — Quy trình Chẩn đoán Bằng chứng & Định vị Hạ tầng:**
+    - Quán triệt 4 câu hỏi định vị: Xác định thực thể thật (process OS, socket, file, etcd), nơi thực thi, thành phần quản lý và liên hệ thực tiễn.
+    - Quy trình 4 bước: `kubectl get pods -o wide` -> `kubectl describe pod` -> `kubectl logs -p` -> `kubectl get endpointslices,services`.
+  - **Lab 44.2 — Sự cố Khởi tạo Ứng dụng (CrashLoopBackOff):**
+    - Triển khai `crashloop.yaml`. Container entrypoint thoát với non-zero exit code.
+    - Điều tra: `kubectl describe pod` đọc `lastState.terminated.exitCode`, truy vết logs với `kubectl logs -p`.
+    - Khắc phục: Sửa câu lệnh command/args giữ tiến trình PID 1 chạy nền liên tục; Pod chuyển trạng thái Running (PASS).
+  - **Lab 44.3 — Sự cố Readiness Probe Thất bại:**
+    - Triển khai `readiness.yaml`. Pod ở trạng thái `Running` nhưng `0/1 Ready`.
+    - Kiểm chứng: Kubelet không giết container; EndpointSlice tự động gỡ IP Pod khỏi Service backend (`0 endpoints`), request từ ngoài không định tuyến vào Pod lỗi.
+    - Khắc phục: Sửa endpoint kiểm tra HTTP về path hợp lệ; Pod đạt Ready và EndpointSlice nối lại IP tức thì (PASS).
+  - **Lab 44.4 — Sự cố Liveness Probe Thất bại:**
+    - Triển khai `liveness.yaml`. Probe kiểm tra HTTP trả về lỗi liên tục.
+    - Kiểm chứng: Kubelet coi tiến trình bị deadlock và kill container, `RestartCount` tăng liên tục theo chu kỳ trễ số mũ. Phân biệt bản chất với Readiness Probe (PASS).
+  - **Lab 44.5 — Sự cố Vượt ngưỡng Bộ nhớ (OOMKilled Exit Code 137):**
+    - Triển khai `oom.yaml`. Script Python cố tình cấp phát 128 MiB trong container có `limits.memory: 32Mi`.
+    - Kiểm chứng: Nhân Linux kích hoạt OOM Killer, gửi SIGKILL (exit code 137), `describe pod` ghi nhận `Reason: OOMKilled` (PASS).
+  - **Lab 44.6 — Sự cố Thiếu hụt Tài nguyên Node (Pending / Insufficient Memory):**
+    - Triển khai `insufficient-memory.yaml` yêu cầu request 100 GiB RAM.
+    - Kiểm chứng: Pod kẹt trạng thái `Pending`, `kubectl describe pod` ghi nhận sự kiện kube-scheduler: `0/1 nodes are available: 1 Insufficient memory` (PASS).
+  - **Lab 44.7 — Sự cố Định tuyến Dịch vụ Tầng Mạng (Service Selector Mismatch):**
+    - Triển khai `service-debug.yaml`. Service không kết nối được tới Pod dù Pod đang Running.
+    - Kiểm chứng: `kubectl get endpointslices` ghi nhận `0 endpoints` do `spec.selector` của Service không khớp nhãn `metadata.labels` của Pod.
+    - Khắc phục: Căn chỉnh selector chuẩn xác; EndpointSlice cập nhật endpoint và kết nối HTTP thông suốt (PASS).
+- **Đánh giá Năng lực Cuối Buổi:**
+  - Áp dụng chính sách kiểm tra mới S42+: Duy nhất 1 bài kiểm tra (7 trắc nghiệm + 2 tự luận cơ chế).
+  - Kết quả: **9,6/10 — ĐẠT (PASS)**.
+  - Tốt nghiệp chính thức Phase 9 — Container Orchestration with Kubernetes & Helm.
+
+## [2026-10-21] Session 45: Prometheus Fundamentals & Metrics Collection
+
+- **Mục tiêu:** Nắm vững kiến trúc giám sát Observability với Prometheus, mô hình Pull-based, hệ thống lưu trữ TSDB, các kiểu dữ liệu metrics chuẩn và cú pháp truy vấn PromQL.
+- **Môi trường & Công cụ:** Cụm Kubernetes trên WSL2 / Kind, namespace `s45`, Helm CLI v4.3.1.
+- **Thư mục lab:** `labs/s45-prometheus-monitoring/`.
+- **Chuỗi Kịch bản Thực hành:**
+  - **Lab 45.1 — Kiến trúc Observability & Nguyên lý Pull Model:**
+    - Phân tích kiến trúc tổng thể: Prometheus Server (Retrieval Engine, TSDB, HTTP Server), Pushgateway, Alertmanager, Service Discovery.
+    - So sánh ưu nhược điểm của mô hình Pull (Prometheus chủ động scrape định kỳ) vs mô hình Push (agent gửi dữ liệu).
+  - **Lab 45.2 — Triển khai Prometheus Server Lightweight:**
+    - Sử dụng Helm chart `prometheus-community/prometheus` với `prometheus-values.yaml`.
+    - Tối ưu tài nguyên laptop: Tắt Alertmanager, Pushgateway, Node Exporter; cấu hình `emptyDir` 512 MiB và retention 6h để vận hành siêu nhẹ nhàng (PASS).
+  - **Lab 45.3 — Phân loại 4 Kiểu Metric Chuẩn:**
+    - Nắm vững định nghĩa và ứng dụng thực tiễn: `Counter` (chỉ tăng, đo tổng số request), `Gauge` (tăng giảm, đo RAM/CPU/nhiệt độ), `Histogram` (phân vị độ trễ với bucket), `Summary` (tính sẵn quantile client-side).
+  - **Lab 45.4 — Cú pháp PromQL Cơ bản:**
+    - Thực hành các hàm và toán tử: Instant vector, Range vector, lọc nhãn `{job=...}`, hàm tốc độ tăng `rate()` / `irate()`, hàm tổng hợp `sum()`, gom nhóm `by (label)`.
+  - **Lab 45.5 — Workload Sinh tải CPU & Truy vết PromQL:**
+    - Triển khai `cpu-demo.yaml` tạo tải 3 pha: IDLE (30s) -> CPU STRESS (90s while-loop) -> RECOVERY (180s sleep).
+    - Viết câu truy vấn `sum(rate(container_cpu_usage_seconds_total{namespace="s45"}[1m]))` quan sát trực quan đồ thị CPU tăng vọt trong pha stress và giảm về mức nhàn rỗi trong pha recovery (PASS).
+  - **Lab 45.6 — Xác minh Mục tiêu Scrape (Target Verification):**
+    - Kiểm tra endpoint `/targets`, truy vấn `up{job="prometheus"}` xác nhận targets hoạt động và trả về `UP=1` (PASS).
+- **Đánh giá Năng lực Cuối Buổi:**
+  - Bài kiểm tra duy nhất: 7 câu trắc nghiệm + 2 câu tự luận (PromQL & Kiến trúc Pull).
+  - Kết quả: **9,7/10 — ĐẠT (PASS)**.
+  - Bắt đầu Phase 10 — Observability & Site Reliability Engineering (SRE).
+
+## [2026-10-22] Session 46: Grafana & Practical Dashboards (In Progress)
+
+- **Trạng thái:** **IN PROGRESS (ĐANG HỌC — CHƯA HOÀN THÀNH — CHƯA KIỂM TRA CUỐI BUỔI)**.
+- **Mục tiêu:** Xây dựng hệ thống trực quan hóa giám sát với Grafana trên môi trường K3s staging; kết nối Prometheus Data Source và thiết kế Dashboard theo dõi ứng dụng thực tế.
+- **Hạ tầng Hỗ trợ (VMware K3s Staging):**
+  - Cài đặt và cấu hình máy ảo Ubuntu Server 26.04.1 trên VMware Workstation, gán IP tĩnh `192.168.210.100`.
+  - Mở rộng LVM disk, cấu hình SSH Key, SSH Hardening (đổi port, cấm password auth), cập nhật hệ thống và tắt hoàn toàn swap (`swapoff -a`).
+  - Triển khai cụm K3s `v1.36.5+k3s1` (tích hợp Control Plane và Worker), xác minh Node Ready, CoreDNS, StorageClass `local-path`, Metrics Server.
+  - Cài đặt Helm CLI v4.3.1.
+  - *Ghi chú môi trường:* Các bước VMware/K3s là hạ tầng hỗ trợ S46, không tự tạo thêm buổi học hoặc đổi tên S46; độc lập hoàn toàn với cụm Kind `s41` trên WSL2.
+- **Thư mục cấu hình lab:** `labs/s46-grafana/` (`podinfo/`, `prometheus/`, `grafana/`).
+- **Nội dung đã Thực hiện và Nghiệm thu (Ngày 22/10/2026):**
+  - **Lab 46.1 — Triển khai Ứng dụng Mục tiêu (Podinfo v6.15.0):**
+    - Triển khai Helm release Podinfo (`podinfo-values.yaml`) trong namespace `staging`, 2 replicas, service NodePort `31198`.
+    - Thực hành Rolling Update nâng cấp UI message và Rollback về Revision 4 thành công (PASS).
+  - **Lab 46.2 — Triển khai Prometheus Server với PVC:**
+    - Cấu hình `prometheus-values.yaml`, cấp phát PersistentVolumeClaim 2 GiB trên StorageClass `local-path`.
+    - Thiết lập `kubernetes_sd_configs` vai trò Pods với relabel configs lọc `podinfo-.+` cổng `9797`.
+    - Xác minh thành công cả 2 Podinfo targets đều được phát hiện và đạt trạng thái `UP=1` (PASS).
+  - **Lab 46.3 — Triển khai Grafana & Kết nối Data Source:**
+    - Cấu hình `grafana-values.yaml`, cấp phát PersistentVolumeClaim 1 GiB trên StorageClass `local-path`, Service ClusterIP port 80.
+    - Thêm và kiểm tra thành công kết nối Data Source `Prometheus-S46` trỏ tới Prometheus nội bộ (PASS).
+  - **Lab 46.4 — Xây dựng Dashboard Giám sát Ứng dụng:**
+    - Tạo Dashboard `S46 — K3s Podinfo Monitoring` và hoàn thành 3 Panel cốt lõi:
+      1. *Successful Scrape Targets:* `sum(up{job="podinfo"})` (Hiển thị 2 targets).
+      2. *Scrape Status by Pod:* `up{job="podinfo"}` (Theo dõi trạng thái từng Pod riêng biệt).
+      3. *HTTP Requests per Second:* `sum(rate(http_requests_total{job="podinfo"}[1m]))` (Đo thông lượng request).
+- **Các Hạng mục Còn lại (Chưa thực hiện):**
+  - Bổ sung Panel đo HTTP Latency P95: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))`.
+  - Thực nghiệm kịch bản sự cố trên Podinfo và quan sát hiện tượng No Data / Target Down trên Grafana Dashboard.
+  - Tổ chức bài kiểm tra chuẩn hóa cuối buổi S46 (7 trắc nghiệm + 2 tự luận) và nghiệm thu chính thức.

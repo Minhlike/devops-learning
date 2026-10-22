@@ -80,17 +80,24 @@
 | **S41** | Kubernetes Storage & Persistence | **COMPLETED / PASS** | [`labs/s41-kubernetes-storage/`](../labs/s41-kubernetes-storage/) | emptyDir, PV/PVC dynamic, StatefulSet, PostgreSQL 16 | Dữ liệu SQL bảo toàn sau khi Pod DB bị xóa và tái tạo |
 | **S42** | Kubernetes Gateway API & Application Exposure | **COMPLETED** | [`labs/s42-kubernetes-gateway-api/`](../labs/s42-kubernetes-gateway-api/) | Gateway API, Envoy Gateway, GatewayClass, HTTPRoute, Host/Path routing | Đạt 7,7/10; AddressNotAssigned bảo lưu; 503 recovery |
 | **S43** | Helm Fundamentals | **COMPLETED** | [`labs/s43-helm-fundamentals/`](../labs/s43-helm-fundamentals/) | Helm 3, Chart structure, Go templates, values, release lifecycle | Đạt 9,3/10; rolling upgrade bảo toàn traffic khi helm fail; rollback |
-| **S44** | K8s Troubleshooting & Defense | **NEXT SESSION** | Lộ trình chuẩn / Chuẩn bị triển khai | Chẩn đoán cluster & phục hồi sự cố toàn diện | 4 câu hỏi hạ tầng; 7 MCQ + 2 Essay; kết thúc Phase 9 |
+| **S44** | K8s Troubleshooting & Defense | **COMPLETED** | [`labs/s44-kubernetes-troubleshooting/`](../labs/s44-kubernetes-troubleshooting/) | Chẩn đoán theo bằng chứng, CrashLoopBackOff, Probes, OOMKilled, Service selector | Đạt 9,6/10; 4 câu hỏi hạ tầng; 7 MCQ + 2 Essay; tốt nghiệp Phase 9 |
 
 ---
 
-## 6. Giai đoạn 10+ — Lộ trình Kế tiếp (S45 – S66)
+## 6. Giai đoạn 10 — Observability & Site Reliability Engineering (S45 – S50)
 
-- **S45:** Prometheus Fundamentals & Metrics Collection
-- **S46:** Grafana & Practical Dashboards
-- **S47:** Logging & Centralized Logs (Fluentbit/Loki)
-- **S48:** Alerting (Alertmanager & Notification Channels)
-- **S49:** SLI, SLO & Error Budget
-- **S50:** Incident Response & Runbooks
+| Mã | Chủ đề | Trạng thái | Thư mục Lab / Nguồn | Kỹ năng Cốt lõi | Tình huống Lỗi & Bằng chứng |
+| :---: | :--- | :---: | :--- | :--- | :--- |
+| **S45** | Prometheus Fundamentals | **COMPLETED** | [`labs/s45-prometheus-monitoring/`](../labs/s45-prometheus-monitoring/) | Mô hình Pull, TSDB, 4 kiểu metric, PromQL (rate, sum by), scrape configs | Đạt 9,7/10; tạo tải CPU 3 pha & trực quan hóa PromQL; target UP=1 |
+| **S46** | Grafana & Practical Dashboards | **IN PROGRESS** | [`labs/s46-grafana/`](../labs/s46-grafana/) | VMware Ubuntu Server, K3s, Podinfo rolling/rollback, Prometheus SD, Grafana | Đang học (22/10/2026); xong 3 panel; còn P95, No Data & bài kiểm tra |
+| **S47** | Logging & Centralized Logs | **UPCOMING** | Lộ trình chuẩn | Fluentbit, Loki, LogQL, Log shipping | Chuẩn bị triển khai sau S46 |
+| **S48** | Alerting & Notifications | **UPCOMING** | Lộ trình chuẩn | Alertmanager, Alerting rules, Routing, Notification channels | Lộ trình Phase 10 |
+| **S49** | SLI, SLO & Error Budget | **UPCOMING** | Lộ trình chuẩn | Định lượng độ tin cậy dịch vụ & Error budget burn rate | Lộ trình Phase 10 |
+| **S50** | Incident Response & Runbooks | **UPCOMING** | Lộ trình chuẩn | Runbooks, quy trình điều tra & Blameless Postmortem | Mốc kết thúc Phase 10 |
+
+---
+
+## 7. Giai đoạn 11 & 12 — Lộ trình Kế tiếp (S51 – S66)
+
 - **S51 – S55:** DevSecOps (Trivy, RBAC, PSS/PSA, HashiCorp Vault)
 - **S56 – S66:** Capstone Projects & Job Readiness

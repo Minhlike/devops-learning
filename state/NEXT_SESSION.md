@@ -1,56 +1,57 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 44 — Kubernetes Troubleshooting & Defense (Mốc kết thúc Phase 9 trước khi sang Observability S45 Prometheus & S46 Grafana).
+- **Buổi học hiện tại / tiếp tục:** BUỔI 46 — Grafana & Practical Dashboards (Hoàn thiện các hạng mục còn lại & Nghiệm thu chính thức).
 - **Trạng thái Tiền đề (Prerequisites & State Confirmation):**
-  - Buổi 43 (Helm Fundamentals: Chart Anatomy, Values Override, Install, Upgrade, Rollback, RollingUpdate Resilience) đã **HOÀN THÀNH (COMPLETED — LEARNING & ASSESSMENT PASS: 9,3/10)** ngày 19/10/2026.
-  - Buổi 42 (Kubernetes Gateway API & Application Exposure) đã **HOÀN THÀNH (COMPLETED / PASS: 7,7/10)** ngày 15/10/2026; tồn đọng Gateway External LoadBalancer provisioning (`AddressNotAssigned`) tiếp tục được bảo lưu.
-  - Buổi 41 (Kubernetes Storage: Volumes, PV, PVC, StorageClass, StatefulSet, PostgreSQL 16) đã **HOÀN THÀNH (COMPLETED / PASS)**; dữ liệu PostgreSQL và PVC được bảo toàn nguyên vẹn.
-  - Buổi 40 (Kubernetes Resources, Scheduling & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do sự cố HPA CPU: `<unknown>/50%` nằm trong backlog độc lập. Cụm Kind `s40` và `s41` được giữ nguyên tài nguyên.
-  - Lộ trình Roadmap chính thức: Hoàn thành buổi Kubernetes cuối cùng (**S44 K8s Troubleshooting & Defense**) trước khi bước sang Observability (**S45 Prometheus, S46 Grafana**).
+  - Buổi 43 (Helm Fundamentals) đã **HOÀN THÀNH (COMPLETED — 9,3/10)** ngày 19/10/2026.
+  - Buổi 44 (Kubernetes Troubleshooting & Defense) đã **HOÀN THÀNH (COMPLETED — 9,6/10)** ngày 21/10/2026; mốc tốt nghiệp Phase 9.
+  - Buổi 45 (Prometheus Fundamentals & Metrics Collection) đã **HOÀN THÀNH (COMPLETED — 9,7/10)** ngày 21/10/2026.
+  - Buổi 46 (Grafana & Practical Dashboards) đang ở trạng thái **IN PROGRESS (22/10/2026)**; hạ tầng VMware K3s và 3 panel cơ bản đã được xác minh thành công.
+  - Sự cố tồn đọng độc lập: Buổi 40 HPA CPU `<unknown>/50%` và Buổi 42 Gateway LoadBalancer `AddressNotAssigned` tiếp tục được bảo lưu.
+  - Phân định môi trường: Máy ảo VMware Ubuntu Server 26.04.1 (`192.168.210.100`) chạy K3s dành riêng cho S46+; độc lập với cụm Kind `s41` trên WSL2.
 
 ---
 
-## 1. YÊU CẦU SƯ PHẠM MỚI (BẮT BUỘC ÁP DỤNG TỪ BUỔI 44)
-*(Học viên yêu cầu: Mọi thuật ngữ hạ tầng phải được gắn với đối tượng vật lý hoặc logic thực tế)*
+## 1. 12 QUY CHUẨN GIẢNG DẠY BẮT BUỘC (MANDATORY RULES)
 
-Mỗi khi giới thiệu một khái niệm hoặc thuật ngữ mới, Agent bắt buộc giải thích theo 4 câu hỏi định vị:
-1. **Nó đại diện cho thành phần gì trong hệ thống thật?** (Tiến trình OS, file trên đĩa, bản ghi etcd, network socket, v.v.).
-2. **Nó nằm/chạy ở đâu?** (Máy vật lý host, máy ảo WSL, Worker Node, Control Plane Node, Pod, Container, hay chỉ là tài nguyên logic trên Kubernetes API Server).
-3. **Thành phần nào tạo ra, quản lý và giám sát nó?** (kubelet, kube-scheduler, kube-controller-manager, containerd, kernel cgroups, kube-proxy, v.v.).
-4. **Nó liên hệ với những thành phần đã học như thế nào?** (Đối chiếu với Linux process, systemd service, Docker container, Compose network, AWS EC2, v.v.).
-
-**Nguyên tắc triển khai:**
-- Luôn phân biệt rạch ròi **cấu hình logic** (YAML manifest, desired state) với **tài nguyên vật lý/runtime** (actual state, RAM/CPU cấp phát, cgroup, iptables/eBPF rules).
-- Dạy từng khái niệm nhỏ kết hợp lab có mục tiêu; tuyệt đối không đưa chuỗi lệnh dài khi chưa giải thích cơ chế.
-- Lệnh terminal trình bày thành từng khối riêng, có mục đích rõ ràng; đợi học viên chạy và đọc output thật.
-- File YAML được tạo/chỉnh sửa với đường dẫn tuyệt đối rõ ràng: `File cần sửa: /đường/dẫn/tuyệt/đối`.
-- **Duy nhất một bài kiểm tra cuối buổi:** 7 câu trắc nghiệm khách quan + 2 câu tự luận bản chất/cơ chế. Không phát sinh bài kiểm tra phụ.
+1. **Giảng dạy từ nguyên lý:** Luôn giải thích trực giác, cơ chế hoạt động và kiến trúc hệ thống trước khi thực hành.
+2. **Minh bạch câu lệnh:** Mỗi lệnh Linux/Kubernetes/Helm phải được giải thích rõ cú pháp, tham số quan trọng, tác dụng, môi trường thực thi, kết quả mong đợi và rủi ro.
+3. **Phân định rõ môi trường thực thi:** Luôn phân biệt rạch ròi giữa Windows CMD/PowerShell, WSL Ubuntu và Ubuntu Server qua SSH; tuyệt đối không trộn lẫn cú pháp.
+4. **Không nhồi nhét mã nguồn:** Tuyệt đối không đưa hàng loạt lệnh dài hoặc YAML lớn để học viên sao chép mù quáng mà không hiểu.
+5. **Soạn thảo qua công cụ chuẩn (VS Code):** Hướng dẫn học viên dùng VS Code để tạo/sửa file YAML; không ép dùng heredoc trong terminal.
+6. **Lab sát thực tế DevOps/SRE:** Bài lab phải có sự cố, điều tra nguyên nhân gốc, đọc logs/events/metrics, sửa lỗi, xác minh và rollback. Tránh tutorial hell.
+7. **Phân đoạn theo mốc lớn (Milestone-based):** Chia bài học theo mốc lớn, có mục tiêu, vị trí hiện tại và tiêu chí hoàn thành; không chia vụn vặt vô nghĩa.
+8. **Yêu cầu bằng chứng tại Checkpoint:** Không đòi hỏi nộp ảnh/output sau từng thao tác nhỏ; chỉ yêu cầu bằng chứng tại các checkpoint quan trọng.
+9. **Duy nhất một bài kiểm tra cuối buổi:** Đúng 7 câu trắc nghiệm + 2 câu tự luận, nội dung nằm trong buổi học. Không gợi ý trước đáp án, không kiểm tra lặp lại khi đã đạt.
+10. **Ngôn ngữ chuẩn xác, có chiều sâu:** Viết bằng tiếng Việt tự nhiên, chuẩn xác, có chiều sâu kỹ thuật; không sáo rỗng, không nhồi thuật ngữ tiếng Anh bừa bãi.
+11. **Ghi nhận Checkpoint khi tạm dừng:** Ghi nhận chính xác checkpoint và công việc còn lại để tiếp tục liền mạch, không bắt học viên làm lại từ đầu.
+12. **Tối ưu tài nguyên máy tính:** Tôn trọng tài nguyên laptop; ưu tiên giải pháp gọn nhẹ, không cài thêm thành phần không cần thiết.
 
 ---
 
-## 2. Kế hoạch Nội dung Buổi 44 (Kubernetes Troubleshooting & Defense)
+## 2. Các Hạng mục Tiếp tục Thực hiện của Buổi 46
 
-- **Mục tiêu:** Nắm vững phương pháp luận và công cụ chẩn đoán sự cố theo bằng chứng (Evidence-Based Troubleshooting) trên cụm Kubernetes; tự tin khoanh vùng và khắc phục các lớp sự cố phổ biến từ Pod, Workload đến Mạng và Tài nguyên mà không dùng thao tác restart mù quáng.
-- **Môi trường & Công cụ:**
-  - WSL2 Ubuntu 24.04, Docker daemon, cụm Kind `s41` (hoặc dựng kịch bản kiểm thử độc lập).
-  - `kubectl` (`describe`, `logs`, `events`, `get -o wide`, `exec`), `crictl`, `curl`.
-- **Nội dung Lab Trọng tâm:**
-  1. **Quy trình Chẩn đoán theo Bằng chứng (Diagnostics Workflow):**
-     - Luồng: `kubectl get pods` $\rightarrow$ `kubectl describe pod <name>` (đọc Events) $\rightarrow$ `kubectl logs <name> [-p]` $\rightarrow$ `kubectl get events --sort-by=.metadata.creationTimestamp`.
-  2. **Nhóm sự cố Khởi tạo Pod (Pod Lifecycle & Image):**
-     - `ImagePullBackOff` / `ErrImagePull`: Sai repository, tag không tồn tại, thiếu ImagePullSecrets.
-     - `CreateContainerConfigError` / `CreateContainerError`: Sai tên ConfigMap/Secret key, volume mount thất bại.
-  3. **Nhóm sự cố Ứng dụng & Tiến trình (Application Crashes):**
-     - `CrashLoopBackOff`: Lệnh CMD/args sai, thiếu biến môi trường bắt buộc, process PID 1 thoát với exit code non-zero. Phân tích `lastState` và cờ `--previous`.
-     - Phân biệt rõ `CrashLoopBackOff` vs `ImagePullBackOff` vs `ReadinessProbe Failed`.
-  4. **Nhóm sự cố Tài nguyên Hệ thống (Resource Constraints):**
-     - `OOMKilled` (Exit code 137): Container vượt ngưỡng `limits.memory`; phân biệt với lỗi thiếu RAM node.
-     - `Pending` / `FailedScheduling`: Requests vượt quá sức chứa node (`Insufficient cpu/memory`), không khớp `nodeSelector`, hoặc bị chặn bởi `Taints` thiếu `Tolerations`.
-  5. **Nhóm sự cố Giám sát Sức khỏe (Health Check Probes):**
-     - Readiness Probe thất bại: Pod Running nhưng NotReady (`0/1 Ready`), EndpointSlice tự động gỡ Pod khỏi traffic; phân biệt với Liveness Probe thất bại khiến container restart liên tục.
-  6. **Nhóm sự cố Mạng Dịch vụ & Phân giải Tên miền (Networking & DNS):**
-     - Service không định tuyến được: Lệch `selector` với Pod `labels` dẫn đến EndpointSlice trống (0 endpoints); lệch cổng `targetPort` so với containerPort.
-     - Phân giải CoreDNS: Khắc phục sự cố Pod không resolve được service name nội bộ.
-  7. **Thử thách Troubleshooting Defense Tổng hợp:**
-     - Người học tiếp nhận kịch bản cụm bị lỗi đa tầng, tự thực hiện các bước điều tra theo bằng chứng, xác định root cause chính xác và áp dụng biện pháp sửa chữa tối thiểu.
-  8. **Bài kiểm tra cuối buổi chuẩn hóa:** 7 câu trắc nghiệm + 2 câu tự luận (chỉ trong phạm vi các sự cố và cơ chế đã thực hành).
+1. **Checkpoint Đã hoàn thành (Ngày 22/10/2026):**
+   - VM Ubuntu Server 26.04.1 (192.168.210.100), LVM mở rộng, SSH Hardening, tắt swap.
+   - Cụm K3s v1.36.5+k3s1 node Ready, Helm v4.3.1.
+   - Release Podinfo v6.15.0, 2 replicas, NodePort 31198 (namespace staging); rolling update và rollback thành công (rev 4).
+   - Prometheus server PVC 2Gi local-path, scrape config tự động phát hiện Podinfo (`UP=1`).
+   - Grafana PVC 1Gi local-path, kết nối Data Source `Prometheus-S46`.
+   - Dashboard `S46 — K3s Podinfo Monitoring` với 3 Panel:
+     - Panel 1: *Successful Scrape Targets* (`sum(up{job="podinfo"})`)
+     - Panel 2: *Scrape Status by Pod* (`up{job="podinfo"}`)
+     - Panel 3: *HTTP Requests per Second* (`sum(rate(http_requests_total{job="podinfo"}[1m]))`)
+
+2. **Nhiệm vụ Còn lại Cần Hoàn thiện:**
+   - **Thêm Panel 4: HTTP Latency P95:**
+     - Query PromQL: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="podinfo"}[1m])) by (le))`
+     - Cấu hình format đơn vị giây (seconds/milliseconds), trực quan hóa phân vị trễ của ứng dụng dưới tải.
+   - **Thực nghiệm Sự cố Ứng dụng & Hiện tượng No Data:**
+     - Tận dụng endpoints `/faults` của Podinfo hoặc scale Deployment về 0 replicas.
+     - Quan sát biến động trên Grafana: Panel Scrape Status chuyển sang 0 (Down), panel RPS rớt về 0 hoặc hiển thị No Data.
+     - Khôi phục ứng dụng và chứng minh hệ thống phục hồi metric tự động.
+   - **Bài kiểm tra Chuẩn hóa Cuối Buổi S46:**
+     - Duy nhất 1 bài kiểm tra: 7 câu trắc nghiệm + 2 câu tự luận (về PromQL Histogram, Grafana Dashboards as Code, Alerting concepts).
+     - Đánh giá và ghi nhận điểm số chính thức.
+   - **Nghiệm thu S46 & Chuyển tiếp S47:**
+     - Cập nhật hồ sơ hoàn thành S46 khi đạt điểm pass.
+     - Chuẩn bị Buổi 47: Centralized Logging (Fluentbit / Loki / Promtail).

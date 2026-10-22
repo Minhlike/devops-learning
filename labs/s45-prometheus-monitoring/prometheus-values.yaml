@@ -1,0 +1,47 @@
+# S45 — Prometheus lightweight lab
+alertmanager:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+server:
+  replicaCount: 1
+
+  # Dữ liệu chỉ phục vụ lab, không dùng PVC.
+  persistentVolume:
+    enabled: false
+
+  emptyDir:
+    sizeLimit: 512Mi
+
+  retention: "6h"
+  retentionSize: "300MB"
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 800m
+      memory: 512Mi
+
+  global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
+
+configmapReload:
+  prometheus:
+    resources:
+      requests:
+        cpu: 5m
+        memory: 16Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s44-crashloop
+  namespace: s44
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s44-crashloop
+  template:
+    metadata:
+      labels:
+        app: s44-crashloop
+    spec:
+      containers:
+        - name: app
+          image: busybox:1.36
+          command: ["/bin/sh", "-c"]
+          args:
+            - 'echo "S44: application recovered"; while true; do sleep 60; done'

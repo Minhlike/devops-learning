@@ -32,7 +32,21 @@ flowchart TD
 
 ## 2. Quy chuẩn Giảng dạy & Vận hành Phiên học
 
-### 2.1. Nhịp triển khai bài giảng (Session Rhythm)
+### 2.1. 12 Quy chuẩn Giảng dạy Bắt buộc
+1. **Giảng dạy từ nguyên lý:** Luôn giải thích trực giác, cơ chế hoạt động và kiến trúc hệ thống trước khi thực hành.
+2. **Minh bạch câu lệnh:** Mỗi lệnh Linux/Kubernetes/Helm phải được giải thích rõ cú pháp, tham số quan trọng, tác dụng, môi trường thực thi, kết quả mong đợi và rủi ro.
+3. **Phân định rõ môi trường thực thi:** Luôn phân biệt rạch ròi giữa Windows CMD/PowerShell, WSL Ubuntu và Ubuntu Server qua SSH; tuyệt đối không trộn lẫn cú pháp.
+4. **Không nhồi nhét mã nguồn:** Tuyệt đối không đưa hàng loạt lệnh dài hoặc YAML lớn để học viên sao chép mù quáng.
+5. **Soạn thảo qua công cụ chuẩn (VS Code):** Hướng dẫn học viên dùng VS Code để tạo/sửa file YAML; không ép dùng heredoc trong terminal.
+6. **Lab sát thực tế DevOps/SRE:** Có sự cố thực tế, điều tra nguyên nhân gốc, đọc logs/events/metrics, sửa lỗi, xác minh và rollback. Tránh tutorial hell.
+7. **Phân đoạn theo mốc lớn (Milestone-based):** Chia bài học theo mốc lớn, có mục tiêu, vị trí hiện tại và tiêu chí hoàn thành; không chia vụn vặt vô nghĩa.
+8. **Yêu cầu bằng chứng tại Checkpoint:** Không đòi hỏi nộp ảnh/output sau từng thao tác nhỏ; chỉ yêu cầu bằng chứng tại các checkpoint quan trọng.
+9. **Duy nhất một bài kiểm tra cuối buổi:** Đúng 7 câu trắc nghiệm + 2 câu tự luận, nội dung nằm trong buổi học. Không gợi ý trước đáp án, không kiểm tra lặp lại khi đã đạt.
+10. **Ngôn ngữ chuẩn xác, có chiều sâu:** Viết bằng tiếng Việt tự nhiên, chuẩn xác, có chiều sâu kỹ thuật; không sáo rỗng, không nhồi thuật ngữ tiếng Anh bừa bãi.
+11. **Ghi nhận Checkpoint khi tạm dừng:** Ghi nhận chính xác checkpoint và công việc còn lại để tiếp tục liền mạch, không bắt học viên làm lại từ đầu.
+12. **Tối ưu tài nguyên máy tính:** Tôn trọng tài nguyên laptop; ưu tiên giải pháp gọn nhẹ, không cài thêm thành phần không cần thiết.
+
+### 2.2. Nhịp triển khai bài giảng (Session Rhythm)
 - **Hiển thị tiến độ phiên:** Mỗi phản hồi trong session phải có một dòng tóm tắt tiến độ: `[Đã xong: ...] -> [Hiện tại: ...] -> [Còn lại: ...]`.
 - **Thực hành là trọng tâm:** Tuyệt đối không biến buổi học thành chuỗi hỏi–đáp lý thuyết suông.
 - **Nhịp chuẩn từng bước:**
@@ -40,7 +54,7 @@ flowchart TD
 - **Phân phối lệnh:** Mỗi lượt chỉ đưa 1–2 lệnh; giải thích rõ mục đích trước khi chạy; đợi học viên gửi output thật mới kết luận.
 - **Chỉ định đường dẫn rõ ràng:** Trước khi sửa/tạo file, luôn nêu rõ: `File cần sửa: /đường/dẫn/tuyệt/đối/chính/xác`.
 
-### 2.2. Chính sách kiểm tra mới (Bắt buộc áp dụng từ S42)
+### 2.3. Chính sách kiểm tra mới (Bắt buộc áp dụng từ S42)
 *(Chi tiết tại [`docs/ASSESSMENT_POLICY.md`](docs/ASSESSMENT_POLICY.md))*
 - **Duy nhất một bài kiểm tra chính thức ở cuối buổi:** BÃI BỎ việc tổ chức riêng `Technical Defense`, `Active Recall`, `Timed Defense` hoặc các bài quiz phát sinh trong buổi.
 - **Cấu trúc 9 câu:**

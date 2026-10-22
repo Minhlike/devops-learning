@@ -1,0 +1,87 @@
+# S46 - Prometheus for K3s staging
+# Chart: prometheus-community/prometheus 29.36.1
+
+alertmanager:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+server:
+  replicaCount: 1
+
+  global:
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    evaluation_interval: 30s
+
+  retention: "8h"
+  retentionSize: "500MB"
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 600m
+      memory: 768Mi
+
+  persistentVolume:
+    enabled: true
+    storageClass: local-path
+    size: 2Gi
+
+  service:
+    type: ClusterIP
+
+scrapeConfigs:
+  prometheus:
+    enabled: true
+
+  kubernetes-api-servers:
+    enabled: false
+  kubernetes-nodes:
+    enabled: false
+  kubernetes-nodes-cadvisor:
+    enabled: false
+  kubernetes-service-endpoints:
+    enabled: false
+  kubernetes-service-endpoints-slow:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+  kubernetes-services:
+    enabled: false
+  kubernetes-pods:
+    enabled: false
+  kubernetes-pods-slow:
+    enabled: false
+
+  podinfo:
+    enabled: true
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - staging
+
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: keep
+        regex: 'podinfo-.+'
+
+      - source_labels: [__meta_kubernetes_pod_container_port_number]
+        action: keep
+        regex: '9797'
+
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod

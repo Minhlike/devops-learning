@@ -600,3 +600,44 @@
   - **Lỗi cổng cục bộ `bind: address already in use` khi chạy `port-forward`:**
     - *Triệu chứng:* `kubectl port-forward ... 18081:8080` trả về lỗi bind socket.
     - *Bản chất:* Lỗi phát sinh do một tiến trình `port-forward` trước đó hoặc dịch vụ khác trên máy host (WSL/Windows) đang chiếm dụng port `18081`. Đây là lỗi xung đột socket của hệ điều hành cục bộ, không phải lỗi mạng của Kubernetes cluster. Cần kiểm tra bằng `netstat` / `ss` / `lsof` hoặc đổi port host (`18082:8080`).
+
+## [2026-10-21] Bài học Chẩn đoán theo Bằng chứng và Phân loại Sự cố Kubernetes S44
+- **Ngày:** 2026-10-21
+- **Bối cảnh:** Lab 44 — Kubernetes Troubleshooting & Defense (Pod Lifecycle, Probes, Resources, Network).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Thói quen Restart Mù quáng vs Chẩn đoán theo Bằng chứng (Evidence-Based Diagnostics):**
+    - *Vấn đề:* Phản xạ ban đầu của kỹ sư khi thấy Pod lỗi là chạy ngay lệnh restart hoặc xóa Pod. Thao tác này xóa mất trạng thái lỗi cuối cùng (`lastState`) và làm mất bằng chứng quan trọng.
+    - *Bản chất chuẩn xác:* Luôn tuân thủ quy trình 4 bước: kiểm tra tổng thể (`get pods -o wide`), đọc sự kiện runtime (`describe pod`, Events, Last State), truy vết logs (`logs -p`), và kiểm tra EndpointSlice/Service trước khi can thiệp.
+  - **Phân biệt rạch ròi 3 trạng thái lỗi vòng đời Pod:**
+    - *`ImagePullBackOff`:* Lỗi tải image từ container registry (sai repository, tag, quyền truy cập). Tiến trình ứng dụng **chưa từng được khởi chạy**.
+    - *`CrashLoopBackOff`:* Image tải thành công nhưng tiến trình PID 1 thoát với exit code non-zero, hoặc chết đột ngột. Kubelet liên tục khởi động lại container theo chu kỳ trễ số mũ.
+    - *`ReadinessProbe Failed`:* Tiến trình ứng dụng vẫn đang chạy ổn định từ góc độ HĐH, nhưng endpoint kiểm tra nghiệp vụ trả về lỗi. Kubelet gỡ IP khỏi EndpointSlice để ngắt traffic, nhưng **tuyệt đối không restart** container.
+  - **Lệch Cấu hình `selector` giữa Service và Pod:**
+    - *Triệu chứng:* Service tồn tại, Pod Running, nhưng request gửi tới Service bị lỗi timeout hoặc Connection Refused.
+    - *Bản chất:* Service kết nối tới Pod thông qua cơ chế chọn nhãn (`selector`). Khi `spec.selector` lệch dù chỉ 1 ký tự so với `metadata.labels` của Pod, EndpointSlice sẽ có 0 endpoints. Kỹ sư phải luôn kiểm tra `kubectl get endpointslices` trước khi nghi ngờ tầng mạng cluster.
+
+## [2026-10-21] Bài học Vận hành Giám sát Prometheus và Cú pháp PromQL S45
+- **Ngày:** 2026-10-21
+- **Bối cảnh:** Lab 45 — Prometheus Fundamentals & Metrics Collection.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Nhầm lẫn Bản chất giữa Counter và Gauge trong PromQL:**
+    - *Hiểu lầm:* Áp dụng trực tiếp hàm `rate()` lên kiểu dữ liệu `Gauge` (ví dụ nhiệt độ, RAM sử dụng), hoặc cố gắng đọc giá trị thô tức thời của `Counter` (ví dụ tổng số request) để đánh giá tải hệ thống.
+    - *Bản chất kỹ thuật:*
+      1. `Counter` là giá trị chỉ tăng tích lũy (hoặc reset về 0 khi restart). Đọc giá trị thô không phản ánh tốc độ tải; bắt buộc phải dùng hàm `rate()` hoặc `irate()` trên một khoảng thời gian (`[1m]`, `[5m]`) để tính tốc độ thay đổi trên giây (per-second rate).
+      2. `Gauge` là giá trị đo đạc tức thời có thể tăng giảm tự do. Đọc trực tiếp giá trị hiện tại hoặc dùng các hàm tổng hợp như `avg_over_time()`, không áp dụng `rate()` vì sẽ tính toán sai lệch khi giá trị giảm xuống.
+  - **Quản trị Tài nguyên TSDB và Retention trên Môi trường Cá nhân:**
+    - *Rủi ro:* Cấu hình mặc định của các Helm chart Prometheus production thường bật đầy đủ Alertmanager, Node Exporter, Pushgateway và giữ retention 15–30 ngày, dễ gây cạn kiệt RAM và Disk trên laptop.
+    - *Giải pháp tối ưu:* Tắt toàn bộ các exporter/sub-chart không dùng trong lab; cấu hình `emptyDir` có giới hạn (sizeLimit 512Mi) và đặt `retention: 6h`, `retentionSize: 300MB` để hệ thống vận hành siêu nhẹ nhàng và ổn định.
+
+## [2026-10-22] Bài học Khởi tạo Cụm K3s và Cấu hình Relabel Scrape Podinfo S46
+- **Ngày:** 2026-10-22
+- **Bối cảnh:** Lab 46 — Grafana & Practical Dashboards (VMware K3s Staging).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Ảnh hưởng của Linux Swap đối với Kubelet Bootstrap:**
+    - *Triệu chứng:* Khi triển khai K3s trên máy ảo Ubuntu Server mà chưa tắt swap, Kubelet cảnh báo hoặc từ chối khởi động do cơ chế quản lý bộ nhớ của Kubernetes giả định node không dùng swap để kiểm soát giới hạn memory/OOM chính xác.
+    - *Khắc phục chuẩn:* Chạy lệnh `sudo swapoff -a` để tắt swap tức thì và comment dòng mount swap trong `/etc/fstab` để vô hiệu hóa vĩnh viễn qua các lần reboot.
+  - **Cấu hình Relabel Configs trong Prometheus Service Discovery:**
+    - *Vấn đề:* Khi cấu hình `kubernetes_sd_configs` với vai trò `pod`, Prometheus tự động phát hiện toàn bộ Pods trong namespace `staging`, dẫn đến việc scrape nhầm các port không mong muốn hoặc nhận duplicate targets.
+    - *Biện pháp:* Khai báo `relabel_configs` với bộ lọc chính xác: `action: keep` theo `__meta_kubernetes_pod_name` (khớp regex `podinfo-.+`) và theo `__meta_kubernetes_pod_container_port_number` (khớp đúng cổng metric `9797`); sau đó thay thế nhãn hiển thị trực quan `pod` bằng `action: replace`.
+  - **Phân định Rạch ròi Môi trường Thực thi Đa tầng:**
+    - Tuyệt đối không nhầm lẫn giữa máy host Windows, máy ảo WSL2 (chạy Kind `s41`), và máy ảo VMware Ubuntu Server (chạy K3s `192.168.210.100`). Mỗi môi trường có context `kubectl` và cấu hình IP riêng biệt.
