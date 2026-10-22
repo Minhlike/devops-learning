@@ -37,6 +37,7 @@
     "W2-KREAD": "https://v1-34.docs.kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/",
     "W2-OTELCOL": "https://opentelemetry.io/docs/collector/troubleshooting/",
     "W2-PYSQL": "https://docs.python.org/3.12/library/sqlite3.html",
-    "W2-PYHTTP": "https://docs.python.org/3.12/library/http.server.html"
+    "W2-PYHTTP": "https://docs.python.org/3.12/library/http.server.html",
+    "W2-DYNADMIT": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/"
   }
 }

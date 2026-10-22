@@ -4623,7 +4623,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C01/L02.md",
-      "sha256": "83800cc124a9f160ab80f37fa492ac01b5e712d0c700f5004b1bd0f6d904b9de",
+      "sha256": "e683c9cd3dcd74812281c4c4b9c07cd8c501a304ed1a7572c7fa1c7c3b2646e2",
       "legacy_units": [
         "TXT-34f4a5f5539ec3d3",
         "TXT-197e0629916b2f81"
@@ -4636,7 +4636,8 @@
       "source_ids": [
         "PM2",
         "PM3",
-        "PM7"
+        "PM7",
+        "PM9"
       ],
       "qa": [
         {
@@ -4816,7 +4817,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C03/L01.md",
-      "sha256": "3a68f129ab7ed09bc6b7b74df98887e1362240f26bd23ee377bf76f08dd08be9",
+      "sha256": "abdbeb5f816d96d9d761fc2987c0fb71c75c2f025848327d3e5c6d62ba8299c6",
       "legacy_units": [
         "chapters/19-logs-traces-opentelemetry.md#intro",
         "chapters/19-logs-traces-opentelemetry.md#19.1",
@@ -4832,7 +4833,8 @@
       ],
       "source_ids": [
         "OT1",
-        "OT2"
+        "OT2",
+        "OT4"
       ],
       "qa": []
     },
@@ -5011,11 +5013,13 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P12/C04/L03.md",
-      "sha256": "b89ae8a9ff9675f00a3604aa887bc805f257a75f573fd1bde53edc4af38e64c5",
+      "sha256": "0fb2ed4be080e5e64423987719fb338f03cc8866f9a5ba38cf1255fcd7bc6dc6",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
+        "OT3",
+        "OT9",
         "W2-OTELCOL"
       ],
       "qa": [
@@ -5685,12 +5689,13 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C04/L01.md",
-      "sha256": "add528d48b78c3bcb27c38274c98d5024ae7961495cbcb3ab2869957fb10c254",
+      "sha256": "ba9a9b85a1ce98def8b12e5f91449fbd59313e64a042f8d9e1c3107a73f0cf69",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
         "W2-ADMIT",
+        "W2-DYNADMIT",
         "W2-PSSA"
       ],
       "qa": [
@@ -5811,7 +5816,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C01/L02.md",
-      "sha256": "b332746a73b859f80f1a181143b09918c04c6f46caae61bcfd4b35f95eec4ff0",
+      "sha256": "d8748ee71d3225fe85a61e16e04235b96a504a196c8079618435c7d323d154ac",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -5842,7 +5847,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C01/L03.md",
-      "sha256": "2fd82326535d9db7cc0a7ad19589f6bd345f0485e7080e3b07593717d6cf4000",
+      "sha256": "42206897cdf0a9726d2ae690ed41ccf80a6966552cd385fcfd9a3670755e14ec",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],

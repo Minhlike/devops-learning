@@ -192,6 +192,11 @@
       "type": "Official versioned Python documentation",
       "version": "Python 3.12",
       "url": "https://docs.python.org/3.12/library/http.server.html"
+    },
+    "W2-DYNADMIT": {
+      "type": "Kubernetes documentation",
+      "version": "Kubernetes v1.34 static snapshot checked 2026-10-22",
+      "url": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/"
     }
   },
   "lessons": {
@@ -1155,11 +1160,21 @@
         {
           "anchor": "Admission webhook hoặc policy engine là dependency của control plane",
           "sources": [
-            "W2-ADMIT"
+            "W2-ADMIT",
+            "W2-DYNADMIT"
           ],
-          "source_location": "Dynamic admission control, failure policy and timeout",
-          "support": "Webhook timeout/failurePolicy ảnh hưởng xử lý API request.",
+          "source_location": "Admission Control: request path; Dynamic Admission Control: Failure policy and timeout",
+          "support": "Admission webhooks participate in API request processing; timeout and failurePolicy determine handling of webhook call errors.",
           "limits": "Bài không giả định một policy engine cụ thể đã cài."
+        },
+        {
+          "anchor": "Với validating webhook tùy chỉnh, failurePolicy",
+          "sources": [
+            "W2-DYNADMIT"
+          ],
+          "source_location": "Dynamic Admission Control v1.34: Failure policy",
+          "support": "Fail rejects on webhook error or timeout; Ignore lets request continue.",
+          "limits": "Other admission controls can still reject."
         }
       ],
       "qa": [
@@ -1285,6 +1300,15 @@
           "source_location": "EBS volume lifecycle, AZ constraint",
           "support": "Volume EBS thuộc AZ; đường dữ liệu cần giải pháp khôi phục/replication riêng.",
           "limits": "Không suy mọi storage đều có ranh giới EBS."
+        },
+        {
+          "anchor": "Replication và backup không thay nhau",
+          "sources": [
+            "W2-WAREL"
+          ],
+          "source_location": "Reliability Pillar: replication and recovery",
+          "support": "Replicas support availability while backup and restore address another failure class.",
+          "limits": "Orders request and AZ placement are hypothetical."
         }
       ],
       "qa": [
@@ -1316,6 +1340,15 @@
           "source_location": "Reliability Pillar, data recovery planning",
           "support": "Recovery strategy phải xét dữ liệu cùng ứng dụng; rollback ứng dụng là suy luận riêng.",
           "limits": "Không hứa một migration có thể đảo."
+        },
+        {
+          "anchor": "RTO quan sát trong ca này là 9 phút",
+          "sources": [
+            "W2-WADR"
+          ],
+          "source_location": "Reliability Pillar: RTO and RPO objectives",
+          "support": "RTO spans the agreed business outage interval, not only post-failover time.",
+          "limits": "All timestamps are fictional."
         }
       ],
       "qa": [
@@ -1878,6 +1911,24 @@
           "source_location": "Collector troubleshooting, telemetry flow and dropped data",
           "support": "Collector có receiver, processor, exporter và hàng đợi; quá tải hoặc cấu hình sai có thể làm mất dữ liệu.",
           "limits": "Case p95 cao nhưng trace nhanh là suy luận có điều kiện; chỉ dữ liệu thật mới xác định sampling/drop cụ thể."
+        },
+        {
+          "anchor": "Với head sampling, quyết định giữ",
+          "sources": [
+            "OT3"
+          ],
+          "source_location": "Trace SDK v1.49.0: Sampler.ShouldSample",
+          "support": "SDK sampling decision occurs at span creation, before final duration is known.",
+          "limits": "Does not define a collector tail-sampling policy."
+        },
+        {
+          "anchor": "Nếu queue exporter đầy",
+          "sources": [
+            "OT9"
+          ],
+          "source_location": "Collector exporterhelper v0.133.0: sending queue overflow",
+          "support": "Queue overflow can reject telemetry; retries affect loss.",
+          "limits": "100/80 counts are hypothetical."
         }
       ],
       "qa": [

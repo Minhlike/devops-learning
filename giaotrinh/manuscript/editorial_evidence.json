@@ -3579,7 +3579,7 @@
       ]
     },
     "P12.C01.L02": {
-      "content_sha256": "83800cc124a9f160ab80f37fa492ac01b5e712d0c700f5004b1bd0f6d904b9de",
+      "content_sha256": "e683c9cd3dcd74812281c4c4b9c07cd8c501a304ed1a7572c7fa1c7c3b2646e2",
       "editorial_decision": "Tổ hợp label quyết định cardinality; request_id/user_id không hợp làm label.",
       "checks": [
         {
@@ -3611,6 +3611,26 @@
           "source_location": "Prometheus metric types: Counter",
           "support": "A counter is cumulative and can reset to zero on restart; raw subtraction across a reset is not a valid event rate.",
           "limits": "The three counter samples are illustrative, not measured production data."
+        },
+        {
+          "anchor": "Một hàm như `rate()` ước lượng tốc độ",
+          "kind": "documented",
+          "sources": [
+            "PM9"
+          ],
+          "source_location": "Prometheus 3.7 query functions: rate()",
+          "support": "rate calculates per-second change, adjusts counter resets, and should precede aggregation.",
+          "limits": "Missing scrapes and narrow windows affect estimates."
+        },
+        {
+          "anchor": "các bucket `le=",
+          "kind": "documented",
+          "sources": [
+            "PM2"
+          ],
+          "source_location": "Metric types: classic histograms",
+          "support": "Classic buckets are cumulative; +Inf equals _count and _sum holds total observations.",
+          "limits": "The 12/40/50 snapshot is illustrative."
         }
       ]
     },
@@ -3781,7 +3801,7 @@
       ]
     },
     "P12.C03.L01": {
-      "content_sha256": "3a68f129ab7ed09bc6b7b74df98887e1362240f26bd23ee377bf76f08dd08be9",
+      "content_sha256": "abdbeb5f816d96d9d761fc2987c0fb71c75c2f025848327d3e5c6d62ba8299c6",
       "editorial_decision": "Log record, event time và trace_id phục vụ tương quan.",
       "checks": [
         {
@@ -3814,6 +3834,26 @@
           "source_location": "Log trace context fields; SpanContext",
           "support": "Trace ID and span ID correlate a log to trace and operation",
           "limits": "IDs require propagation and logger context"
+        },
+        {
+          "anchor": "các span lồng nhau chứ không nối tiếp",
+          "kind": "derived",
+          "sources": [
+            "OT2"
+          ],
+          "source_location": "Tracing API: span context, parent and span lifetime",
+          "support": "Nested parent/child intervals overlap; the example yields 420 ms end-to-end.",
+          "limits": "Hypothetical timeline; assumes enough clock alignment."
+        },
+        {
+          "anchor": "kiểm header/context propagation",
+          "kind": "documented",
+          "sources": [
+            "OT4"
+          ],
+          "source_location": "Context propagators API: inject and extract",
+          "support": "Propagation carries trace context across process boundaries.",
+          "limits": "A request ID alone is not trace-context propagation."
         }
       ]
     },
