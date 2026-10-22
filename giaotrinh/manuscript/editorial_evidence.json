@@ -783,8 +783,8 @@
       ]
     },
     "P03.C03.L02": {
-      "content_sha256": "7b33991df90f9cac2e90396f0de61c6d6f74a79586c2ec7693eeb6f3aaa78c07",
-      "editorial_decision": "TLS 1.3 và xác minh danh tính được đặt đúng ranh giới client–proxy; đoạn proxy–upstream cần hợp đồng riêng.",
+      "content_sha256": "21601f83afe2be05a162e3305786bd1e903dce4b45bf7f20a0fb98395cb83844",
+      "editorial_decision": "Trace full handshake TLS 1.3 giải thích ranh giới key exchange, xác thực danh tính và request HTTP; đoạn proxy–upstream cần hợp đồng riêng.",
       "checks": [
         {
           "anchor": "client bắt đầu TLS bằng ClientHello",
@@ -819,6 +819,17 @@
           "source_location": "RFC 9110 section 3.7; RFC 8446 section 2",
           "support": "proxy is a separate communication endpoint and any upstream leg needs its own transport protection",
           "limits": "Specific deployments may use end-to-end tunneling instead"
+        },
+        {
+          "anchor": "Lần theo một **full handshake TLS 1.3**",
+          "kind": "documented",
+          "sources": [
+            "T1",
+            "T2"
+          ],
+          "source_location": "RFC 8446 section 2 Figure 1 and section 4; RFC 9525 section 6",
+          "support": "A full certificate-authenticated handshake exchanges ClientHello, ServerHello, encrypted server handshake messages and Finished before ordinary application data; client checks the presented identity against an independently constructed reference identifier",
+          "limits": "Trace excludes PSK, 0-RTT, optional client authentication and deployment-specific certificate policy"
         }
       ]
     },
@@ -1200,8 +1211,8 @@
       ]
     },
     "P05.C01.L03": {
-      "content_sha256": "19a20f032b998effaf1ea2be9c95b4aa5ec016a87e1b6c861efaf6d64e5e67dc",
-      "editorial_decision": "errexit/pipefail không được tuyên bố toàn năng; nhánh if, command substitution và cleanup có giới hạn cụ thể.",
+      "content_sha256": "7fbc081fa1d9c7a741a60cd5529b47bd1cf3088e0039ce502bb11bdc898f81a6",
+      "editorial_decision": "errexit/pipefail không được tuyên bố toàn năng; trace local che status và bản sửa lan truyền lỗi tách hợp đồng shell khỏi hậu điều kiện artifact.",
       "checks": [
         {
           "anchor": "Nó bỏ qua lỗi ở phép thử `if`/`while`",
@@ -1232,6 +1243,16 @@
           "source_location": "Signals; Bourne Shell Builtins: trap",
           "support": "Bash traps execute on catchable signals or EXIT; SIGKILL cannot be trapped",
           "limits": "Foreground command may delay trap handling"
+        },
+        {
+          "anchor": "Có thể lần theo lỗi che khuất",
+          "kind": "documented",
+          "sources": [
+            "SH1"
+          ],
+          "source_location": "Bash Builtins: local status; Simple Command Expansion: assignment status; The Set Builtin: -e",
+          "support": "local normally returns zero and masks a failed substitution in its assignment; a separate assignment has the last substitution status, which an explicit || branch can propagate",
+          "limits": "Predicted trace is illustrative and Bash-specific; utility status and artifact validation are separate contracts"
         }
       ]
     },
@@ -1892,8 +1913,8 @@
       ]
     },
     "P07.C02.L02": {
-      "content_sha256": "b97de1e1c64fbbd4ee71c8c09b4e3ba32dff0463611f313ba0abddccc2595beb",
-      "editorial_decision": "Image OCI, config, layer và runtime được tách; cùng tag đa nền tảng cần xác định manifest con.",
+      "content_sha256": "878e7216d17c74d1e351ee634a221820eb01cb65868520769a30ff2096068c83",
+      "editorial_decision": "Image OCI, config, layer và runtime được tách; ca index I với hai manifest con phân biệt byte identity, platform và phạm vi test gate.",
       "checks": [
         {
           "anchor": "Image OCI gồm những thay đổi hệ thống tệp có thứ tự và cấu hình chạy",
@@ -1925,6 +1946,16 @@
           "source_location": "image-index.md: Image Index",
           "support": "Image index points to image manifests for platform-specific variants",
           "limits": "Actual platform selection and cache policy depend on client runtime"
+        },
+        {
+          "anchor": "Giả sử tag `orders:1.8`",
+          "kind": "documented",
+          "sources": [
+            "OCI7"
+          ],
+          "source_location": "OCI Image Index v1.1.1: manifests descriptors, platform and example image index",
+          "support": "One index can reference distinct platform-specific image manifests; a client or runtime selects a matching manifest",
+          "limits": "I and child digest names are illustrative; passing a test on one platform is an inference about test scope, not an OCI guarantee of another platform's behavior"
         }
       ]
     },
@@ -2581,8 +2612,8 @@
       ]
     },
     "P09.C02.L02": {
-      "content_sha256": "6031284264a3f9dbe9edd004268ffac7f6b641a28a2dc487f884415ad44d9b16",
-      "editorial_decision": "Plan là dự báo, partial apply không rollback; lifecycle, data source và refresh có giới hạn nêu rõ.",
+      "content_sha256": "418f2723f08703c42588728ad780016a94c48fe5ba51294f66fa4358f1a88b79",
+      "editorial_decision": "Plan là dự báo; ca A→B minh họa partial apply, state/API lệch nhau và kiểm chứng trước lượt apply mới; lifecycle, data source và refresh có giới hạn nêu rõ.",
       "checks": [
         {
           "anchor": "Data source có thể được đọc lúc plan hoặc bị hoãn tới apply",
@@ -2624,6 +2655,16 @@
           "source_location": "lifecycle: prevent_destroy",
           "support": "Rule rejects destruction plan while resource config remains",
           "limits": "Cannot protect object from external deletion or removed config"
+        },
+        {
+          "anchor": "Ví dụ giả định có hai tài nguyên A",
+          "kind": "documented",
+          "sources": [
+            "TF12"
+          ],
+          "source_location": "terraform apply command: Errors during an apply operation",
+          "support": "After an apply error Terraform updates state with resource changes, unlocks and exits; it does not automatically roll back a partially completed apply",
+          "limits": "A and B are illustrative; API success with lost response and exact state visibility depend on provider and must be verified against real API before retry"
         }
       ]
     },
@@ -3043,8 +3084,8 @@
       ]
     },
     "P11.C01.L03": {
-      "content_sha256": "d300efe0ffb35aeafc115d18a4bb7c554bcf24ab755571ccc6454b8a42d64cb2",
-      "editorial_decision": "Scheduler đặt Pod; kubelet và runtime thực thi trên node.",
+      "content_sha256": "af3b936975c4278c1405d21fc361201b3767a5404c49c2435a802e6e3ce0bb17",
+      "editorial_decision": "Dòng thời gian giả định nối controller, scheduler, kubelet và EndpointSlice với phép quan sát riêng; trạng thái apply không bị coi là readiness.",
       "checks": [
         {
           "anchor": "Scheduler theo dõi Pod chưa có node",
@@ -3066,6 +3107,18 @@
           "source_location": "Cluster Architecture: kubelet and runtime; Pod Lifecycle: container states",
           "support": "Kubelet works with runtime to start assigned Pod containers",
           "limits": "Runtime and networking implementations vary"
+        },
+        {
+          "anchor": "Hãy lần theo một triển khai giả định",
+          "kind": "documented",
+          "sources": [
+            "KU4",
+            "KU6",
+            "KU8"
+          ],
+          "source_location": "Deployments: ReplicaSet and rollout; Pod Lifecycle: phases and conditions; EndpointSlices: conditions",
+          "support": "Deployment controls ReplicaSet creation, Pod scheduling and container setup have distinct states, and EndpointSlice carries endpoint readiness information",
+          "limits": "Timeline is an illustrative sequence; controller timing, Service selection, publishNotReadyAddresses and dataplane behavior depend on cluster configuration"
         }
       ]
     },

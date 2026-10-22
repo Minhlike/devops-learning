@@ -130,6 +130,7 @@
     "TF9": {"type": "official version-selected documentation", "version": "Terraform 1.16.x documentation checked 2026-10-19", "url": "https://developer.hashicorp.com/terraform/language/manage-sensitive-data"},
     "TF10": {"type": "official version-selected documentation", "version": "Terraform 1.16.x documentation checked 2026-10-19", "url": "https://developer.hashicorp.com/terraform/language/import/single-resource"},
     "TF11": {"type": "official version-selected documentation", "version": "Terraform 1.16.x documentation checked 2026-10-19", "url": "https://developer.hashicorp.com/terraform/language/backend"},
+    "TF12": {"type": "official HashiCorp CLI documentation", "version": "Terraform 1.16.x apply command checked 2026-10-22", "url": "https://developer.hashicorp.com/terraform/cli/commands/apply"},
     "AWSTF1": {"type": "official provider source", "version": "AWS provider v6.19.0 tag", "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/website/docs/r/instance.html.markdown"},
     "AWSTF2": {"type": "official AWS service documentation", "version": "EC2 User Guide checked 2026-10-19", "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html"},
     "AWSTF3": {"type": "official provider implementation", "version": "AWS provider v6.19.0 tag", "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/internal/service/ec2/ec2_instance.go"},

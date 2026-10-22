@@ -1059,7 +1059,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L02.md",
-      "sha256": "7b33991df90f9cac2e90396f0de61c6d6f74a79586c2ec7693eeb6f3aaa78c07",
+      "sha256": "21601f83afe2be05a162e3305786bd1e903dce4b45bf7f20a0fb98395cb83844",
       "legacy_units": [
         "chapters/05-dns-http-tls-reverse-proxy.md#5.2"
       ],
@@ -1503,7 +1503,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C01/L03.md",
-      "sha256": "19a20f032b998effaf1ea2be9c95b4aa5ec016a87e1b6c861efaf6d64e5e67dc",
+      "sha256": "7fbc081fa1d9c7a741a60cd5529b47bd1cf3088e0039ce502bb11bdc898f81a6",
       "legacy_units": [
         "chapters/07-bash-ranh-gioi-loi.md#7.3",
         "TXT-402410bcd343eac5"
@@ -2322,7 +2322,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C02/L02.md",
-      "sha256": "b97de1e1c64fbbd4ee71c8c09b4e3ba32dff0463611f313ba0abddccc2595beb",
+      "sha256": "878e7216d17c74d1e351ee634a221820eb01cb65868520769a30ff2096068c83",
       "legacy_units": [
         "chapters/11-image-registry-compose-du-lieu.md#intro",
         "TXT-13cf51f71705a39f",
@@ -3142,7 +3142,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P09/C02/L02.md",
-      "sha256": "6031284264a3f9dbe9edd004268ffac7f6b641a28a2dc487f884415ad44d9b16",
+      "sha256": "418f2723f08703c42588728ad780016a94c48fe5ba51294f66fa4358f1a88b79",
       "legacy_units": [
         "TXT-10e9c5bbb60f77f8",
         "TXT-7c77be117291e04f",
@@ -3160,7 +3160,8 @@
         "TF2",
         "TF3",
         "TF5",
-        "TF6"
+        "TF6",
+        "TF12"
       ],
       "qa": []
     },
@@ -3801,7 +3802,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C01/L03.md",
-      "sha256": "d300efe0ffb35aeafc115d18a4bb7c554bcf24ab755571ccc6454b8a42d64cb2",
+      "sha256": "af3b936975c4278c1405d21fc361201b3767a5404c49c2435a802e6e3ce0bb17",
       "legacy_units": [
         "TXT-d2e8e1cfa3ee6ddb",
         "chapters/15-kubernetes-trang-thai-mong-muon.md#15.1:claim:CLM-10013f41425f84cf",
@@ -3814,7 +3815,9 @@
       "examples": [],
       "source_ids": [
         "KU1",
-        "KU6"
+        "KU6",
+        "KU4",
+        "KU8"
       ],
       "qa": []
     },

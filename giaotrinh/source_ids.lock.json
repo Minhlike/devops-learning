@@ -128,6 +128,7 @@
     "TF9": "https://developer.hashicorp.com/terraform/language/manage-sensitive-data",
     "TF10": "https://developer.hashicorp.com/terraform/language/import/single-resource",
     "TF11": "https://developer.hashicorp.com/terraform/language/backend",
+    "TF12": "https://developer.hashicorp.com/terraform/cli/commands/apply",
     "AWSTF1": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/website/docs/r/instance.html.markdown",
     "AWSTF2": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html",
     "AWSTF3": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/v6.19.0/internal/service/ec2/ec2_instance.go",
