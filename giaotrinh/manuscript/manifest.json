@@ -3894,7 +3894,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C02/L03.md",
-      "sha256": "d5a9657c921798136c7082fd434bb98902f0ead5d649e497c460a95b0d954e6b",
+      "sha256": "c4ab3031f8b4894572a3c556ce82d79da4d03cf2dabf69c9e2ae7ef8dc1ab0f0",
       "legacy_units": [
         "TXT-3919e097e0a274bf",
         "TXT-a94e8907361b7b99"
@@ -3911,8 +3911,8 @@
         {
           "id": "C15.3",
           "publication_id": "P11.C02.L03.Q01",
-          "question": "Deployment báo `Available=True`, `Progressing=True`. Có được kết luận rollout hoàn tất và người dùng nhận response đúng không? Giải thích vai trò reason, thế hệ đã quan sát, EndpointSlice và request từ client.",
-          "answer": "`Available=True` chỉ nói mức sẵn sàng tối thiểu theo chiến lược; `Progressing=True` có thể còn đang cập nhật. Cần xem reason như `NewReplicaSetAvailable`, các bản sao mới/cũ và `kubectl rollout status`; so generation nếu status kind này có trường quan sát phù hợp để tránh đọc trạng thái cũ. Rollout xong cũng chưa kiểm tra selector, EndpointSlice ready, cổng hoặc response nghiệp vụ từ client. Phải kiểm chứng các ranh giới ấy trong cùng cửa sổ quan sát, không lấy một status làm lời bảo đảm vĩnh viễn."
+          "question": "Deployment muốn 4 bản sao, ban đầu 4 Pod cũ Available; RollingUpdate đặt maxSurge=1, maxUnavailable=0, minReadySeconds=10. Pod mới Running nhưng readiness thất bại: tối đa bao nhiêu Pod mới có thể được tạo trong đợt đầu và có được giảm Pod cũ không? Nếu sau đó Deployment báo Available=True, Progressing=True, có thể kết luận rollout hoàn tất và người dùng nhận response đúng chưa? Nêu bằng chứng cần xem.",
+          "answer": "Giới hạn surge cho phép tổng 5 Pod chưa tính Pod đang kết thúc, nên lúc đầu có thể tạo thêm 1 Pod mới. Vì phải giữ ít nhất 4 Pod Available, Pod mới chưa qua readiness chưa cho phép loại Pod cũ chỉ để tiến rollout. Nó chỉ được tính Available sau khi Ready liên tục đủ 10 giây; khi đó controller có thể giảm 1 bản sao cũ. Available=True chỉ cho biết ngưỡng khả dụng, Progressing=True vẫn có thể đang cập nhật. Xem reason NewReplicaSetAvailable, updated/ready/available replicas, ReplicaSet cũ/mới, status của thế hệ đã quan sát và rollout status. Sau cùng kiểm selector, EndpointSlice ready, cổng và response từ client cùng cửa sổ; các cờ không bảo đảm nghiệp vụ hay dữ liệu đúng."
         }
       ]
     },
@@ -6038,20 +6038,21 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P15/C03/L03.md",
-      "sha256": "ed9f6163092ef01d6007e4ee5d9a9a719fe584e8427cd2b18cfbf70b21e37956",
+      "sha256": "0ff05db309717d9979be6035f4ddcc9fb0a785fce7e85c05679b6c454b2f75c2",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
       "source_ids": [
         "W2-PYSQL",
-        "W2-WADR"
+        "W2-WADR",
+        "W2-WADROBJ"
       ],
       "qa": [
         {
           "id": "W2.P15.C03.L03.Q01",
           "publication_id": "P15.C03.L03.Q01",
-          "question": "Backup 10:00, lỗi 10:04, rút S2 10:07, request ghi/đọc phục hồi 10:13. Nếu chỉ restore backup mà không replay, RPO/RTO suy ra gì?",
-          "answer": "Có thể mất các ghi đã xác nhận sau 10:00 tới 10:13, tối đa khoảng 13 phút trong timeline giả định; RTO đo từ lúc dịch vụ hỏng theo hợp đồng tới 10:13, không tính tới lệnh rollback đơn thuần."
+          "question": "Backup 10:00; dữ liệu bắt đầu sai 10:04; chặn toàn bộ ghi 10:07; request đọc/ghi đúng trở lại 10:13. Chỉ restore backup, không replay: phân biệt khoảng đến recovery point lúc sự cố, cửa sổ ghi có nguy cơ mất, tuổi backup lúc phục vụ lại và thời gian phục hồi. Có suy ra RPO/RTO mục tiêu hoặc số bản ghi mất được không?",
+          "answer": "Recovery point 10:00 cách thời điểm sự cố 10:04 là 4 phút. Nếu có ghi đã xác nhận sau backup đến khi chặn ghi lúc 10:07, khoảng ghi cần đối soát dài tối đa 7 phút; số bản ghi mất phải kiểm ledger và nguồn có thể replay. Lúc phục vụ lại 10:13, backup đã 13 phút tuổi, nhưng 13 phút không phải khoảng dữ liệu mất theo RPO. Nếu dữ liệu sai từ 10:04 được tính là dịch vụ không đạt và hậu kiểm hoàn tất 10:13, thời gian phục hồi đo được là 9 phút. RPO/RTO là các mục tiêu tối đa do tổ chức định trước; timeline không tự cung cấp mục tiêu hay chứng minh đã đạt chúng."
         }
       ]
     },

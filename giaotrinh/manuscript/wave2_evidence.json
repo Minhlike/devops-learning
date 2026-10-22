@@ -197,6 +197,11 @@
       "type": "Kubernetes documentation",
       "version": "Kubernetes v1.34 static snapshot checked 2026-10-22",
       "url": "https://v1-34.docs.kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/"
+    },
+    "W2-WADROBJ": {
+      "type": "AWS Well-Architected Framework official versioned documentation",
+      "version": "2024-06-27 framework snapshot, checked 2026-10-22",
+      "url": "https://docs.aws.amazon.com/wellarchitected/2024-06-27/framework/rel_planning_for_recovery_objective_defined_recovery.html"
     }
   },
   "lessons": {
@@ -1547,20 +1552,21 @@
         {
           "anchor": "Rollback ứng dụng từ `rev-s2` về `rev-s1` chỉ đổi code",
           "sources": [
-            "W2-WADR"
+            "W2-WADR",
+            "W2-WADROBJ"
           ],
           "source_location": "Reliability Pillar, data recovery and objectives",
-          "support": "Recovery ứng dụng và dữ liệu cần kế hoạch riêng, đánh giá RPO/RTO.",
+          "support": "Application recovery and data recovery need separate plans; RPO/RTO are organization-defined targets, not values inferred from one incident.",
           "limits": "Timeline 10:00–10:13 trong bài là giả định."
         },
         {
-          "anchor": "RTO tính từ mất khả năng phục vụ",
+          "anchor": "thời gian phục hồi đo được là 9 phút",
           "sources": [
-            "W2-WADR"
+            "W2-WADROBJ"
           ],
-          "source_location": "Reliability Pillar, recovery time objective",
-          "support": "RTO là thời gian tối đa/được đo cho khôi phục phục vụ theo định nghĩa.",
-          "limits": "Điểm bắt đầu/kết thúc phải quy định theo hợp đồng dịch vụ."
+          "source_location": "REL13-BP01: RTO and RPO definitions, lines 7-12",
+          "support": "RTO measures acceptable interruption-to-restoration delay; RPO bounds time from last recovery point to service interruption.",
+          "limits": "Hypothetical 10:00–10:13 timeline requires a defined failure boundary and write-stop point; backup age at recovery is not the RPO loss interval."
         },
         {
           "anchor": "đọc bản backup vào database tách biệt",
@@ -1570,14 +1576,23 @@
           "source_location": "sqlite3 Connection.backup examples",
           "support": "The documented backup API copies a live source connection into a separate destination connection.",
           "limits": "The expected 200/404 results come from executing this fixture; they do not estimate real RPO/RTO."
+        },
+        {
+          "anchor": "cửa sổ ghi có nguy cơ mất dài tối đa 7 phút",
+          "sources": [
+            "W2-WADROBJ"
+          ],
+          "source_location": "REL13-BP01: data loss between recovery point and interruption; applied arithmetic to explicit hypothetical write-stop at 10:07",
+          "support": "A 10:00 recovery point and writes accepted until 10:07 define at most a seven-minute at-risk write interval; actual lost records require a write ledger.",
+          "limits": "Seven minutes is derived from the stated fixture, not a measured RPO or a claim that every minute contained writes."
         }
       ],
       "qa": [
         {
           "id": "W2.P15.C03.L03.Q01",
           "publication_id": "P15.C03.L03.Q01",
-          "question": "Backup 10:00, lỗi 10:04, rút S2 10:07, request ghi/đọc phục hồi 10:13. Nếu chỉ restore backup mà không replay, RPO/RTO suy ra gì?",
-          "answer": "Có thể mất các ghi đã xác nhận sau 10:00 tới 10:13, tối đa khoảng 13 phút trong timeline giả định; RTO đo từ lúc dịch vụ hỏng theo hợp đồng tới 10:13, không tính tới lệnh rollback đơn thuần."
+          "question": "Backup 10:00; dữ liệu bắt đầu sai 10:04; chặn toàn bộ ghi 10:07; request đọc/ghi đúng trở lại 10:13. Chỉ restore backup, không replay: phân biệt khoảng đến recovery point lúc sự cố, cửa sổ ghi có nguy cơ mất, tuổi backup lúc phục vụ lại và thời gian phục hồi. Có suy ra RPO/RTO mục tiêu hoặc số bản ghi mất được không?",
+          "answer": "Recovery point 10:00 cách thời điểm sự cố 10:04 là 4 phút. Nếu có ghi đã xác nhận sau backup đến khi chặn ghi lúc 10:07, khoảng ghi cần đối soát dài tối đa 7 phút; số bản ghi mất phải kiểm ledger và nguồn có thể replay. Lúc phục vụ lại 10:13, backup đã 13 phút tuổi, nhưng 13 phút không phải khoảng dữ liệu mất theo RPO. Nếu dữ liệu sai từ 10:04 được tính là dịch vụ không đạt và hậu kiểm hoàn tất 10:13, thời gian phục hồi đo được là 9 phút. RPO/RTO là các mục tiêu tối đa do tổ chức định trước; timeline không tự cung cấp mục tiêu hay chứng minh đã đạt chúng."
         }
       ]
     },

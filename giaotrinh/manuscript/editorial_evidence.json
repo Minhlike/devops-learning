@@ -3034,8 +3034,8 @@
       ]
     },
     "P11.C02.L03": {
-      "content_sha256": "d5a9657c921798136c7082fd434bb98902f0ead5d649e497c460a95b0d954e6b",
-      "editorial_decision": "Rollout deadline phát hiện kẹt; không tự sửa hay bảo đảm request thành công.",
+      "content_sha256": "c4ab3031f8b4894572a3c556ce82d79da4d03cf2dabf69c9e2ae7ef8dc1ab0f0",
+      "editorial_decision": "Dạy rollout bằng ngân sách số, trạng thái thực của Pod và hậu kiểm request; deadline chỉ báo kẹt.",
       "checks": [
         {
           "anchor": "Deployment `Available=True` phản ánh mức sẵn sàng tối thiểu",
@@ -3056,6 +3056,16 @@
           "source_location": "Deployments: failed deployment and progress deadline",
           "support": "Progress deadline reports failure but does not automatically roll back",
           "limits": "Operator or automation decides recovery"
+        },
+        {
+          "anchor": "Deployment muốn bốn bản sao, đang có bốn Pod cũ `Available`",
+          "kind": "documented",
+          "sources": [
+            "KU4"
+          ],
+          "source_location": "Deployments v1.34: Rolling Update Deployment; Max Unavailable; Max Surge; Min Ready Seconds; Terminating Pods",
+          "support": "maxSurge 1 permits one extra non-terminating Pod, maxUnavailable 0 maintains four available replicas; minReadySeconds delays availability; terminating Pods can consume extra resources",
+          "limits": "Trace is a hypothetical possible progression, not an observed controller sequence or a guarantee of application response"
         }
       ]
     },
