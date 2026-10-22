@@ -4817,7 +4817,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C03/L01.md",
-      "sha256": "abdbeb5f816d96d9d761fc2987c0fb71c75c2f025848327d3e5c6d62ba8299c6",
+      "sha256": "a4b0a3b9eea99a7304631c1bc3a0fc29cdd85d78b91918df26f4d4cad75058bf",
       "legacy_units": [
         "chapters/19-logs-traces-opentelemetry.md#intro",
         "chapters/19-logs-traces-opentelemetry.md#19.1",

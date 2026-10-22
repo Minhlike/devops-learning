@@ -3801,7 +3801,7 @@
       ]
     },
     "P12.C03.L01": {
-      "content_sha256": "abdbeb5f816d96d9d761fc2987c0fb71c75c2f025848327d3e5c6d62ba8299c6",
+      "content_sha256": "a4b0a3b9eea99a7304631c1bc3a0fc29cdd85d78b91918df26f4d4cad75058bf",
       "editorial_decision": "Log record, event time và trace_id phục vụ tương quan.",
       "checks": [
         {
@@ -3834,16 +3834,6 @@
           "source_location": "Log trace context fields; SpanContext",
           "support": "Trace ID and span ID correlate a log to trace and operation",
           "limits": "IDs require propagation and logger context"
-        },
-        {
-          "anchor": "các span lồng nhau chứ không nối tiếp",
-          "kind": "derived",
-          "sources": [
-            "OT2"
-          ],
-          "source_location": "Tracing API: span context, parent and span lifetime",
-          "support": "Nested parent/child intervals overlap; the example yields 420 ms end-to-end.",
-          "limits": "Hypothetical timeline; assumes enough clock alignment."
         },
         {
           "anchor": "kiểm header/context propagation",
