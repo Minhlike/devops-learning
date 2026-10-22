@@ -1556,8 +1556,8 @@
       ]
     },
     "P06.C03.L02": {
-      "content_sha256": "d9d4aa00bf19174590dc94931a2071439b47e70e94cae06431339592146f2368",
-      "editorial_decision": "Running và readiness được tách; phép xác minh ứng dụng phải đo qua đường người dùng thay vì mỗi Pod state.",
+      "content_sha256": "ddec019a3db119b40e63298418d391c4e26369641d295dbb040ad7b3fc7ec257",
+      "editorial_decision": "Readiness được đặt thành hợp đồng nhận traffic; phân tích cả probe xanh giả và probe loại toàn Pod vì dependency chung, với phép hậu kiểm nghiệp vụ.",
       "checks": [
         {
           "anchor": "Pod chưa ready không nhận lưu lượng qua Service tương ứng",
@@ -1568,6 +1568,26 @@
           "source_location": "Readiness probes",
           "support": "Not-ready Pods are removed from matching Service endpoints",
           "limits": "Does not cover direct traffic or in-flight requests"
+        },
+        {
+          "anchor": "Một readiness probe duy nhất chỉ điều khiển khả năng tham gia endpoint của Pod trong Service",
+          "kind": "documented",
+          "sources": [
+            "KD2"
+          ],
+          "source_location": "Liveness, Readiness, and Startup Probes: Readiness probe",
+          "support": "Readiness failure removes Pod from matching Service endpoints",
+          "limits": "Route-specific traffic behavior requires application or routing design; no cluster run claimed"
+        },
+        {
+          "anchor": "Startup probe có thể cho ứng dụng khởi động chậm hoàn tất trước khi liveness/readiness chạy",
+          "kind": "documented",
+          "sources": [
+            "KD2"
+          ],
+          "source_location": "Liveness, Readiness, and Startup Probes: Startup probe",
+          "support": "When configured, startup probe disables liveness and readiness until it succeeds",
+          "limits": "Startup success does not prove business request or data correctness"
         }
       ]
     },
@@ -1874,8 +1894,8 @@
       ]
     },
     "P07.C03.L01": {
-      "content_sha256": "24c0d8f54732cf800e7e32fd594805257316044ae4248e722895d9072719aa50",
-      "editorial_decision": "Vòng đời container và writable layer tách khỏi readiness; thêm giới hạn rằng container có thể chứa tiến trình con.",
+      "content_sha256": "3968ef7a6522e7e8b2716ba8212a4ac0dd192777f8de6dad63fefc7aa2c0e3f6",
+      "editorial_decision": "Vòng đời OCI create/start/exit được phân biệt với readiness và vòng đời writable layer; ba nhánh lỗi giả định yêu cầu quan sát riêng.",
       "checks": [
         {
           "anchor": "Container đang `running` là một tiến trình đã thực thi chương trình",
@@ -1897,6 +1917,26 @@
           "source_location": "Docker storage: Container layer basics; OCI runtime: State",
           "support": "Writable layer belongs to container and survives stop, but not container destruction",
           "limits": "Exact stop/restart behavior depends on engine and cleanup options"
+        },
+        {
+          "anchor": "`create` dựng môi trường từ bundle và cấu hình nhưng **chưa chạy chương trình**",
+          "kind": "documented",
+          "sources": [
+            "OCI3"
+          ],
+          "source_location": "runtime.md v1.2.1: State; Lifecycle steps 1–8",
+          "support": "OCI create prepares environment; user-specified process runs only at start",
+          "limits": "Docker Engine stop/restart lifecycle extends beyond OCI state contract"
+        },
+        {
+          "anchor": "xóa rồi tạo container khác từ cùng image thì có lớp ghi khác",
+          "kind": "documented",
+          "sources": [
+            "DD1"
+          ],
+          "source_location": "Storage: Container layer basics",
+          "support": "Writable layer is unique to a container and removed when that container is destroyed",
+          "limits": "Example is hypothetical; no Docker run or data durability guarantee"
         }
       ]
     },
@@ -2835,8 +2875,8 @@
       ]
     },
     "P11.C01.L02": {
-      "content_sha256": "8505d5725cac4c4925e6f8ee8796bd2c4c9ad5751cff54e48382660916ec9e37",
-      "editorial_decision": "Spec, status, resourceVersion và reconciliation là các trạng thái và vòng lặp bất đồng bộ.",
+      "content_sha256": "da87d5ff617e54c9c20ccbbe72da37fb84aee24139c0de1fd0e5d5bef7a5ba06",
+      "editorial_decision": "Tách generation, observedGeneration và resourceVersion; bổ sung cơ chế vòng điều khiển và xung đột cập nhật có điều kiện.",
       "checks": [
         {
           "anchor": "`spec` và `status` có chủ thể ghi khác nhau",
@@ -2857,6 +2897,26 @@
           "source_location": "API Concepts: Resource versions",
           "support": "ResourceVersion is opaque and may be compared only for equality",
           "limits": "Not a wall clock or sortable generation"
+        },
+        {
+          "anchor": "Controller đọc ý định và đối tượng liên quan qua API",
+          "kind": "documented",
+          "sources": [
+            "KU2"
+          ],
+          "source_location": "Controllers: Controller pattern; Control via API server",
+          "support": "Controller observes desired and current state, then requests changes through API server",
+          "limits": "Exact sequence and retry timing depend on controller"
+        },
+        {
+          "anchor": "API từ chối với `409 Conflict`",
+          "kind": "documented",
+          "sources": [
+            "KU10"
+          ],
+          "source_location": "API Concepts: Updates to existing resources",
+          "support": "Stale resourceVersion on conditional whole-object PUT yields 409 Conflict",
+          "limits": "Scenario uses PUT; server-side apply and other PATCH modes have distinct conflict rules"
         }
       ]
     },
@@ -3084,8 +3144,8 @@
       ]
     },
     "P11.C04.L01": {
-      "content_sha256": "bd3f2ecceefa5a5aa7f98977ade9683b02bca000a94db57b9253d130471852f8",
-      "editorial_decision": "Service selector, EndpointSlice và DNS nằm ở các ranh giới khác nhau.",
+      "content_sha256": "4d9fcb6d7c0c38e32d3d89b54faab45d38ca329cf8d2ab48782b318c4db73cc2",
+      "editorial_decision": "Service selector và DNS được nối với EndpointSlice; trạng thái ready/serving/terminating và ngoại lệ publishNotReadyAddresses được dùng để chẩn đoán rollout.",
       "checks": [
         {
           "anchor": "EndpointSlice gắn với Service không có endpoint khớp",
@@ -3119,6 +3179,26 @@
           "source_location": "Service: selectors; EndpointSlices: conditions",
           "support": "Matching Pods populate EndpointSlices, with readiness conditions",
           "limits": "Selectorless services differ"
+        },
+        {
+          "anchor": "một endpoint đang terminating có thể `serving=True` nhưng `ready=False`",
+          "kind": "documented",
+          "sources": [
+            "KU8"
+          ],
+          "source_location": "EndpointSlices: Conditions; Ready; Serving; Terminating",
+          "support": "ready is serving and not terminating, with publishNotReadyAddresses exception",
+          "limits": "Dataplane routing during termination depends on implementation and endpoint population"
+        },
+        {
+          "anchor": "nếu mọi endpoint khả dụng đều đang terminating",
+          "kind": "documented",
+          "sources": [
+            "KU8"
+          ],
+          "source_location": "EndpointSlices: Conditions; Terminating",
+          "support": "Service proxies may route to serving terminating endpoints when all available endpoints terminate",
+          "limits": "May is not guaranteed behavior for every dataplane"
         }
       ]
     },
