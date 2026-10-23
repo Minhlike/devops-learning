@@ -1721,18 +1721,32 @@
       ]
     },
     "P06.C04.L03": {
-      "content_sha256": "d63ff925323f70ff68eacd4315ac0cd3e8e03d3df010a0ce3b4665ae3a75efb5",
-      "editorial_decision": "Hậu điều kiện sau rollback gồm traffic, schema và dữ liệu 41 đơn; không coi plan xanh hoặc app version là đủ.",
+      "content_sha256": "98c89fe22d137ae72142f0a2ecea5dbdb7a68f011e18e6703f47467d1a589526",
+      "editorial_decision": "Giữ hậu điều kiện traffic, schema và dữ liệu; bổ sung kiểm kê toàn cửa sổ H84, phân loại mục thiếu chứng cứ và sửa có điều kiện để tránh ghi đè.",
       "checks": [
         {
           "anchor": "Không chia mọi `amount_cents` cho 100",
-          "kind": "documented",
+          "kind": "inference",
           "sources": [
             "PG2"
           ],
           "source_location": "ROLLBACK transaction scope",
-          "support": "Committed writes require targeted correction; SQL rollback cannot discriminate old/new app rows",
-          "limits": "Concrete remediation depends on independent ledger and affected-row evidence"
+          "support": "ROLLBACK chỉ hủy transaction hiện tại theo PostgreSQL 17; từ dữ kiện H83/H84 ghi xen kẽ suy ra phép chia toàn bảng không chọn đúng tập bản ghi cần sửa.",
+          "limits": "PG2 hỗ trợ phạm vi ROLLBACK, không mô tả ứng dụng hay thuật toán đối soát; phân loại từng đơn cần chứng cứ nghiệp vụ độc lập."
+        },
+        {
+          "anchor": "Tổng `4+2+1=7` chỉ kiểm sự phân loại",
+          "kind": "derived",
+          "sources": [],
+          "support": "Bốn đơn sai, hai đơn đúng và một đơn chưa biết tạo tập bảy bản ghi đã tìm; không suy ra tính đầy đủ của toàn bộ cửa sổ.",
+          "limits": "Số là fixture giả định, không phải kiểm kê production; log thiếu để lại trạng thái UNKNOWN."
+        },
+        {
+          "anchor": "dừng bản ghi ấy để điều tra thay vì ép phép chia cho 100",
+          "kind": "inference",
+          "sources": [],
+          "support": "Một sửa đổi có điều kiện không khớp trạng thái đã đọc có thể là thay đổi đồng thời; tiếp tục ghi đè sẽ phá bản ghi chưa được đối soát.",
+          "limits": "Đây là quy tắc an toàn của kịch bản, không phải chứng nhận giao dịch hay câu lệnh SQL đã thử."
         }
       ]
     },
