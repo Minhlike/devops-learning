@@ -1331,8 +1331,8 @@
       ]
     },
     "P05.C02.L03": {
-      "content_sha256": "818861463545ab3ff06911e2404aea59100f8365ac7a164d7453478e6fd9c89e",
-      "editorial_decision": "READY tách startup khỏi timeout tác vụ; cancellation chỉ quản lý process trực tiếp và không rollback partial side effects.",
+      "content_sha256": "65ceae9ff3540042d32e59824b5c146504b22a117e4bd09f5028c792e0e2bc8b",
+      "editorial_decision": "Đưa ma trận kết quả Python/Go về đúng bài điều phối; READY tách startup khỏi timeout tác vụ, còn cancellation không rollback partial side effects.",
       "checks": [
         {
           "anchor": "gọi `communicate(timeout=0.5)`",
@@ -1364,12 +1364,23 @@
           "source_location": "os.Exit",
           "support": "os.Exit terminates immediately without running deferred functions",
           "limits": "Applies to defer in terminating process"
+        },
+        {
+          "anchor": "Ma trận kiểm thử có kiểm soát phải đối chiếu cả status lẫn file trạng thái",
+          "kind": "documented",
+          "sources": [
+            "P2",
+            "GO1"
+          ],
+          "source_location": "tests/test_orchestration_example.py",
+          "support": "Tests assert success, false success, failure, timeout and final ready/partial state",
+          "limits": "Demonstration only; not production safety proof"
         }
       ]
     },
     "P05.C03.L01": {
-      "content_sha256": "73e38fc9867850a7474ce874d66ac5ebc73b6b7687e0874f08d10ef9ac5e73e2",
-      "editorial_decision": "Giữ nguyên cả hai ví dụ migration; giải thích hợp đồng chung giữa exit/status và hậu trạng thái để chuyển ca Bash sang Python/Go có chủ đích.",
+      "content_sha256": "fc38d58954ce11752762ea644f5aad108d46efe7fa29b89404131db581b188ac",
+      "editorial_decision": "Giữ ca Bash tập trung vào pipeline status và trạng thái archive; đối chiếu ngắn với ví dụ Python/Go đã học ở chương trước.",
       "checks": [
         {
           "anchor": "`tar` không thể đổi sang nguồn và thoát 2",
@@ -1382,21 +1393,23 @@
           "limits": "Observed on Ubuntu 24.04 under WSL; diagnostics may vary"
         },
         {
-          "anchor": "Ma trận kiểm thử có kiểm soát phải đối chiếu cả status lẫn file trạng thái",
+          "anchor": "Bật `pipefail` sẽ làm pipeline này trả khác 0",
           "kind": "documented",
           "sources": [
-            "P2",
-            "GO1"
+            "SH1"
           ],
-          "source_location": "tests/test_orchestration_example.py",
-          "support": "Tests assert success, false success, failure, timeout and final ready/partial state",
-          "limits": "Demonstration only; not production safety proof"
+          "source_location": "Bash Reference Manual 5.3: Pipelines; The Set Builtin",
+          "support": "With pipefail, the pipeline reports a nonzero status when tar fails even if tee exits zero",
+          "limits": "Pipeline status does not establish validity or durability of the archive"
         },
         {
           "anchor": "kết quả tiến trình",
           "kind": "derived",
-          "sources": [],
-          "source_location": "",
+          "sources": [
+            "P2",
+            "GO1"
+          ],
+          "source_location": "Popen.communicate; os/exec.CommandContext; checked orchestration fixture",
           "support": "The backup and orchestration fixtures independently show that a reported success must be checked against the persisted artifact or ready/partial state.",
           "limits": "A readable archive and a ready marker are only the stated fixture postconditions, not proof of production recovery or application readiness."
         }

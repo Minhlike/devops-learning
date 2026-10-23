@@ -1631,17 +1631,20 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C02/L03.md",
-      "sha256": "818861463545ab3ff06911e2404aea59100f8365ac7a164d7453478e6fd9c89e",
+      "sha256": "65ceae9ff3540042d32e59824b5c146504b22a117e4bd09f5028c792e0e2bc8b",
       "legacy_units": [
         "TXT-9c77b833c0906c0b",
         "TXT-74953ab7173f15fb",
         "TXT-8cfaf870136289c4",
         "TXT-554ef945f4550c5b",
+        "TXT-025587836eb78a89",
+        "TXT-07ef6ba3034ca6e9",
         "chapters/08-python-go-tu-dong-hoa.md#8.3:claim:CLM-ea54a2dace4146ac"
       ],
       "claim_ids": [
         "CLM-ea54a2dace4146ac",
         "CLM-5d3e11d80c334ba4",
+        "CLM-29d13b86f7b1445e",
         "CLM-7b0d1af6adf98fd4"
       ],
       "examples": [
@@ -1676,17 +1679,14 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P05/C03/L01.md",
-      "sha256": "73e38fc9867850a7474ce874d66ac5ebc73b6b7687e0874f08d10ef9ac5e73e2",
+      "sha256": "fc38d58954ce11752762ea644f5aad108d46efe7fa29b89404131db581b188ac",
       "legacy_units": [
         "TXT-ea99cafbc1562220",
         "TXT-ed0760908cd7b345",
-        "TXT-bb5d29dacbab7f8c",
-        "TXT-025587836eb78a89",
-        "TXT-07ef6ba3034ca6e9"
+        "TXT-bb5d29dacbab7f8c"
       ],
       "claim_ids": [
-        "CLM-b1a2f6e5ea1619d6",
-        "CLM-29d13b86f7b1445e"
+        "CLM-b1a2f6e5ea1619d6"
       ],
       "examples": [
         "examples/backup_false_success.sh"
@@ -1694,6 +1694,7 @@
       "source_ids": [
         "GO1",
         "P2",
+        "SH1",
         "TA1"
       ],
       "qa": []
@@ -1724,8 +1725,8 @@
         {
           "id": "C8.4",
           "publication_id": "P05.C03.L02.Q01",
-          "question": "Sau timeout, người vận hành định retry vô hạn bước ghi và xóa `partial` trước mỗi lần. Phân tích rủi ro nhân đôi, mất chứng cứ và chạy đồng thời; đề xuất điều kiện tối thiểu để thử lại, cùng phép kiểm chứng hậu điều kiện. Khi nào Bash vẫn là lựa chọn hợp lý cho một tác vụ tương tự?",
-          "answer": "Timeout có thể đến sau khi hệ thống đích đã ghi nhưng trước phản hồi, nên retry vô hạn có thể tạo nhiều tác dụng, kéo dài quá thời gian cho phép và chồng lên lượt khác. Xóa `partial` mù quáng làm mất dấu vết và có thể xóa phần việc hợp lệ. Chỉ thử lại với điều kiện lỗi được phân loại là tạm thời, thao tác idempotent hoặc có khóa chống lặp, số lần/tổng thời gian hữu hạn và trạng thái hiện tại đã được đối chiếu; sau đó kiểm tra hậu điều kiện từ góc nhìn người dùng và log tương ứng. Bash vẫn hợp lý cho vài lệnh tuyến tính với ít trạng thái, đầu vào nhỏ, status được kiểm tra tường minh và môi trường chạy rõ ràng; không cần đổi ngôn ngữ chỉ vì script có một lệnh con."
+          "question": "Hai lượt backup A và B cùng nhắm tên `backup.tar`. A đã tạo tệp tạm rồi chết trước khi công bố; B công bố một archive khác, sau đó A được chạy lại. Vì sao kiểm `test -e backup.tar` rồi dùng `rename()` thường vẫn có thể ghi đè bản của B? A cần quyết định gì khi thấy tên cuối đã tồn tại, và cần kiểm hậu điều kiện nào trước khi báo backup thành công?",
+          "answer": "Kiểm tồn tại và `rename()` là hai thao tác tách rời: A và B đều có thể thấy tên chưa có trước khi một bên công bố; `rename()` thông thường có thể thay tên đích đã tồn tại. Trong trạng thái đề bài, A không được coi tệp tạm cũ là hợp lệ hoặc ghi đè bản B. Dùng cơ chế công bố không thay thế tên đích trên filesystem hỗ trợ, hoặc giao thức có bảo đảm tương đương; nếu tên đã tồn tại, so danh tính/manifest của bản cuối với lượt mong đợi và báo xung đột khi khác. Bản được chấp nhận phải đọc và trích xuất dữ liệu mong đợi trong môi trường riêng, đồng thời giữ dấu vết lượt tạo. Tính nguyên tử của tên chưa chứng minh byte bền sau mất điện hay dữ liệu nguồn nhất quán."
         }
       ]
     },
