@@ -2078,8 +2078,8 @@
       ]
     },
     "P07.C03.L03": {
-      "content_sha256": "355046a7ea3e0443001b12d2d9bbaa940ea540ffbaa1de02aa708fc25a7d079e",
-      "editorial_decision": "Volume/bind mount và quyền trên host được phân biệt; không hứa dữ liệu bền vững chỉ vì tên mount.",
+      "content_sha256": "3023e7c54b6aacaa96a900cf169f38f2dac855b760d86a42f8d9d59d9bf98ea5",
+      "editorial_decision": "Volume/bind mount và quyền trên host được phân biệt; không hứa dữ liệu bền vững chỉ vì tên mount. Bổ sung trace S/A41/V41 để người học dự đoán copy-up của volume rỗng, lớp ghi của container và bind mount, cùng phép hậu kiểm trước khi xóa dữ liệu.",
       "checks": [
         {
           "anchor": "Named volume có định danh để một container khác có thể gắn lại",
@@ -2111,6 +2111,36 @@
           "source_location": "Volumes: Mounting a volume over existing data; Bind mounts: Bind-mounting over existing data",
           "support": "Mounted data obscures pre-existing data at target; empty volume may be populated by default",
           "limits": "Does not move data written in a previous container's writable layer"
+        },
+        {
+          "anchor": "nội dung có sẵn tại điểm gắn trong view của C",
+          "kind": "documented",
+          "sources": [
+            "DD2"
+          ],
+          "source_location": "Volumes: Mounting a volume over existing data; volume-nocopy",
+          "support": "Empty volume mounted on a directory with pre-existing files is populated by default; volume-nocopy disables propagation.",
+          "limits": "Applies to a new empty volume at the mount destination; not to A writable layer or an existing populated volume."
+        },
+        {
+          "anchor": "bind mount từ thư mục host rỗng",
+          "kind": "documented",
+          "sources": [
+            "DD3"
+          ],
+          "source_location": "Bind mounts: Bind-mounting over existing data",
+          "support": "Bind mount obscures pre-existing files at the container destination and exposes host source content.",
+          "limits": "No claim that a host directory is backed up or writable; Docker Desktop path sharing differs from daemon-host paths."
+        },
+        {
+          "anchor": "Một container D gắn lại **đúng V**",
+          "kind": "derived",
+          "sources": [
+            "DD2"
+          ],
+          "source_location": "Volumes: lifecycle; Mounting a volume over existing data",
+          "support": "Volume survives container removal and is reused by name; D sees bytes previously written to V, given no external mutation.",
+          "limits": "A hypothetical trace; does not assert Docker Engine was run or application data is consistent."
         }
       ]
     },
@@ -3669,8 +3699,8 @@
       ]
     },
     "P11.C06.L02": {
-      "content_sha256": "65eb781aec529f045e98f11c1ba273b79228a4c6ddc5d6338b818ac76c922f51",
-      "editorial_decision": "HPA 3×60/50 làm tròn lên 4 theo dữ kiện giả định; hành vi thực có điều kiện metric.",
+      "content_sha256": "b006e9c4ccf1ade2f7f234764bac97a7f3481906b1fa2b390fb9a0041e13e384",
+      "editorial_decision": "HPA 3×60/50 làm tròn lên 4 theo dữ kiện giả định; hành vi thực có điều kiện metric. Bổ sung phản ví dụ thiếu một metric: trung bình status 75% nhưng phép tính bảo thủ scale-up còn 50%, kèm phép xác minh độ phủ Metrics API.",
       "checks": [
         {
           "anchor": "`ceil(3 × 60/50)=ceil(3,6)=4`",
@@ -3701,6 +3731,26 @@
           "source_location": "Horizontal Pod Autoscaling: Migrating workloads to HPA",
           "support": "Repeated apply with replicas can cause flapping against HPA",
           "limits": "Ownership depends on manifest workflow"
+        },
+        {
+          "anchor": "`(60+90+0)/3=50%`",
+          "kind": "documented",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Horizontal Pod Autoscaling v1.34, Algorithm details: missing metrics and scaling decisions",
+          "support": "For scale-up, missing Pod metric is conservatively assumed to be 0% of desired value; recomputed ratio can suppress scaling. Arithmetic 150/3=50.",
+          "limits": "All Pods Ready, equal requests, one CPU metric, same observation window; real controller may apply other behavior and options."
+        },
+        {
+          "anchor": "status báo trung bình ban đầu",
+          "kind": "documented",
+          "sources": [
+            "KU23"
+          ],
+          "source_location": "Horizontal Pod Autoscaling v1.34, Algorithm details: original average in status",
+          "support": "Status reports original average utilization without factoring missing/not-yet-ready Pods even when adjusted ratio drives scaling.",
+          "limits": "A hypothetical 75% status value, not a cluster observation."
         }
       ]
     },

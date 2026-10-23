@@ -2468,7 +2468,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C03/L03.md",
-      "sha256": "355046a7ea3e0443001b12d2d9bbaa940ea540ffbaa1de02aa708fc25a7d079e",
+      "sha256": "3023e7c54b6aacaa96a900cf169f38f2dac855b760d86a42f8d9d59d9bf98ea5",
       "legacy_units": [
         "TXT-da52033bbb1d18b9",
         "TXT-47acdbafd6e67680"
@@ -2489,6 +2489,12 @@
           "publication_id": "P07.C03.L03.Q01",
           "question": "Giải thích vì sao 41 bản ghi ở lượt A không tự xuất hiện ở lượt B. Nếu container A chỉ dừng, câu trả lời khác gì trường hợp A đã bị xóa? Hành động nào phải tránh khi chưa có backup?",
           "answer": "Lượt A ghi trong writable layer riêng của container A. B được tạo mới từ image nên có lớp ghi mới, không tự nhận dữ liệu từ A. Nếu A chỉ dừng và còn container, lớp ghi có thể còn đọc được để điều tra; nếu A bị xóa, không được hứa khôi phục từ lớp ghi ấy. Tránh xóa container cũ, chạy `down -v`, prune hoặc ghi đè đường dẫn nguồn trước khi xác định dữ liệu và có bản sao đã thử restore."
+        },
+        {
+          "id": "ED.P07.C03.L03.Q02",
+          "publication_id": "P07.C03.L03.Q02",
+          "question": "Image X có seed.db=S tại /var/lib/orders. Container A không gắn mount và ghi live.db=A41. Dự đoán tệp nhìn thấy sau khi (a) khởi động lại A, (b) tạo B mới từ X, (c) tạo C từ X với named volume V mới/rỗng rồi C ghi live.db=V41, (d) tạo D từ X gắn lại V. Nếu thay V bằng bind mount từ thư mục host rỗng, seed.db sẽ ra sao? Nêu phép kiểm trước khi xóa A hoặc V.",
+          "answer": "A sau restart có thể thấy S và A41; B mới chỉ thấy S. V mới/rỗng được Docker sao chép seed.db=S từ view của image theo mặc định, nên C và D gắn đúng V thấy S và V41, không thấy A41. Bind mount thư mục host rỗng che seed.db trong container, không có bước sao chép mặc định ấy. Trước khi xóa, kiểm ID/image digest, Mounts.Type/Source/Destination, tên volume, nơi ứng dụng thật ghi và đọc bản ghi qua đúng mount; tạo backup rồi thử restore. Nếu dùng volume-nocopy hoặc V đã có nội dung, phải tính lại trạng thái ban đầu của V."
         }
       ]
     },
@@ -4300,7 +4306,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L02.md",
-      "sha256": "65eb781aec529f045e98f11c1ba273b79228a4c6ddc5d6338b818ac76c922f51",
+      "sha256": "b006e9c4ccf1ade2f7f234764bac97a7f3481906b1fa2b390fb9a0041e13e384",
       "legacy_units": [
         "TXT-4c138643d8bf86fc",
         "TXT-44a7a5d2929285b7"
@@ -4320,6 +4326,12 @@
           "publication_id": "P11.C06.L02.Q01",
           "question": "Ba Pod cùng request `500m` CPU; trong 10 giây mỗi Pod dùng 3,0; 4,5; 1,5 giây CPU. Target HPA 50%, min=2, max=5. Tính usage, utilization và desired replicas cơ sở; giải thích vì sao controller có thể chưa tạo đủ Pod hoặc request vẫn chậm.",
           "answer": "Hiệu CPU time chia cửa sổ 10 giây cho `300m`, `450m`, `150m`. Với request `500m` mỗi Pod, utilization lần lượt 60%, 90%, 30%, trung bình 60%; tỷ số với target 50% là 1,2, nên `ceil(3×1,2)=4` trong khoảng 2–5. CPU limit nếu có không nằm ở mẫu số. Đây là tính toán cơ sở: metric có thể cũ/thiếu, Pod chưa Ready, tolerance, chính sách tốc độ và ổn định thay quyết định cuối; Pod thứ tư còn cần scheduler, volume, readiness và đường mạng. Đối chiếu status HPA, timestamp metric, Pod/events, EndpointSlice và latency client trước khi kết luận mở rộng đã giúp."
+        },
+        {
+          "id": "ED.P11.C06.L02.Q02",
+          "publication_id": "P11.C06.L02.Q02",
+          "question": "Ba Pod cùng request 500m, HPA target 50% và hiện có ba replica. Pod A/B có utilization 60%/90%, Pod C Ready nhưng thiếu metric CPU. Tính trung bình và replica cơ sở từ hai mẫu, rồi tính lại theo giả định bảo thủ của HPA v1.34 cho nhánh scale-up. Status có thể hiện gì, và phép quan sát nào phân biệt “thiếu mẫu” với “CPU bằng 0”?",
+          "answer": "Trung bình hai mẫu là 75%; lấy nó làm tỷ số cơ sở cho ba replica sẽ cho ceil(3×75/50)=5. Khi scale-up, controller tính lại với Pod C thiếu metric ở 0% giá trị mục tiêu: (60+90+0)/3=50%, tỷ số 1 nên phép tính này không đề xuất tăng. Status có thể còn báo 75% từ các mẫu ban đầu. 0 là giả định điều khiển, không phải CPU đo được của C. Kiểm danh sách Pod, thời điểm và độ phủ metric từng Pod qua API metric mà HPA dùng, cùng điều kiện/sự kiện và desired/current/ready replicas ở cùng cửa sổ; không suy chỉ từ dashboard hay status."
         }
       ]
     },
