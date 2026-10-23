@@ -2582,7 +2582,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C04/L03.md",
-      "sha256": "f5408b39b4315ae19dc84ae66de6c761db0e90922fc3175b6980a4075b21f772",
+      "sha256": "fbc621748055139b86181eeea184bae45c92c055f610e1b2dddf412b17f0d887",
       "legacy_units": [
         "TXT-8e4c14b3e6272c9f",
         "TXT-c6845f56bf6d3a2b",
@@ -4813,7 +4813,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C02/L03.md",
-      "sha256": "474256d895434429d2be8b96f12a5f7d46f85e7cdeabb66dab6d265305e3b208",
+      "sha256": "8f34e5de9e21a2eb46dd757c592204d901863bf249beb0c3c4c19b02f13bd7c9",
       "legacy_units": [
         "TXT-f1faf571eeb513e7",
         "TXT-c23b74e519d983e2",
@@ -5571,7 +5571,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C02/L02.md",
-      "sha256": "c6c61825e12097e96b91249e45678a09331a0425cf8066590eda189548d85ee5",
+      "sha256": "d91da1104b486852238074eb2346ada1f083e7e47734229be0534d9745ea5688",
       "legacy_units": [
         "TXT-ad5bf62ca5645629"
       ],

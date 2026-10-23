@@ -115,6 +115,12 @@ class ManuscriptContract(unittest.TestCase):
                     paragraph = paragraph.replace(sentence + " ", "", 1) if sentence + " " in paragraph else (
                         paragraph.replace(" " + sentence, "", 1) if " " + sentence in paragraph else
                         paragraph.replace(sentence, "", 1))
+            if unit["old_id"] == "TXT-908e895c9292843a":
+                # The legacy paragraph ends with a note about the manuscript,
+                # not a claim that belongs in the reader's lesson.
+                note = "; ở bản thảo này chưa có thực nghiệm Docker nên không đưa output giả làm log thật."
+                self.assertTrue(paragraph.endswith(note))
+                paragraph = paragraph[:-len(note)] + "."
             paragraph = self.current_references(unit["primary_lesson_id"], paragraph)
             self.assertIn(" ".join(paragraph.split()), " ".join(migrated.split()))
 

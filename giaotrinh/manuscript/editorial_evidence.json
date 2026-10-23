@@ -2250,7 +2250,7 @@
       ]
     },
     "P07.C04.L03": {
-      "content_sha256": "f5408b39b4315ae19dc84ae66de6c761db0e90922fc3175b6980a4075b21f772",
+      "content_sha256": "fbc621748055139b86181eeea184bae45c92c055f610e1b2dddf412b17f0d887",
       "editorial_decision": "Tình huống 41 bản ghi phân biệt writable layer/volume/project name, giữ mọi dữ liệu là giả định và không bịa Docker output.",
       "checks": [
         {
@@ -4235,9 +4235,19 @@
       ]
     },
     "P12.C02.L03": {
-      "content_sha256": "474256d895434429d2be8b96f12a5f7d46f85e7cdeabb66dab6d265305e3b208",
-      "editorial_decision": "Dashboard phụ thuộc data source/time range/step và staleness.",
+      "content_sha256": "8f34e5de9e21a2eb46dd757c592204d901863bf249beb0c3c4c19b02f13bd7c9",
+      "editorial_decision": "Dashboard phụ thuộc data source/time range/step và staleness; phép tính hai cửa sổ tách tỷ lệ lỗi quan sát được khỏi sức khỏe dịch vụ.",
       "checks": [
+        {
+          "anchor": "Để thấy tác động lên mẫu số",
+          "kind": "derived",
+          "sources": [
+            "PM8"
+          ],
+          "source_location": "Querying basics: staleness and range vectors",
+          "support": "Arithmetic of hypothetical windows: 51/200 = 25.5%, then observed 1/100 = 1%; stale/missing samples limit the scope of aggregation",
+          "limits": "Hypothetical counts are not scraped data; the second window says nothing about target b or user-visible outcomes"
+        },
         {
           "anchor": "Grafana truy vấn Prometheus qua data source",
           "kind": "documented",
