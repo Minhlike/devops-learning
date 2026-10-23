@@ -36,6 +36,7 @@
     "D1": {"type": "IETF RFC", "version": "RFC 1034 (1987)", "url": "https://www.rfc-editor.org/rfc/rfc1034.html"},
     "D2": {"type": "IETF RFC", "version": "RFC 1035 (1987)", "url": "https://www.rfc-editor.org/rfc/rfc1035.html"},
     "D3": {"type": "IETF RFC", "version": "RFC 2308 (1998)", "url": "https://www.rfc-editor.org/rfc/rfc2308.html"},
+    "D4": {"type": "IETF RFC", "version": "RFC 7766 (2016), checked 2026-10-23", "url": "https://datatracker.ietf.org/doc/html/rfc7766"},
     "T1": {"type": "IETF RFC", "version": "RFC 8446 (2018)", "url": "https://www.rfc-editor.org/rfc/rfc8446.html"},
     "T2": {"type": "IETF RFC", "version": "RFC 9525 (2023)", "url": "https://www.rfc-editor.org/rfc/rfc9525.html"},
     "T3": {"type": "IETF RFC", "version": "RFC 6066 (2011)", "url": "https://www.rfc-editor.org/rfc/rfc6066.html"},

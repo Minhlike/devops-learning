@@ -37,6 +37,7 @@
   "P03.C02.L03.Q01": "NAT và đường trả gói",
   "P03.C02.L04.Q01": "Phản hồi DNS không về client",
   "P03.C03.L01.Q01": "Địa chỉ DNS cũ trong bộ nhớ đệm",
+  "P03.C03.L01.Q02": "DNS qua UDP được, qua TCP lỗi",
   "P03.C03.L02.Q01": "Chứng chỉ TLS không khớp tên",
   "P03.C04.L01.Q01": "Client hết hạn nhưng đơn vẫn được ghi",
   "P03.C04.L03.Q01": "Định vị lỗi theo từng tầng kết nối",

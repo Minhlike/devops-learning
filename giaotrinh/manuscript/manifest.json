@@ -1021,7 +1021,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L01.md",
-      "sha256": "6aa6f165fcef97e68c766060aecd92f9e0ec18fd531d76416cfaedfa326e2517",
+      "sha256": "8bcd04b0eef653af85da5abfb0af160f0adb3504b581d0a587945e40728f024b",
       "legacy_units": [
         "chapters/05-dns-http-tls-reverse-proxy.md#intro",
         "chapters/05-dns-http-tls-reverse-proxy.md#5.1"
@@ -1035,7 +1035,8 @@
       "source_ids": [
         "D1",
         "D2",
-        "D3"
+        "D3",
+        "D4"
       ],
       "qa": [
         {
@@ -1043,6 +1044,12 @@
           "publication_id": "P03.C03.L01.Q01",
           "question": "Client A vẫn lấy IP proxy cũ cho `api.example.test`, trong khi một resolver khác trả IP mới. Nêu ba dữ kiện cần ghi trước khi quy lỗi cho authoritative DNS. Vì sao một lần tra cứu từ máy của người vận hành không đủ?",
           "answer": "Ghi tên và loại bản ghi mà ứng dụng hỏi, resolver nó dùng, thời điểm cùng TTL còn lại, rồi đối chiếu địa chỉ mà chính tiến trình đã kết nối. Có thể kiểm tra dữ liệu authoritative và cache của resolver để định vị chỗ sai. Một máy khác có cache, cấu hình resolver, đường đi hoặc thời điểm khác; kết quả của nó không đại diện cho client đang lỗi."
+        },
+        {
+          "id": "ED.P03.C03.L01.Q02",
+          "publication_id": "P03.C03.L01.Q02",
+          "question": "Cùng một client và resolver: truy vấn A nhỏ trả lời qua UDP/53, nhưng truy vấn khác nhận UDP `TC=1` rồi thử TCP/53 và timeout. Vì sao hai kết quả khác nhau? Nêu phép quan sát để khoanh vùng lỗi và hậu kiểm sau sửa. Có đủ căn cứ nói bản ghi authoritative sai không?",
+          "answer": "`TC=1` báo phản hồi UDP bị cắt; resolver cần một đường lấy câu trả lời đầy đủ, trong tình huống này là thử lại qua TCP/53. UDP thành công cho truy vấn nhỏ không kiểm được đường TCP. Giữ cùng tên, loại bản ghi, resolver và thời điểm; xác nhận cờ `TC`, quan sát SYN/SYN-ACK ở hai đầu đoạn TCP, route và quy tắc lọc có hiệu lực để xác định nơi kết nối bị chặn. Sau sửa, cùng truy vấn phải nhận phản hồi đầy đủ qua đường được chọn và ứng dụng dùng đúng địa chỉ; DNS thành công vẫn chưa chứng minh TLS/HTTP. Không thể quy lỗi cho dữ liệu authoritative chỉ từ timeout TCP."
         }
       ]
     },
@@ -1196,7 +1203,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L03.md",
-      "sha256": "77b68e48dfa2c93dec620891a9c8a8cffe463679a89fc9b6632a16af135dc8fc",
+      "sha256": "d261ba902bfb58fb7e248828ff0732d3e2f0d6b03a9a424bcf7f9baf73bbcab8",
       "legacy_units": [
         "TXT-8be99ac2c30b5b4e",
         "TXT-9e160630c5500711",

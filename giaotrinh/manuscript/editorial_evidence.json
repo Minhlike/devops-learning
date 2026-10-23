@@ -746,9 +746,20 @@
       ]
     },
     "P03.C03.L01": {
-      "content_sha256": "6aa6f165fcef97e68c766060aecd92f9e0ec18fd531d76416cfaedfa326e2517",
-      "editorial_decision": "DNS cache và negative caching có giới hạn; DNS thành công không được suy thành TCP/TLS/HTTP thành công.",
+      "content_sha256": "8bcd04b0eef653af85da5abfb0af160f0adb3504b581d0a587945e40728f024b",
+      "editorial_decision": "DNS cache và negative caching có giới hạn; tình huống UDP bị cắt rồi TCP bị chặn tách lỗi vận chuyển khỏi dữ liệu tên.",
       "checks": [
+        {
+          "anchor": "Trên đường DNS qua cổng 53",
+          "kind": "documented",
+          "sources": [
+            "D2",
+            "D4"
+          ],
+          "source_location": "RFC 1035 section 4.2; RFC 7766 sections 1, 4 and 5",
+          "support": "Classic DNS uses UDP and TCP on port 53; a truncated UDP response can lead to retry over TCP; general-purpose implementations must support both transports",
+          "limits": "Blocked TCP is a hypothetical failure path; EDNS and encrypted DNS transports have different operational details"
+        },
         {
           "anchor": "Bộ phân giải có thể dùng thông tin cục bộ hoặc hỏi recursive resolver",
           "kind": "documented",
@@ -964,8 +975,8 @@
       ]
     },
     "P03.C04.L03": {
-      "content_sha256": "77b68e48dfa2c93dec620891a9c8a8cffe463679a89fc9b6632a16af135dc8fc",
-      "editorial_decision": "Sự cố DNS/TCP/TLS/502/504 được chẩn đoán theo bằng chứng từng tầng; status không bị đồng nhất với nguyên nhân gốc.",
+      "content_sha256": "d261ba902bfb58fb7e248828ff0732d3e2f0d6b03a9a424bcf7f9baf73bbcab8",
+      "editorial_decision": "Sự cố DNS/TCP/TLS/502/504 được chẩn đoán theo bằng chứng từng tầng; lời nối từ TCP không còn tự nhận sai ranh giới của chương reverse proxy.",
       "checks": [
         {
           "anchor": "nó có thể tạo `504 Gateway Timeout`",

@@ -121,6 +121,19 @@ class ManuscriptContract(unittest.TestCase):
                 note = "; ở bản thảo này chưa có thực nghiệm Docker nên không đưa output giả làm log thật."
                 self.assertTrue(paragraph.endswith(note))
                 paragraph = paragraph[:-len(note)] + "."
+            if unit["old_id"] == "TXT-8be99ac2c30b5b4e":
+                # The inherited chapter handoff now introduces the two-hop
+                # diagnosis without claiming this proxy chapter ends at TCP.
+                old = ("Chương này dừng ở việc TCP đưa được luồng byte giữa hai endpoint. "
+                       "Người dùng còn có thể báo “không vào được trang” vì tên miền trỏ sai, chứng chỉ bị từ chối, "
+                       "reverse proxy chọn sai upstream hoặc ứng dụng trả lỗi. Các bước ấy thuộc tầng tiếp theo. "
+                       "Giữ ranh giới giúp ta không sửa route khi TCP đã bắt tay, và không sửa HTTP khi SYN chưa tới server.")
+                new = ("Sau bài về TCP, ta biết luồng byte giữa hai endpoint chưa bảo đảm người dùng mở được trang. "
+                       "Tên miền có thể trỏ sai, chứng chỉ bị từ chối, reverse proxy chọn sai upstream hoặc ứng dụng trả lỗi. "
+                       "Bài này ghép các ranh giới ấy thành một đường điều tra: không sửa route khi TCP đã bắt tay, "
+                       "và không sửa HTTP khi SYN chưa tới server.")
+                self.assertEqual(paragraph, old)
+                paragraph = new
             paragraph = self.current_references(unit["primary_lesson_id"], paragraph)
             self.assertIn(" ".join(paragraph.split()), " ".join(migrated.split()))
 
