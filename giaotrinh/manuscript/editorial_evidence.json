@@ -891,8 +891,8 @@
       ]
     },
     "P03.C04.L01": {
-      "content_sha256": "3efebbb9fba07c71c5c2252f461746ea78b2cc4570193f0cc514b0b55e43e0cd",
-      "editorial_decision": "Hai chặng proxy có timeout và trách nhiệm riêng; trường chuyển tiếp chỉ tin từ proxy được cấu hình đáng tin cậy.",
+      "content_sha256": "0034b8aca452fd586cedb294c19c5f724bc78e788df3fc65fdef9ab861e3b533",
+      "editorial_decision": "Giữ mô hình hai chặng, thêm timeline POST với deadline lệch, commit sau client timeout và điều kiện retry có thể kiểm chứng.",
       "checks": [
         {
           "anchor": "Reverse proxy nhận request ở phía client",
@@ -903,6 +903,16 @@
           "source_location": "RFC 9110 sections 3.7 and 7.3",
           "support": "intermediaries receive a request and forward or answer it according to routing and configuration",
           "limits": "Proxy route selection is implementation-specific"
+        },
+        {
+          "anchor": "Timeout phía client không phải lệnh hoàn nguyên giao dịch đã commit",
+          "kind": "inference",
+          "sources": [
+            "H1"
+          ],
+          "source_location": "RFC 9110 sections 9.2.2 and 15.6.5: idempotent retry and gateway timeout",
+          "support": "A non-idempotent request cannot be automatically retried without knowing it is safe or unapplied; timeout only describes response timing, not transaction rollback.",
+          "limits": "Timeline and proxy continuation are explicit teaching assumptions; actual cancellation and commit must be observed."
         }
       ]
     },
@@ -3297,8 +3307,8 @@
       ]
     },
     "P11.C03.L02": {
-      "content_sha256": "57227a1f2fa595a5392db5299c98f3fd478f34deccd27286c0c99da4bd2ae9ea",
-      "editorial_decision": "CPU request/limit/throttling và memory OOM được phân biệt với lỗi ứng dụng.",
+      "content_sha256": "153e9cc46cd7e01d5b6f796c43535f4d0b5b06465d432d02e38bbc273bf61b0a",
+      "editorial_decision": "Bổ sung ca số liệu tách mặc định request từ limit, quyết định đặt Pod, CPU time và throttle; yêu cầu phản chứng theo đúng lượt chạy.",
       "checks": [
         {
           "anchor": "`requests.cpu` dùng để đặt chỗ trên node",
@@ -3341,6 +3351,37 @@
           "source_location": "Pod Quality of Service Classes: Guaranteed/Burstable/BestEffort",
           "support": "QoS class criteria and eviction behavior",
           "limits": "Pod-level resource feature has separate versioned semantics"
+        },
+        {
+          "anchor": "Kubernetes dùng chính limit `1000m` làm request",
+          "kind": "documented",
+          "sources": [
+            "KU14"
+          ],
+          "source_location": "Kubernetes v1.34 Resource Management, Requests and limits: limit without request",
+          "support": "Without an admission default, the specified limit is copied to the request; scheduling compares requests with node capacity.",
+          "limits": "Admission defaults and other scheduling constraints can change the result."
+        },
+        {
+          "anchor": "Mức dùng trung bình là `8,5/10=0,85` lõi",
+          "kind": "derived",
+          "sources": [
+            "K3"
+          ],
+          "source_location": "Linux 6.12 cgroup v2 cpu.stat: usage_usec, nr_periods, nr_throttled",
+          "support": "8.5 million microseconds CPU divided by 10 seconds wall time is 0.85 CPU; 850m/250m is 340%. nr_throttled counts throttled periods.",
+          "limits": "Hypothetical same-cgroup samples; average CPU does not identify request-level latency."
+        },
+        {
+          "anchor": "Counter của cgroup mới sau restart không thể phủ định lần kill ở cgroup cũ",
+          "kind": "inference",
+          "sources": [
+            "K3",
+            "KU14"
+          ],
+          "source_location": "Linux 6.12 cgroup v2 memory.events.local and Kubernetes v1.34 memory limits",
+          "support": "OOM evidence belongs to the affected container lifecycle and cgroup; a new cgroup has a different counter history.",
+          "limits": "Runtime naming and collection may differ; logs/events must be matched by time and container identity."
         }
       ]
     },
@@ -4375,8 +4416,8 @@
       ]
     },
     "P12.C04.L01": {
-      "content_sha256": "b90e6f994dd321ac61e11742b19d682b46629a2eabd43b2f7eaa88a0364d742d",
-      "editorial_decision": "Giữ các neo migration; thêm phép tính hai target để giải thích pending, mất telemetry và giới hạn của rate trước khi diễn giải alert.",
+      "content_sha256": "5b47514d5d9d3c7c60966bc88a0468a9e6d5148d79b97598e9cc8e7c4a10df71",
+      "editorial_decision": "Bổ sung biểu thức rate theo từng series, ranh giới giữa up=0 và mất discovery, và phép phản chứng cho tỷ lệ lỗi đẹp giả.",
       "checks": [
         {
           "anchor": "alerting rule đánh giá điều kiện",
@@ -4398,6 +4439,37 @@
           "source_location": "Prometheus 3.7 alerting rules: for clause; query functions: rate()",
           "support": "The example derives a 2% aggregate and 0.4% surviving-target error ratio from explicitly hypothetical counters; for requires persistent expression output; rate adjusts counter resets per series before aggregation.",
           "limits": "The 1% threshold and 10m wait are teaching assumptions, not an operational SLO; rate cannot restore missing target data."
+        },
+        {
+          "anchor": "sum(rate(checkout_requests_total{code=~\"5..\"}[5m]))",
+          "kind": "documented",
+          "sources": [
+            "PM8",
+            "PM9"
+          ],
+          "source_location": "Prometheus 3.7 query basics and functions: range vector selector and rate()",
+          "support": "Rate is applied per counter series before aggregation and adjusts counter resets; the numerator selects 5xx via a status-code label.",
+          "limits": "Metric name and labels are a hypothetical instrumentation contract; real service and route filters must be matched."
+        },
+        {
+          "anchor": "chuỗi `up` của B cũng có thể không còn",
+          "kind": "documented",
+          "sources": [
+            "PM8"
+          ],
+          "source_location": "Prometheus 3.7 querying basics: staleness and missing series",
+          "support": "A series removed from target discovery eventually becomes stale and is absent from current instant-vector results.",
+          "limits": "A failed scrape of a still discovered target is a different state: up=0."
+        },
+        {
+          "anchor": "`for: 10m` đo thời gian biểu thức liên tục hiện diện",
+          "kind": "documented",
+          "sources": [
+            "PM6"
+          ],
+          "source_location": "Prometheus 3.7 alerting rules: for clause and pending state",
+          "support": "An alert transitions from pending to firing only when its expression remains active for the configured duration.",
+          "limits": "This does not establish completeness of the underlying telemetry."
         }
       ]
     }

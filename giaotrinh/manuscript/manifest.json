@@ -1130,7 +1130,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L01.md",
-      "sha256": "3efebbb9fba07c71c5c2252f461746ea78b2cc4570193f0cc514b0b55e43e0cd",
+      "sha256": "0034b8aca452fd586cedb294c19c5f724bc78e788df3fc65fdef9ab861e3b533",
       "legacy_units": [
         "TXT-c396fb6c5104e267"
       ],
@@ -1141,7 +1141,14 @@
       "source_ids": [
         "H1"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "ED.P03.C04.L01.Q01",
+          "publication_id": "P03.C04.L01.Q01",
+          "question": "Client đặt deadline 1.500 ms, proxy chờ upstream 2.000 ms. Upstream nhận POST ở 20 ms, commit ở 1.700 ms và trả 201 ở 1.800 ms; giả sử proxy vẫn đợi sau khi client ngừng chờ. Client thấy gì, trạng thái đơn có thể là gì, và vì sao retry ở 1.600 ms nguy hiểm? Nêu hai phép kiểm trước khi bật retry.",
+          "answer": "Client hết hạn lúc 1.500 ms nên không đọc được 201, dù upstream trả trước hạn 2.000 ms của proxy. Đơn của lượt đầu có thể đã commit ở 1.700 ms; retry ở 1.600 ms có thể chạy đồng thời và tạo đơn thứ hai. Cần ghép request ID/log hai chặng với sổ đơn để biết lượt đầu đã tới và commit hay chưa; kiểm hợp đồng khóa idempotency hoặc cách xác minh lượt đầu chắc chắn chưa áp dụng trước khi tự thử lại. Timeout phía client không hoàn nguyên giao dịch."
+        }
+      ]
     },
     "P03.C04.L02": {
       "parent": "P03.C04",
@@ -3980,7 +3987,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C03/L02.md",
-      "sha256": "57227a1f2fa595a5392db5299c98f3fd478f34deccd27286c0c99da4bd2ae9ea",
+      "sha256": "153e9cc46cd7e01d5b6f796c43535f4d0b5b06465d432d02e38bbc273bf61b0a",
       "legacy_units": [
         "TXT-772a5ceafcfbcca0",
         "TXT-b7c4cb374f6a3fbd"
@@ -3997,7 +4004,14 @@
         "KU14",
         "KU17"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "ED.P11.C03.L02.Q01",
+          "publication_id": "P11.C03.L02.Q01",
+          "question": "Một Pod một container chỉ khai báo limits.cpu=1000m, không khai báo requests.cpu; không có admission policy điền request. Node còn 700m theo tổng requests. Dự đoán vì sao Pod có thể Pending dù CPU đang dùng thấp. Sau khi đặt request=250m, hai mẫu cùng cgroup cách nhau 10 giây cho hiệu usage_usec=8.500.000 và nr_throttled tăng 15. Tính CPU trung bình, tỷ lệ usage/request và nêu điều 15 lần throttle chưa chứng minh.",
+          "answer": "Kubernetes lấy limit 1000m làm request khi request vắng và không có mặc định khác, nên 700m còn lại không đủ để đặt Pod. Request 250m có thể gỡ riêng rào cản CPU nhưng chưa chứng minh các ràng buộc khác hoặc hiệu năng. CPU trung bình là 8,5/10=0,85 lõi=850m; usage/request=850/250=340%. 15 chu kỳ throttle chứng minh quota đã chặn cgroup trong cửa sổ, không cho biết 15% request chậm hay quota là nguyên nhân duy nhất của latency; cần đối chiếu thời gian, throttled_usec và từng chặng."
+        }
+      ]
     },
     "P11.C03.L03": {
       "parent": "P11.C03",
@@ -4968,7 +4982,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C04/L01.md",
-      "sha256": "b90e6f994dd321ac61e11742b19d682b46629a2eabd43b2f7eaa88a0364d742d",
+      "sha256": "5b47514d5d9d3c7c60966bc88a0468a9e6d5148d79b97598e9cc8e7c4a10df71",
       "legacy_units": [
         "TXT-6910b730fe68fda0",
         "chapters/18-metrics-prometheus-grafana.md#18.1:claim:CLM-04bb47b429753cbe"
@@ -4979,9 +4993,17 @@
       "examples": [],
       "source_ids": [
         "PM6",
+        "PM8",
         "PM9"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "ED.P12.C04.L01.Q01",
+          "publication_id": "P12.C04.L01.Q01",
+          "question": "Trong fixture hai target, A có 500 request/2 lỗi và B có 500/18. Sau khi B biến khỏi discovery, chỉ còn A trong phép tính năm phút. Tính tỷ lệ trước/sau, phân biệt up=0 với chuỗi up vắng và nêu phép kiểm cần có trước khi thông báo dịch vụ đã hồi phục.",
+          "answer": "Trước mất B: 20/1.000=2%; nếu chỉ A còn trong mẫu: 2/500=0,4%. up=0 nghĩa target còn được khám phá nhưng scrape thất bại; B không còn trong discovery có thể không còn chuỗi up. So danh sách target kỳ vọng với discovery và dữ liệu edge/người dùng cùng cửa sổ, rồi xác minh request thật trước khi kết luận hồi phục. Phép chia trên fixture không thay thế giá trị rate() từ mẫu scrape thật."
+        }
+      ]
     },
     "P12.C04.L02": {
       "parent": "P12.C04",
