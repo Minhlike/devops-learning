@@ -2632,7 +2632,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C01/L01.md",
-      "sha256": "74a2e5638e1de1bd39637169846879eb669699e7588859643350f2e7abb23336",
+      "sha256": "f52122a8a2b7247b84d706de2008240fb43cee362a9222b62c0de6b822ea29be",
       "legacy_units": [
         "chapters/12-aws-iam-vpc-storage.md#intro",
         "TXT-fb805c19af150eee"
@@ -2646,7 +2646,14 @@
         "AWS1",
         "AWS3"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "P08.C01.L01.Q01",
+          "publication_id": "P08.C01.L01.Q01",
+          "question": "Trong tình huống giả định, `/health` của EC2 trả 200 nhưng tác vụ đọc S3 có ba quan sát lần lượt: A không lấy được credential, B hết hạn TCP trước HTTP response, C nhận `AccessDenied` kèm request ID của S3. Mỗi quan sát chuyển phép kiểm sang ranh giới nào? Có thể từ B kết luận IAM đúng, hoặc từ C kết luận identity policy gây từ chối không?",
+          "answer": "`/health` chỉ kiểm endpoint đó. A cần kiểm profile của instance, provider/IMDS và lỗi lấy credential của chính tiến trình; chưa có request S3 được ký theo dữ kiện. B chuyển sang DNS, route, bộ lọc mạng và endpoint của subnet; chưa có HTTP response nên không thể kết luận IAM cho phép hay từ chối. C cho biết S3 đã trả một response cho request ấy, nên phải ghi principal phiên role, action, ARN, điều kiện và đối chiếu các policy áp dụng; `AccessDenied` chưa chỉ đích danh identity policy. Thiếu request ID trong log ở ca khác cũng chưa đủ chứng minh request không tới S3. Sau sửa, thử đúng key và một key ngoài quyền bằng cùng danh tính, không ghi secret vào log."
+        }
+      ]
     },
     "P08.C01.L02": {
       "parent": "P08.C01",
@@ -3044,8 +3051,8 @@
         {
           "id": "W2.P09.C01.L01.Q01",
           "publication_id": "P09.C01.L01.Q01",
-          "question": "Khi nào phải dùng depends_on thay vì chỉ tham chiếu giá trị?",
-          "answer": "Khi phụ thuộc vận hành có thật nhưng không biểu diễn được qua tham chiếu dữ liệu; kiểm đồ thị và kế hoạch sau sửa."
+          "question": "Trong HCL của bài, `deploy.input = terraform_data.config.output` tạo cạnh phụ thuộc nào? Nếu đổi thành `deploy.input = \"v2\"` nhưng một resource thật vẫn cần một policy được tạo trước mà không đọc thuộc tính của policy, người viết phải khai báo gì? Vì sao cạnh thứ tự đó và một plan xanh vẫn chưa chứng minh policy đã có hiệu lực? Nêu phép kiểm trước khi apply và hậu kiểm sau apply.",
+          "answer": "Ở cấu hình đầu, tham chiếu `config.output` cho Terraform suy ra cạnh `config → deploy`; thêm `depends_on` cho cùng quan hệ ấy là thừa. Khi dùng chuỗi literal, cạnh dữ liệu biến mất. Nếu resource triển khai thật có phụ thuộc vận hành vào một resource policy nhưng không đọc giá trị của nó, khai báo `depends_on` tới đúng resource policy để thể hiện thứ tự; không thêm cạnh chỉ vì hai resource cùng xuất hiện trong tệp. Cạnh chỉ ràng buộc thứ tự thao tác trong DAG: API báo tạo policy xong có thể chưa đồng nghĩa quyền đã lan truyền hoặc workload đã sẵn sàng. Trước apply, đọc plan, địa chỉ resource, action và provider/account đích; nếu plan dự kiến replace tài nguyên có dữ liệu thì dừng để xét hậu quả. Sau apply, đọc trạng thái policy tại API và thử request đại diện theo đúng principal/action/resource, gồm một ca phải bị từ chối. Nếu thiếu quyền hoặc môi trường để thử, ghi giới hạn thay vì coi plan thành bằng chứng readiness."
         }
       ]
     },
@@ -3437,7 +3444,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P10/C01/L01.md",
-      "sha256": "0a6c03d8b74c6ac938bf6cf8e06fbc18f3e7644ecd1670837eaad1fcbbbe6924",
+      "sha256": "e07ba8521a18be1fa5a1343f2f1cbb9d4b1af5198a9eeacee5c7096bdc607601",
       "legacy_units": [
         "chapters/14-ansible-hoi-tu-cau-hinh.md#intro",
         "TXT-c66dc315ca9b923d",
@@ -3449,9 +3456,18 @@
       ],
       "examples": [],
       "source_ids": [
-        "AS1"
+        "AS1",
+        "AS16",
+        "AS17"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "P10.C01.L01.Q01",
+          "publication_id": "P10.C01.L01.Q01",
+          "question": "Trong inventory của bài, play chọn `hosts: app` và lượt chạy bị giới hạn `canary`. Host nào nhận task? Nếu bỏ giới hạn, `atlas-b` báo `unreachable` còn `atlas-a` báo `ok`, có thể kết luận cấu hình trên B đã hội tụ không? Nêu hai phép kiểm trước khi chạy task sửa tệp trên máy thật.",
+          "answer": "Giao của nhóm `app` với `canary` chỉ có `atlas-a`; `atlas-db` không thuộc play. Bỏ giới hạn thì A và B được chọn, nhưng `unreachable` nghĩa task/module chưa chạy được trên B, nên không có bằng chứng hội tụ của B dù A báo `ok`. Trước thao tác thật, xem inventory đã phân giải và tập host của chính lượt chạy; đối chiếu từng alias, địa chỉ, danh tính kết nối với danh sách máy được duyệt. Sau khi chạy mới kiểm nội dung/quyền và request ứng dụng trên từng host."
+        }
+      ]
     },
     "P10.C01.L02": {
       "parent": "P10.C01",

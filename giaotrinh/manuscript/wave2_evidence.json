@@ -1793,8 +1793,8 @@
         {
           "id": "W2.P09.C01.L01.Q01",
           "publication_id": "P09.C01.L01.Q01",
-          "question": "Khi nào phải dùng depends_on thay vì chỉ tham chiếu giá trị?",
-          "answer": "Khi phụ thuộc vận hành có thật nhưng không biểu diễn được qua tham chiếu dữ liệu; kiểm đồ thị và kế hoạch sau sửa."
+          "question": "Trong HCL của bài, `deploy.input = terraform_data.config.output` tạo cạnh phụ thuộc nào? Nếu đổi thành `deploy.input = \"v2\"` nhưng một resource thật vẫn cần một policy được tạo trước mà không đọc thuộc tính của policy, người viết phải khai báo gì? Vì sao cạnh thứ tự đó và một plan xanh vẫn chưa chứng minh policy đã có hiệu lực? Nêu phép kiểm trước khi apply và hậu kiểm sau apply.",
+          "answer": "Ở cấu hình đầu, tham chiếu `config.output` cho Terraform suy ra cạnh `config → deploy`; thêm `depends_on` cho cùng quan hệ ấy là thừa. Khi dùng chuỗi literal, cạnh dữ liệu biến mất. Nếu resource triển khai thật có phụ thuộc vận hành vào một resource policy nhưng không đọc giá trị của nó, khai báo `depends_on` tới đúng resource policy để thể hiện thứ tự; không thêm cạnh chỉ vì hai resource cùng xuất hiện trong tệp. Cạnh chỉ ràng buộc thứ tự thao tác trong DAG: API báo tạo policy xong có thể chưa đồng nghĩa quyền đã lan truyền hoặc workload đã sẵn sàng. Trước apply, đọc plan, địa chỉ resource, action và provider/account đích; nếu plan dự kiến replace tài nguyên có dữ liệu thì dừng để xét hậu quả. Sau apply, đọc trạng thái policy tại API và thử request đại diện theo đúng principal/action/resource, gồm một ca phải bị từ chối. Nếu thiếu quyền hoặc môi trường để thử, ghi giới hạn thay vì coi plan thành bằng chứng readiness."
         }
       ]
     },

@@ -2290,8 +2290,8 @@
       ]
     },
     "P08.C01.L01": {
-      "content_sha256": "74a2e5638e1de1bd39637169846879eb669699e7588859643350f2e7abb23336",
-      "editorial_decision": "Request AWS đi qua ranh giới mạng và IAM riêng; ALB healthy không chứng minh quyền S3.",
+      "content_sha256": "f52122a8a2b7247b84d706de2008240fb43cee362a9222b62c0de6b822ea29be",
+      "editorial_decision": "Request AWS đi qua ranh giới credential, mạng và IAM riêng; ba quan sát giả định buộc chọn phép kiểm đúng lớp. ALB healthy không chứng minh quyền S3.",
       "checks": [
         {
           "anchor": "gắn IAM role ứng dụng qua instance profile",
@@ -2881,8 +2881,8 @@
       ]
     },
     "P10.C01.L01": {
-      "content_sha256": "0a6c03d8b74c6ac938bf6cf8e06fbc18f3e7644ecd1670837eaad1fcbbbe6924",
-      "editorial_decision": "Ansible hội tụ trên host và Terraform state được phân biệt; inventory/control/managed node có ranh giới SSH.",
+      "content_sha256": "e07ba8521a18be1fa5a1343f2f1cbb9d4b1af5198a9eeacee5c7096bdc607601",
+      "editorial_decision": "Ansible hội tụ trên host và Terraform state được phân biệt; inventory/control/managed node có ranh giới SSH. Ví dụ ba host buộc kiểm alias, địa chỉ và tập máy được chọn trước task thay đổi.",
       "checks": [
         {
           "anchor": "Inventory liệt kê managed node và nhóm",
@@ -2903,6 +2903,22 @@
           "source_location": "Connecting to hosts: behavioral inventory parameters",
           "support": "SSH is common default for Linux hosts; local is alternate",
           "limits": "Connection success alone is not readiness"
+        },
+        {
+          "anchor": "Một play có `hosts: app` chọn `atlas-a` và `atlas-b`",
+          "kind": "documented",
+          "sources": ["AS16"],
+          "source_location": "Patterns: Using patterns; Common patterns",
+          "support": "A play host pattern selects inventory group members; a limit narrows the selected hosts",
+          "limits": "Selection still depends on the resolved inventory of that run"
+        },
+        {
+          "anchor": "`ansible-inventory -i inventory.ini --list` chỉ hiển thị cấu trúc inventory",
+          "kind": "documented",
+          "sources": ["AS17"],
+          "source_location": "ansible-inventory synopsis and description",
+          "support": "The command displays or dumps resolved inventory information",
+          "limits": "It does not validate the eventual play host pattern or application state"
         }
       ]
     },

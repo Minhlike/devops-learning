@@ -82,6 +82,8 @@
     "R16": {"type": "official technical manual", "version": "Linux man-pages 6.19", "url": "https://man7.org/linux/man-pages/man7/credentials.7.html"},
     "R17": {"type": "official technical manual", "version": "Linux man-pages 6.19", "url": "https://man7.org/linux/man-pages/man2/rename.2.html"},
     "AS15": {"type": "official versioned Ansible Core documentation", "version": "ansible-core 2.16", "url": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_intro.html"},
+    "AS16": {"type": "official versioned Ansible Core documentation", "version": "ansible-core 2.16 checked 2026-10-23", "url": "https://docs.ansible.com/projects/ansible-core/2.16/inventory_guide/intro_patterns.html"},
+    "AS17": {"type": "official versioned Ansible Core documentation", "version": "ansible-core 2.16 checked 2026-10-23", "url": "https://docs.ansible.com/projects/ansible-core/2.16/cli/ansible-inventory.html"},
     "AWS20": {"type": "official AWS IAM documentation", "version": "IAM User Guide checked 2026-10-21 (rolling page)", "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_resource.html"},
     "OCI2": {"type": "official OCI runtime specification", "version": "runtime-spec v1.2.1", "url": "https://github.com/opencontainers/runtime-spec/blob/v1.2.1/config-linux.md"},
     "OCI3": {"type": "official OCI runtime specification", "version": "runtime-spec v1.2.1", "url": "https://github.com/opencontainers/runtime-spec/blob/v1.2.1/runtime.md"},

@@ -80,6 +80,8 @@
     "R16": "https://man7.org/linux/man-pages/man7/credentials.7.html",
     "R17": "https://man7.org/linux/man-pages/man2/rename.2.html",
     "AS15": "https://docs.ansible.com/projects/ansible-core/2.16/playbook_guide/playbooks_intro.html",
+    "AS16": "https://docs.ansible.com/projects/ansible-core/2.16/inventory_guide/intro_patterns.html",
+    "AS17": "https://docs.ansible.com/projects/ansible-core/2.16/cli/ansible-inventory.html",
     "AWS20": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_resource.html",
     "OCI2": "https://github.com/opencontainers/runtime-spec/blob/v1.2.1/config-linux.md",
     "OCI3": "https://github.com/opencontainers/runtime-spec/blob/v1.2.1/runtime.md",
