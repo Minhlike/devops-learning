@@ -16,6 +16,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.utils import ImageReader
 from reportlab.platypus import (
     BaseDocTemplate, Flowable, Frame, PageBreak, PageTemplate, Paragraph,
     Preformatted, Spacer, LongTable, TableStyle, KeepTogether,
@@ -30,6 +31,7 @@ except ImportError:  # direct execution: python giaotrinh/scripts/build.py
 
 
 ROOT = Path(__file__).resolve().parents[1]
+COVER_ART = ROOT / "assets" / "cover_datacenter_bw.png"
 READER_TITLES = json.loads((ROOT / "manuscript" / "reader_titles.json").read_text(encoding="utf-8"))
 EXERCISE_TITLES = json.loads((ROOT / "manuscript" / "exercise_titles.json").read_text(encoding="utf-8"))
 OUTPUT = ROOT / "Cam_nang_devops.candidate.pdf"
@@ -59,6 +61,7 @@ def register_fonts() -> None:
     fonts = {
         "Body": "times.ttf",
         "BodyBold": "timesbd.ttf",
+        "CoverBold": "arialbd.ttf",
         "Mono": "consola.ttf",
     }
     for name, filename in fonts.items():
@@ -241,39 +244,65 @@ class PartPlate(Flowable):
         c.restoreState()
 
 
-class CoverPlate(Flowable):
-    """A source-editable monochrome cover motif for the book's learning arc."""
+class CoverPage(Flowable):
+    """Minimal white cover with live type and a monochrome photograph."""
 
     def __init__(self):
         super().__init__()
         self.width = PAGE_W - LEFT - RIGHT
-        self.height = 252
+        self.height = PAGE_H - TOP - BOTTOM - 2
 
     def draw(self):
         c = self.canv
         c.saveState()
-        ink = colors.HexColor("#222222")
-        light = colors.HexColor("#ececec")
-        nodes = ["MÃ NGUỒN", "ARTIFACT", "RUNTIME", "TÍN HIỆU", "PHỤC HỒI"]
-        c.setStrokeColor(ink)
-        c.setLineWidth(1.3)
-        c.line(30, 148, self.width - 30, 148)
-        for index, label in enumerate(nodes):
-            x = 47 + index * 94
-            c.setFillColor(ink if index in (0, 4) else light)
-            c.circle(x, 148, 17, stroke=1, fill=1)
-            c.setFillColor(colors.white if index in (0, 4) else ink)
-            c.setFont("BodyBold", 10)
-            c.drawCentredString(x, 144, str(index + 1))
-            c.setFillColor(ink)
-            c.setFont("BodyBold", 8)
-            c.drawCentredString(x, 110, label)
-        c.setLineWidth(0.5)
-        c.line(0, 208, self.width, 208)
-        c.line(0, 67, self.width, 67)
-        c.setFont("Body", 11)
-        c.drawCentredString(self.width / 2, 37,
-                            "Từ thay đổi có kiểm chứng đến hệ thống có thể vận hành và phục hồi")
+        draw_cover_photo(c, self.width - 225, 0, 225, self.height)
+        c.setFillColor(colors.black)
+        c.setFont("CoverBold", 30)
+        c.drawString(0, 450, "CẨM NANG")
+        c.drawString(0, 411, "NGÀNH")
+        c.setFont("CoverBold", 42)
+        c.drawString(0, 352, "DEVOPS")
+        c.restoreState()
+
+
+def draw_cover_photo(canvas, x: float, y: float, width: float, height: float) -> None:
+    """Crop at render time without altering the source photograph."""
+    if not COVER_ART.is_file():
+        raise FileNotFoundError(f"Thiếu ảnh bìa: {COVER_ART}")
+    image = ImageReader(str(COVER_ART))
+    image_width, image_height = image.getSize()
+    scaled_width = height * image_width / image_height
+    canvas.saveState()
+    clip = canvas.beginPath()
+    clip.rect(x, y, width, height)
+    canvas.clipPath(clip, stroke=0, fill=0)
+    canvas.drawImage(image, x - (scaled_width - width) / 2, y,
+                     width=scaled_width, height=height)
+    canvas.restoreState()
+
+
+class BackCoverPage(CoverPage):
+    """Reader-facing back cover, without status text or page furniture."""
+
+    def draw(self):
+        c = self.canv
+        c._back_cover = True
+        c.saveState()
+        draw_cover_photo(c, 0, 0, 225, self.height)
+        x = 250
+        c.setFillColor(colors.black)
+        c.setFont("CoverBold", 17)
+        c.drawString(x, 493, "HIỂU HỆ THỐNG.")
+        c.drawString(x, 466, "VẬN HÀNH")
+        c.drawString(x, 439, "CÓ CHỨNG CỨ.")
+        c.setFont("Body", 12)
+        for line, y in (
+            ("Từ mã nguồn đến hạ tầng,", 359),
+            ("triển khai, quan sát và phục hồi,", 340),
+            ("cuốn sách đi từ cơ chế đến", 321),
+            ("quyết định vận hành có thể kiểm chứng.", 302),
+        ):
+            c.drawString(x, y, line)
         c.restoreState()
 
 
@@ -281,8 +310,7 @@ class Book(BaseDocTemplate):
     def __init__(self, path: Path):
         super().__init__(str(path), pagesize=A4, leftMargin=LEFT,
                          rightMargin=RIGHT, topMargin=TOP, bottomMargin=BOTTOM,
-                         title="Cẩm nang ngành DevOps — bản thảo candidate",
-                         author="Dự án devops-learning")
+                         title="Cẩm nang ngành DevOps")
         frame = Frame(LEFT, BOTTOM, PAGE_W - LEFT - RIGHT,
                       PAGE_H - TOP - BOTTOM, leftPadding=0, rightPadding=0,
                       topPadding=0, bottomPadding=0)
@@ -301,6 +329,8 @@ class Book(BaseDocTemplate):
 
     @staticmethod
     def page_decoration(canvas, doc):
+        if doc.page == 1 or getattr(canvas, "_back_cover", False):
+            return
         canvas.saveState()
         if not doc.running_part and doc.page > 2:
             canvas.setFont("BodyBold", 8.5)
@@ -822,14 +852,7 @@ def build() -> None:
     toc = TableOfContents()
     toc.levelStyles = [styles["tocentry"], styles["tocchapter"]]
     story: list[Flowable] = [
-        Spacer(1, 170),
-        Paragraph("CẨM NANG<br/>NGÀNH DEVOPS", styles["title"]),
-        Spacer(1, 26),
-        Paragraph(f"Bản thảo hoàn chỉnh · {count}/178 bài có nội dung", styles["subtitle"]),
-        Spacer(1, 10),
-        Paragraph("Chưa phải bản phát hành hoàn chỉnh", styles["subtitle"]),
-        Spacer(1, 34),
-        CoverPlate(),
+        CoverPage(),
         PageBreak(),
         Paragraph("MỤC LỤC", styles["toc"]),
         toc,
@@ -871,6 +894,7 @@ def build() -> None:
                 label = exercise_labels[qa["publication_id"]]
                 story.append(Paragraph(f"<b>{html.escape(label)}</b><br/>{paragraph_markup(qa['answer'], labels)}",
                                        styles["answerbody"]))
+    story.extend((PageBreak(), BackCoverPage()))
     try:
         Book(NEXT).multiBuild(story)
         audit(NEXT)
@@ -903,7 +927,15 @@ def audit_document(doc: pymupdf.Document) -> None:
         raise RuntimeError("Candidate quá ngắn so với nội dung bản thảo")
     text = "\n".join(page.get_text() for page in doc)
     normalized_text = re.sub(r"\s+", " ", text)
-    for phrase in ("CẨM NANG", "MỤC LỤC", "Lời giải", "Chưa phải bản phát hành"):
+    cover_text = doc[0].get_text()
+    if not all(word in cover_text for word in ("CẨM NANG", "NGÀNH", "DEVOPS")):
+        raise RuntimeError("Tiêu đề bìa thiếu hoặc không trích xuất được")
+    if "VẬN HÀNH" not in doc[-1].get_text() or "BẢN ĐỌC THỬ" in doc[-1].get_text():
+        raise RuntimeError("Bìa sau thiếu hoặc còn thông tin quản lý nội bộ")
+    if any(word in cover_text.casefold() for word in
+           ("bản thảo", "candidate", "bản đọc thử", "chưa phải", "/178")):
+        raise RuntimeError("Thông tin nội bộ lọt lên bìa")
+    for phrase in ("CẨM NANG", "MỤC LỤC", "Lời giải"):
         if phrase not in text:
             raise RuntimeError(f"Thiếu nội dung PDF: {phrase}")
     tree, manifest = load_manuscript()

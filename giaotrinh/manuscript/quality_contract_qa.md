@@ -80,20 +80,21 @@ Quy ước điểm: A=3 ở mọi chương vì đã có bản đồ nguồn và 
 ## Candidate gắn với hồ sơ này
 
 - Tệp: `giaotrinh/Cam_nang_devops.candidate.pdf`.
-- SHA-256: `59D29C8248867531A57BB712BF7ED61B5D7495D8CD18EA35CAB4F4C2053C83DB`.
-- 247 trang A4, 310 bookmark; font Times New Roman/Consolas nhúng theo kết quả bộ dựng; 0 URI action ngoài theo phép đọc cấu trúc PDF.
+- SHA-256: `21A97465829361AA58B261E0F6B7844B29C2822F8B621319F693B12CA9588AD6`.
+- 248 trang A4, 310 bookmark; font Times New Roman/Consolas và Arial Bold cho bìa được nhúng; 0 URI action ngoài theo phép đọc cấu trúc PDF.
 - Bộ dựng báo `source_leaks=0`; điều đó không thay cho việc đọc mọi trang hoặc kiểm chứng ngữ nghĩa 267 claim.
-- Candidate được dựng từ bản thảo sau ba sửa đổi nêu trên. Hồ sơ QA này không tham gia render. Đây là bản candidate, **không có Publication PASS**.
+- Candidate được dựng từ bản thảo sau ba sửa đổi nêu trên, với bìa trước/sau trắng, chữ đen và ảnh máy chủ đen trắng. Đã xem ảnh render hai bìa; hồ sơ QA này không tham gia render. Đây là bản candidate, **không có Publication PASS**.
 
 ## Kiểm chứng đã chạy trong lượt này
 
-- Dựng PDF: PASS (`CANDIDATE_OK`, 247 trang, 310 bookmark, `source_leaks=0`). Đọc cấu trúc riêng: 247/247 trang kích thước A4 khoảng 595×842 pt, 0 URI action ngoài, có Times New Roman Regular/Bold và Consolas.
+- Dựng PDF: PASS (`CANDIDATE_OK`, 248 trang, 310 bookmark, `source_leaks=0`). Đọc cấu trúc riêng: 248/248 trang kích thước A4 khoảng 595×842 pt, 0 URI action ngoài, có Times New Roman Regular/Bold, Consolas và Arial Bold.
+- Bìa: đã xem ảnh render trang đầu và cuối; chỉ có tiêu đề sách ở bìa trước, không có số trang hoặc trạng thái nội bộ trên hai bìa. Kiểm thử `test_pdf_contract.py`: 7 PASS, 0 FAIL, 0 SKIP.
 - Regression toàn bộ: 44 ca được chạy; ban đầu 42 PASS, 1 FAIL do hai ID nguồn mới bị đưa nhầm vào `frozen_ids` lịch sử, 1 SKIP vì thiếu Go toolchain. Đã bỏ hai ID mới khỏi `frozen_ids`, giữ URL mới trong registry, và chạy lại đúng ca lỗi: PASS. Vậy **0 FAIL còn mở trong các ca đã chạy**; toàn bộ suite chưa chạy lại sau chỉnh sửa hẹp này.
 - `git diff --check`: PASS. Kiểm độc lập 58 dòng điểm cho 58 ID chương, công thức trọng số và điểm thấp nhất 85: PASS.
 
 ## Giới hạn và việc còn phải kiểm độc lập
 
-- Chưa xem ảnh render của toàn bộ 247 trang ở lượt này; typography và ngắt trang chưa được nghiệm thu độc lập.
+- Chưa xem ảnh render của toàn bộ 248 trang ở lượt này; typography và ngắt trang ruột sách chưa được nghiệm thu độc lập.
 - Chưa chạy lại toàn bộ ví dụ cần AWS, Docker Engine hoặc Kubernetes cluster; ví dụ giả định trong sách được giữ đúng nhãn.
 - Chưa kiểm toán ngữ nghĩa độc lập từng claim trong source map. A=3 phản ánh giới hạn ấy; anchor tồn tại không chứng minh nguồn hỗ trợ mọi diễn giải.
 - Điểm là biên tập nội bộ của bản thảo này. Nếu kiểm toán nguồn hoặc quan sát trang phát hiện lỗi, phải hạ điểm chương liên quan và sửa trước khi xét xuất bản.
