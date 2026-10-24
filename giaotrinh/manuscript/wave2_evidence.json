@@ -1203,14 +1203,24 @@
           "source_location": "Dynamic Admission Control v1.34: Failure policy",
           "support": "Fail rejects on webhook error or timeout; Ignore lets request continue.",
           "limits": "Other admission controls can still reject."
+        },
+        {
+          "anchor": "Với Kubernetes v1.34, `enforce` của PSA áp lúc **tạo Pod**",
+          "sources": [
+            "W2-PSSA",
+            "W2-ADMIT"
+          ],
+          "source_location": "Pod Security Admission v1.34: Workload resources and Pod templates; Admission Controllers request path",
+          "support": "PSA enforce is applied to Pod creation, while warn/audit also inspect workload templates; a Deployment can be accepted while its ReplicaSet cannot create violating Pods.",
+          "limits": "The example assumes the caller may create the Deployment and no other admission policy rejects it first."
         }
       ],
       "qa": [
         {
           "id": "W2.P14.C04.L01.Q01",
           "publication_id": "P14.C04.L01.Q01",
-          "question": "Pod privileged nhận warning nhưng vẫn được tạo. Chính sách đã chặn thành công chưa?",
-          "answer": "Chưa. Kiểm mode enforce, nhãn/version namespace, response, object và audit; warning đơn thuần không là denial."
+          "question": "Namespace orders bật PSA enforce=restricted và warn=restricted trên Kubernetes v1.34. Apply Deployment có Pod template privileged=true trả thành công kèm warning; ReplicaSet báo FailedCreate và không có Pod mới. Enforce đã thất bại chưa? Nếu một Pod khác chỉ dùng image tag nhưng đạt restricted, PSA có từ chối không? Nêu bằng chứng cần xem.",
+          "answer": "Enforce chưa thất bại: PSA warn áp lên template của Deployment, còn enforce xét lúc ReplicaSet tạo Pod và từ chối Pod đặc quyền. Đối chiếu response tạo Deployment, sự kiện FailedCreate của ReplicaSet, Pod mới vắng mặt và số replica chưa đạt; không dùng exit code apply làm bằng chứng workload đã chạy. PSA không kiểm image tag/digest, nên Pod chỉ vi phạm quy tắc digest sẽ không bị PSA từ chối vì lý do ấy. Muốn chặn tag, cần policy admission khác và ca âm riêng chứng minh nó từ chối request tạo Pod."
         }
       ]
     },
@@ -1235,14 +1245,25 @@
           "source_location": "Pod Security Admission/Standards; OCI runtime Linux config",
           "support": "Pod/runtime config có controls về privilege/capabilities/seccomp.",
           "limits": "Hiệu lực seccomp cụ thể phụ thuộc node/runtime/profile."
+        },
+        {
+          "anchor": "Tách rõ hai đường tới Secret",
+          "sources": [
+            "W2-RBAC",
+            "W2-SA",
+            "W2-SECRET"
+          ],
+          "source_location": "RBAC v1.34: API authorization; ServiceAccounts: token automount; Secrets good practices: Pod Secret references and create-Pod exposure",
+          "support": "The Pod's API identity and a Secret explicitly exposed via Pod volume are separate access paths; denying direct Secret API reads to the SA does not remove a declared Secret mount.",
+          "limits": "File readability still depends on the mount and process file permissions; no cluster behavior was claimed as executed."
         }
       ],
       "qa": [
         {
           "id": "W2.P14.C04.L02.Q01",
           "publication_id": "P14.C04.L02.Q01",
-          "question": "Pod non-root vẫn đọc được Secret. Đây có phải mâu thuẫn không?",
-          "answer": "Không. UID trong container khác quyền SA/RBAC hoặc Secret volume đã mount. Kiểm SA, automount, binding, volume, user process và ca âm list secrets."
+          "question": "Pod orders-api chạy non-root, SA orders-app không được API get/list Secret và automountServiceAccountToken=false, nhưng process đọc được tệp từ Secret volume db-credential. Có mâu thuẫn không? Phân biệt hai đường cấp quyền, nêu phép kiểm không làm lộ giá trị và cách giới hạn truy cập khi ứng dụng vẫn cần Secret.",
+          "answer": "Không. RBAC của SA quyết định request API bằng identity ấy; kubelet đưa Secret mà Pod spec tham chiếu vào volume, còn process đọc tệp theo mount và quyền tệp, không cần token API của SA. Kiểm Pod spec/volumeMount, UID và khả năng đọc tệp chỉ bằng status, rồi kiểm can-i get/list của đúng SA và quyền tạo/sửa Pod trong namespace; không in byte Secret. Nếu ứng dụng cần Secret, chỉ mount cho container cần dùng và hạn chế ai được tạo/sửa workload hoặc tham chiếu Secret. Nếu bỏ quyền đọc tệp của chính process mà không đổi cách cấp credential, ứng dụng không thể tiếp tục dùng Secret ấy."
         }
       ]
     },
@@ -1755,14 +1776,24 @@
           "source_location": "VPC infrastructure security: SG stateful versus NACL stateless; flow log record fields",
           "support": "A stateless NACL evaluates return packets separately; source/destination ports and traffic direction must be compared.",
           "limits": "The addresses and ports are a hypothetical packet pair, not an AWS flow log; a timeout alone does not prove an ACL drop."
+        },
+        {
+          "anchor": "NACL subnet client cho outbound tới đích 443 nhưng chặn inbound có **cổng đích 49152**",
+          "sources": [
+            "AWS8",
+            "AWS18"
+          ],
+          "source_location": "VPC infrastructure security: rule order and stateless return traffic; Flow log records: 5-tuple, action and aggregation interval",
+          "support": "Given the explicitly hypothetical rules, a response packet to destination port 49152 is denied on client-subnet ingress even if the server-side flow was accepted.",
+          "limits": "The packet trace is a deduction from the fixture, not observed AWS traffic; Flow Log action does not identify a unique denying rule or application authorization."
         }
       ],
       "qa": [
         {
           "id": "W2.P08.C02.L02.Q01",
           "publication_id": "P08.C02.L02.Q01",
-          "question": "Flow log ACCEPT có chứng minh IAM cho phép request không?",
-          "answer": "Không. ACCEPT chỉ là bằng chứng tầng mạng trong phạm vi bản ghi; phải kiểm principal, action, resource, context riêng."
+          "question": "Client 10.0.2.10:49152 gọi server 10.0.1.20:443. Route và SG cho phép; NACL phía server cho inbound 443/outbound 49152, NACL phía client cho outbound 443 nhưng chặn inbound đích 49152 từ server. Giả sử không có luật ưu tiên cao hơn: SYN, SYN-ACK đi tới đâu, vì sao client timeout dù server có Flow Log ACCEPT? Nêu thay đổi hẹp và hậu kiểm trước khi xét IAM.",
+          "answer": "SYN tới server qua hai NACL và SG đã cho; SYN-ACK đi ra subnet server nhưng bị NACL inbound của subnet client chặn ở cổng đích 49152, nên bắt tay TCP không xong. ACCEPT ở interface server chỉ mô tả luồng tại điểm và cửa sổ ghi ấy, không chứng minh chiều về, TLS, HTTP hay IAM. Kiểm tuple/hướng/interface/thời điểm với luật NACL, rồi cho phép chiều trả về từ phạm vi nguồn cần thiết trên dải cổng tạm thực của client; SG đã theo dõi kết nối nên không mở inbound 49152 chỉ để sửa ca này. Thử lại TCP/TLS và request từ đúng client; chỉ khi nhận phản hồi API mới xét principal, action, resource và policy nếu có AccessDenied."
         }
       ]
     },
