@@ -4755,7 +4755,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C02/L01.md",
-      "sha256": "f8bed85709c797fffbf63f833b593f67d6e1457898340c1420b1deb56e3cd3ed",
+      "sha256": "d489c7a27d943afc9ff3c8c90c5352879dc5e17063b3ccd39afe2a8fa0c7572c",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#18.2",
         "chapters/18-metrics-prometheus-grafana.md#18.1:claim:CLM-4694812c6561c96f"
@@ -4797,7 +4797,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C02/L02.md",
-      "sha256": "56855a904b25b9a53aed60d710d4f72cdd2245a0b33a15f0502ceb49d91809d6",
+      "sha256": "0d01806154a1f48d0d7950ad50df42aae414b7b5c4895441830a4a679bc0aa7b",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#18.3"
       ],
@@ -4836,7 +4836,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C02/L03.md",
-      "sha256": "8f34e5de9e21a2eb46dd757c592204d901863bf249beb0c3c4c19b02f13bd7c9",
+      "sha256": "8cf2f1892af0938efee666fa0d241fcd1d08e845452a58380f53d6c994f281e3",
       "legacy_units": [
         "TXT-f1faf571eeb513e7",
         "TXT-c23b74e519d983e2",
