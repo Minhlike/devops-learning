@@ -5564,7 +5564,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C02/L01.md",
-      "sha256": "28aa2ba81ad8e895826df1b9a5eecca83c4ac292fd688a1093f69dc50563f969",
+      "sha256": "dd8c1c774092eba205d852e679223901ce2491adb49755acb81e12a69ada1d0b",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -5576,8 +5576,8 @@
         {
           "id": "W2.P14.C02.L01.Q01",
           "publication_id": "P14.C02.L01.Q01",
-          "question": "Đổi token A thành B trong CI nhưng container cũ vẫn chạy. Có thể kết luận rotation hoàn tất không?",
-          "answer": "Không. Xác định instance còn dùng A, rollout và kiểm B, revoke A ở backend rồi chạy ca âm A bị từ chối; ghi thời điểm và phạm vi nếu hệ không hỗ trợ hai credential."
+          "question": "10:05 backend nhận A+B; hai Pod đã dùng B, Pod thứ ba còn A vì chưa reload. Token B thử thành công; lease của B hết hạn lúc 10:30. Có thể thu hồi A và báo rotation xong lúc 10:08 không? Nêu phép kiểm tại 10:12 và sau 10:30.",
+          "answer": "Chưa. Pod thứ ba còn nhận traffic bằng A nên revoke ngay có thể gây lỗi; B thành công ở hai Pod không chứng minh tất cả Pod đã chuyển. Ghi version theo từng Pod, tách hoặc cập nhật Pod còn A, thử request qua từng endpoint, rồi revoke A và thử ca âm A bằng đúng backend. Sau 10:30 phải quan sát renew hoặc cấp credential mới và request tiếp tục đúng; nếu renew thất bại, app fail closed theo thiết kế chứ không fallback sang secret tĩnh. TTL yêu cầu trong config không thay TTL thực hệ cấp trả về."
         }
       ]
     },
@@ -5594,7 +5594,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C02/L02.md",
-      "sha256": "d91da1104b486852238074eb2346ada1f083e7e47734229be0534d9745ea5688",
+      "sha256": "c7a822a3566e555281ff90b190b1ce46a37195555a96b307faba59ec6b39e170",
       "legacy_units": [
         "TXT-ad5bf62ca5645629"
       ],
@@ -5613,8 +5613,8 @@
         {
           "id": "W2.P14.C02.L02.Q01",
           "publication_id": "P14.C02.L02.Q01",
-          "question": "File .env đã COPY vào image rồi xóa bằng RUN ở layer sau. Container cuối không thấy file. Có thể giữ image không?",
-          "answer": "Không; layer cũ có thể còn byte. Dựng lại từ context sạch, thu hồi token, truy registry/cache và nơi image đã phân phối, kiểm bằng marker giả; không dùng secret thật."
+          "question": "Token giả TOK-DEMO-41 từng được COPY vào image rồi xóa ở layer sau. Image mới không còn marker, nhưng digest cũ đã pull trên runner và có trong registry cache. Nêu hai việc độc lập phải làm và giới hạn của phép quét.",
+          "answer": "Thứ nhất revoke/rotate token và kiểm ca âm để giá trị cũ không còn gọi API trong phạm vi backend; thứ hai ngăn phân phối và truy các bản sao ở digest cũ, runner, registry/cache, log và backup theo phạm vi được phép. Xóa tag hay file ở layer mới không xóa layer cũ; dựng lại từ context sạch và dùng build secret mount thay ARG/ENV phù hợp. Quét marker âm chỉ chứng minh không tìm thấy trong artifact/thời đoạn đã quét, không chứng minh mọi bản sao biến mất."
         }
       ]
     },
@@ -5631,7 +5631,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P14/C02/L03.md",
-      "sha256": "e74dd347ea5b7a855f1079c46f266d06ae9ec9fd07f69552c675a11207fc241c",
+      "sha256": "d2c61a0c558153331f429b497dd7a25ad96d468ed1e7c8237681ab33e39a3fb4",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -5644,8 +5644,8 @@
         {
           "id": "W2.P14.C02.L03.Q01",
           "publication_id": "P14.C02.L03.Q01",
-          "question": "Backup còn byte mã hóa nhưng quyền decrypt/key đã mất. Có đạt phục hồi không?",
-          "answer": "Chưa. Cần key và quyền giải mã còn hữu dụng, thử restore trong môi trường tách biệt và kiểm dữ liệu; backup byte riêng không chứng minh RTO/RPO."
+          "question": "Backup cũ dùng data key D được bao bằng K1. Hệ chuyển sang K2, sau đó định hủy K1 trước khi thử restore. Có thể kết luận backup còn phục hồi được không? Nếu chính D đã lộ, tái bao D dưới K2 có đủ không?",
+          "answer": "Không. Byte backup còn nguyên nhưng có thể không giải mã được nếu bản cũ vẫn cần K1; giữ khả năng decrypt theo retention, kiểm key version/quyền ở môi trường restore, tái bao theo giao thức sản phẩm và thử restore bằng identity dự kiến trước khi hủy K1. Nếu D đã lộ, chỉ đổi wrapping key không thu hồi dữ liệu có thể đã bị đọc; phải đánh giá phạm vi rò và khả năng mã hóa lại bằng data key mới. Hậu kiểm gồm giải mã, dữ liệu đúng và ứng dụng đọc/ghi, không chỉ lệnh KMS thành công."
         }
       ]
     },
