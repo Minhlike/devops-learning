@@ -3783,7 +3783,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C01/L01.md",
-      "sha256": "8f329ac7bfc923e5cdca5ece8aac4ea522798bdcbc5a1ef4953470f18e2c7fcf",
+      "sha256": "00c875c2dd4cfcaaf9762275207ff32b9ba73553c05bc6ac6b18419f436f5204",
       "legacy_units": [
         "chapters/15-kubernetes-trang-thai-mong-muon.md#intro",
         "TXT-a23b33d4221de423",
@@ -3817,7 +3817,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C01/L02.md",
-      "sha256": "5b81794aed2c198482c29be3bd7aace211a026444b18237394cd720c4c1f2eb6",
+      "sha256": "0c282111ca5c85727b71b0db2ba12c6ff6f5557944178786be8af0edfc424fa8",
       "legacy_units": [
         "TXT-92c85c3a5823a77d"
       ],
@@ -3853,7 +3853,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C01/L03.md",
-      "sha256": "e6f9ea2ae93408b62530a00290b5e5b7830e01611c7c324847b4496a2cd33641",
+      "sha256": "9a6ef7e343c50fb6d44a469a87992d7fbeb7d29b8083a090a307dab07cfa9c5a",
       "legacy_units": [
         "TXT-d2e8e1cfa3ee6ddb",
         "chapters/15-kubernetes-trang-thai-mong-muon.md#15.1:claim:CLM-10013f41425f84cf",
@@ -3886,7 +3886,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C02/L01.md",
-      "sha256": "ad406af98b822db98982a9e513af38205fbc1d46e03958e5cee74aa966d57c63",
+      "sha256": "6fdfddc529bf71d67de0f44f1851a48911ce00ea6189b9fb732291890402a92b",
       "legacy_units": [
         "TXT-1ef72086f62ddee7",
         "chapters/15-kubernetes-trang-thai-mong-muon.md#15.2:claim:CLM-6a2839918c3e6996"
@@ -3919,7 +3919,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C02/L02.md",
-      "sha256": "f9a4eb19a5e329eec448e23a53f2b99c51662eecd9cb1f855bf8b7bf41d08af2",
+      "sha256": "046dfdf9e24d2f1d2ea9a60649800ca41638caa9aeae5482f1293785e114fa1f",
       "legacy_units": [
         "TXT-82485489a3c455c4",
         "TXT-af1e34bf865082b7",
@@ -3954,7 +3954,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C02/L03.md",
-      "sha256": "5d89f1e6d985fa97330a79c92a0b4a1400c75394759d805383b91448eff8837c",
+      "sha256": "fdabf04260ecb04c934fb2be8a0debe11e67cd6f029466eafca3a82564d3bad1",
       "legacy_units": [
         "TXT-3919e097e0a274bf",
         "TXT-a94e8907361b7b99"
@@ -4101,7 +4101,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C04/L01.md",
-      "sha256": "ac46cef38c5a88302674e9af6f3f8f6b2839a58ab36e3ea9f1ae879f714f1d5a",
+      "sha256": "5381956a59946330e61e4846a1df44451c6d840b45592e6837a0a892dd5ebd25",
       "legacy_units": [
         "TXT-955415b63eeb6527",
         "TXT-a5af0edfa3003e5d"
@@ -4139,7 +4139,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C04/L02.md",
-      "sha256": "ab8667f6ab3f3c12862dba982694e4bc185884b30364a4544247288b0a0f0c81",
+      "sha256": "6b0f15ff2904732c1d01ab2c9b117c753f9ebfbd6df71b5d87807e2298285a0f",
       "legacy_units": [
         "TXT-445b9558deea7c90"
       ],
@@ -4169,7 +4169,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C04/L03.md",
-      "sha256": "21aeaee8eb64c124299f17d5eb45e47fe964f83db7ceff1239d4e0ee723f7460",
+      "sha256": "db6d3ba6b2aae82e0d3d9522d7b91c86a38227e3058b14c4abb65040849881ca",
       "legacy_units": [
         "TXT-db5de72ceb8f6471",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.3:claim:CLM-d3754b92ce88cb96"

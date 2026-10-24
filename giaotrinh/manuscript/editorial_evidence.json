@@ -3173,7 +3173,7 @@
       ]
     },
     "P11.C01.L01": {
-      "content_sha256": "8f329ac7bfc923e5cdca5ece8aac4ea522798bdcbc5a1ef4953470f18e2c7fcf",
+      "content_sha256": "00c875c2dd4cfcaaf9762275207ff32b9ba73553c05bc6ac6b18419f436f5204",
       "editorial_decision": "API server, etcd và controller manager có trách nhiệm riêng; apply ghi ý định.",
       "checks": [
         {
@@ -3212,7 +3212,7 @@
       ]
     },
     "P11.C01.L02": {
-      "content_sha256": "5b81794aed2c198482c29be3bd7aace211a026444b18237394cd720c4c1f2eb6",
+      "content_sha256": "0c282111ca5c85727b71b0db2ba12c6ff6f5557944178786be8af0edfc424fa8",
       "editorial_decision": "Tách generation, observedGeneration và resourceVersion; bổ sung cơ chế vòng điều khiển và xung đột cập nhật có điều kiện.",
       "checks": [
         {
@@ -3258,7 +3258,7 @@
       ]
     },
     "P11.C01.L03": {
-      "content_sha256": "e6f9ea2ae93408b62530a00290b5e5b7830e01611c7c324847b4496a2cd33641",
+      "content_sha256": "9a6ef7e343c50fb6d44a469a87992d7fbeb7d29b8083a090a307dab07cfa9c5a",
       "editorial_decision": "Dòng thời gian giả định nối controller, scheduler, kubelet và EndpointSlice với phép quan sát riêng; trạng thái apply không bị coi là readiness.",
       "checks": [
         {
@@ -3297,7 +3297,7 @@
       ]
     },
     "P11.C02.L01": {
-      "content_sha256": "ad406af98b822db98982a9e513af38205fbc1d46e03958e5cee74aa966d57c63",
+      "content_sha256": "6fdfddc529bf71d67de0f44f1851a48911ce00ea6189b9fb732291890402a92b",
       "editorial_decision": "Selector khác owner reference; Running, Ready, Available khác nhau.",
       "checks": [
         {
@@ -3348,7 +3348,7 @@
       ]
     },
     "P11.C02.L02": {
-      "content_sha256": "f9a4eb19a5e329eec448e23a53f2b99c51662eecd9cb1f855bf8b7bf41d08af2",
+      "content_sha256": "046dfdf9e24d2f1d2ea9a60649800ca41638caa9aeae5482f1293785e114fa1f",
       "editorial_decision": "Ca giả định có lỗi probe và selector độc lập; quan sát theo từng ranh giới.",
       "checks": [
         {
@@ -3365,7 +3365,7 @@
       ]
     },
     "P11.C02.L03": {
-      "content_sha256": "5d89f1e6d985fa97330a79c92a0b4a1400c75394759d805383b91448eff8837c",
+      "content_sha256": "fdabf04260ecb04c934fb2be8a0debe11e67cd6f029466eafca3a82564d3bad1",
       "editorial_decision": "Dạy rollout bằng ngân sách số, trạng thái thực của Pod và hậu kiểm request; deadline chỉ báo kẹt.",
       "checks": [
         {
@@ -3558,7 +3558,7 @@
       ]
     },
     "P11.C04.L01": {
-      "content_sha256": "ac46cef38c5a88302674e9af6f3f8f6b2839a58ab36e3ea9f1ae879f714f1d5a",
+      "content_sha256": "5381956a59946330e61e4846a1df44451c6d840b45592e6837a0a892dd5ebd25",
       "editorial_decision": "Service selector và DNS được nối với EndpointSlice; trạng thái ready/serving/terminating và ngoại lệ publishNotReadyAddresses được dùng để chẩn đoán rollout.",
       "checks": [
         {
@@ -3617,7 +3617,7 @@
       ]
     },
     "P11.C04.L02": {
-      "content_sha256": "ab8667f6ab3f3c12862dba982694e4bc185884b30364a4544247288b0a0f0c81",
+      "content_sha256": "6b0f15ff2904732c1d01ab2c9b117c753f9ebfbd6df71b5d87807e2298285a0f",
       "editorial_decision": "CNI triển khai dataplane; spec không chứng minh traffic đã đi được.",
       "checks": [
         {
@@ -3646,7 +3646,7 @@
       ]
     },
     "P11.C04.L03": {
-      "content_sha256": "21aeaee8eb64c124299f17d5eb45e47fe964f83db7ceff1239d4e0ee723f7460",
+      "content_sha256": "db6d3ba6b2aae82e0d3d9522d7b91c86a38227e3058b14c4abb65040849881ca",
       "editorial_decision": "NetworkPolicy phụ thuộc plugin và phạm vi selector/hướng lưu lượng; ca hai selector làm rõ giao và hợp, policy cộng gộp và hai hướng cho phép.",
       "checks": [
         {

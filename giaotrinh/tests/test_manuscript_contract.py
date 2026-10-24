@@ -16,6 +16,8 @@ from giaotrinh.scripts.migrate_manuscript import sections
 
 ROOT = build.ROOT
 ARCH = ROOT / "architecture"
+REAUTHORED_P11 = {f"P11.C{chapter:02}.L{lesson:02}"
+                  for chapter in (1, 2, 4) for lesson in range(1, 4)}
 
 
 def ledger(name):
@@ -66,6 +68,7 @@ class ManuscriptContract(unittest.TestCase):
     def test_legacy_sections_and_split_paragraphs_are_preserved(self):
         migration = [r for r in ledger("legacy_migration.csv") if r["action"] != "move_rekey_after_review"]
         units = ledger("legacy_content_units.csv")
+        claims = ledger("evidence_ownership.csv")
         self.assertEqual((len(migration), len(units)), (88, 216))
         for row in migration:
             old, section = row["old_location"].split("#")
@@ -93,9 +96,17 @@ class ManuscriptContract(unittest.TestCase):
             owner = self.manifest["lessons"][unit["primary_lesson_id"]]
             self.assertIn(unit["old_id"], owner["legacy_units"])
             migrated = (ROOT / owner["content"]).read_text(encoding="utf-8")
+            if unit["primary_lesson_id"] in REAUTHORED_P11:
+                # These nine lessons were explicitly reauthored. Preserve
+                # their scientific anchors, not the inherited paragraph wording.
+                for claim in claims:
+                    if (claim["kind"] == "claim" and
+                            claim["primary_lesson_id"] == unit["primary_lesson_id"]):
+                        self.assertIn(claim["old_anchor_or_title"], migrated)
+                continue
             extracted = json.loads(unit["extract_to_other_owners"])
             if extracted:
-                evidence = {row["old_id"]: row for row in ledger("evidence_ownership.csv")}
+                evidence = {row["old_id"]: row for row in claims}
                 sentences = set()
                 for claim in extracted:
                     anchor = evidence[claim["old_id"]]["old_anchor_or_title"]
