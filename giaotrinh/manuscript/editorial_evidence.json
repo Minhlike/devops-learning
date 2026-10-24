@@ -339,7 +339,7 @@
       ]
     },
     "P02.C03.L01": {
-      "content_sha256": "2d862547849c087e86c8e35ae7060493438cb35699ebc19b10c7df7b89937d23",
+      "content_sha256": "bf90440cb5e071abcaab26d2610b13ba599c6e7e3586f0452331cec292413dbd",
       "editorial_decision": "Phân rã latency thành CPU, chờ lịch và chờ phụ thuộc; thuật toán EEVDF chỉ nêu theo phiên bản, không khái quát quá mức.",
       "checks": [
         {
@@ -366,7 +366,7 @@
       ]
     },
     "P02.C03.L02": {
-      "content_sha256": "5b90b957460ec7138b69f6c682704e9280ae98bddcea925ab5424b199da98008",
+      "content_sha256": "fa71f296d9a44fcb765bf69a0b8a67ccd59099fa22c552d7aa8da829da722383",
       "editorial_decision": "Địa chỉ ảo, cấp trang theo nhu cầu và page fault được phân biệt với lỗi truy cập; không đồng nhất virtual size với RAM.",
       "checks": [
         {
@@ -392,7 +392,7 @@
       ]
     },
     "P02.C03.L04": {
-      "content_sha256": "3eb64e3363d82eae77b5e57b43c79c1278f39664edaf5725a16d1ede8eb7ebd0",
+      "content_sha256": "8caebcbbe0d1bce31566a18d7ace893e6da66952c8ea06218f3f7ca93fdf153f",
       "editorial_decision": "Bảng số liệu giả định tính đúng 0,30/0,32 lõi và PSI 2%/30%; kết luận chỉ ưu tiên điều tra I/O, không khẳng định ổ hỏng.",
       "checks": [
         {
@@ -428,7 +428,7 @@
       ]
     },
     "P02.C04.L01": {
-      "content_sha256": "10b5f7cda6df501216aa8299182519d5dbd65aa7fa1cc8348810b7f6d0186fa4",
+      "content_sha256": "ea060542a4eb7ccb22e303f8ac5bc9a248c2d234a4982473f1d33b51722ce62c",
       "editorial_decision": "Ranh giới tiến trình và readiness được giữ; After/Wants/Requires và hai network target được phân biệt. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
       "checks": [
         {
@@ -474,7 +474,7 @@
       ]
     },
     "P02.C04.L02": {
-      "content_sha256": "bf39135fa89a2b1bc973b4177b826491caac27b794477a695fd43d0f01103d2b",
+      "content_sha256": "c967d2fc6767dcb9d298de6af488b07382c2a3909cfb64d187b13c5041d74968",
       "editorial_decision": "Type=exec, user/group, restart và readiness được giải thích theo đường lỗi; không coi active là healthcheck.",
       "checks": [
         {
@@ -510,7 +510,7 @@
       ]
     },
     "P02.C04.L03": {
-      "content_sha256": "40faf9138e0103185071cad7ec7c1c487bfa790d583bb2c0806fd9b6d46491f2",
+      "content_sha256": "4b0c6ef35776386cc96de2d1043234d637a18a3be57a8161e2df46f14a2783c7",
       "editorial_decision": "Runbook theo thứ tự artifact-process-socket-request; systemd-analyze verify chỉ được mô tả như kiểm tra cú pháp/một phần tham chiếu.",
       "checks": [
         {

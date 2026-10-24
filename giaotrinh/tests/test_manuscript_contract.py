@@ -16,8 +16,12 @@ from giaotrinh.scripts.migrate_manuscript import sections
 
 ROOT = build.ROOT
 ARCH = ROOT / "architecture"
-REAUTHORED_P11 = {f"P11.C{chapter:02}.L{lesson:02}"
-                  for chapter in (1, 2, 4) for lesson in range(1, 4)}
+REAUTHORED_LESSONS = (
+    {f"P11.C{chapter:02}.L{lesson:02}"
+     for chapter in (1, 2, 4) for lesson in range(1, 4)} |
+    {f"P02.C{chapter:02}.L{lesson:02}"
+     for chapter, count in ((3, 4), (4, 3), (5, 3)) for lesson in range(1, count + 1)}
+)
 
 
 def ledger(name):
@@ -77,7 +81,7 @@ class ManuscriptContract(unittest.TestCase):
             self.assertIn(row["old_location"], owner["legacy_units"] +
                           [u["old_location"].split(":")[0] for u in units
                            if u["primary_lesson_id"] == row["primary_text_owner"]])
-            if row["action"] != "split":
+            if row["action"] != "split" and row["primary_text_owner"] not in REAUTHORED_LESSONS:
                 body = (ROOT / owner["content"]).read_text(encoding="utf-8")
                 corrected_location = "chapters/18-metrics-prometheus-grafana.md#18.3"
                 old = "CPU time tăng 24 giây trên hai instance trong 120 giây mẫu"
@@ -96,8 +100,8 @@ class ManuscriptContract(unittest.TestCase):
             owner = self.manifest["lessons"][unit["primary_lesson_id"]]
             self.assertIn(unit["old_id"], owner["legacy_units"])
             migrated = (ROOT / owner["content"]).read_text(encoding="utf-8")
-            if unit["primary_lesson_id"] in REAUTHORED_P11:
-                # These nine lessons were explicitly reauthored. Preserve
+            if unit["primary_lesson_id"] in REAUTHORED_LESSONS:
+                # Explicitly reauthored lessons preserve their mappings and
                 # their scientific anchors, not the inherited paragraph wording.
                 for claim in claims:
                     if (claim["kind"] == "claim" and
