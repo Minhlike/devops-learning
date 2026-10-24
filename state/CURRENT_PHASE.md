@@ -1,8 +1,8 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 6 — AWS Cloud Infrastructure
-- **Current Status:** Hoàn thành Buổi 41 — Kubernetes Storage (COMPLETED / PASS). Chuẩn bị Buổi 42 — Ingress & Application Exposure. (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên).
-- **Current Week:** Tuần 10 (Nghiệm thu ngày 15/10/2026)
+- **Current Phase:** PHASE 10 — Observability & Site Reliability Engineering (SRE)
+- **Current Status:** Hoàn thành Buổi 43 (Helm, 9.3/10), Buổi 44 (K8s Troubleshooting, 9.6/10 — Tốt nghiệp Phase 9), Buổi 45 (Prometheus, 9.7/10). Đang học Buổi 46 — Grafana & Practical Dashboards (IN PROGRESS — ĐANG HỌC — CHƯA HOÀN THÀNH — CHƯA KIỂM TRA CUỐI BUỔI). (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller).
+- **Current Week:** Tuần 12 (Nghiệm thu tiến độ ngày 22/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -654,3 +654,122 @@
         - Active Recall: Đạt 5 câu PASS trực tiếp, 2 câu ban đầu PARTIAL; cả 2 nội dung còn thiếu đã được giải thích chính xác và củng cố toàn diện trong bài kiểm tra bổ sung về cơ chế nội tại PostgreSQL (Write-Ahead Logging - WAL, `fsync`, `synchronous_commit`, Crash Recovery và rủi ro Asynchronous Replication).
         - Trạng thái cluster: Cụm cluster `s41` và `s40` được giữ nguyên tài nguyên (chưa cleanup để tránh gián đoạn).
       - Kết quả: **ĐẠT BUỔI 41 (COMPLETED / PASS — Ngày 15/10/2026)**.
+  29. **Buổi 42 — Kubernetes Gateway API & Application Exposure:**
+      - Định hướng Thực hành Hiện đại:
+        - Giới thiệu khái niệm Ingress truyền thống ở mức nền tảng (L7 routing, Ingress Controller).
+        - Tập trung thực hành chuyên sâu Kubernetes Gateway API (chuẩn thế hệ mới của Kubernetes SIG Network).
+        - Sử dụng Envoy Gateway (v1.9.2) làm Gateway Controller hiện đại thay cho Ingress-NGINX đã ngừng được duy trì.
+      - Môi trường & Triển khai Hạ tầng:
+        - Môi trường: Windows + WSL2 Ubuntu 24.04, Docker Engine, Kubernetes v1.37.0 trên Kind cluster `s41`.
+        - Namespace riêng biệt: `s42`.
+        - Cài đặt Gateway API CRDs chính thức và cài đặt Envoy Gateway Controller thành công (rollout PASS).
+      - Quản trị Cấu hình Gateway API (CRD Objects):
+        - **GatewayClass (`gatewayclass.yaml`):** Khởi tạo `GatewayClass` `s42-envoy` với controller `gateway.envoyproxy.io/gatewayclass-controller`, trạng thái `Accepted=True` (PASS).
+        - **Gateway (`gateway.yaml`):** Khởi tạo `Gateway` `s42-gateway` trong namespace `s42`, listener HTTP port 80, `allowedRoutes.namespaces.from: Same`. Gateway `Accepted=True`, Listener `Accepted=True`, `Programmed=True`, `ResolvedRefs=True`.
+        - **Bảo lưu Tồn đọng Kỹ thuật (Unresolved Gateway External IP):** Gateway tổng thể có trạng thái `Programmed=False` (`Reason: AddressNotAssigned`, `Message: No addresses have been assigned to the Gateway`) do Service Envoy Proxy loại `LoadBalancer` mang `EXTERNAL-IP=<pending>` trong môi trường Kind (không có Cloud LoadBalancer controller cấp IP ngoài). Đây là tồn đọng kỹ thuật được bảo lưu trung thực, không giả mạo kết quả.
+      - Triển khai Dịch vụ Ứng dụng Backend & HTTPRoute:
+        - **Backend API (`backend.yaml`):** Deployment `s42-api` chạy image `hashicorp/http-echo:1.0.0` (`-text="Hello from S42 API"`), Service ClusterIP `s42-api` cổng 80 -> targetPort 5678 (PASS).
+        - **HTTPRoute (`httproute.yaml`):** Khởi tạo `s42-api-route` gắn với Gateway `s42-gateway`, trỏ backend `s42-api`, trạng thái `Accepted=True`, `ResolvedRefs=True` (PASS).
+      - Kiểm thử Mạng End-to-End & Routing Rules:
+        - Kiểm thử qua port-forward từ Envoy Service ra cổng `18080` của WSL.
+        - Request hợp lệ: `Host: api.s42.local`, `Path: /api` -> nhận `HTTP/1.1 200 OK`, `Hello from S42 API` (PASS).
+        - Hostname & Path matching: Kiểm chứng `api.s42.local/apix` -> HTTP 404, `wrong.s42.local/api` -> HTTP 404, `api.s42.local/api/customers` -> HTTP 200 (kiểm chứng nguyên lý tiền tố theo ranh giới đường dẫn PathPrefix) (PASS).
+      - Failure Injection & Khôi phục Tự động:
+        - Scale Deployment `s42-api` xuống `replicas=0`: Request hợp lệ lập tức trả về `HTTP 503 Service Unavailable`, `EndpointSlice` ghi nhận 0 endpoints (PASS).
+        - Scale Deployment trở lại `replicas=1`: Rollout thành công, request phục hồi `HTTP 200 OK` (PASS).
+      - Đa Tuyến Backend (Multi-backend Routing):
+        - Triển khai thêm `s42-web` (`frontend.yaml` - `hashicorp/http-echo:1.0.0` với `-text="Hello from S42 WEBSITE"`).
+        - Cập nhật HTTPRoute với hostname `shop.s42.local`: Tuyến `/` trỏ `s42-web`, tuyến `/api` trỏ `s42-api`.
+        - Kiểm chứng: `shop.s42.local/` -> HTTP 200 `Hello from S42 WEBSITE`; `shop.s42.local/api` -> HTTP 200 `Hello from S42 API` (PASS).
+      - Sự cố Hạ tầng WSL/Kind:
+        - WSL/terminal reset, container `s41-control-plane` dừng với `ExitCode=128` (lỗi khởi tạo systemd cgroup scope từ docker/runc, `OOMKilled=false`). Học viên nâng lại `fs.inotify.max_user_instances=1024`, chạy `docker start s41-control-plane` thành công, Kubernetes API Server phục hồi, `/readyz?verbose` pass, node trở lại Ready.
+      - Đánh giá Năng lực Cuối Buổi (Áp dụng chính sách kiểm tra mới S42+):
+        - Trắc nghiệm: 6/7 câu đúng (sai câu 4 do nhầm lẫn request `/api/customers` gửi vào cả hai backend; kiến thức chuẩn: Gateway API ưu tiên tuyến cụ thể hơn `/api`).
+        - Tự luận: 2,5/4 điểm (Câu 8: 1,5/2; Câu 9: 1/2 do đề xuất restart thay vì scale up từ replicas=0).
+        - Tổng kết bài kiểm tra: 8,5/11 quy đổi **7,7/10 — ĐẠT (PASS)**.
+        - Điểm cần củng cố: Nguyên tắc ưu tiên tuyến cụ thể hơn, chẩn đoán dựa trên bằng chứng (evidence-based troubleshooting), phân biệt Gateway hợp lệ về cấu hình vs Gateway có External IP.
+      - Kết quả: **COMPLETED — LEARNING & ASSESSMENT PASS (7,7/10 — Ngày 15/10/2026)**.
+  30. **Buổi 43 — Helm Fundamentals:**
+      - Môi trường & Khởi tạo Release:
+        - Môi trường: Windows 11 + WSL2 Ubuntu 24.04, Docker, cụm Kind `kind-s41` (Kubernetes v1.37.0), Helm CLI v4.3.1.
+        - Namespace: `s43`. Release: `s43-demo`.
+        - Cấu trúc Chart `s43-hello` (`Chart.yaml`, `values.yaml`, `templates/configmap.yaml`, `deployment.yaml`, `service.yaml`).
+      - Chuỗi Bài Lab Thực hành Hoàn thành:
+        - **Lab 43.1 (Kiểm tra công cụ):** Xác minh Helm CLI v4.3.1 trên WSL (PASS).
+        - **Lab 43.2 (Chart Anatomy & Validation):** Khảo sát cấu trúc Chart, chạy `helm lint` và `helm template` kiểm tra cú pháp và render manifest. Phát hiện và xử lý lỗi tệp tin mẫu `configmap.yaml` bị đặt nhầm ngoài thư mục `templates/` (PASS).
+        - **Lab 43.3 (Cài đặt Release):** Chạy `helm install s43-demo ./s43-hello -n s43 --create-namespace`, khởi tạo thành công Release `s43-demo` và ConfigMap `s43-demo-settings` ở revision 1 (PASS).
+        - **Lab 43.4 (Nâng cấp cấu hình):** Sử dụng `helm upgrade --set-string message="Hello from Helm S43 Upgrade"`, cập nhật ConfigMap thành công lên revision 2 (PASS).
+        - **Lab 43.5 (Khôi phục Release):** Sử dụng `helm rollback s43-demo 1 -n s43`, khôi phục ConfigMap về nội dung revision 1, Helm sinh ra revision 3 (Rollback to 1) (PASS).
+        - **Lab 43.6 (Mở rộng Workload Chart):** Bổ sung Deployment (`hashicorp/http-echo:1.0.0`, args `-text={{ .Values.message }}`, readinessProbe `/` cổng 5678) và Service ClusterIP (port 80 -> targetPort 5678) vào thư mục `templates/`; thực hiện `helm upgrade` thành công lên revision 4 (PASS).
+        - **Lab 43.7 (Kiểm thử HTTP End-to-End):** Thiết lập `kubectl port-forward svc/s43-demo-api 18080:80 -n s43`, gửi request HTTP nhận phản hồi `HTTP/1.1 200 OK`, `Hello from Helm S43` (PASS). (Lưu ý: lỗi `bind: address already in use` khi thử mở port-forward thứ hai là xung đột cổng local 18081 với tiến trình đang chạy, không phải lỗi Helm/Kubernetes).
+        - **Lab 43.8 (Scale Workload qua Helm Values):** Cập nhật `replicaCount: 2` trong `values.yaml`, thực hiện `helm upgrade` lên revision 5; Deployment đạt `2/2 Ready`, 2 Pods chạy ổn định trên node `s41-control-plane` (PASS).
+        - **Lab 43.9 (Failure Injection & Khả năng Chịu lỗi RollingUpdate):** Nâng cấp với image tag không tồn tại (`--set image.tag="9.9.9"`). Kết quả: Revision 6 mang trạng thái `failed`, Pod mới rơi vào `ErrImagePull`/`ImagePullBackOff`. Nhờ cơ chế RollingUpdate (`maxUnavailable=25%`), 2 Pods cũ ở revision 5 vẫn duy trì trạng thái `Running/Ready` (PASS).
+        - **Lab 43.10 (Zero-Downtime Rollback):** Xác minh dịch vụ vẫn trả về HTTP 200 trong lúc upgrade lỗi (không gián đoạn dịch vụ); thực hiện `helm rollback s43-demo 5 -n s43`, Helm tạo revision 7 `deployed`, Pod lỗi bị thu hồi và Deployment khôi phục `2/2 Ready` (PASS).
+      - Trạng thái Cuối cùng:
+        - Release `s43-demo`: revision 7, `deployed`.
+        - Deployment `s43-demo-api`: `2/2 Ready`, Service ClusterIP, 2 Pods Running trên `s41-control-plane`.
+        - Lịch sử Helm lưu vết đầy đủ revision 6 ở trạng thái `failed`.
+      - Đánh giá Năng lực Cuối Buổi (Áp dụng chính sách kiểm tra mới S42+):
+        - Trắc nghiệm: **7/7 câu đúng** (B, C, A, D, B, C, A).
+        - Tự luận: Câu 8 (1,75/2 điểm), Câu 9 (1,5/2 điểm).
+        - Tổng kết: 10,25/11 quy đổi **9,3/10 — ĐẠT (PASS)**.
+        - Điểm cần củng cố: Deployment/ReplicaSet là controller quản lý tài nguyên, không phải tiến trình trong Pod; 2 replicas không đồng nghĩa 2 máy vật lý; tăng replicas không bảo đảm thông lượng tăng tuyến tính; phân biệt lỗi kéo image với container crash hoặc probe fail; mô tả troubleshooting cần nêu rõ hành động rollback revision 6 về revision 5 tạo revision 7; phân biệt Release thất bại với việc dịch vụ dừng phục vụ.
+      - Kết quả: **COMPLETED — LEARNING & ASSESSMENT PASS (9,3/10 — Ngày 19/10/2026)**.
+  31. **Buổi 44 — Kubernetes Troubleshooting & Defense (Mốc Tốt nghiệp Phase 9):**
+      - Môi trường & Công cụ:
+        - Môi trường: Windows 11 + WSL2 Ubuntu 24.04, Docker, cụm Kind `s41` (Kubernetes v1.37.0).
+        - Bộ công cụ chẩn đoán: `kubectl` (`describe`, `logs -p`, `get events`, `get endpointslices`), `curl`.
+        - Thư mục lab: `labs/s44-kubernetes-troubleshooting/`.
+      - Quy trình Chẩn đoán theo Bằng chứng (Evidence-Based Diagnostics):
+        - Quán triệt 4 câu hỏi định vị hạ tầng: Xác định thực thể thật (process/file/etcd/socket), nơi chạy, thành phần quản trị và đối chiếu kiến thức nền tảng.
+        - Quy trình 4 bước: Khảo sát tổng thể (`get pods -o wide`) -> Đọc sự kiện runtime (`describe pod`, Events, Last State) -> Truy vết log ứng dụng (`logs -p`) -> Kiểm tra tầng mạng (`endpointslices`, `services`).
+      - Chuỗi Kịch bản Mô phỏng Sự cố Thực tế:
+        - **CrashLoopBackOff (`crashloop.yaml`):** Điều tra tiến trình PID 1 thoát với mã lỗi non-zero; phân tích `lastState.terminated.exitCode`, sửa command/args đưa Pod về trạng thái Running và phục hồi dịch vụ (PASS).
+        - **Readiness Probe Failure (`readiness.yaml`):** Pod Running nhưng `0/1 Ready`. Kiểm chứng cơ chế bảo vệ của Kubernetes: EndpointSlice tự động gỡ IP Pod khỏi Service traffic mà không restart container. Sửa đường dẫn kiểm tra đưa Pod về Ready và khôi phục lưu lượng (PASS).
+        - **Liveness Probe Failure (`liveness.yaml`):** Probe thất bại liên tục làm Kubelet chủ động kill và restart container (`RestartCount` tăng dần); phân biệt rạch ròi với Readiness Probe (PASS).
+        - **OOMKilled Exit Code 137 (`oom.yaml`):** Khởi chạy tiến trình Python cấp phát 128 MiB bộ nhớ trong container có limit 32 MiB; nhân Linux kích hoạt OOM Killer tiêu diệt tiến trình với exit code 137 (`Reason: OOMKilled`) (PASS).
+        - **Pending / FailedScheduling (`insufficient-memory.yaml`):** Pod kẹt `Pending` do khai báo request 100 GiB vượt quá sức chứa worker node; đọc sự kiện scheduler `0/1 nodes are available: 1 Insufficient memory` (PASS).
+        - **Service Routing Mismatch (`service-debug.yaml`):** Chẩn đoán Service không thể định tuyến do lệch `selector` với Pod labels khiến EndpointSlice rỗng (0 endpoints); căn chỉnh selector phục hồi kết nối thành công (PASS).
+      - Đánh giá Năng lực Cuối Buổi (Áp dụng chuẩn đánh giá mới S42+):
+        - Bài kiểm tra duy nhất: 7 câu trắc nghiệm + 2 câu tự luận cơ chế.
+        - Kết quả: **9,6/10 — ĐẠT (PASS)**.
+        - Chính thức hoàn thành Phase 9 — Container Orchestration with Kubernetes & Helm.
+  32. **Buổi 45 — Prometheus Fundamentals & Metrics Collection:**
+      - Môi trường & Triển khai Hệ thống Giám sát:
+        - Môi trường: Cụm Kubernetes trên WSL2 / Kind, namespace `s45`.
+        - Thư mục lab: `labs/s45-prometheus-monitoring/`.
+        - Triển khai Prometheus server lightweight qua Helm Chart `prometheus-community/prometheus` (`prometheus-values.yaml`): Tắt Alertmanager, Pushgateway, Node Exporter; cấu hình `emptyDir` 512 MiB và retention 6h/300MB để tiết kiệm tối đa RAM máy tính (PASS).
+      - Kiến trúc Observability & Thu thập Metrics:
+        - Nắm vững mô hình Pull-based của Prometheus: Định kỳ gửi HTTP GET request đến `/metrics` của target theo chu kỳ `scrape_interval: 15s`.
+        - Hiểu cấu trúc TSDB (Time Series Database), HTTP Server, Retrieval Engine và Service Discovery.
+        - Phân biệt 4 kiểu dữ liệu metric chuẩn: Counter, Gauge, Histogram, Summary.
+      - PromQL Cơ bản & Đo lường Tải Thực tế:
+        - Cú pháp truy vấn PromQL: Instant vector, Range vector, nhãn lọc, `rate()`, `irate()`, `sum()`, nhóm `by (label)`.
+        - Workload sinh tải CPU 3 pha (`cpu-demo.yaml`): Giai đoạn 1 IDLE (30s), Giai đoạn 2 CPU STRESS (90s while-loop), Giai đoạn 3 RECOVERY (180s sleep).
+        - Thực thi truy vấn PromQL `container_cpu_usage_seconds_total` và `rate(...)`, trực quan hóa chính xác đường biểu diễn CPU tăng vọt trong pha stress và hạ nhiệt trong pha recovery (PASS).
+        - Kiểm chứng và xác minh các scrape targets đạt trạng thái `UP=1` (PASS).
+      - Đánh giá Năng lực Cuối Buổi:
+        - Bài kiểm tra duy nhất: 7 câu trắc nghiệm + 2 câu tự luận PromQL & Kiến trúc Pull.
+        - Kết quả: **9,7/10 — ĐẠT (PASS)**.
+  33. **Buổi 46 — Grafana & Practical Dashboards (IN PROGRESS — Đang học, Chưa hoàn thành):**
+      - Môi trường Hạ tầng Hỗ trợ (VMware & K3s Staging):
+        - Xây dựng máy ảo Ubuntu Server 26.04.1 trên VMware Workstation, gán IP tĩnh `192.168.210.100`.
+        - Thực hiện mở rộng LVM disk, cấu hình SSH Key, SSH Hardening (bảo mật port, cấm password auth), cập nhật hệ thống và tắt hoàn toàn swap (`swapoff -a` + fstab).
+        - Triển khai cụm K3s `v1.36.5+k3s1`, nghiệm thu Node trạng thái Ready, CoreDNS hoạt động, StorageClass `local-path` và Metrics Server tích hợp sẵn sàng.
+        - Cài đặt Helm CLI v4.3.1 trên môi trường.
+        - *Lưu ý quy tắc repository:* Toàn bộ các bước VMware/K3s là hạ tầng hỗ trợ thực hành thực tế cho S46, KHÔNG tự tạo thêm buổi học chính thức hoặc đổi tên S46. Môi trường K3s này hoàn toàn độc lập với cụm Kind `s41` trên WSL2.
+      - Tiến độ Thực hành đã Nghiệm thu (Ngày 22/10/2026):
+        - Thư mục cấu hình chuẩn hóa: `labs/s46-grafana/` (chứa các thư mục con `podinfo/`, `prometheus/`, `grafana/`).
+        - **Triển khai Ứng dụng Mục tiêu (Podinfo v6.15.0):** Triển khai Helm release Podinfo (`podinfo-values.yaml`) trong namespace `staging`, cấu hình 2 replicas, service NodePort `31198`. Thực hành thành công quy trình Rolling Update (gán thông điệp ui "K3s Staging - Release 2") và Rollback về Revision 4 (PASS).
+        - **Triển khai Prometheus Server trên K3s:** Áp dụng `prometheus-values.yaml`, cấp phát PersistentVolumeClaim 2 GiB (`local-path`); cấu hình `kubernetes_sd_configs` cho vai trò Pods với relabel configs tự động lọc `podinfo-.+` cổng `9797`; xác minh thành công cả 2 Podinfo targets đều đạt trạng thái `UP=1` (PASS).
+        - **Triển khai Grafana & Kết nối Data Source:** Áp dụng `grafana-values.yaml`, cấp phát PersistentVolumeClaim 1 GiB (`local-path`), Service ClusterIP port 80. Kết nối thành công Data Source `Prometheus-S46` trỏ tới Prometheus server nội bộ (PASS).
+        - **Thiết kế Dashboard Giám sát Ứng dụng:** Khởi tạo Dashboard `S46 — K3s Podinfo Monitoring` và hoàn thành 3 Panel cốt lõi:
+          1. *Successful Scrape Targets:* `sum(up{job="podinfo"})` (Hiển thị giá trị 2).
+          2. *Scrape Status by Pod:* `up{job="podinfo"}` (Trực quan hóa trạng thái từng Pod).
+          3. *HTTP Requests per Second:* `sum(rate(http_requests_total{job="podinfo"}[1m]))` (Đo lường thông lượng request tức thời).
+      - Phần việc Còn lại (Chưa thực hiện):
+        - Bổ sung Panel tính toán HTTP Latency P95 sử dụng hàm `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))`.
+        - Thực nghiệm kịch bản sự cố ứng dụng (Fault injection với delay/error/unhealthy trên Podinfo) để quan sát và đối soát hiện tượng No Data / Target Down trên Grafana Dashboard.
+        - Tổ chức bài kiểm tra chuẩn hóa cuối buổi S46 (đúng 7 câu trắc nghiệm + 2 câu tự luận).
+        - Nghiệm thu chính thức khi hoàn tất toàn bộ các mục trên.
+      - Trạng thái hiện tại: **IN PROGRESS (CHƯA HOÀN THÀNH — CHƯA ĐÁNH GIÁ CUỐI BUỔI)**.

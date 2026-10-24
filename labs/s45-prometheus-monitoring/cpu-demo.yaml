@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s45-cpu-demo
+  namespace: s45
+spec:
+  restartPolicy: Never
+  containers:
+    - name: cpu-test
+      image: busybox:1.36
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          echo "Phase 1: IDLE"
+          sleep 30
+
+          echo "Phase 2: CPU STRESS"
+          timeout 90 sh -c 'while :; do :; done'
+
+          echo "Phase 3: RECOVERY"
+          sleep 180
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "16Mi"
+        limits:
+          cpu: "200m"
+          memory: "64Mi"

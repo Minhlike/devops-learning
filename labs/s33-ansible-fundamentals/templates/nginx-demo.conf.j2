@@ -1,0 +1,9 @@
+server {
+    listen {{ app_port }};
+    server_name localhost;
+
+    location / {
+        default_type text/plain;
+        return 200 "Managed by Ansible - {{ app_environment }}\n";
+    }
+}

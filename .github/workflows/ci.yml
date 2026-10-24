@@ -32,34 +32,34 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
-          cache-dependency-path: labs/lab-18-ci-cd/app/requirements.txt
+          cache-dependency-path: labs/s18-ci-cd/app/requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r labs/lab-18-ci-cd/app/requirements.txt
+          pip install -r labs/s18-ci-cd/app/requirements.txt
           pip install bandit
 
       - name: Lint with Ruff
         run: |
-          ruff check labs/lab-18-ci-cd/app
+          ruff check labs/s18-ci-cd/app
 
       - name: Security check with Bandit
         run: |
-          bandit -r labs/lab-18-ci-cd/app
-         
+          bandit -r labs/s18-ci-cd/app
+
       - name: Run tests with coverage
-        working-directory: labs/lab-18-ci-cd
+        working-directory: labs/s18-ci-cd
         run: |
           coverage run --source=app -m unittest discover -s app -p 'test_*.py'
           coverage report --fail-under=80
           coverage xml -o coverage.xml
-      
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-python-${{ matrix.python-version }}
-          path: labs/lab-18-ci-cd/coverage.xml
+          path: labs/s18-ci-cd/coverage.xml
 
   secret-scan:
     if: github.event_name != 'workflow_dispatch' || inputs.rollback == false
@@ -96,13 +96,13 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: labs/lab-18-ci-cd
+          context: labs/s18-ci-cd
           load: true
           push: false
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
-      
+
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -128,7 +128,7 @@ jobs:
       - name: Pull exact image
         run: |
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
-      
+
       - name: Run staging container
         run: |
           docker run -d \
@@ -142,7 +142,7 @@ jobs:
       - name: Smoke test staging
         run: |
           curl --fail http://localhost:8080/health
-      
+
       - name: Cleanup staging
         if: always()
         run: docker rm -f app-staging || true
@@ -171,14 +171,14 @@ jobs:
             --name app-production \
             -p 8080:8000 \
             ${{ secrets.DOCKER_HUB_USERNAME }}/devops-lab18:${{ github.sha }}
-           
+
       - name: Wait for application
         run: sleep 5
 
       - name: Smoke test production
         run: |
           curl --fail http://localhost:8080/health
-      
+
       - name: Promote candidate to stable
         run: |
           docker tag \

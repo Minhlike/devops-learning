@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s44-liveness
+  namespace: s44
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s44-liveness
+  template:
+    metadata:
+      labels:
+        app: s44-liveness
+    spec:
+      containers:
+        - name: app
+          image: hashicorp/http-echo:1.0.0
+          args:
+            - "-text=S44 liveness experiment"
+            - "-listen=:5678"
+          ports:
+            - containerPort: 5678
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5678
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 2

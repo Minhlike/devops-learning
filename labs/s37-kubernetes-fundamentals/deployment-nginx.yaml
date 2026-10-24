@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: s37-nginx-deployment
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: s37-nginx
+
+  template:
+    metadata:
+      labels:
+        app: s37-nginx
+
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine

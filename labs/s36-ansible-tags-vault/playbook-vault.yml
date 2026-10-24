@@ -1,0 +1,20 @@
+---
+- name: Lab S36 Ansible Vault
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - vars/vault.yml
+
+  tasks:
+    - name: Xac nhan Vault variables da duoc nap
+      ansible.builtin.debug:
+        msg: "db_user={{ db_user }} | db_password_loaded={{ db_password is defined }}"
+
+    - name: Ghi secret vao file tam an toan
+      ansible.builtin.copy:
+        dest: /tmp/s36-secret.txt
+        content: "{{ db_password }}\n"
+        mode: "0600"
+      no_log: true
