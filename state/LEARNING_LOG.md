@@ -1219,3 +1219,23 @@
 - **Đánh giá cuối buổi:** Trắc nghiệm 7/7 đúng (7 điểm), tự luận 2.8/3; tổng **9.8/10 — PASS**.
 - **Giới hạn ghi nhận:** Thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ; không ghi nhận đã thực hiện, không tạo bằng chứng giả và không coi đây là điều kiện nghiệm thu.
 - **Chuỗi điểm:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10.
+
+## [2026-10-24] Session 47: Logging & Centralized Logs
+
+- **Trạng thái:** COMPLETED — **9.8/10 — PASS**; không tổ chức kiểm tra lại.
+- **Hạ tầng:** K3s đơn node trên Ubuntu Server VMware; Prometheus và Grafana từ S46 được bảo toàn.
+- **Loki:** Helm chart 19.2.0 / app 3.7.9, Monolithic, StatefulSet 1/1, PVC 2Gi local-path.
+- **Fluent Bit:** Helm chart 0.58.3 / app 5.1.3, DaemonSet; thu thập container logs của Podinfo namespace `staging`, chuyển đến Loki namespace `monitoring`.
+- **Xác minh:** Loki API truy vấn thành công trả 4 log Podinfo; Grafana Explore hiển thị log tương ứng; LogQL và `count_over_time` được thực hành.
+- **Đánh giá:** 7/7 trắc nghiệm; tự luận 2.8/3; tổng 9.8/10 — PASS.
+- **Giới hạn:** local-path single-node, chưa HA/backup; Fluent Bit buffer không persistent. Cấu hình lab ở `labs/s47-centralized-logging/`.
+
+## [2026-10-24] Session 48: Alerting
+
+- **Trạng thái:** COMPLETED — **10/10 — PASS**; không tổ chức kiểm tra lại.
+- **Hạ tầng:** Bổ sung Alertmanager cho Helm release `s46-prometheus`, Prometheus chart 29.36.1; StatefulSet 1/1, Pod 2/2, PVC 256Mi local-path; Prometheus discovery báo endpoint active.
+- **Thực hành:** `S48TrainingAlert` (`vector(1)`, `for: 1m`) chuyển Pending → Firing; thực hành routing, grouping, silence và inhibition, xác minh trạng thái suppressed cùng IDs.
+- **Notification:** Webhook nhận `S48ParentAlert` lúc 13:29:48 và `S48TrainingAlert` lúc 13:31:14 qua receiver `s48-lab`, HTTP 200. Lần gửi alert con gần thời điểm Alertmanager restart không được diễn giải là inhibition thất bại; trạng thái sau đó xác nhận `suppressed` và `inhibitedBy` có ID.
+- **Cleanup:** Prometheus `/api/v1/rules?type=alert` trả `[]`; Alertmanager configuration check `CLEAN`; webhook listener đã dừng. Giữ Alertmanager, services và PVC.
+- **Đánh giá:** 7/7 trắc nghiệm; câu 8 tự luận 1.5/1.5; câu 9 1.5/1.5; tổng **10/10 — PASS**.
+- **Cấu hình trong repo:** `labs/s48-alerting/`. File baseline/notification/webhook listener nguyên bản trên Ubuntu Server không truy cập được do SSH timeout; không tạo bản thay thế giả.

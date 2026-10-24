@@ -641,3 +641,9 @@
     - *Biện pháp:* Khai báo `relabel_configs` với bộ lọc chính xác: `action: keep` theo `__meta_kubernetes_pod_name` (khớp regex `podinfo-.+`) và theo `__meta_kubernetes_pod_container_port_number` (khớp đúng cổng metric `9797`); sau đó thay thế nhãn hiển thị trực quan `pod` bằng `action: replace`.
   - **Phân định Rạch ròi Môi trường Thực thi Đa tầng:**
     - Tuyệt đối không nhầm lẫn giữa máy host Windows, máy ảo WSL2 (chạy Kind `s41`), và máy ảo VMware Ubuntu Server (chạy K3s `192.168.210.100`). Mỗi môi trường có context `kubectl` và cấu hình IP riêng biệt.
+
+## [2026-10-24] Alertmanager chưa reload cấu hình sau Helm upgrade (S48)
+- **Bối cảnh:** Thay đổi cấu hình Alertmanager qua Helm upgrade trong lab S48.
+- **Triệu chứng:** Helm upgrade thành công và ConfigMap được cập nhật nhưng tiến trình/workload chưa nạp cấu hình mới.
+- **Khắc phục đã xác minh:** Thực hiện `kubectl rollout restart` đúng workload liên quan, sau đó kiểm tra trạng thái Alertmanager và cấu hình được nạp.
+- **Bài học:** Thành công của Helm release không tự chứng minh tiến trình đã reload cấu hình; cần kiểm tra workload và trạng thái ứng dụng sau cập nhật.

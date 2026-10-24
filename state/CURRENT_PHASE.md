@@ -1,10 +1,10 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 10 — Observability & Site Reliability Engineering (SRE)
-- **Current Status:** S46 — Grafana Monitoring **COMPLETED — 9.8/10 — PASS** ngày 24/10/2026; trắc nghiệm 7/7 (7 điểm), tự luận 2.8/3; không thi lại. Thực nghiệm chủ động gây lỗi ứng dụng/No Data được bỏ theo yêu cầu và không phải điều kiện nghiệm thu. Tiếp theo: S47 — Logging & Centralized Logs.
-- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**.
-- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind. Các tồn đọng không chặn S47.
-- **Current Week:** Tuần 12 (Nghiệm thu S46 ngày 24/10/2026)
+- **Current Status:** S48 — Alerting **COMPLETED — 10/10 — PASS** ngày 24/10/2026; 7/7 trắc nghiệm, tự luận 3/3; không thi lại. Tiếp theo: S49 — SLI, SLO & Error Budget (đã giới thiệu lý thuyết; chưa có lab hoặc nghiệm thu).
+- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**; S47 **COMPLETED — 9.8/10**; S48 **COMPLETED — 10/10**.
+- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind. Các tồn đọng không chặn S49.
+- **Current Week:** Tuần 12 (Nghiệm thu S47–S48 ngày 24/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -762,3 +762,11 @@
       - Đánh giá duy nhất cuối buổi: 7/7 MCQ (7 điểm), tự luận 2.8/3; tổng **9.8/10 — PASS**. Không tổ chức kiểm tra lại.
       - Thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ; không ghi nhận hoàn thành và không phải điều kiện nghiệm thu.
       - Cấu hình lab lưu tại `labs/s46-grafana/`.
+
+## [2026-10-24] Hoàn tất S47 Logging và S48 Alerting
+
+- **S47:** COMPLETED — 9.8/10 — PASS; Loki 19.2.0/3.7.9 Monolithic PVC 2Gi và Fluent Bit 0.58.3/5.1.3 DaemonSet. Loki API trả 4 log Podinfo; Grafana Explore và `count_over_time` đã xác minh. Giới hạn: local-path single-node, chưa HA/backup, Fluent Bit buffer không persistent.
+- **S48:** COMPLETED — 10/10 — PASS; Alertmanager StatefulSet 1/1, Pod 2/2, PVC 256Mi; Prometheus discovery endpoint active. Đã thực hành Pending → Firing, routing/grouping, silence, inhibition và webhook HTTP 200. Sau cleanup rules trả `[]`, Alertmanager config CLEAN, listener dừng; dịch vụ/PVC được giữ.
+- **Nghiệm thu:** S47 7/7 MCQ và 2.8/3 essay; S48 7/7 MCQ và 3/3 essay. Không thi lại.
+- **Chuyển tiếp:** S49 SLI/SLO/Error Budget là NEXT; đã giới thiệu lý thuyết và ví dụ SLO 99.9%, chưa có lab, metric query, Error Budget/Burn Rate calculation hoặc assessment.
+- **Cấu hình:** S47 và phần cấu hình truy xuất được của S48 tại `labs/s47-centralized-logging/` và `labs/s48-alerting/`. Ubuntu SSH bị timeout nên không lưu file listener, notification endpoint hoặc baseline không có trong workspace.

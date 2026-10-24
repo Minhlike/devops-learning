@@ -90,9 +90,9 @@
 | :---: | :--- | :---: | :--- | :--- | :--- |
 | **S45** | Prometheus Fundamentals | **COMPLETED** | [`labs/s45-prometheus-monitoring/`](../labs/s45-prometheus-monitoring/) | Mô hình Pull, TSDB, 4 kiểu metric, PromQL (rate, sum by), scrape configs | Đạt 9,7/10; tạo tải CPU 3 pha & trực quan hóa PromQL; target UP=1 |
 | **S46** | Grafana Monitoring & Practical Dashboards | **COMPLETED — 9.8/10** | [`labs/s46-grafana/`](../labs/s46-grafana/) | Ubuntu Server 26.04.1, K3s, Podinfo, Prometheus SD, Grafana; dashboard 4 panels | 7/7 MCQ, essay 2.8/3; nghiệm thu 24/10/2026; không thi lại |
-| **S47** | Logging & Centralized Logs | **NEXT** | Lộ trình chuẩn | Fluent Bit, Loki, LogQL, log shipping | Buổi học tiếp theo |
-| **S48** | Alerting & Notifications | **UPCOMING** | Lộ trình chuẩn | Alertmanager, Alerting rules, Routing, Notification channels | Lộ trình Phase 10 |
-| **S49** | SLI, SLO & Error Budget | **UPCOMING** | Lộ trình chuẩn | Định lượng độ tin cậy dịch vụ & Error budget burn rate | Lộ trình Phase 10 |
+| **S47** | Logging & Centralized Logs | **COMPLETED — 9.8/10** | [`labs/s47-centralized-logging/`](../labs/s47-centralized-logging/) | Loki Monolithic, Fluent Bit DaemonSet, LogQL, Grafana Loki datasource | API trả về 4 log Podinfo; Grafana Explore xác nhận; local-path single-node, buffer không persistent |
+| **S48** | Alerting & Notifications | **COMPLETED — 10/10** | [`labs/s48-alerting/`](../labs/s48-alerting/) | Prometheus rules, Alertmanager lifecycle/routing/grouping/silence/inhibition, webhook | Pending → Firing; suppressed/inhibited; webhook HTTP 200; rules và thử nghiệm đã cleanup |
+| **S49** | SLI, SLO & Error Budget | **NEXT — THEORY INTRODUCED** | Kế hoạch tại [`state/NEXT_SESSION.md`](../state/NEXT_SESSION.md) | SLI, SLO 99.9%, Error Budget, Burn Rate | Chưa có lab, truy vấn metric thực tế hoặc nghiệm thu |
 | **S50** | Incident Response & Runbooks | **UPCOMING** | Lộ trình chuẩn | Runbooks, quy trình điều tra & Blameless Postmortem | Mốc kết thúc Phase 10 |
 
 ---
