@@ -22,7 +22,9 @@ REAUTHORED_LESSONS = (
     {f"P02.C{chapter:02}.L{lesson:02}"
      for chapter, count in ((3, 4), (4, 3), (5, 3)) for lesson in range(1, count + 1)} |
     {f"P03.C{chapter:02}.L{lesson:02}"
-     for chapter, count in ((2, 4), (3, 3), (4, 3)) for lesson in range(1, count + 1)}
+     for chapter, count in ((2, 4), (3, 3), (4, 3)) for lesson in range(1, count + 1)} |
+    {f"P06.C{chapter:02}.L{lesson:02}"
+     for chapter in (2, 3, 4) for lesson in range(1, 4)}
 )
 
 
