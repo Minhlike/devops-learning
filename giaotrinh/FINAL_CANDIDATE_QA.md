@@ -1,27 +1,20 @@
-# Kiểm tra bản PDF chính sau tái biên tập Phần II — 2026-10-24
+# Kiểm tra bản PDF chính sau tái biên tập Phần III — 2026-10-24
 
-## Phạm vi và nội dung
+## Phạm vi nội dung
 
-- Cây xuất bản giữ **15 Phần, 58 Chương, 178 Bài**. Lượt này chỉ tái biên tập 10 bài `P02.C03.L01–L04`, `P02.C04.L01–L03` và `P02.C05.L01–L03`. Nội dung P11, P02.C01–C02 và các Phần khác không đổi.
-- Cả phần thân của 10 bài được viết lại theo mạch chẩn đoán và phục hồi. Từ ngữ giảm từ 6.067 xuống 5.800 sau khi gộp diễn giải lặp. Bảng số liệu C03, unit Atlas, ví dụ O-7/outbox, bài tập, các neo claim và liên kết chéo vẫn còn. Hash của 10 bài trong manifest và hồ sơ biên tập đã đồng bộ.
-- Hồ sơ migration vẫn giữ ánh xạ 88 mục, 216 đoạn và 267 claim. Kiểm thử migration cho phép 10 bài được tái biên tập bảo toàn claim anchors thay vì yêu cầu giữ nguyên từng đoạn văn cũ. ID và URL nguồn đã khóa không đổi.
-- Các cơ chế dễ nhầm được giữ tách biệt: wall time / CPU time / PSI / iowait; virtual memory / page cache / reclaim / OOM; unit start / process alive / service readiness; ghi tệp / `fsync` / backup nhất quán / restore kiểm chứng. Ví dụ tính toán và sự cố được ghi rõ là giả định.
+- Baseline: `fb2ee8b0306171b9035653f08ce334c514fb2a12`. Biên tập xuyên suốt 10 bài `P03.C02.L01–L04`, `P03.C03.L01–L03`, `P03.C04.L01–L03`; không sửa nội dung P03.C01, P02, P11 hay Phần khác.
+- Cây xuất bản vẫn gồm 15 Phần, 58 Chương, 178 Bài. Văn bản 10 bài từ 5.996 xuống 5.436 từ sau khi bỏ lặp; trace TCP, tuple NAT, cache 30/70 giây, timeout 1.500/2.000 ms, ví dụ HTTP hai chặng, bài tập, hình/code và tham chiếu chéo được giữ đúng nghĩa.
+- Đã so 31 neo biên tập và mọi marker `figure`, `code`, `xref` của 10 bài với bản gốc. Hash manifest và editorial evidence đã đồng bộ. Không đổi ID/URL nguồn đã khóa.
+- Đối chiếu chọn lọc các cơ chế với RFC 9293 (TCP), RFC 8446 (TLS 1.3), RFC 9110 (HTTP semantics), RFC 9111 (HTTP cache), RFC 3022 (NAPT) và RFC 2308 (DNS negative cache). Không coi việc neo tồn tại là bằng chứng mọi claim của sách đã được xác minh độc lập.
 
-## PDF và điều hướng
+## PDF và kiểm thử
 
-- `Cam_nang_devops.pdf` và candidate cùng byte; SHA-256: `c9d12e8bff74acd2eee289eb5059533cebbd39c2faeab15ab03cdebeadfa8380`.
-- **268 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. Văn bản trích xuất có 693.269 ký tự; audit bộ dựng không thấy ký tự Unicode thay thế.
-- Times New Roman Regular/Bold và Consolas được nhúng; Arial Bold phục vụ thiết kế và Helvetica phục vụ thành phần PDF hệ thống. Audit kiểm mục lục, bookmark, đích trang, vùng in và 18 hình vector/caption.
-- Kiểm văn bản, bookmark, metadata và hyperlink: **0 rò nguồn tham khảo**. URL thuộc ví dụ kỹ thuật vẫn được giữ khi cần.
+- `Cam_nang_devops.pdf` và candidate giống byte; SHA-256: `339d0693b10fa81e13b61ac5445f137e26012b0a5cae5006fdff5de7ae9f53bf`.
+- 267 trang A4, 310 bookmark, 0 URI action ngoài, 690.618 ký tự văn bản trích xuất. Bộ dựng báo `source_leaks=0`; Times New Roman Regular/Bold và Consolas nhúng. Chạy `audit()` trên cả candidate và PDF chính: PASS.
+- `python -X utf8 -m unittest discover -s giaotrinh/tests -q`: 44 test OK, 1 SKIP do Go toolchain không có trong PATH, 0 FAIL.
+- Đã render và xem đủ 13 trang 35–47 (ba chương sửa và trang ranh giới phần kế tiếp); kiểm tra hình TCP ở trang 36, HTTP trace ở trang 44, ngắt trang và lề. Không thấy chữ/code/hình bị cắt hoặc tràn. Các trang khác không được render lại trong lượt này; audit hình học vẫn chạy trên toàn PDF.
 
-## Kiểm thử và trang in
+## Giới hạn
 
-- `python -X utf8 -m unittest discover -s giaotrinh/tests -q`: **44 test OK, 1 SKIP** do không có Go toolchain trong PATH; 0 FAIL.
-- `python -X utf8 -m giaotrinh.scripts.build`: `CANDIDATE_OK pages=268 bookmarks=310 source_leaks=0`. Chạy lại `audit()` trên PDF chính sau khi cập nhật: PASS. Candidate và bản chính có cùng SHA-256.
-- Đã render và xem contact sheet của **11/11 trang bị ảnh hưởng (19–29)**; mở chi tiết trang 22 (bảng và bài tập), 23 (unit), 29 (phục hồi và bài tập). Không thấy chữ, bảng hay code bị cắt hoặc tràn vùng in. Hai câu hỏi từng bị đẩy sang trang gần trống đã trở lại trang 22 và 29. Các Phần khác không được render lại trong lượt này; audit hình học vẫn kiểm toàn PDF.
-
-## Giới hạn thực nghiệm
-
-- **SKIP:** Ví dụ Go chưa chạy trên máy QA này.
-- **UNKNOWN:** Không thực thi các tình huống systemd, I/O hay restore PostgreSQL trên host Linux cô lập trong lượt biên tập này; dữ liệu giả định không được trình bày như log thật. Đối chiếu tài liệu Linux kernel, Linux man-pages và systemd chỉ kiểm các cơ chế được biên tập, không thay phản biện độc lập cho mọi claim của sách.
-- Báo cáo này không cấp Publication PASS cho toàn sách.
+- Các tình huống client, gateway, proxy và upstream trong bài là dữ liệu giả định; không được báo như packet capture hay log production đã đo.
+- Không thực thi lab mạng có namespace, TLS endpoint hay reverse proxy trong lượt biên tập văn phong. Kiểm thử Go SKIP. Không cấp Publication PASS cho toàn sách từ lượt QA này.

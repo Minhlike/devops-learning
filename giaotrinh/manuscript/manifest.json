@@ -868,7 +868,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C02/L01.md",
-      "sha256": "15726892aad39d1f508f9aac68098db4b2f8fdb090235bd7f6c8ef83f74071ed",
+      "sha256": "c4a90cf267c1b4edfdc0a63a9671135899b03b9f535141ca3971aec3cacb448f",
       "legacy_units": [
         "TXT-ca6d0f1f39e8b007",
         "TXT-ed1e75bc1dd9fba7",
@@ -906,7 +906,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C02/L02.md",
-      "sha256": "1aff783d2f48e8f8c9688083f5bc69719a1305a3f09782d784364d45e0058357",
+      "sha256": "605d8646b8685e534daf4e45ac4b0cc6a4a81119334e1ffbdcd30b125d963dbc",
       "legacy_units": [
         "TXT-8cc5206e323f870d",
         "TXT-92872687d8c410a3",
@@ -954,7 +954,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C02/L03.md",
-      "sha256": "31a82df150d2962dc97e45f28d8d1d959e8a393bb8f8368ddc723fd31c411478",
+      "sha256": "6b349e248bf7b7dabe2c782c3b3ae5a638ffd3450e8dd10a0abc620c51667460",
       "legacy_units": [
         "chapters/04-dia-chi-dinh-tuyen-tcp.md#4.4"
       ],
@@ -989,7 +989,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P03/C02/L04.md",
-      "sha256": "f6a8e07a00cb3949ea6499e8dac526966ce1352da408ef7a74e021934956d0de",
+      "sha256": "ae7fcd36543789caa82d42f1cbcde6388a3a3665a7cf96c3a3492df130be29b8",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -1021,7 +1021,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L01.md",
-      "sha256": "8bcd04b0eef653af85da5abfb0af160f0adb3504b581d0a587945e40728f024b",
+      "sha256": "d1851b468cb0e0ac25d2faaa013377f64b86de9d20e0cd3f8d2b70a4b523e81a",
       "legacy_units": [
         "chapters/05-dns-http-tls-reverse-proxy.md#intro",
         "chapters/05-dns-http-tls-reverse-proxy.md#5.1"
@@ -1066,7 +1066,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L02.md",
-      "sha256": "21601f83afe2be05a162e3305786bd1e903dce4b45bf7f20a0fb98395cb83844",
+      "sha256": "20a1506d04f3c86ceabf60fd9723331d27a1b351efac37147de00fd986bfc7f7",
       "legacy_units": [
         "chapters/05-dns-http-tls-reverse-proxy.md#5.2"
       ],
@@ -1104,7 +1104,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C03/L03.md",
-      "sha256": "4512b38a2f6f073b003980760415d23c5976bae0b91c5df9283c201a34e7d085",
+      "sha256": "9a13bfd98d562ecf2e79a21a2fb22323165ba9f288066caa3597afdaf7d940e0",
       "legacy_units": [
         "TXT-8b531a1012421ef8",
         "TXT-d8b9895262113a63",
@@ -1137,7 +1137,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L01.md",
-      "sha256": "0034b8aca452fd586cedb294c19c5f724bc78e788df3fc65fdef9ab861e3b533",
+      "sha256": "853e2a688f543f49ee83742594e6dc1a5124724e80906ddf9459b0f5a424dbc5",
       "legacy_units": [
         "TXT-c396fb6c5104e267"
       ],
@@ -1170,7 +1170,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L02.md",
-      "sha256": "06f486ae82bc540d1afdda634201d2f482cc5998308bcaf330d48a15d692b0e0",
+      "sha256": "f039efbf72d10117d9e98229628f1ea98321d691c0065f28240b453a71a3bba4",
       "legacy_units": [
         "TXT-a63786cb740f452f",
         "TXT-f14caf422b31bdc6",
@@ -1203,7 +1203,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P03/C04/L03.md",
-      "sha256": "d261ba902bfb58fb7e248828ff0732d3e2f0d6b03a9a424bcf7f9baf73bbcab8",
+      "sha256": "e1cf28712123598a79cb7e7d12d61eb7e2ee34dfb53a3760cd2a3ff8f3b859c4",
       "legacy_units": [
         "TXT-8be99ac2c30b5b4e",
         "TXT-9e160630c5500711",
