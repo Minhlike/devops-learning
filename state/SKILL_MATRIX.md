@@ -2,6 +2,10 @@
 
 | Skill Area | Specific Skill | Status | Last Verified Date | Evidence / Notes |
 | :--- | :--- | :--- | :--- | :--- |
+| Kubernetes & Helm | Helm Fundamentals (S43) | Hoàn thành buổi học | 2026-10-24 | State nghiệm thu: 9.3/10 |
+| Kubernetes Troubleshooting | Cluster & Workload Troubleshooting (S44) | Hoàn thành buổi học | 2026-10-24 | State nghiệm thu: 9.6/10 |
+| Observability | Prometheus Metrics & Collection (S45) | Hoàn thành buổi học | 2026-10-24 | State nghiệm thu: 9.7/10 |
+| Observability | Grafana Data Source, Dashboard & Panels (S46) | Hoàn thành buổi học | 2026-10-24 | Dashboard 4 panel; assessment 9.8/10 PASS; 7/7 MCQ, essays 2.8/3; labs/s46-grafana/README.md |
 | OS & Computer | Hardware & OS Basics | Làm được độc lập | 2026-07-31 | Diagnostic test + Cài đặt WSL2 Ubuntu 24.04 thành công |
 | OS & Computer | Filesystem Mounting (`/mnt/d`) | Làm được độc lập | 2026-07-31 | Lab 1: Truy cập `/mnt/d/Devops`, chạy `pwd`, `ls -la` |
 | OS & Computer | Case Sensitivity (ext4 vs NTFS) | Làm được độc lập | 2026-07-31 | Failure Injection 1: Thử `cat` file hoa/thường trên ext4 và NTFS |

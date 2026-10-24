@@ -1,8 +1,10 @@
 # CURRENT LEARNING PHASE
 
 - **Current Phase:** PHASE 10 — Observability & Site Reliability Engineering (SRE)
-- **Current Status:** Hoàn thành Buổi 43 (Helm, 9.3/10), Buổi 44 (K8s Troubleshooting, 9.6/10 — Tốt nghiệp Phase 9), Buổi 45 (Prometheus, 9.7/10). Đang học Buổi 46 — Grafana & Practical Dashboards (IN PROGRESS — ĐANG HỌC — CHƯA HOÀN THÀNH — CHƯA KIỂM TRA CUỐI BUỔI). (Lưu ý: Buổi 40 giữ trạng thái IN PROGRESS / PARTIALLY VERIFIED do tồn đọng sự cố HPA CPU: <unknown>/50% được điều tra độc lập; cluster s40 và s41 được giữ nguyên; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller).
-- **Current Week:** Tuần 12 (Nghiệm thu tiến độ ngày 22/10/2026)
+- **Current Status:** S46 — Grafana Monitoring **COMPLETED — 9.8/10 — PASS** ngày 24/10/2026; trắc nghiệm 7/7 (7 điểm), tự luận 2.8/3; không thi lại. Thực nghiệm chủ động gây lỗi ứng dụng/No Data được bỏ theo yêu cầu và không phải điều kiện nghiệm thu. Tiếp theo: S47 — Logging & Centralized Logs.
+- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**.
+- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind. Các tồn đọng không chặn S47.
+- **Current Week:** Tuần 12 (Nghiệm thu S46 ngày 24/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.

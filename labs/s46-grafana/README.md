@@ -23,17 +23,23 @@ labs/s46-grafana/
 └── README.md                   # Tài liệu tiến độ và hướng dẫn bài lab
 ```
 
-## 3. Tiến độ Triển khai Hiện tại (22/10/2026)
+## 3. Kết quả Nghiệm thu (24/10/2026)
 
 - [x] **Hạ tầng OS & K3s:** Dựng VM, SSH, LVM, tắt swap, bootstrap cụm K3s node Ready.
 - [x] **Podinfo Staging:** Triển khai Helm release Podinfo, 2 replicas, NodePort 31198; thực hành Rolling Update và Rollback thành công (Revision 4).
 - [x] **Prometheus Scrape:** Triển khai Prometheus server với PVC 2 GiB `local-path`; cấu hình `kubernetes_sd_configs` lọc pod `podinfo-.*` cổng `9797`; xác minh 2 targets đều đạt `UP=1`.
 - [x] **Grafana & Data Source:** Triển khai Grafana PVC 1 GiB; kết nối thành công Data Source `Prometheus-S46`.
-- [x] **Dashboard Panels (3/4 hoàn tất):**
+- [x] **Dashboard `S46 — K3s Podinfo Monitoring` (4/4 panels):**
   1. `Successful Scrape Targets`: `sum(up{job="podinfo"})`
   2. `Scrape Status by Pod`: `up{job="podinfo"}`
   3. `HTTP Requests per Second`: `sum(rate(http_requests_total{job="podinfo"}[1m]))`
-- [ ] **Công việc còn lại:**
-  1. Xây dựng Panel đo HTTP Latency P95: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))`.
-  2. Thực nghiệm kịch bản sự cố (Fault injection: delay/error/unhealthy trên Podinfo) và quan sát hiện tượng No Data / Target Down.
-  3. Tổ chức bài kiểm tra chuẩn hóa cuối buổi S46 (7 trắc nghiệm + 2 tự luận) và nghiệm thu chính thức.
+  4. `HTTP Latency P95`: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))`
+
+## 4. Đánh giá Cuối buổi
+
+- Trắc nghiệm: **7/7 câu đúng (7 điểm)**.
+- Tự luận: **2.8/3 điểm**.
+- Tổng điểm: **9.8/10 — PASS**; trạng thái **COMPLETED** ngày **24/10/2026**.
+- Không tổ chức kiểm tra lại.
+- Bài thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ; không ghi nhận là hoàn thành và không phải điều kiện nghiệm thu.
+- Đã thực hành troubleshooting truy cập Grafana liên quan đến SSH Tunnel và `kubectl port-forward`.

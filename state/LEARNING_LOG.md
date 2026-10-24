@@ -1207,34 +1207,15 @@
   - Kết quả: **9,7/10 — ĐẠT (PASS)**.
   - Bắt đầu Phase 10 — Observability & Site Reliability Engineering (SRE).
 
-## [2026-10-22] Session 46: Grafana & Practical Dashboards (In Progress)
+## [2026-10-24] Session 46: Grafana Monitoring
 
-- **Trạng thái:** **IN PROGRESS (ĐANG HỌC — CHƯA HOÀN THÀNH — CHƯA KIỂM TRA CUỐI BUỔI)**.
-- **Mục tiêu:** Xây dựng hệ thống trực quan hóa giám sát với Grafana trên môi trường K3s staging; kết nối Prometheus Data Source và thiết kế Dashboard theo dõi ứng dụng thực tế.
-- **Hạ tầng Hỗ trợ (VMware K3s Staging):**
-  - Cài đặt và cấu hình máy ảo Ubuntu Server 26.04.1 trên VMware Workstation, gán IP tĩnh `192.168.210.100`.
-  - Mở rộng LVM disk, cấu hình SSH Key, SSH Hardening (đổi port, cấm password auth), cập nhật hệ thống và tắt hoàn toàn swap (`swapoff -a`).
-  - Triển khai cụm K3s `v1.36.5+k3s1` (tích hợp Control Plane và Worker), xác minh Node Ready, CoreDNS, StorageClass `local-path`, Metrics Server.
-  - Cài đặt Helm CLI v4.3.1.
-  - *Ghi chú môi trường:* Các bước VMware/K3s là hạ tầng hỗ trợ S46, không tự tạo thêm buổi học hoặc đổi tên S46; độc lập hoàn toàn với cụm Kind `s41` trên WSL2.
-- **Thư mục cấu hình lab:** `labs/s46-grafana/` (`podinfo/`, `prometheus/`, `grafana/`).
-- **Nội dung đã Thực hiện và Nghiệm thu (Ngày 22/10/2026):**
-  - **Lab 46.1 — Triển khai Ứng dụng Mục tiêu (Podinfo v6.15.0):**
-    - Triển khai Helm release Podinfo (`podinfo-values.yaml`) trong namespace `staging`, 2 replicas, service NodePort `31198`.
-    - Thực hành Rolling Update nâng cấp UI message và Rollback về Revision 4 thành công (PASS).
-  - **Lab 46.2 — Triển khai Prometheus Server với PVC:**
-    - Cấu hình `prometheus-values.yaml`, cấp phát PersistentVolumeClaim 2 GiB trên StorageClass `local-path`.
-    - Thiết lập `kubernetes_sd_configs` vai trò Pods với relabel configs lọc `podinfo-.+` cổng `9797`.
-    - Xác minh thành công cả 2 Podinfo targets đều được phát hiện và đạt trạng thái `UP=1` (PASS).
-  - **Lab 46.3 — Triển khai Grafana & Kết nối Data Source:**
-    - Cấu hình `grafana-values.yaml`, cấp phát PersistentVolumeClaim 1 GiB trên StorageClass `local-path`, Service ClusterIP port 80.
-    - Thêm và kiểm tra thành công kết nối Data Source `Prometheus-S46` trỏ tới Prometheus nội bộ (PASS).
-  - **Lab 46.4 — Xây dựng Dashboard Giám sát Ứng dụng:**
-    - Tạo Dashboard `S46 — K3s Podinfo Monitoring` và hoàn thành 3 Panel cốt lõi:
-      1. *Successful Scrape Targets:* `sum(up{job="podinfo"})` (Hiển thị 2 targets).
-      2. *Scrape Status by Pod:* `up{job="podinfo"}` (Theo dõi trạng thái từng Pod riêng biệt).
-      3. *HTTP Requests per Second:* `sum(rate(http_requests_total{job="podinfo"}[1m]))` (Đo thông lượng request).
-- **Các Hạng mục Còn lại (Chưa thực hiện):**
-  - Bổ sung Panel đo HTTP Latency P95: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))`.
-  - Thực nghiệm kịch bản sự cố trên Podinfo và quan sát hiện tượng No Data / Target Down trên Grafana Dashboard.
-  - Tổ chức bài kiểm tra chuẩn hóa cuối buổi S46 (7 trắc nghiệm + 2 tự luận) và nghiệm thu chính thức.
+- **Trạng thái:** **COMPLETED — 9.8/10 — PASS**; không tổ chức kiểm tra lại.
+- **Hạ tầng:** Ubuntu Server 26.04.1 LTS trên VMware (`192.168.210.100`); SSH key, SSH hardening, LVM, cập nhật hệ thống, swap tắt; K3s đơn node `v1.36.5+k3s1`; Helm 4.3.1.
+- **Podinfo:** Phiên bản 6.15.0, 2 replicas; đã thực hành Rolling Update và Rollback.
+- **Prometheus:** PVC 2 GiB; Kubernetes Service Discovery; xác minh 2/2 Podinfo targets `UP`.
+- **Grafana:** PVC 1 GiB; kết nối Prometheus Data Source.
+- **Dashboard `S46 — K3s Podinfo Monitoring`:** 4 panel: Successful Scrape Targets, Scrape Status by Pod, HTTP Requests per Second, HTTP Latency P95. Cấu hình trong `labs/s46-grafana/`.
+- **Troubleshooting:** Khắc phục truy cập Grafana liên quan đến SSH Tunnel và `kubectl port-forward`.
+- **Đánh giá cuối buổi:** Trắc nghiệm 7/7 đúng (7 điểm), tự luận 2.8/3; tổng **9.8/10 — PASS**.
+- **Giới hạn ghi nhận:** Thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ; không ghi nhận đã thực hiện, không tạo bằng chứng giả và không coi đây là điều kiện nghiệm thu.
+- **Chuỗi điểm:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10.

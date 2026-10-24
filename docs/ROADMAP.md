@@ -92,13 +92,13 @@ flowchart LR
 
 ### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — CURRENT PHASE
 - **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,7/10)** (21/10/2026)
-- **S46:** Grafana & Practical Dashboards (Visualization, Panels, Dashboard as Code, Querying) — **IN PROGRESS (22/10/2026 — Đang học)**
-- **S47:** Logging & Centralized Logs (Log aggregation, Fluentbit/Loki, LogQL, Log shipping) — **UPCOMING**
+- **S46:** Grafana Monitoring & Practical Dashboards — **COMPLETED — 9.8/10** (24/10/2026)
+- **S47:** Logging & Centralized Logs (Log aggregation, Fluent Bit/Loki, LogQL, Log shipping) — **NEXT**
 - **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels) — **UPCOMING**
 - **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **UPCOMING**
 - **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem) — **UPCOMING**
 
-> **Mốc quan trọng (Milestone):** Đang triển khai S46 trên cụm K3s máy ảo VMware; hoàn thiện Dashboard Podinfo (P95 latency, Fault injection) và đánh giá cuối buổi trước khi chuyển tiếp sang S47 Centralized Logging.
+> **Kết quả nghiệm thu S46:** 7/7 MCQ (7 điểm), tự luận 2.8/3; tổng 9.8/10 — PASS. Không thi lại. Thực nghiệm chủ động gây lỗi ứng dụng/No Data được bỏ theo yêu cầu, không phải điều kiện nghiệm thu.
 
 ### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — UPCOMING
 - **S51:** Container & Image Security Scanning (Trivy, Grype, Base image hardening, Distroless)
