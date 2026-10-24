@@ -753,25 +753,12 @@
       - Đánh giá Năng lực Cuối Buổi:
         - Bài kiểm tra duy nhất: 7 câu trắc nghiệm + 2 câu tự luận PromQL & Kiến trúc Pull.
         - Kết quả: **9,7/10 — ĐẠT (PASS)**.
-  33. **Buổi 46 — Grafana & Practical Dashboards (IN PROGRESS — Đang học, Chưa hoàn thành):**
-      - Môi trường Hạ tầng Hỗ trợ (VMware & K3s Staging):
-        - Xây dựng máy ảo Ubuntu Server 26.04.1 trên VMware Workstation, gán IP tĩnh `192.168.210.100`.
-        - Thực hiện mở rộng LVM disk, cấu hình SSH Key, SSH Hardening (bảo mật port, cấm password auth), cập nhật hệ thống và tắt hoàn toàn swap (`swapoff -a` + fstab).
-        - Triển khai cụm K3s `v1.36.5+k3s1`, nghiệm thu Node trạng thái Ready, CoreDNS hoạt động, StorageClass `local-path` và Metrics Server tích hợp sẵn sàng.
-        - Cài đặt Helm CLI v4.3.1 trên môi trường.
-        - *Lưu ý quy tắc repository:* Toàn bộ các bước VMware/K3s là hạ tầng hỗ trợ thực hành thực tế cho S46, KHÔNG tự tạo thêm buổi học chính thức hoặc đổi tên S46. Môi trường K3s này hoàn toàn độc lập với cụm Kind `s41` trên WSL2.
-      - Tiến độ Thực hành đã Nghiệm thu (Ngày 22/10/2026):
-        - Thư mục cấu hình chuẩn hóa: `labs/s46-grafana/` (chứa các thư mục con `podinfo/`, `prometheus/`, `grafana/`).
-        - **Triển khai Ứng dụng Mục tiêu (Podinfo v6.15.0):** Triển khai Helm release Podinfo (`podinfo-values.yaml`) trong namespace `staging`, cấu hình 2 replicas, service NodePort `31198`. Thực hành thành công quy trình Rolling Update (gán thông điệp ui "K3s Staging - Release 2") và Rollback về Revision 4 (PASS).
-        - **Triển khai Prometheus Server trên K3s:** Áp dụng `prometheus-values.yaml`, cấp phát PersistentVolumeClaim 2 GiB (`local-path`); cấu hình `kubernetes_sd_configs` cho vai trò Pods với relabel configs tự động lọc `podinfo-.+` cổng `9797`; xác minh thành công cả 2 Podinfo targets đều đạt trạng thái `UP=1` (PASS).
-        - **Triển khai Grafana & Kết nối Data Source:** Áp dụng `grafana-values.yaml`, cấp phát PersistentVolumeClaim 1 GiB (`local-path`), Service ClusterIP port 80. Kết nối thành công Data Source `Prometheus-S46` trỏ tới Prometheus server nội bộ (PASS).
-        - **Thiết kế Dashboard Giám sát Ứng dụng:** Khởi tạo Dashboard `S46 — K3s Podinfo Monitoring` và hoàn thành 3 Panel cốt lõi:
-          1. *Successful Scrape Targets:* `sum(up{job="podinfo"})` (Hiển thị giá trị 2).
-          2. *Scrape Status by Pod:* `up{job="podinfo"}` (Trực quan hóa trạng thái từng Pod).
-          3. *HTTP Requests per Second:* `sum(rate(http_requests_total{job="podinfo"}[1m]))` (Đo lường thông lượng request tức thời).
-      - Phần việc Còn lại (Chưa thực hiện):
-        - Bổ sung Panel tính toán HTTP Latency P95 sử dụng hàm `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))`.
-        - Thực nghiệm kịch bản sự cố ứng dụng (Fault injection với delay/error/unhealthy trên Podinfo) để quan sát và đối soát hiện tượng No Data / Target Down trên Grafana Dashboard.
-        - Tổ chức bài kiểm tra chuẩn hóa cuối buổi S46 (đúng 7 câu trắc nghiệm + 2 câu tự luận).
-        - Nghiệm thu chính thức khi hoàn tất toàn bộ các mục trên.
-      - Trạng thái hiện tại: **IN PROGRESS (CHƯA HOÀN THÀNH — CHƯA ĐÁNH GIÁ CUỐI BUỔI)**.
+  33. **Buổi 46 — Grafana Monitoring (COMPLETED — 9.8/10 — Ngày 24/10/2026):**
+      - Hạ tầng: Ubuntu Server 26.04.1 trên VMware (`192.168.210.100`), SSH key/hardening, LVM, swap tắt; K3s đơn node `v1.36.5+k3s1`, Helm 4.3.1.
+      - Podinfo 6.15.0 với 2 replicas; thực hành Rolling Update và Rollback.
+      - Prometheus PVC 2 GiB, Kubernetes Service Discovery; 2/2 Podinfo targets `UP`.
+      - Grafana PVC 1 GiB, Prometheus Data Source; dashboard `S46 — K3s Podinfo Monitoring` hoàn tất 4 panel: Successful Scrape Targets, Scrape Status by Pod, HTTP Requests per Second, HTTP Latency P95.
+      - Troubleshooting truy cập Grafana do SSH Tunnel và `kubectl port-forward`.
+      - Đánh giá duy nhất cuối buổi: 7/7 MCQ (7 điểm), tự luận 2.8/3; tổng **9.8/10 — PASS**. Không tổ chức kiểm tra lại.
+      - Thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ; không ghi nhận hoàn thành và không phải điều kiện nghiệm thu.
+      - Cấu hình lab lưu tại `labs/s46-grafana/`.
