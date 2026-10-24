@@ -79,18 +79,20 @@
 | **S40** | Kubernetes Resources & Scaling | **PARTIALLY VERIFIED** | [`labs/s40-kubernetes-resources/`](../labs/s40-kubernetes-resources/) | `requests/limits`, OOMKilled exit 137, QoS, Taints/Tolerations | **Incident tồn đọng:** HPA báo `CPU: <unknown>/50%` |
 | **S41** | Kubernetes Storage & Persistence | **COMPLETED / PASS** | [`labs/s41-kubernetes-storage/`](../labs/s41-kubernetes-storage/) | emptyDir, PV/PVC dynamic, StatefulSet, PostgreSQL 16 | Dữ liệu SQL bảo toàn sau khi Pod DB bị xóa và tái tạo |
 | **S42** | Kubernetes Gateway API & Application Exposure | **COMPLETED** | [`labs/s42-kubernetes-gateway-api/`](../labs/s42-kubernetes-gateway-api/) | Gateway API, Envoy Gateway, GatewayClass, HTTPRoute, Host/Path routing | Đạt 7,7/10; AddressNotAssigned bảo lưu; 503 recovery |
-| **S43** | Helm Fundamentals | **NEXT SESSION** | Chuẩn bị triển khai | Helm Charts, Values, Templates, Release Lifecycle | Chuẩn hóa đóng gói và quản lý release ứng dụng K8s |
-| **S44** | K8s Troubleshooting & Defense | **UPCOMING** | Lộ trình chuẩn | Chẩn đoán cluster & phục hồi sự cố toàn diện | Mốc kết thúc Phase 9 trước khi sang Observability |
+| **S43** | Helm Fundamentals | **COMPLETED — 9.3/10** | [`labs/s43-helm-fundamentals/`](../labs/s43-helm-fundamentals/) | Helm Charts, Values, Templates, Release Lifecycle | Nghiệm thu theo kết quả học tập |
+| **S44** | K8s Troubleshooting & Defense | **COMPLETED — 9.6/10** | [`labs/s44-kubernetes-troubleshooting/`](../labs/s44-kubernetes-troubleshooting/) | Chẩn đoán cluster & phục hồi workload | Nghiệm thu theo kết quả học tập |
 
 ---
 
-## 6. Giai đoạn 10+ — Lộ trình Kế tiếp (S45 – S66)
+## 6. Giai đoạn 10 — Observability & Site Reliability Engineering (S45 – S50)
 
-- **S45:** Prometheus Fundamentals & Metrics Collection
-- **S46:** Grafana & Practical Dashboards
+- **S45:** Prometheus Fundamentals & Metrics Collection — **COMPLETED — 9.7/10** ([`labs/s45-prometheus-monitoring/`](../labs/s45-prometheus-monitoring/))
+- **S46:** Grafana Monitoring & Practical Dashboards — **COMPLETED — 9.8/10** ([`labs/s46-grafana/`](../labs/s46-grafana/)); nghiệm thu 24/10/2026, 7/7 MCQ, 2.8/3 essay; không thi lại.
 - **S47:** Logging & Centralized Logs (Fluentbit/Loki)
 - **S48:** Alerting (Alertmanager & Notification Channels)
 - **S49:** SLI, SLO & Error Budget
 - **S50:** Incident Response & Runbooks
+
+## 7. Giai đoạn 11+ — Lộ trình Kế tiếp (S51 – S66)
 - **S51 – S55:** DevSecOps (Trivy, RBAC, PSS/PSA, HashiCorp Vault)
 - **S56 – S66:** Capstone Projects & Job Readiness

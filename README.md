@@ -25,11 +25,11 @@ Repository được chuẩn hóa theo kiến trúc tự chứa (self-contained),
 
 ## 2. Trạng thái Đào tạo Hiện tại
 
-- **Giai đoạn Hiện tại:** Phase 9 — Container Orchestration with Kubernetes & Helm.
-- **Buổi Hoàn thành Gần nhất:** **Buổi 42 — Kubernetes Gateway API & Application Exposure** (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10 — Ngày 15/10/2026).
-- **Buổi Tiếp theo:** **Buổi 43 — Helm Fundamentals** (NEXT SESSION).
+- **Giai đoạn Hiện tại:** Phase 10 — Observability & Site Reliability Engineering.
+- **Buổi Hoàn thành Gần nhất:** **Buổi 46 — Grafana Monitoring** (COMPLETED — 9.8/10 — Ngày 24/10/2026).
+- **Buổi Tiếp theo:** **Buổi 47 — Logging & Centralized Logs (Fluent Bit/Loki)**.
 - **Sự cố Tồn đọng Độc lập:** Buổi 40 (Kubernetes Resources & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do sự cố HPA CPU: `<unknown>/50%` đang nằm trong backlog điều tra riêng biệt, cụm Kind `s40` và `s41` được duy trì nguyên vẹn; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller.
-- **Cột mốc Sắp tới:** Hoàn tất 2 buổi Kubernetes & Helm (**S43 Helm, S44 K8s Troubleshooting & Defense**) trước khi bước sang chuyên đề Observability (**S45 Prometheus, S46 Grafana**).
+- **Kết quả gần nhất:** S43 9.3/10, S44 9.6/10, S45 9.7/10, S46 9.8/10 — đều COMPLETED.
 
 ---
 
@@ -44,7 +44,8 @@ Toàn bộ các bài thực hành đã được hợp nhất về thư mục duy
 - `labs/s23-aws-ec2` đến `labs/s26-aws-alb-asg`: AWS Cloud Infrastructure (EC2, S3/EBS, RDS PostgreSQL, ALB & ASG).
 - `labs/s29-terraform-aws` đến `labs/s32-terraform-advanced`: Infrastructure as Code (Terraform VPC, S3 Remote State, Modules, Refactoring).
 - `labs/s33-ansible-fundamentals` đến `labs/s36-ansible-tags-vault`: Configuration Management (Ansible Roles, Multi-Host, Ansible Vault).
-- `labs/s37-kubernetes-fundamentals` đến `labs/s42-kubernetes-gateway-api`: Kubernetes Clusters, Services, ConfigMaps, Resources, Storage & Gateway API.
+- `labs/s37-kubernetes-fundamentals` đến `labs/s44-kubernetes-troubleshooting`: Kubernetes, Helm & Cluster Troubleshooting.
+- `labs/s45-prometheus-monitoring` và `labs/s46-grafana`: Prometheus metrics, Grafana Data Source và dashboard monitoring.
 
 ---
 

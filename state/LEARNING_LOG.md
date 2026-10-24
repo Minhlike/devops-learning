@@ -1075,3 +1075,17 @@
   - Điểm cần củng cố: Nguyên tắc ưu tiên tuyến cụ thể hơn, chẩn đoán dựa trên bằng chứng (evidence-based troubleshooting), phân biệt Gateway hợp lệ về cấu hình vs Gateway có External IP.
   - Trạng thái cluster: Cụm Kind `s40`, `s41`, namespace `s42` và các container DB được giữ nguyên tài nguyên.
 - Kết quả: **ĐẠT BUỔI 42 (COMPLETED — LEARNING & ASSESSMENT PASS: 7,7/10 — Ngày 15/10/2026)**.
+
+## [2026-10-24] Session 46: Grafana Monitoring
+
+- **Trạng thái:** COMPLETED — **9.8/10 — PASS**. Không tổ chức kiểm tra lại.
+- **Môi trường:** Ubuntu Server 26.04.1 LTS trên VMware (`192.168.210.100`); SSH key và hardening, LVM, cập nhật hệ thống, swap tắt; K3s đơn node `v1.36.5+k3s1`; Helm 4.3.1.
+- **Ứng dụng:** Podinfo 6.15.0, 2 replicas; đã thực hành Rolling Update và Rollback.
+- **Prometheus:** Triển khai trên K3s với PVC 2 GiB và Kubernetes Service Discovery; xác minh 2/2 Podinfo targets `UP`.
+- **Grafana:** Triển khai với PVC 1 GiB và kết nối Prometheus Data Source.
+- **Dashboard `S46 — K3s Podinfo Monitoring`:** Hoàn thành 4 panel: Successful Scrape Targets, Scrape Status by Pod, HTTP Requests per Second và HTTP Latency P95. Cấu hình được lưu trong `labs/s46-grafana/`.
+- **Troubleshooting đã thực hiện:** Khắc phục truy cập Grafana liên quan SSH Tunnel và `kubectl port-forward`.
+- **Đánh giá cuối buổi:** 7/7 câu trắc nghiệm đúng (7 điểm); tự luận 2.8/3; tổng 9.8/10 — PASS.
+- **Giới hạn ghi nhận:** Thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ. Không ghi nhận đã thực hiện, không tạo kết quả/bằng chứng giả và không coi đây là điều kiện nghiệm thu.
+- **Chuỗi điểm gần nhất:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10.
+- **Kết quả:** **ĐẠT BUỔI 46 (COMPLETED — 9.8/10 — Ngày 24/10/2026)**.
