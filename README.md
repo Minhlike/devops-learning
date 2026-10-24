@@ -26,9 +26,9 @@ Repository được chuẩn hóa theo kiến trúc tự chứa (self-contained),
 ## 2. Trạng thái Đào tạo Hiện tại
 
 - **Giai đoạn Hiện tại:** Phase 10 — Observability & Site Reliability Engineering (SRE).
-- **Buổi Hoàn thành Gần nhất:** **Buổi 46 — Grafana Monitoring** (COMPLETED — 9.8/10 — Ngày 24/10/2026).
-- **Buổi Tiếp theo:** **Buổi 47 — Logging & Centralized Logs (Fluent Bit/Loki)**.
-- **Kết quả gần nhất:** S43 9.3/10, S44 9.6/10, S45 9.7/10, S46 9.8/10 — đều COMPLETED.
+- **Buổi Hoàn thành Gần nhất:** **Buổi 48 — Alerting** (COMPLETED — 10/10 — Ngày 24/10/2026).
+- **Buổi Tiếp theo:** **Buổi 49 — SLI, SLO & Error Budget** (đã giới thiệu lý thuyết; chưa có lab hoặc nghiệm thu).
+- **Kết quả gần nhất:** S43 9.3/10, S44 9.6/10, S45 9.7/10, S46 9.8/10, S47 9.8/10, S48 10/10 — đều COMPLETED.
 - **Sự cố Tồn đọng Độc lập:** Buổi 40 (Kubernetes Resources & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do sự cố HPA CPU: `<unknown>/50%` đang nằm trong backlog điều tra riêng biệt, cụm Kind `s40` và `s41` được duy trì nguyên vẹn; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller.
 - **Hạ tầng Mới Vận hành:** Cụm K3s `v1.36.5` trên máy ảo VMware Ubuntu Server 26.04.1 (`192.168.210.100`) phục vụ chuyên đề Observability (S46+), hoạt động song song và độc lập với cụm Kind trên WSL2.
 
@@ -45,7 +45,7 @@ Toàn bộ các bài thực hành đã được hợp nhất về thư mục duy
 - `labs/s23-aws-ec2` đến `labs/s26-aws-alb-asg`: AWS Cloud Infrastructure (EC2, S3/EBS, RDS PostgreSQL, ALB & ASG).
 - `labs/s29-terraform-aws` đến `labs/s32-terraform-advanced`: Infrastructure as Code (Terraform VPC, S3 Remote State, Modules, Refactoring).
 - `labs/s33-ansible-fundamentals` đến `labs/s36-ansible-tags-vault`: Configuration Management (Ansible Roles, Multi-Host, Ansible Vault).
-- `labs/s37-kubernetes-fundamentals` đến `labs/s46-grafana`: Kubernetes Orchestration, Gateway API, Helm, Cluster Troubleshooting, Prometheus Monitoring & Grafana Dashboards.
+- `labs/s37-kubernetes-fundamentals` đến `labs/s48-alerting`: Kubernetes Orchestration, Gateway API, Helm, Cluster Troubleshooting, Prometheus, Grafana, Loki/Fluent Bit và Alertmanager.
 
 ---
 

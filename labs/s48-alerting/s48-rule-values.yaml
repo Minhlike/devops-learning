@@ -1,0 +1,16 @@
+
+# S48 — Synthetic alerting rule
+serverFiles:
+  alerting_rules.yml:
+    groups:
+      - name: s48-training
+        rules:
+          - alert: S48TrainingAlert
+            expr: vector(1)
+            for: 1m
+            labels:
+              severity: info
+              session: s48
+            annotations:
+              summary: "S48 - Synthetic training alert"
+              description: "Testing Prometheus to Alertmanager delivery"

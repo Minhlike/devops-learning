@@ -88,17 +88,21 @@ flowchart LR
 - **S43:** Helm Fundamentals (Charts, Values, Templates, Release Lifecycle & Helm Upgrades) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,3/10)** (19/10/2026)
 - **S44:** Kubernetes Troubleshooting & Cluster Defense (Cluster & Workload Recovery Simulation) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,6/10)** (21/10/2026)
 
-> **Mốc quan trọng (Milestone):** Đã hoàn tất 100% Giai đoạn 9 (Kubernetes & Helm). Tốt nghiệp Phase 9 và chuyển sang Phase 10 — Observability & SRE.
+> **Mốc quan trọng (Milestone):** Đã hoàn tất 100% Giai đoạn 9 (Kubernetes & Helm). Phase 10 đã hoàn thành S45–S48; S49 là buổi tiếp theo.
 
 ### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — CURRENT PHASE
 - **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,7/10)** (21/10/2026)
 - **S46:** Grafana Monitoring & Practical Dashboards — **COMPLETED — 9.8/10** (24/10/2026)
-- **S47:** Logging & Centralized Logs (Log aggregation, Fluent Bit/Loki, LogQL, Log shipping) — **NEXT**
-- **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels) — **UPCOMING**
-- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **UPCOMING**
+- **S47:** Logging & Centralized Logs (Log aggregation, Fluent Bit/Loki, LogQL, Log shipping) — **COMPLETED — 9.8/10 — PASS** (24/10/2026)
+- **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels) — **COMPLETED — 10/10 — PASS** (24/10/2026)
+- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **NEXT / THEORY INTRODUCED**; chưa có lab hoặc nghiệm thu.
 - **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem) — **UPCOMING**
 
 > **Kết quả nghiệm thu S46:** 7/7 MCQ (7 điểm), tự luận 2.8/3; tổng 9.8/10 — PASS. Không thi lại. Thực nghiệm chủ động gây lỗi ứng dụng/No Data được bỏ theo yêu cầu, không phải điều kiện nghiệm thu.
+>
+> **Kết quả nghiệm thu S47:** 7/7 MCQ, tự luận 2.8/3; tổng 9.8/10 — PASS. Không thi lại.
+>
+> **Kết quả nghiệm thu S48:** 7/7 MCQ, tự luận 3/3; tổng 10/10 — PASS. Không thi lại.
 
 ### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — UPCOMING
 - **S51:** Container & Image Security Scanning (Trivy, Grype, Base image hardening, Distroless)

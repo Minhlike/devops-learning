@@ -1,0 +1,30 @@
+
+# S48 — Enable lightweight Alertmanager
+# Applied together with S46 Prometheus baseline.
+
+alertmanager:
+  enabled: true
+
+  # Keep silences and notification state
+  # across Alertmanager Pod recreation.
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 256Mi
+
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 192Mi
+
+  configmapReload:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 24Mi
+      limits:
+        cpu: 100m
+        memory: 96Mi

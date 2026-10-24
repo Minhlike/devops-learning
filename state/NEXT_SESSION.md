@@ -1,24 +1,18 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 47 — Logging & Centralized Logs (Fluent Bit/Loki).
-- **Trạng thái phiên gần nhất:** S46 Grafana Monitoring **COMPLETED — 9.8/10 — PASS**, nghiệm thu ngày 24/10/2026; không tổ chức kiểm tra lại.
-- **Chuỗi điểm đã nghiệm thu:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10.
-- **Lab S46:** [`labs/s46-grafana/`](../labs/s46-grafana/) chứa cấu hình Podinfo, Prometheus và Grafana. Dashboard `S46 — K3s Podinfo Monitoring` có 4 panel: Successful Scrape Targets, Scrape Status by Pod, HTTP Requests per Second, HTTP Latency P95.
-- **Đánh giá S46:** 7/7 trắc nghiệm (7 điểm), tự luận 2.8/3; tổng 9.8/10. Đã thực hành khắc phục truy cập Grafana liên quan SSH Tunnel và `kubectl port-forward`.
-- **Giới hạn ghi nhận:** Bài thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ. Không ghi nhận đã thực hiện, không tạo bằng chứng giả, không phải điều kiện nghiệm thu.
-- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind. Không để các tồn đọng này chặn S47.
+- **Buổi tiếp theo:** S49 — SLI, SLO & Error Budget.
+- **Trạng thái:** NEXT / THEORY INTRODUCED. Đã giới thiệu SLI, SLO, Error Budget và ví dụ mục tiêu SLO 99.9%; chưa thực hiện lab, truy vấn metric thực tế, tính Error Budget/Burn Rate hoặc nghiệm thu.
+- **Chuỗi kết quả đã nghiệm thu:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10; S47 9.8/10; S48 10/10 — đều COMPLETED.
+- **S47:** COMPLETED — 9.8/10 — PASS ngày 24/10/2026. Loki Monolithic + Fluent Bit DaemonSet gom log Podinfo namespace `staging`; Loki API trả 4 log và Grafana Explore hiển thị log tương ứng. Loki dùng local-path single-node, chưa HA/backup; Fluent Bit buffer chưa persistent. Cấu hình được lưu trong [`labs/s47-centralized-logging/`](../labs/s47-centralized-logging/).
+- **S48:** COMPLETED — 10/10 — PASS ngày 24/10/2026. Đã xác minh alert Pending → Firing, Alertmanager active, routing/grouping, silence, inhibition và webhook HTTP 200. Rule/receiver thử nghiệm đã cleanup; Prometheus trả `[]`, Alertmanager config CLEAN, webhook listener đã dừng. Cấu hình có thể truy xuất lưu tại [`labs/s48-alerting/`](../labs/s48-alerting/); file webhook listener và cấu hình endpoint nguyên bản không lấy được do SSH tới Ubuntu Server timeout, không dựng file thay thế.
+- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa rõ root cause; S42 Gateway LoadBalancer `AddressNotAssigned` trong Kind; S46 failure injection No Data đã được người học yêu cầu bỏ. Các nội dung này không chặn S49.
 
-## 1. Quy chuẩn giảng dạy
+## Kế hoạch S49
 
-- Dạy lý thuyết, cơ chế và cú pháp lệnh trước khi thực hành từng khái niệm.
-- Phân biệt rõ thao tác trên Windows, WSL và Ubuntu Server từ xa; chỉ rõ môi trường chạy lệnh.
-- Đi theo trình tự, từng bước nhỏ; có checkpoint hợp lý, đọc và giải thích output thật trước khi kết luận.
-- Failure Injection/Troubleshooting chỉ thực hiện khi phù hợp phạm vi và được thống nhất; không tự biến thành điều kiện nghiệm thu bổ sung.
-- Chỉ có một bài kiểm tra cuối buổi gồm 7 câu trắc nghiệm và 2 câu tự luận, giới hạn trong kiến thức đã dạy và lab đã làm. Chấm một lượt; không tự tổ chức thi lại.
+1. Giới thiệu lại cơ chế SLI, SLO, Error Budget và Burn Rate trước khi thao tác; giải thích PromQL và nơi chạy từng lệnh trên Windows, WSL hoặc Ubuntu Server.
+2. Khảo sát các HTTP metrics thực sự đang có trong Prometheus; chọn SLI từ dữ liệu quan sát được, không giả định tên metric hoặc kết quả.
+3. Xây dựng truy vấn PromQL cho tỷ lệ request thành công, đối chiếu với mục tiêu SLO ví dụ 99.9%, rồi tính Error Budget và Burn Rate trên cửa sổ thời gian có dữ liệu.
+4. Thực hành theo checkpoint nhỏ, đọc output thật và giải thích kết quả trước khi kết luận.
+5. Tổ chức duy nhất một bài nghiệm thu cuối buổi gồm 7 câu trắc nghiệm và 2 câu tự luận; không kiểm tra lại ngoài yêu cầu của người học.
 
-## 2. Chuẩn bị S47 — Logging & Centralized Logs
-
-- **Mục tiêu dự kiến:** Tìm hiểu luồng thu thập, chuyển tiếp, lưu trữ và truy vấn log tập trung với Fluent Bit/Loki theo Roadmap.
-- **Trước khi chốt lab:** Đọc cấu hình và trạng thái mới nhất của môi trường; chọn lab nhỏ, kiểm chứng được bằng output thật, không làm thay đổi tài nguyên đang chạy ngoài phạm vi đã thống nhất.
-- **Nhịp triển khai:** Lý thuyết cần thiết → Guided Lab nhỏ → học viên chạy → đọc và giải thích output → checkpoint → troubleshooting phù hợp → bài kiểm tra cuối buổi (7 MCQ + 2 essays).
-- **An toàn:** Không xóa cluster, volume, database hay tài nguyên cloud nếu chưa có yêu cầu trực tiếp. Không đưa credentials, private key, Secret thực tế hoặc kubeconfig quản trị vào Git.
+**S50:** Incident Response & Runbooks — UPCOMING.
