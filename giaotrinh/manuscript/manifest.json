@@ -3991,7 +3991,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C03/L01.md",
-      "sha256": "53deeee62c39ebbf0407fe94f38e8be9b9f6fb6541fcba9b8cc6a45eb2a2b312",
+      "sha256": "4ad7d580cbf6e5b07a8744b26d0de3019b587266ed705d8ad61bad08da8da367",
       "legacy_units": [
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#intro",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.1",
@@ -4031,7 +4031,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C03/L02.md",
-      "sha256": "28991ca6cf470f228e1f4d33de76588202395d19f374928e15f9de26a75f8a51",
+      "sha256": "daf8940777662ab58c9181f92e371b751486eaa17d4f2ed4e48dfeafba0263c7",
       "legacy_units": [
         "TXT-772a5ceafcfbcca0",
         "TXT-b7c4cb374f6a3fbd"
@@ -4070,7 +4070,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C03/L03.md",
-      "sha256": "97e232947a0248731053daf8b2e968e2d19fa80dcc7a7a7f070dba2fe81781d4",
+      "sha256": "5179f944d1f8aec75288b8484d455b89f3c6b3bd464e377599a89f2eaa7ff50a",
       "legacy_units": [
         "TXT-59498918c83df953"
       ],
@@ -4205,7 +4205,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C05/L01.md",
-      "sha256": "a0a5bad08c34d60ed99ff2d61a6a7d123ad36b6592c072bf9a9cf841f7afe506",
+      "sha256": "725a3c43769a187e506b37ef7686f28091d8fa1241f64e573814a048b43cd53b",
       "legacy_units": [
         "TXT-5077a330d6f2f3f0",
         "TXT-81d50c5799498d33"
@@ -4235,7 +4235,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C05/L02.md",
-      "sha256": "92c51e09d4441042d66f4c9323d49f5e9609b21ccc3cba780bb6ced03dae109c",
+      "sha256": "43b1d2efe95562db385f56661c95bb7067188f815bd0c5bf9c480a1ab066ae64",
       "legacy_units": [
         "TXT-2675e3b61c0278d7",
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.4:claim:CLM-cf957a5ab18c9a0e"
@@ -4270,7 +4270,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C05/L03.md",
-      "sha256": "551846340674e58fffd80cd470a4bba22b8612bfee207853745a0aa9a991ce73",
+      "sha256": "7949049b964059ed5fe99d897d60c1a58bf62012de9123ff5cb6f24013f28e7b",
       "legacy_units": [
         "TXT-5075a73a8ebee66d",
         "TXT-6c9674353a84bb58"
@@ -4310,7 +4310,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L01.md",
-      "sha256": "36e74f6c9bcf117de2ac7928eb43855161b37668e53ff138134d2824b9b2ea95",
+      "sha256": "fdbe39414f0dab39fddfe85dc5ef0fc87808dd81aa8f27ac4a9c1822c2a3fcf2",
       "legacy_units": [
         "chapters/16-kubernetes-tai-nguyen-mang-luu-tru-hpa.md#16.5:claim:CLM-590ed69919bb6008"
       ],
@@ -4344,7 +4344,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L02.md",
-      "sha256": "1a33877078a8c454253154a9617af705cae7729d37827ff945411af666b64274",
+      "sha256": "c1a992f1074cac9df998336ff082969232ba2c59cbd8d26efbfe96c5bbae807f",
       "legacy_units": [
         "TXT-4c138643d8bf86fc",
         "TXT-44a7a5d2929285b7"
@@ -4386,7 +4386,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C06/L03.md",
-      "sha256": "a46e9b2d5cce4703bcd79a52056b980f4e8938146717194fc0fc146c75ad4116",
+      "sha256": "2454efd0dd0eb1610c432c405c49e1482cd19d07c79bc537bd724e599f7cfe3f",
       "legacy_units": [
         "TXT-2a0b0963f5d75b8a"
       ],
@@ -4420,7 +4420,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C07/L01.md",
-      "sha256": "fbcafa29d045484b6356d9dd323b5a46ce27a7b487aeed7102aa0b8623a02e00",
+      "sha256": "bcd7c529f439ffa55509f18b467af51a133d6a7976ede4be631e58e3f241038b",
       "legacy_units": [
         "chapters/17-gateway-api-helm.md#intro",
         "TXT-36642cf0c7947c4c",
@@ -4465,7 +4465,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C07/L02.md",
-      "sha256": "9424b740b319f4d4daa03ae8f29304902235b26e635be20d061f5869ccc31f26",
+      "sha256": "1d16c52e00272928f72ca663b6a9dbe51e039bd6ee71dbf2c48d2ec5a7d4b57e",
       "legacy_units": [
         "TXT-270aeb66e3bd873d",
         "TXT-1ee3878722821b82",
@@ -4510,7 +4510,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C07/L03.md",
-      "sha256": "63a755d04ab733c1fa2714dbc6bed39e888b84cfdbd43cce6eacddbf0d9a2dde",
+      "sha256": "906067a179e92a3f7c80c2782639f5ecfdf312e2c62f5bf3421ede9a5c018324",
       "legacy_units": [
         "TXT-a17f3780fdc2252a",
         "TXT-3004c013547ecb9f"
@@ -4550,7 +4550,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L01.md",
-      "sha256": "ff9b6cdfc210fe4690d60f76031a85363b5ed2b86fa929a700d0f20c99eb37d7",
+      "sha256": "8e20c1b978364b15cc201a70941c9274e1d10747992fb50edebcf0eaab4e589c",
       "legacy_units": [
         "TXT-fd1b185a294a1221",
         "TXT-b64705f3b0f22752",
@@ -4601,7 +4601,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L02.md",
-      "sha256": "f4469cb502a0d490fe2d67db5dea42aacf6f1f231f2a6798e4510ecbce450c29",
+      "sha256": "b4fdfe18923129739ec97c179a6596e5506f6b6d9ca0bc1c2319cc4c31908547",
       "legacy_units": [
         "TXT-55a87dd9e03e4886",
         "chapters/17-gateway-api-helm.md#17.3:claim:CLM-76985836c4d60842"
@@ -4636,7 +4636,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L03.md",
-      "sha256": "724f6c9dbacd701671ab138968a6e4152162fd730e91b156d12eb57795930cbd",
+      "sha256": "16751fca853e17b33b300800fea32bffb5545c5e25ec22d0685b5869cb1f052f",
       "legacy_units": [
         "TXT-fca2fc7668338428",
         "TXT-80eb306141c61c0d",

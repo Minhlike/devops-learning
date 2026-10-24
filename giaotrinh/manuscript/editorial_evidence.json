@@ -3401,7 +3401,7 @@
       ]
     },
     "P11.C03.L01": {
-      "content_sha256": "53deeee62c39ebbf0407fe94f38e8be9b9f6fb6541fcba9b8cc6a45eb2a2b312",
+      "content_sha256": "4ad7d580cbf6e5b07a8744b26d0de3019b587266ed705d8ad61bad08da8da367",
       "editorial_decision": "Placement dựa requests, allocatable và ràng buộc node.",
       "checks": [
         {
@@ -3440,7 +3440,7 @@
       ]
     },
     "P11.C03.L02": {
-      "content_sha256": "28991ca6cf470f228e1f4d33de76588202395d19f374928e15f9de26a75f8a51",
+      "content_sha256": "daf8940777662ab58c9181f92e371b751486eaa17d4f2ed4e48dfeafba0263c7",
       "editorial_decision": "Bổ sung ca số liệu tách mặc định request từ limit, quyết định đặt Pod, CPU time và throttle; yêu cầu phản chứng theo đúng lượt chạy.",
       "checks": [
         {
@@ -3519,7 +3519,7 @@
       ]
     },
     "P11.C03.L03": {
-      "content_sha256": "97e232947a0248731053daf8b2e968e2d19fa80dcc7a7a7f070dba2fe81781d4",
+      "content_sha256": "5179f944d1f8aec75288b8484d455b89f3c6b3bd464e377599a89f2eaa7ff50a",
       "editorial_decision": "Metric CPU và request được dạy trước HPA; utilization không phải latency.",
       "checks": [
         {
@@ -3672,7 +3672,7 @@
       ]
     },
     "P11.C05.L01": {
-      "content_sha256": "a0a5bad08c34d60ed99ff2d61a6a7d123ad36b6592c072bf9a9cf841f7afe506",
+      "content_sha256": "725a3c43769a187e506b37ef7686f28091d8fa1241f64e573814a048b43cd53b",
       "editorial_decision": "PV/PVC/StorageClass và access mode tách cấp phát khỏi mount. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
       "checks": [
         {
@@ -3726,7 +3726,7 @@
       ]
     },
     "P11.C05.L02": {
-      "content_sha256": "92c51e09d4441042d66f4c9323d49f5e9609b21ccc3cba780bb6ced03dae109c",
+      "content_sha256": "43b1d2efe95562db385f56661c95bb7067188f815bd0c5bf9c480a1ab066ae64",
       "editorial_decision": "PVC Bound chưa chứng minh mount hay dữ liệu ứng dụng có mặt.",
       "checks": [
         {
@@ -3752,7 +3752,7 @@
       ]
     },
     "P11.C05.L03": {
-      "content_sha256": "551846340674e58fffd80cd470a4bba22b8612bfee207853745a0aa9a991ce73",
+      "content_sha256": "7949049b964059ed5fe99d897d60c1a58bf62012de9123ff5cb6f24013f28e7b",
       "editorial_decision": "emptyDir, PVC và StatefulSet có vòng đời và định danh khác nhau.",
       "checks": [
         {
@@ -3788,7 +3788,7 @@
       ]
     },
     "P11.C06.L02": {
-      "content_sha256": "1a33877078a8c454253154a9617af705cae7729d37827ff945411af666b64274",
+      "content_sha256": "c1a992f1074cac9df998336ff082969232ba2c59cbd8d26efbfe96c5bbae807f",
       "editorial_decision": "HPA 3×60/50 làm tròn lên 4 theo dữ kiện giả định; hành vi thực có điều kiện metric. Bổ sung phản ví dụ thiếu một metric: trung bình status 75% nhưng phép tính bảo thủ scale-up còn 50%, kèm phép xác minh độ phủ Metrics API.",
       "checks": [
         {
@@ -3844,7 +3844,7 @@
       ]
     },
     "P11.C06.L03": {
-      "content_sha256": "a46e9b2d5cce4703bcd79a52056b980f4e8938146717194fc0fc146c75ad4116",
+      "content_sha256": "2454efd0dd0eb1610c432c405c49e1482cd19d07c79bc537bd724e599f7cfe3f",
       "editorial_decision": "9 giây CPU/10 giây/3 Pod là 0,3 lõi; desired=4 không chứng minh Ready.",
       "checks": [
         {
@@ -3877,7 +3877,7 @@
       ]
     },
     "P11.C07.L01": {
-      "content_sha256": "fbcafa29d045484b6356d9dd323b5a46ce27a7b487aeed7102aa0b8623a02e00",
+      "content_sha256": "bcd7c529f439ffa55509f18b467af51a133d6a7976ede4be631e58e3f241038b",
       "editorial_decision": "GatewayClass, Gateway, HTTPRoute và controller khác vai trò.",
       "checks": [
         {
@@ -3934,7 +3934,7 @@
       ]
     },
     "P11.C07.L02": {
-      "content_sha256": "9424b740b319f4d4daa03ae8f29304902235b26e635be20d061f5869ccc31f26",
+      "content_sha256": "1d16c52e00272928f72ca663b6a9dbe51e039bd6ee71dbf2c48d2ec5a7d4b57e",
       "editorial_decision": "Phân tách quyền Route gắn Gateway với quyền Route trỏ backend khác namespace qua ví dụ ba namespace.",
       "checks": [
         {
@@ -3985,7 +3985,7 @@
       ]
     },
     "P11.C07.L03": {
-      "content_sha256": "63a755d04ab733c1fa2714dbc6bed39e888b84cfdbd43cce6eacddbf0d9a2dde",
+      "content_sha256": "906067a179e92a3f7c80c2782639f5ecfdf312e2c62f5bf3421ede9a5c018324",
       "editorial_decision": "Giữ giải thích condition; thêm ca địa chỉ Gateway và DNS client không khớp để học viên tách quan sát khỏi kết luận.",
       "checks": [
         {
@@ -4012,7 +4012,7 @@
       ]
     },
     "P11.C08.L01": {
-      "content_sha256": "ff9b6cdfc210fe4690d60f76031a85363b5ed2b86fa929a700d0f20c99eb37d7",
+      "content_sha256": "8e20c1b978364b15cc201a70941c9274e1d10747992fb50edebcf0eaab4e589c",
       "editorial_decision": "Chart và values render YAML; controller vẫn phải hội tụ.",
       "checks": [
         {
@@ -4051,7 +4051,7 @@
       ]
     },
     "P11.C08.L02": {
-      "content_sha256": "f4469cb502a0d490fe2d67db5dea42aacf6f1f231f2a6798e4510ecbce450c29",
+      "content_sha256": "b4fdfe18923129739ec97c179a6596e5506f6b6d9ca0bc1c2319cc4c31908547",
       "editorial_decision": "Helm revision và template khác trạng thái tài nguyên đang chạy.",
       "checks": [
         {
@@ -4077,7 +4077,7 @@
       ]
     },
     "P11.C08.L03": {
-      "content_sha256": "724f6c9dbacd701671ab138968a6e4152162fd730e91b156d12eb57795930cbd",
+      "content_sha256": "16751fca853e17b33b300800fea32bffb5545c5e25ec22d0685b5869cb1f052f",
       "editorial_decision": "Helm rollback tạo revision mới; không đảo dữ liệu ngoài manifest.",
       "checks": [
         {
