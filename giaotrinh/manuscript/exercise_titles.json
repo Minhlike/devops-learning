@@ -150,5 +150,7 @@
   "P15.C03.L01.Q01": "Thiếu digest và phép thử restore",
   "P15.C03.L02.Q01": "Canary dưới SLO có được tăng tải?",
   "P15.C03.L03.Q01": "RPO và RTO khi chỉ restore backup",
-  "P15.C03.L04.Q01": "Ledger xanh nhưng thiếu bằng chứng capstone"
+  "P15.C03.L04.Q01": "Ledger xanh nhưng thiếu bằng chứng capstone",
+  "P11.C08.L01.Q01": "Giá trị hiệu lực khi nâng cấp chart",
+  "P11.C08.L02.Q01": "Lần theo lỗi qua Gateway và backend"
 }

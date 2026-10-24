@@ -685,8 +685,8 @@
         {
           "id": "W2.P09.C01.L02.Q01",
           "publication_id": "P09.C01.L02.Q01",
-          "question": "Cùng HCL nhưng hai pipeline cho plan khác. Trước khi kết luận drift, cần so những danh tính nào?",
-          "answer": "So provider source/version/checksum, input, workspace/backend/state serial, alias, account/Region và ID object; sau đó mới đối chiếu API thực và schema provider."
+          "question": "Root module có provider aws mặc định ở Region A và alias aws.dr ở Region B. Child module backup dự định dùng B nhưng không nhận mapping providers. Vì sao tên module và biến region không chứng minh đích là B? Cần kiểm gì trước apply?",
+          "answer": "Provider gắn với resource quyết định API đích; alias không tự được child module kế thừa như default provider. Child phải khai báo alias cần dùng và root truyền mapping đúng; resource trong child phải chọn cấu hình đó. Trước apply, so provider source/version/checksum, mapping từng resource, credential thực, account/Region đã resolve, workspace/backend và ID dự kiến trong plan. Một plan chỉ báo 1 to add có thể hợp cú pháp mà nhắm sai Region hoặc account; nếu không xác minh được identity, dừng trước khi tạo tài nguyên."
         }
       ]
     },

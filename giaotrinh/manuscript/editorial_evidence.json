@@ -2649,7 +2649,7 @@
       ]
     },
     "P09.C01.L03": {
-      "content_sha256": "b9b8259b8660a1c0c07aad983125928f9a0e7f0c8f2dc6f438c741f381859186",
+      "content_sha256": "c6461c8c5438ba8864f4faf0a001359d61bb6623fb9ab94458a8693f16964fe9",
       "editorial_decision": "Configuration, state và API thực là ba thực thể; ví dụ provider 6.19.0 được gắn điều kiện option replacement.",
       "checks": [
         {
@@ -2907,7 +2907,9 @@
         {
           "anchor": "Một play có `hosts: app` chọn `atlas-a` và `atlas-b`",
           "kind": "documented",
-          "sources": ["AS16"],
+          "sources": [
+            "AS16"
+          ],
           "source_location": "Patterns: Using patterns; Common patterns",
           "support": "A play host pattern selects inventory group members; a limit narrows the selected hosts",
           "limits": "Selection still depends on the resolved inventory of that run"
@@ -2915,7 +2917,9 @@
         {
           "anchor": "`ansible-inventory -i inventory.ini --list` chỉ hiển thị cấu trúc inventory",
           "kind": "documented",
-          "sources": ["AS17"],
+          "sources": [
+            "AS17"
+          ],
           "source_location": "ansible-inventory synopsis and description",
           "support": "The command displays or dumps resolved inventory information",
           "limits": "It does not validate the eventual play host pattern or application state"
@@ -3963,7 +3967,7 @@
       ]
     },
     "P11.C08.L01": {
-      "content_sha256": "b0e5ccf72e93e27bd5ed2b6f2c606172d749cb7a2a3329bcb3e38a856fa97008",
+      "content_sha256": "c8085b0646dd756e339e5ba56910fa649c469686136d0415ea6a003c256bb79d",
       "editorial_decision": "Chart và values render YAML; controller vẫn phải hội tụ.",
       "checks": [
         {
@@ -4002,7 +4006,7 @@
       ]
     },
     "P11.C08.L02": {
-      "content_sha256": "96ba7ccd29d69d2dfc8e5c4b4c2d41ed81c26646873debd65f957a73fd86f7be",
+      "content_sha256": "027af437e02b3facf06f32686e149dde08d6b29ce1a146417352c3c3bde5be3b",
       "editorial_decision": "Helm revision và template khác trạng thái tài nguyên đang chạy.",
       "checks": [
         {
@@ -4028,7 +4032,7 @@
       ]
     },
     "P11.C08.L03": {
-      "content_sha256": "cae752fde2dbacfc8193f1bff8ee8a905fd423839c38f3c9854185f245010f1e",
+      "content_sha256": "b37b791886279ae4d4e5c96ddd69e1db0c73e1250d8504f6d9c6ca90cfc6e8f5",
       "editorial_decision": "Helm rollback tạo revision mới; không đảo dữ liệu ngoài manifest.",
       "checks": [
         {
@@ -4178,7 +4182,7 @@
       ]
     },
     "P12.C02.L01": {
-      "content_sha256": "f8bed85709c797fffbf63f833b593f67d6e1457898340c1420b1deb56e3cd3ed",
+      "content_sha256": "d489c7a27d943afc9ff3c8c90c5352879dc5e17063b3ccd39afe2a8fa0c7572c",
       "editorial_decision": "Rate/increase tính trên cửa sổ giả định; recording rule khác alerting rule.",
       "checks": [
         {
@@ -4224,7 +4228,7 @@
       ]
     },
     "P12.C02.L02": {
-      "content_sha256": "56855a904b25b9a53aed60d710d4f72cdd2245a0b33a15f0502ceb49d91809d6",
+      "content_sha256": "e6d92cf3d2583d02cb292b17a008a65c07862e8a6a5c1e62fef67cc7d07fdc1e",
       "editorial_decision": "Histogram bucket chỉ ràng buộc khoảng của p95; hai phân bố cùng bucket có thể có p95 thực khác nhau.",
       "checks": [
         {
@@ -4262,7 +4266,7 @@
       ]
     },
     "P12.C02.L03": {
-      "content_sha256": "8f34e5de9e21a2eb46dd757c592204d901863bf249beb0c3c4c19b02f13bd7c9",
+      "content_sha256": "8cf2f1892af0938efee666fa0d241fcd1d08e845452a58380f53d6c994f281e3",
       "editorial_decision": "Dashboard phụ thuộc data source/time range/step và staleness; phép tính hai cửa sổ tách tỷ lệ lỗi quan sát được khỏi sức khỏe dịch vụ.",
       "checks": [
         {

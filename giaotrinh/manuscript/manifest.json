@@ -3034,7 +3034,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C01/L01.md",
-      "sha256": "5daf1f55dca6d596b787452f90735bd2b00580a814efb2f5ecf9ffc9baad6630",
+      "sha256": "7fb9926b924c52fe571c0a1fa50a2dd2c959a83bbaea9ed485976c031198d36b",
       "legacy_units": [
         "chapters/13-terraform-do-thi-state-drift.md#13.1:claim:CLM-7b1bc46f06f9c079"
       ],
@@ -3069,7 +3069,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P09/C01/L02.md",
-      "sha256": "7fc08db22c13227a9ad78a28ce5d863c6f4297f1cdfdf25247992a9bb63bd90a",
+      "sha256": "43246c7e47b224798d5129f16ea9bce3b234758b54075d36e3d4dc13ebc0b746",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -3081,8 +3081,8 @@
         {
           "id": "W2.P09.C01.L02.Q01",
           "publication_id": "P09.C01.L02.Q01",
-          "question": "Cùng HCL nhưng hai pipeline cho plan khác. Trước khi kết luận drift, cần so những danh tính nào?",
-          "answer": "So provider source/version/checksum, input, workspace/backend/state serial, alias, account/Region và ID object; sau đó mới đối chiếu API thực và schema provider."
+          "question": "Root module có provider aws mặc định ở Region A và alias aws.dr ở Region B. Child module backup dự định dùng B nhưng không nhận mapping providers. Vì sao tên module và biến region không chứng minh đích là B? Cần kiểm gì trước apply?",
+          "answer": "Provider gắn với resource quyết định API đích; alias không tự được child module kế thừa như default provider. Child phải khai báo alias cần dùng và root truyền mapping đúng; resource trong child phải chọn cấu hình đó. Trước apply, so provider source/version/checksum, mapping từng resource, credential thực, account/Region đã resolve, workspace/backend và ID dự kiến trong plan. Một plan chỉ báo 1 to add có thể hợp cú pháp mà nhắm sai Region hoặc account; nếu không xác minh được identity, dừng trước khi tạo tài nguyên."
         }
       ]
     },
@@ -3099,7 +3099,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P09/C01/L03.md",
-      "sha256": "b9b8259b8660a1c0c07aad983125928f9a0e7f0c8f2dc6f438c741f381859186",
+      "sha256": "c6461c8c5438ba8864f4faf0a001359d61bb6623fb9ab94458a8693f16964fe9",
       "legacy_units": [
         "chapters/13-terraform-do-thi-state-drift.md#intro",
         "TXT-aff9882e964c74d0",
@@ -3123,8 +3123,8 @@
         {
           "id": "C13.1",
           "publication_id": "P09.C01.L03.Q01",
-          "question": "Trong ví dụ HCL, cạnh nào suy ra từ tham chiếu, cạnh nào khai báo tường minh? Đổi `schema_revision` sang `v2` tác động thế nào tới `service` và vì sao chuỗi `ready` không chứng minh ứng dụng sẵn sàng?",
-          "answer": "`service` tham chiếu `terraform_data.schema.output` nên Terraform suy ra cạnh `schema` → `service`; `audit` dùng `depends_on` để khai báo cạnh `service` → `audit`. Khi `schema_revision` đổi, `schema.input` đổi; `service.triggers_replace` nhận giá trị mới nên `service` được thay sau khi giá trị xác định. `audit.input = \"ready\"` chỉ là dữ liệu state, không thực hiện request, nên không chứng minh ứng dụng hay phụ thuộc của nó sẵn sàng. Plan thực tế còn tùy giá trị chưa biết cho đến apply."
+          "question": "Trong HCL mẫu, cạnh schema→service và service→audit khác nhau thế nào? Một data source bị hoãn đọc tới apply khiến ID đích hiện known after apply; saved plan chứa secret dù terminal che giá trị. Có thể coi plan xanh là đủ để duyệt không?",
+          "answer": "Cạnh schema→service suy từ tham chiếu giá trị; service→audit do depends_on tường minh, chỉ đặt thứ tự. Audit.input='ready' không chạy health check. Data source có đầu vào phụ thuộc thay đổi có thể bị đọc ở apply, nên người duyệt chưa biết ID đích; phải giải thích rủi ro hoặc tách thành hai lượt có kiểm chứng giữa chúng. Saved plan có thể chứa input nhạy cảm dạng đọc được, phải giới hạn quyền đọc/lưu và áp đúng backend/workspace. Sau apply vẫn kiểm object API và request nghiệp vụ; plan không là giao dịch hay bằng chứng readiness."
         }
       ]
     },
@@ -4536,7 +4536,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L01.md",
-      "sha256": "b0e5ccf72e93e27bd5ed2b6f2c606172d749cb7a2a3329bcb3e38a856fa97008",
+      "sha256": "c8085b0646dd756e339e5ba56910fa649c469686136d0415ea6a003c256bb79d",
       "legacy_units": [
         "TXT-fd1b185a294a1221",
         "TXT-b64705f3b0f22752",
@@ -4565,7 +4565,14 @@
         "HE2",
         "HE3"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "P11.C08.L01.Q01",
+          "publication_id": "P11.C08.L01.Q01",
+          "question": "Chart mặc định hostname atlas.example.test; revision 4 ghi đè thành old.example.test. Revision 5 dùng chart mới với --reuse-values nhưng không truyền hostname. Dự đoán host được render và nêu ba chứng cứ cần so trước khi nói client sẽ dùng được host mới.",
+          "answer": "Với --reuse-values, giá trị đã dùng ở release trước có thể được mang sang nên host cũ old.example.test còn hiệu lực nếu không có override mới. Phải ghi chart/version, bộ values hiệu lực và tham số -f/--set; so manifest render dự kiến với helm get manifest của revision 5; cuối cùng kiểm Gateway/Route status ở generation mới, DNS và request thật mang Host/SNI cần phục vụ. Chart source mặc định đúng không chứng minh release đang dùng đúng giá trị."
+        }
+      ]
     },
     "P11.C08.L02": {
       "parent": "P11.C08",
@@ -4580,7 +4587,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L02.md",
-      "sha256": "96ba7ccd29d69d2dfc8e5c4b4c2d41ed81c26646873debd65f957a73fd86f7be",
+      "sha256": "027af437e02b3facf06f32686e149dde08d6b29ce1a146417352c3c3bde5be3b",
       "legacy_units": [
         "TXT-55a87dd9e03e4886",
         "chapters/17-gateway-api-helm.md#17.3:claim:CLM-76985836c4d60842"
@@ -4593,7 +4600,14 @@
         "GW3",
         "HE4"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "P11.C08.L02.Q01",
+          "publication_id": "P11.C08.L02.Q01",
+          "question": "Revision 7 đã ghi manifest; Route Accepted=True nhưng observedGeneration còn cũ, EndpointSlice có backend Ready và DNS client trỏ địa chỉ khác Gateway status. Có thể kết luận backend lỗi không? Sắp thứ tự phép quan sát để thu hẹp nguyên nhân.",
+          "answer": "Chưa. Ghi revision, generation hiện tại và observedGeneration của đúng parent/controller; trạng thái cũ chưa mô tả manifest mới. Từ cùng client, so địa chỉ DNS thực và địa chỉ Gateway status với cùng Host/SNI/path theo quyền thử; nếu chỉ đường DNS lỗi, kiểm DNS/cache/tuyến. Khi condition đã thấy generation mới, đọc Accepted/ResolvedRefs, listener và backend, rồi kiểm EndpointSlice và request tới Service từ nguồn phù hợp. Endpoint Ready không chứng minh đường client→Gateway→backend; không suy nguyên nhân từ một 404/503 hoặc snapshot khác thời điểm."
+        }
+      ]
     },
     "P11.C08.L03": {
       "parent": "P11.C08",
@@ -4608,7 +4622,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P11/C08/L03.md",
-      "sha256": "cae752fde2dbacfc8193f1bff8ee8a905fd423839c38f3c9854185f245010f1e",
+      "sha256": "b37b791886279ae4d4e5c96ddd69e1db0c73e1250d8504f6d9c6ca90cfc6e8f5",
       "legacy_units": [
         "TXT-fca2fc7668338428",
         "TXT-80eb306141c61c0d",
@@ -4630,8 +4644,8 @@
         {
           "id": "C17.4",
           "publication_id": "P11.C08.L03.Q01",
-          "question": "Revision 7 đổi hostname và image, đồng thời ứng dụng ghi dữ liệu theo schema mới. `helm rollback` về revision 6 hoàn tất. Nêu ba hậu điều kiện độc lập phải chứng minh trước khi nói dịch vụ đã phục hồi.",
-          "answer": "Thứ nhất, xác nhận revision mới do rollback tạo và manifest/values/địa chỉ Gateway, hostname, Route/backend sau rollback thực sự trở về cấu hình mong muốn. Thứ hai, kiểm tra condition ở generation mới, Service endpoint Ready và request qua đúng DNS, SNI, Host, path từ client đại diện trả nội dung mong đợi. Thứ ba, kiểm tra schema và dữ liệu mà revision 7 đã ghi còn tương thích với image cũ, hoặc thực hiện phục hồi dữ liệu bằng kế hoạch riêng rồi xác minh nghiệp vụ. Helm không đảo migration hoặc tác dụng phụ chỉ vì rollback báo hoàn tất."
+          "question": "Revision 7 đổi hostname và image, ứng dụng ghi schema mới. helm upgrade --atomic hoặc helm rollback báo hoàn tất. Có thể kết luận request và dữ liệu đã phục hồi không? Nêu ba hậu điều kiện và giới hạn của --atomic.",
+          "answer": "Không. --atomic chỉ tự rollback khi upgrade thất bại theo điều kiện Helm theo dõi; nếu object được nhận và Ready nhưng hostname sai cho khách hàng, gate nghiệp vụ vẫn có thể fail mà Helm không tự đảo. Kiểm revision mới/manifest/values và object live; kiểm Gateway/Route ở generation mới, endpoint Ready và request qua đúng DNS/SNI/Host/path từ client; kiểm schema và dữ liệu do revision 7 đã ghi còn tương thích hoặc phục hồi theo kế hoạch riêng. Rollback tạo revision mới, không xóa request/message/migration đã commit."
         }
       ]
     },
