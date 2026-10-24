@@ -152,5 +152,7 @@
   "P15.C03.L03.Q01": "RPO và RTO khi chỉ restore backup",
   "P15.C03.L04.Q01": "Ledger xanh nhưng thiếu bằng chứng capstone",
   "P11.C08.L01.Q01": "Giá trị hiệu lực khi nâng cấp chart",
-  "P11.C08.L02.Q01": "Lần theo lỗi qua Gateway và backend"
+  "P11.C08.L02.Q01": "Lần theo lỗi qua Gateway và backend",
+  "P04.C01.L01.Q01": "Blob, tree và commit khi đổi tên tệp",
+  "P10.C03.L01.Q01": "Giá trị biến hiệu lực trên từng máy"
 }

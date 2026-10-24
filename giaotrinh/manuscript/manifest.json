@@ -1245,7 +1245,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C01/L01.md",
-      "sha256": "59d92649fcc8cf8cf86eea1c9b14c6de2c26991d068133747250aba8126e00ae",
+      "sha256": "21146b4ebb306075eb5776047ccc1fd0b51d820d8c42f868bc2cb7dac7f41fde",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#intro",
         "chapters/06-git-do-thi-lich-su.md#6.1"
@@ -1260,7 +1260,14 @@
         "G3",
         "G8"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P04.C01.L01.Q01",
+          "publication_id": "P04.C01.L01.Q01",
+          "question": "Trong repository thử, commit C1 có app.conf chứa port=8080. Commit C2 chỉ đổi tên tệp thành service.conf và giữ byte, mode; commit C3 đổi nội dung thành port=9090. Blob, tree và commit nào giữ nguyên hoặc đổi ở mỗi bước? Có thể khẳng định object Git lưu riêng một sự kiện rename không?",
+          "answer": "Từ C1 sang C2, blob nội dung giữ nguyên, tree đổi do tên entry đổi và commit đổi do tree/parent mới. Từ C2 sang C3, blob, tree và commit đều đổi. Git lưu snapshot qua object; khi so snapshot, diff có thể suy luận rename theo độ giống, không có object sự kiện rename riêng. Kết luận giả định không có sửa mode hay byte trong bước C2."
+        }
+      ]
     },
     "P04.C01.L02": {
       "parent": "P04.C01",
@@ -2217,7 +2224,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P07/C01/L02.md",
-      "sha256": "281d05a4ea39eacf6a86d109285f4fd5a8ad777af3a20086f0c6d4f480234c78",
+      "sha256": "1fee80d9aae47342a6b55d9499f3fb90e18b91536a1a5c42faa48acdc899cb0a",
       "legacy_units": [
         "chapters/10-namespace-cgroup-container.md#intro",
         "TXT-910af039bc09331e",
@@ -2801,7 +2808,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P08/C02/L03.md",
-      "sha256": "30aaa251dd4283bff022c970001639d4adc25d39a891e36088fe0fb6986b0600",
+      "sha256": "ab8972f3cfb21fe18d2234972218c8426c8d34af4aa9245c95a5415d5d9d5bd2",
       "legacy_units": [
         "TXT-b7f804098fe0fee7",
         "TXT-3a0de5559bf00ab3",
@@ -3674,7 +3681,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P10/C03/L01.md",
-      "sha256": "8551ab688d25f0b8164b475680dad2e3d2f1201858f39a24e330ea8795fcf82a",
+      "sha256": "28103f60babbef65da83067cd4a02c073e75cd67297e739e986044987b416385",
       "legacy_units": [
         "TXT-ebcfbada9a333b0d"
       ],
@@ -3686,7 +3693,14 @@
         "AS3",
         "AS5"
       ],
-      "qa": []
+      "qa": [
+        {
+          "id": "W2.P10.C03.L01.Q01",
+          "publication_id": "P10.C03.L01.Q01",
+          "question": "Role default đặt listen_port=8080, group_vars/web đặt 9090. Host atlas-a thuộc web, atlas-b chỉ nhận default. Dự đoán cổng render trên mỗi host khi không có -e, rồi khi chạy với -e listen_port=7070. Nếu file của atlas-a ghi 7070 nhưng service vẫn nghe 8080, cần điều tra ranh giới nào tiếp theo?",
+          "answer": "Không có -e: atlas-a render 9090, atlas-b render 8080 theo dữ kiện. Có extra var 7070: cả hai render 7070 ở task dùng biến ấy. Khi file đã ghi 7070 mà socket còn 8080, precedence không còn là giả thuyết chính; kiểm file mà process thật đọc, handler/reload, lỗi cấu hình và socket/request từ đúng host. Bài toán giả định không có nguồn biến ưu tiên cao khác hoặc điều kiện task bỏ qua."
+        }
+      ]
     },
     "P10.C03.L02": {
       "parent": "P10.C03",

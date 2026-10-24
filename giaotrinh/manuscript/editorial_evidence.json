@@ -1001,7 +1001,7 @@
       ]
     },
     "P04.C01.L01": {
-      "content_sha256": "59d92649fcc8cf8cf86eea1c9b14c6de2c26991d068133747250aba8126e00ae",
+      "content_sha256": "21146b4ebb306075eb5776047ccc1fd0b51d820d8c42f868bc2cb7dac7f41fde",
       "editorial_decision": "Blob/tree/commit và hash object đúng mô hình; SHA không được coi là bằng chứng tác giả hoặc an toàn mã.",
       "checks": [
         {
@@ -1024,6 +1024,16 @@
           "source_location": "git-init(1) --object-format; user-manual: Object storage format",
           "support": "Git init accepts sha1 and, if enabled, sha256 object formats",
           "limits": "SHA-1 remains default in cited release; interoperability may vary"
+        },
+        {
+          "anchor": "blob nội dung vẫn là `B1`, nhưng tree gốc thành `T2`",
+          "kind": "derived",
+          "sources": [
+            "G1"
+          ],
+          "source_location": "Git Internals, Git Objects: blob content, tree entries and commit tree/parent",
+          "support": "A filename-only change preserves file-content blob while changing the tree entry; the new commit refers to the new tree and parent.",
+          "limits": "Assumes byte and mode are unchanged; B1/T2 are pedagogical labels, not observed object IDs."
         }
       ]
     },
@@ -1833,7 +1843,7 @@
       ]
     },
     "P07.C01.L02": {
-      "content_sha256": "281d05a4ea39eacf6a86d109285f4fd5a8ad777af3a20086f0c6d4f480234c78",
+      "content_sha256": "1fee80d9aae47342a6b55d9499f3fb90e18b91536a1a5c42faa48acdc899cb0a",
       "editorial_decision": "Namespace là góc nhìn, cgroup là kiểm soát tài nguyên; không suy container là ranh giới bảo mật tuyệt đối.",
       "checks": [
         {
@@ -1866,6 +1876,18 @@
           "source_location": "network_namespaces(7): DESCRIPTION",
           "support": "Network namespaces isolate devices, IP stacks, routing and sockets; loopback is namespace-local",
           "limits": "Reachability across namespaces depends on separately configured links and forwarding"
+        },
+        {
+          "anchor": "hai tiến trình có thể chia sẻ góc nhìn mạng dù PID tách",
+          "kind": "documented",
+          "sources": [
+            "R11",
+            "R12",
+            "R4"
+          ],
+          "source_location": "pid_namespaces(7), network_namespaces(7), namespaces(7)",
+          "support": "PID and network namespaces isolate different resources and can be configured independently; namespace links identify the namespace of a live process.",
+          "limits": "Matching links indicate a shared namespace at the observation time, not reachability or application authorization."
         }
       ]
     },
@@ -2436,7 +2458,7 @@
       ]
     },
     "P08.C02.L03": {
-      "content_sha256": "30aaa251dd4283bff022c970001639d4adc25d39a891e36088fe0fb6986b0600",
+      "content_sha256": "ab8972f3cfb21fe18d2234972218c8426c8d34af4aa9245c95a5415d5d9d5bd2",
       "editorial_decision": "DNS, route, SG, NACL, Flow Logs và endpoint S3/STS được tách; ba câu đã chuyển claim được gộp theo đường đi.",
       "checks": [
         {
@@ -2491,6 +2513,18 @@
           "source_location": "Gateway endpoints for S3: scope; Route table options",
           "support": "A route to S3 service prefix does not provide a path to STS service endpoint",
           "limits": "Regional STS access may be supplied by NAT or appropriate interface endpoint"
+        },
+        {
+          "anchor": "gateway endpoint **không đòi DNS trả địa chỉ riêng của endpoint**",
+          "kind": "documented",
+          "sources": [
+            "AWS6",
+            "AWS5",
+            "AWS7"
+          ],
+          "source_location": "AWS VPC gateway endpoint routing and DNS; subnet route table association",
+          "support": "S3 gateway endpoint routing uses an AWS-managed prefix list route in associated route tables while clients use the service endpoint.",
+          "limits": "Applies to the S3 gateway endpoint and same-Region service route in the stated IPv4 example, not to all interface endpoints or cross-Region calls."
         }
       ]
     },
@@ -3076,7 +3110,7 @@
       ]
     },
     "P10.C03.L01": {
-      "content_sha256": "8551ab688d25f0b8164b475680dad2e3d2f1201858f39a24e330ea8795fcf82a",
+      "content_sha256": "28103f60babbef65da83067cd4a02c073e75cd67297e739e986044987b416385",
       "editorial_decision": "Giữ đoạn migration và bổ sung phép lần theo role defaults, group vars, role vars và extra vars để người học dự đoán giá trị trước khi kiểm trên host.",
       "checks": [
         {
@@ -3098,6 +3132,17 @@
           "source_location": "Using Variables, Understanding variable precedence and Defining variables at runtime",
           "support": "ansible-core 2.16 orders role defaults below group vars, role vars above group vars, and extra vars above all; key=value extra vars are strings.",
           "limits": "The worked values assume one group and no other declaration; rendered config and listener still require host-specific verification."
+        },
+        {
+          "anchor": "hai host có thể render hai cổng khác nhau trong cùng play",
+          "kind": "derived",
+          "sources": [
+            "AS3",
+            "AS5"
+          ],
+          "source_location": "ansible-core 2.16 variable precedence and role defaults",
+          "support": "Group vars for atlas-a override role defaults while atlas-b, outside the web group, retains the role default under the stated inputs.",
+          "limits": "Requires the stated group membership and no higher-precedence variable or task condition that changes the input."
         }
       ]
     },
