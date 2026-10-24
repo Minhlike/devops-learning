@@ -1,0 +1,25 @@
+replicaCount: 2
+
+image:
+  tag: "6.15.0"
+
+service:
+  type: NodePort
+  nodePort: 31198
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 250m
+    memory: 128Mi
+
+ui:
+  message: "K3s Staging - Release 2"
+
+faults:
+  delay: false
+  error: false
+  unhealthy: false
+  unready: false

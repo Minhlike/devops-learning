@@ -552,3 +552,92 @@
     - *Vai trò của Write-Ahead Logging (WAL) và `fsync`:* Khi thực thi transaction (INSERT/UPDATE), PostgreSQL ghi nhật ký vào WAL trước khi ghi vào data pages trên disk. Lệnh hệ thống `fsync()` bắt buộc OS flush dữ liệu từ page cache xuống ổ cứng vật lý. Nếu container hoặc node bị sập nguồn đột ngột, PostgreSQL sử dụng WAL để thực hiện Crash Recovery (REDO các transaction đã commit).
     - *Rủi ro hiệu năng vs an toàn dữ liệu (`synchronous_commit`):* Mặc định `synchronous_commit = on` đảm bảo mỗi commit phải đợi `fsync` hoàn tất trên WAL disk. Nếu tắt (`off`), hệ thống tăng tốc throughput nhưng chấp nhận cửa sổ mất dữ liệu tối đa vài lần chu kỳ `wal_writer_delay` khi crash.
     - *Rủi ro sao chép không đồng bộ (Asynchronous Replication Gap):* Trong kiến trúc PostgreSQL Primary - Replica bất đối xứng (asynchronous), transaction được commit thành công trên Primary mà không cần chờ Replica xác nhận. Nếu node Primary gặp sự cố phần cứng vĩnh viễn, các transaction nằm trong replication lag chưa kịp truyền sang Replica sẽ bị mất hoàn toàn (RPO > 0), ngay cả khi Kubernetes StatefulSet tự động tái tạo lại Pod.
+
+## [2026-10-15] Sự cố Khởi động lại Cụm Kind và Bài học Đánh giá Gateway API S42
+- **Ngày:** 2026-10-15
+- **Bối cảnh:** Lab 42 — Kubernetes Gateway API & Application Exposure (Envoy Gateway, GatewayClass, Gateway, HTTPRoute, Path/Host Routing).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Sự cố Node Control-Plane Dừng (ExitCode 128) sau khi WSL/Terminal Reset:**
+    - *Triệu chứng:* Khi terminal/WSL bị khởi động lại giữa buổi học, container `s41-control-plane` bị dừng với `ExitCode: 128`. Lệnh `kubectl` không kết nối được tới API Server (`connection refused`).
+    - *Quan sát kỹ thuật:* Docker/runc báo lỗi liên quan đến việc khởi tạo systemd cgroup scope (`OOMKilled=false`). Giá trị nhân Linux `fs.inotify.max_user_instances` trên WSL host bị reset về mức mặc định `128`.
+    - *Xử lý khôi phục:* Học viên nâng lại giới hạn inotify lên `1024` (`sudo sysctl fs.inotify.max_user_instances=1024`), sau đó thực thi `docker start s41-control-plane`. API Server khôi phục thành công, endpoint `/readyz?verbose` trả về check passed và node chuyển lại trạng thái `Ready`.
+    - *Ghi nhận khách quan:* Đây là sự cố khởi động container/control-plane sau khi WSL reset; không khẳng định inotify là nguyên nhân duy nhất được chứng minh của lỗi cgroup scope.
+  - **Nhầm lẫn về Quy tắc Ưu tiên Tuyến trong HTTPRoute (Route Precedence):**
+    - *Hiểu lầm:* Khi tồn tại hai quy tắc cùng tiền tố (ví dụ `/` trỏ `s42-web` và `/api` trỏ `s42-api`), học viên nhầm rằng request gửi tới `/api/customers` sẽ được nhân đôi và gửi tới cả hai Service.
+    - *Bản chất chuẩn xác:* Gateway API áp dụng nguyên tắc khớp tuyến cụ thể nhất (Longest / Most Specific Prefix Match). Do `/api` có độ dài tiền tố khớp cụ thể hơn `/`, request `/api/customers` sẽ chỉ được định tuyến duy nhất tới Service `s42-api`; hoàn toàn không có cơ chế nhân đôi traffic tới cả hai backend nếu không cấu hình filter đặc biệt.
+  - **Thói quen Khắc phục Sự cố bằng Restart thay vì Dựa trên Bằng chứng Thực tế (Evidence-Based Troubleshooting):**
+    - *Triệu chứng trong bài kiểm tra tự luận:* Khi giải thích xử lý lỗi HTTP 503 do Deployment bị scale về `replicas=0`, học viên đề xuất kiểm tra CrashLoopBackOff và chạy lệnh `kubectl rollout restart deployment`.
+    - *Bản chất:* Lỗi 503 phát sinh do `replicas=0` khiến EndpointSlice trống rỗng (0 endpoints). Việc `rollout restart` một Deployment có 0 replicas không sinh ra Pod nào và không giải quyết được vấn đề. Biện pháp đúng là kiểm tra số lượng replica khả dụng (`kubectl get deployment` / `kubectl get endpointslices`) và scale lại `replicas=1`. Cần rèn luyện phản xạ đọc bằng chứng thực tế thay vì áp dụng máy móc thao tác restart.
+  - **Phân biệt Rạch ròi Vai trò GatewayClass và Ràng buộc LoadBalancer External IP trong Môi trường Kind:**
+    - *Hiểu lầm:* Nhầm rằng GatewayClass trực tiếp khởi tạo Gateway vật lý, và ngộ nhận Gateway bắt buộc phải có External LoadBalancer IP mới có thể kiểm thử.
+    - *Bản chất kỹ thuật:*
+      1. `GatewayClass` chỉ là định nghĩa trừu tượng cấp cluster khai báo Controller chịu trách nhiệm (template/class), không trực tiếp spawn tài nguyên hạ tầng.
+      2. Trong môi trường Kind local, Service của Envoy Gateway có loại `LoadBalancer` nhưng kẹt ở trạng thái `EXTERNAL-IP: <pending>` (Gateway tổng thể mang điều kiện `Programmed=False`, `Reason: AddressNotAssigned`) do Kind không có Cloud LoadBalancer controller. Tuy nhiên, cấu hình Gateway và HTTPRoute vẫn hoàn toàn hợp lệ và hoàn toàn có thể kiểm thử routing thông suốt bằng phương pháp `kubectl port-forward` từ Service ra cổng local.
+
+## [2026-10-19] Sự cố Template Cấu trúc Chart và Bài học Đánh giá Helm Fundamentals S43
+- **Ngày:** 2026-10-19
+- **Bối cảnh:** Lab 43 — Helm Fundamentals (Chart structure, values.yaml, Go templating, release lifecycle, upgrade rollback, failure injection).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Đặt sai vị trí tệp manifest ngoài thư mục `templates/` của Helm Chart:**
+    - *Triệu chứng:* Tạo file `configmap.yaml` nằm ở thư mục gốc của chart (`s43-hello/configmap.yaml`). Khi thực thi `helm template` hoặc `helm install`, tài nguyên ConfigMap hoàn toàn không xuất hiện trong output và không được tạo trên cụm.
+    - *Nguyên nhân gốc:* Helm chart engine chỉ quét và render các tệp manifest nằm bên trong thư mục `templates/`. Mọi file đặt ở thư mục gốc (ngoài `Chart.yaml`, `values.yaml`, `README.md`, `LICENSE`) đều bị Helm bỏ qua hoàn toàn.
+    - *Khắc phục:* Di chuyển file vào `templates/configmap.yaml`. Manifest được render chính xác với các biến lấy từ `values.yaml`.
+  - **Nhầm lẫn giữa Replicas (Số lượng Pod) và Máy chủ vật lý / Scale tuyến tính:**
+    - *Hiểu lầm:* Học viên ngộ nhận khi nâng `replicaCount: 2` thì hệ thống tự động chạy trên 2 máy chủ vật lý riêng biệt và throughput hệ thống chắc chắn tăng gấp đôi (2x).
+    - *Bản chất kỹ thuật:*
+      1. Pods là các tiến trình container do ReplicaSet quản lý. Trong cụm thực tế, cả 2 Pods đều được Kubernetes Scheduler xếp lịch lên cùng node `s41-control-plane`.
+      2. Tổng tài nguyên CPU/RAM vật lý của máy chủ là hữu hạn. Tăng replica chỉ giúp tận dụng tốt hơn CPU đa nhân hoặc xử lý song song I/O không đồng bộ; throughput không bao giờ tăng tuyến tính 200% do nghẽn băng thông mạng, tranh chấp khóa CSDL (database lock contention), và giới hạn theo Định luật Amdahl (Amdahl's Law).
+  - **Nhầm lẫn vị trí thực thi của Controller (Deployment / ReplicaSet) so với Pod:**
+    - *Hiểu lầm:* Ngộ nhận Deployment và ReplicaSet là các tiến trình chạy bên trong Pod hoặc container.
+    - *Bản chất chuẩn xác:* Pod chỉ chứa tiến trình ứng dụng của người dùng (`python app.py`). Deployment và ReplicaSet là các reconciliation control loop chạy tập trung trong tiến trình `kube-controller-manager` trên Control Plane node, theo dõi trạng thái cụm qua API Server và gửi chỉ thị cho Kubelet tạo/xóa Pod.
+  - **Phân biệt rạch ròi 3 trạng thái lỗi Pod: `ImagePullBackOff` vs `CrashLoopBackOff` vs `Readiness Probe Failure`:**
+    - *`ImagePullBackOff`:* Kubelet/containerd không thể tải image từ registry (sai image tag, sai tên repo, lỗi mạng, thiếu imagePullSecrets). Tiến trình ứng dụng **chưa từng được khởi chạy**.
+    - *`CrashLoopBackOff`:* Image đã tải về thành công và container đã khởi tạo, nhưng tiến trình entrypoint thoát với mã lỗi khác 0 (`exit code != 0`), hoặc chết đột ngột, khiến Kubelet liên tục khởi động lại theo chu kỳ trễ số mũ (exponential backoff).
+    - *`Readiness Probe Failure`:* Tiến trình ứng dụng vẫn đang chạy ổn định từ góc độ HĐH (không crash, không restart), nhưng endpoint kiểm tra nghiệp vụ trả về lỗi (ví dụ HTTP 500, mất kết nối DB). Kubelet đánh dấu Pod `Ready=False` và ngắt IP Pod khỏi Service EndpointSlice (không nhận traffic), nhưng **không restart** container.
+  - **Trạng thái Helm Release `failed` không đồng nghĩa với sập dịch vụ (Zero-Downtime RollingUpdate):**
+    - *Quan sát thực tế:* Khi cố tình chạy `helm upgrade` với image tag không tồn tại, Helm trả về lỗi timeout và trạng thái release là `failed`. Tuy nhiên, ứng dụng vẫn phục vụ traffic 100% bình thường trên cổng forward.
+    - *Bản chất:* Cơ chế `RollingUpdate` của Kubernetes Deployment bảo toàn các Pod cũ (revision 1) đang Ready cho tới khi các Pod mới vượt qua Readiness Probe. Khi Pod mới kẹt `ImagePullBackOff`, Kubernetes dừng quá trình rollout và giữ nguyên Pod cũ đang chạy, đảm bảo dịch vụ không bị gián đoạn dù Helm ghi nhận release thất bại.
+  - **Lỗi cổng cục bộ `bind: address already in use` khi chạy `port-forward`:**
+    - *Triệu chứng:* `kubectl port-forward ... 18081:8080` trả về lỗi bind socket.
+    - *Bản chất:* Lỗi phát sinh do một tiến trình `port-forward` trước đó hoặc dịch vụ khác trên máy host (WSL/Windows) đang chiếm dụng port `18081`. Đây là lỗi xung đột socket của hệ điều hành cục bộ, không phải lỗi mạng của Kubernetes cluster. Cần kiểm tra bằng `netstat` / `ss` / `lsof` hoặc đổi port host (`18082:8080`).
+
+## [2026-10-21] Bài học Chẩn đoán theo Bằng chứng và Phân loại Sự cố Kubernetes S44
+- **Ngày:** 2026-10-21
+- **Bối cảnh:** Lab 44 — Kubernetes Troubleshooting & Defense (Pod Lifecycle, Probes, Resources, Network).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Thói quen Restart Mù quáng vs Chẩn đoán theo Bằng chứng (Evidence-Based Diagnostics):**
+    - *Vấn đề:* Phản xạ ban đầu của kỹ sư khi thấy Pod lỗi là chạy ngay lệnh restart hoặc xóa Pod. Thao tác này xóa mất trạng thái lỗi cuối cùng (`lastState`) và làm mất bằng chứng quan trọng.
+    - *Bản chất chuẩn xác:* Luôn tuân thủ quy trình 4 bước: kiểm tra tổng thể (`get pods -o wide`), đọc sự kiện runtime (`describe pod`, Events, Last State), truy vết logs (`logs -p`), và kiểm tra EndpointSlice/Service trước khi can thiệp.
+  - **Phân biệt rạch ròi 3 trạng thái lỗi vòng đời Pod:**
+    - *`ImagePullBackOff`:* Lỗi tải image từ container registry (sai repository, tag, quyền truy cập). Tiến trình ứng dụng **chưa từng được khởi chạy**.
+    - *`CrashLoopBackOff`:* Image tải thành công nhưng tiến trình PID 1 thoát với exit code non-zero, hoặc chết đột ngột. Kubelet liên tục khởi động lại container theo chu kỳ trễ số mũ.
+    - *`ReadinessProbe Failed`:* Tiến trình ứng dụng vẫn đang chạy ổn định từ góc độ HĐH, nhưng endpoint kiểm tra nghiệp vụ trả về lỗi. Kubelet gỡ IP khỏi EndpointSlice để ngắt traffic, nhưng **tuyệt đối không restart** container.
+  - **Lệch Cấu hình `selector` giữa Service và Pod:**
+    - *Triệu chứng:* Service tồn tại, Pod Running, nhưng request gửi tới Service bị lỗi timeout hoặc Connection Refused.
+    - *Bản chất:* Service kết nối tới Pod thông qua cơ chế chọn nhãn (`selector`). Khi `spec.selector` lệch dù chỉ 1 ký tự so với `metadata.labels` của Pod, EndpointSlice sẽ có 0 endpoints. Kỹ sư phải luôn kiểm tra `kubectl get endpointslices` trước khi nghi ngờ tầng mạng cluster.
+
+## [2026-10-21] Bài học Vận hành Giám sát Prometheus và Cú pháp PromQL S45
+- **Ngày:** 2026-10-21
+- **Bối cảnh:** Lab 45 — Prometheus Fundamentals & Metrics Collection.
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Nhầm lẫn Bản chất giữa Counter và Gauge trong PromQL:**
+    - *Hiểu lầm:* Áp dụng trực tiếp hàm `rate()` lên kiểu dữ liệu `Gauge` (ví dụ nhiệt độ, RAM sử dụng), hoặc cố gắng đọc giá trị thô tức thời của `Counter` (ví dụ tổng số request) để đánh giá tải hệ thống.
+    - *Bản chất kỹ thuật:*
+      1. `Counter` là giá trị chỉ tăng tích lũy (hoặc reset về 0 khi restart). Đọc giá trị thô không phản ánh tốc độ tải; bắt buộc phải dùng hàm `rate()` hoặc `irate()` trên một khoảng thời gian (`[1m]`, `[5m]`) để tính tốc độ thay đổi trên giây (per-second rate).
+      2. `Gauge` là giá trị đo đạc tức thời có thể tăng giảm tự do. Đọc trực tiếp giá trị hiện tại hoặc dùng các hàm tổng hợp như `avg_over_time()`, không áp dụng `rate()` vì sẽ tính toán sai lệch khi giá trị giảm xuống.
+  - **Quản trị Tài nguyên TSDB và Retention trên Môi trường Cá nhân:**
+    - *Rủi ro:* Cấu hình mặc định của các Helm chart Prometheus production thường bật đầy đủ Alertmanager, Node Exporter, Pushgateway và giữ retention 15–30 ngày, dễ gây cạn kiệt RAM và Disk trên laptop.
+    - *Giải pháp tối ưu:* Tắt toàn bộ các exporter/sub-chart không dùng trong lab; cấu hình `emptyDir` có giới hạn (sizeLimit 512Mi) và đặt `retention: 6h`, `retentionSize: 300MB` để hệ thống vận hành siêu nhẹ nhàng và ổn định.
+
+## [2026-10-22] Bài học Khởi tạo Cụm K3s và Cấu hình Relabel Scrape Podinfo S46
+- **Ngày:** 2026-10-22
+- **Bối cảnh:** Lab 46 — Grafana & Practical Dashboards (VMware K3s Staging).
+- **Sự cố Kỹ thuật & Bài học rút ra (Technical Lessons):**
+  - **Ảnh hưởng của Linux Swap đối với Kubelet Bootstrap:**
+    - *Triệu chứng:* Khi triển khai K3s trên máy ảo Ubuntu Server mà chưa tắt swap, Kubelet cảnh báo hoặc từ chối khởi động do cơ chế quản lý bộ nhớ của Kubernetes giả định node không dùng swap để kiểm soát giới hạn memory/OOM chính xác.
+    - *Khắc phục chuẩn:* Chạy lệnh `sudo swapoff -a` để tắt swap tức thì và comment dòng mount swap trong `/etc/fstab` để vô hiệu hóa vĩnh viễn qua các lần reboot.
+  - **Cấu hình Relabel Configs trong Prometheus Service Discovery:**
+    - *Vấn đề:* Khi cấu hình `kubernetes_sd_configs` với vai trò `pod`, Prometheus tự động phát hiện toàn bộ Pods trong namespace `staging`, dẫn đến việc scrape nhầm các port không mong muốn hoặc nhận duplicate targets.
+    - *Biện pháp:* Khai báo `relabel_configs` với bộ lọc chính xác: `action: keep` theo `__meta_kubernetes_pod_name` (khớp regex `podinfo-.+`) và theo `__meta_kubernetes_pod_container_port_number` (khớp đúng cổng metric `9797`); sau đó thay thế nhãn hiển thị trực quan `pod` bằng `action: replace`.
+  - **Phân định Rạch ròi Môi trường Thực thi Đa tầng:**
+    - Tuyệt đối không nhầm lẫn giữa máy host Windows, máy ảo WSL2 (chạy Kind `s41`), và máy ảo VMware Ubuntu Server (chạy K3s `192.168.210.100`). Mỗi môi trường có context `kubectl` và cấu hình IP riêng biệt.

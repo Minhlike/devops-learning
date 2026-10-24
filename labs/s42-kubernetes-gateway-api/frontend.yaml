@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s42-web
+  namespace: s42
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s42-web
+  template:
+    metadata:
+      labels:
+        app: s42-web
+    spec:
+      containers:
+        - name: web
+          image: hashicorp/http-echo:1.0.0
+          args:
+            - "-text=Hello from S42 WEBSITE"
+            - "-listen=:5678"
+          ports:
+            - containerPort: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s42-web
+  namespace: s42
+spec:
+  type: ClusterIP
+  selector:
+    app: s42-web
+  ports:
+    - port: 80
+      targetPort: 5678

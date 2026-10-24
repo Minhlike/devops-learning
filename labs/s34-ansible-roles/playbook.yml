@@ -1,0 +1,56 @@
+---
+- name: Cau hinh may local
+  hosts: local
+  connection: local
+  gather_facts: true
+
+  vars_files:
+    - vars.yml
+
+  roles:
+    - nginx
+
+  tasks:
+    - name: Hien thi he dieu hanh
+      ansible.builtin.debug:
+        msg: "May nay dang chay {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}"
+
+    - name: Xac nhan may Ubuntu
+      ansible.builtin.debug:
+        msg: "Task nay chi chay tren Ubuntu"
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Xac nhan may Amazon Linux
+      ansible.builtin.debug:
+        msg: "Task nay chi chay tren Amazon Linux"
+      when: ansible_facts['distribution'] == "Amazon"
+
+    - name: Tao file thong tin ung dung
+      ansible.builtin.template:
+        src: templates/app.conf.j2
+        dest: /tmp/ansible-demo.txt
+        mode: "0644"
+      notify: Cau hinh da thay doi
+
+    - name: Thu nghiem xu ly loi
+      block:
+        - name: Gia lap mot lenh bi loi
+          ansible.builtin.command:
+            cmd: /bin/false
+          changed_when: false
+
+      rescue:
+        - name: Xu ly khi block that bai
+          ansible.builtin.debug:
+            msg: "Da phat hien loi va chuyen sang rescue."
+
+      always:
+        - name: Cong viec luon duoc thuc hien
+          ansible.builtin.debug:
+            msg: "Always van chay du block thanh cong hay that bai."
+
+
+  handlers:
+    - name: Cau hinh da thay doi
+      ansible.builtin.debug:
+        msg: "Handler da duoc kich hoat vi file cau hinh vua thay doi."

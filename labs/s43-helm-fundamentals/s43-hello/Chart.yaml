@@ -1,0 +1,6 @@
+apiVersion: v2
+name: s43-hello
+description: Helm Chart thực hành S43
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

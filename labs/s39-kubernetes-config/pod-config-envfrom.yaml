@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: s39-config-envfrom
+
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command:
+        - sh
+        - -c
+        - |
+          echo APP_ENV=$APP_ENV
+          echo LOG_LEVEL=$LOG_LEVEL
+          echo APP_COLOR=$APP_COLOR
+          sleep 3600
+
+      envFrom:
+        - configMapRef:
+            name: s39-app-config

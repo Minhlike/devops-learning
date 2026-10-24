@@ -1,0 +1,5 @@
+{
+   "log_errors": 3,
+   "http_500": 2,
+   "disk_command_status": "COMMAND SUCCESS"
+}

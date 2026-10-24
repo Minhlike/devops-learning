@@ -1,0 +1,51 @@
+---
+- name: Defense S36 - Ansible Tags va Vault
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - vars/vault.yml
+
+  tasks:
+    - name: Trien khai file thong tin cong khai
+      ansible.builtin.copy:
+        dest: /tmp/s36-defense-public.txt
+        content: "Nguoi dung co so du lieu: {{ db_user }}\n"
+        mode: "0644"
+      tags:
+        - deploy
+
+    - name: Trien khai file chua mat khau an toan
+      ansible.builtin.copy:
+        dest: /tmp/s36-defense-secret.txt
+        content: "{{ db_password }}\n"
+        mode: "0600"
+      no_log: true
+      tags:
+        - secret
+
+    - name: Kiem tra thong tin file cong khai
+      ansible.builtin.stat:
+        path: /tmp/s36-defense-public.txt
+      register: public_file
+      tags:
+        - verify
+
+    - name: Kiem tra thong tin file bi mat
+      ansible.builtin.stat:
+        path: /tmp/s36-defense-secret.txt
+      register: secret_file
+      tags:
+        - verify
+
+    - name: Xac minh ket qua trien khai
+      ansible.builtin.assert:
+        that:
+          - public_file.stat.exists
+          - secret_file.stat.exists
+          - secret_file.stat.mode == "0600"
+        success_msg: "Xac minh thanh cong: cac file ton tai va file bi mat co quyen 0600."
+        fail_msg: "Xac minh that bai: file khong ton tai hoac quyen cua file bi mat khong dung."
+      tags:
+        - verify

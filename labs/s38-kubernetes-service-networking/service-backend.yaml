@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: s38-backend-service
+
+spec:
+  selector:
+    app: s38-backend
+
+  ports:
+    - port: 8080
+      targetPort: 80
+      nodePort: 30080
+
+  type: NodePort
