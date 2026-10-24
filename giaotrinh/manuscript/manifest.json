@@ -661,8 +661,8 @@
         {
           "id": "W2.P02.C05.L01.Q01",
           "publication_id": "P02.C05.L01.Q01",
-          "question": "Atlas vẫn active sau restart nhưng request đọc dữ liệu lỗi. Nêu ba chứng cứ trước thay đổi và hai hậu điều kiện trước khi tuyên bố xong.",
-          "answer": "Trước thay đổi cần ít nhất revision đang chạy, hash/diff cấu hình và trạng thái dữ liệu hoặc bản sao có thể restore. Sau thay đổi cần request qua đường thật thành công và dữ liệu đọc đúng; active riêng lẻ chưa đủ."
+          "question": "Atlas vẫn active nhưng request đọc /srv/atlas/data/orders.db lỗi. /srv/atlas đổi thành root:root mode 0750; file orders.db vẫn atlas:atlas mode 0640 và unit chạy User=atlas. Dự đoán điểm lỗi, nêu chứng cứ cần lấy và hai hậu điều kiện sau sửa.",
+          "answer": "User atlas không có quyền search trên /srv/atlas khi không thuộc group root; phân giải đường dẫn có thể trả EACCES trước khi kiểm quyền đọc của orders.db. Không sửa bằng chmod 777 hay chạy service bằng root. Ghi UID/GID thực, mode/ACL của từng thành phần đường dẫn và hash config; xác nhận process dưới user atlas mở được file, request qua đường client trả đúng order, đồng thời principal ngoài phạm vi vẫn không đọc được dữ liệu."
         }
       ]
     },
@@ -691,8 +691,8 @@
         {
           "id": "W2.P02.C05.L02.Q01",
           "publication_id": "P02.C05.L02.Q01",
-          "question": "Một file tar của thư mục PostgreSQL được tạo khi server đang ghi, hash tar khớp sau copy. Điều gì đã được kiểm, điều gì chưa, và phép thử restore nên diễn ra ở đâu?",
-          "answer": "Hash chỉ kiểm byte archive không đổi sau tạo; nó không chứng minh snapshot nhất quán hay đủ WAL. Phải theo cơ chế backup hỗ trợ của PostgreSQL và restore thử ở đường dẫn/môi trường cô lập, không đè server đang chạy."
+          "question": "Một archive copy orders.db lúc 10:00:00 và outbox.log lúc 10:00:02 khi ứng dụng đang ghi; hash hai file đều khớp. Có thể gọi backup nhất quán không? Thiết kế phép kiểm restore an toàn.",
+          "answer": "Chưa. Hash chỉ nói byte của từng file không đổi sau copy; hai file có thể thuộc hai mốc giao dịch khác nhau, và archive có thể thiếu WAL/key/schema. Dùng cơ chế backup nhất quán của ứng dụng hoặc dừng ghi theo hợp đồng; restore vào đường dẫn tạm độc lập, không đè nguồn. Kiểm mở database bằng đúng version/identity, invariant giữa đơn O-7 và outbox, rồi thử đường đọc/ghi ứng dụng. Ghi rõ phần chỉ kiểm byte và phần thực sự kiểm phục hồi."
         }
       ]
     },
@@ -720,8 +720,8 @@
         {
           "id": "W2.P02.C05.L03.Q01",
           "publication_id": "P02.C05.L03.Q01",
-          "question": "Sau khi hoàn nguyên config, r-03 trả HTTP thành công nhưng bản ghi order-7 khác trước. Có được báo phục hồi hoàn tất không? Cần thêm chứng cứ nào?",
-          "answer": "Chưa. Cần đối chiếu nội dung bản ghi cũ, kiểm ghi/đọc mới trong phạm vi an toàn, xác nhận revision phục vụ và quyền còn hẹp. Rollback config không tự phục hồi dữ liệu."
+          "question": "Sau hoàn nguyên config, r-03 trả HTTP 200 nhưng order-7 khác trước. Nên tiếp tục restart, sửa quyền hay phục hồi dữ liệu? Nêu ranh giới quyết định và phép xác nhận cuối.",
+          "answer": "Không báo phục hồi. HTTP 200 chỉ chứng minh một request có response, còn dữ liệu sai là hậu điều kiện thất bại. Giữ bản hiện tại làm chứng cứ, so revision/config với bản trước, đối chiếu order-7 và các ghi sau thay đổi; nếu process đã mở file nhưng nội dung sai thì chuyển sang runbook dữ liệu, không restart lặp hay mở quyền vô cớ. Sau phục hồi phải đọc đúng order-7, thử ghi/đọc operation mới có khóa idempotency qua đường client, xác nhận quyền còn hẹp và log không còn đường lỗi."
         }
       ]
     },
@@ -4797,7 +4797,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P12/C02/L02.md",
-      "sha256": "0d01806154a1f48d0d7950ad50df42aae414b7b5c4895441830a4a679bc0aa7b",
+      "sha256": "e6d92cf3d2583d02cb292b17a008a65c07862e8a6a5c1e62fef67cc7d07fdc1e",
       "legacy_units": [
         "chapters/18-metrics-prometheus-grafana.md#18.3"
       ],
@@ -5677,8 +5677,8 @@
         {
           "id": "W2.P14.C03.L01.Q01",
           "publication_id": "P14.C03.L01.Q01",
-          "question": "Cùng commit c84 nhưng base tag stable chuyển D1→D2, digest image đổi. Scan và chữ ký của D1 có áp cho D2 không?",
-          "answer": "Không. Khóa base digest, xác định lại input/provenance/SBOM gắn với artifact D2 và chạy gate trên chính byte đó; scan xanh không chứng minh an toàn tuyệt đối."
+          "question": "Cùng commit c84 nhưng base tag stable chuyển D1 sang D2 và lockfile bị bỏ qua khiến gói bắc cầu B thay phiên bản. Hai image khác digest. Scan/chữ ký của bản đầu có áp cho bản sau không, và cần khóa những đầu vào nào?",
+          "answer": "Không. Commit không cố định base image hoặc cây dependency khi tag và phiên bản bắc cầu còn động; chữ ký/scan gắn với byte của bản đầu. Dừng promotion, ghi digest base, lockfile toàn cây, checksum và nguồn gói, toolchain, tham số build; tạo SBOM và gate lại cho digest image thực định phát hành. Nếu build lại vẫn khác digest, điều tra nguồn bất định trước khi tuyên bố tái lập; SBOM/scan xanh không tự chứng minh dependency an toàn."
         }
       ]
     },
@@ -5707,8 +5707,8 @@
         {
           "id": "W2.P14.C03.L02.Q01",
           "publication_id": "P14.C03.L02.Q01",
-          "question": "Provenance ký hợp lệ cho H84 nhưng tag prod trỏ H84b. Có thể deploy không?",
-          "answer": "Không. Subject digest không khớp artifact đích; dừng, kiểm registry/tag và builder, chạy gate trên đúng digest sẽ triển khai, không sửa bản ghi cho khớp tag."
+          "question": "Attestation ký hợp lệ có subject H84 và tag prod cũng trỏ H84, nhưng commit đã resolve là c83 trong khi policy yêu cầu c84. Có được deploy không? Phân biệt ba phép kiểm độc lập.",
+          "answer": "Không. Subject khớp chỉ xác nhận attestation nói về đúng digest đích; chữ ký hợp lệ chỉ xác nhận bản ghi đến từ khóa đang tin cậy. Policy còn yêu cầu nguồn/commit đã resolve là c84 và builder identity được phép. Vì c83 sai, từ chối và điều tra ref/đầu vào workflow; không đổi tay provenance. Nếu commit đúng nhưng builder lạ hoặc subject khác, cũng từ chối theo cạnh tương ứng. Thiếu trường nguồn quan trọng là UNKNOWN, không phải PASS."
         }
       ]
     },
@@ -5739,8 +5739,8 @@
         {
           "id": "W2.P14.C03.L03.Q01",
           "publication_id": "P14.C03.L03.Q01",
-          "question": "Deployment spec H84 nhưng còn Pod H83 Ready trong rollout. Có thể nói 100% request dùng H84 chưa?",
-          "answer": "Chưa. Kiểm Pod imageID, endpoint/traffic theo revision và request đại diện; admission cho spec mới không thay Pod cũ đang chạy."
+          "question": "Admission policy mới từ chối Pod H84b, nhưng một Pod H84b tạo trước policy vẫn Ready và có Endpoint. Có thể coi rủi ro đã hết không? Nêu cách đóng sổ rollout.",
+          "answer": "Chưa. Admission kiểm request tạo/cập nhật mới, không tự dừng Pod đang phục vụ. Liệt kê Pod imageID thực, ReplicaSet, Service endpoint và traffic theo revision; xác định blast radius rồi thay hoặc cô lập Pod theo kế hoạch giữ dịch vụ/dữ liệu. Chỉ đóng sổ kỹ thuật khi spec và mọi Pod phục vụ mục tiêu dùng digest đã duyệt, request đại diện và dữ liệu đúng. Lưu riêng digest, attestation, test result và policy version; chữ ký hoặc policy không thay phép kiểm runtime."
         }
       ]
     },
