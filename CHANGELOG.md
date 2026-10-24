@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0](https://github.com/Minhlike/devops-learning/compare/v1.3.0...v1.4.0) (2026-10-24)
+
+
+### Features
+
+* **learning:** complete S42 gateway API labs and assessment ([84f475a](https://github.com/Minhlike/devops-learning/commit/84f475aca7c8c09c11728cc76badc6a38b468ccc))
+* **learning:** complete S43 helm fundamentals and assessment ([c0910d9](https://github.com/Minhlike/devops-learning/commit/c0910d962017dc2ddc26e5db2a5cb13bf8f5d273))
+* **learning:** record S44-S45 completion, S46 progress and standardize teaching protocol ([3f9fc9f](https://github.com/Minhlike/devops-learning/commit/3f9fc9f222f1e130719ce5f7c4a7d8a4d403e133))
+
 ## [1.3.0](https://github.com/Minhlike/devops-learning/compare/v1.2.0...v1.3.0) (2026-10-15)
 
 
