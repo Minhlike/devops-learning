@@ -349,7 +349,7 @@ class Book(BaseDocTemplate):
         canvas.setLineWidth(0.4)
         canvas.line(LEFT, 45, PAGE_W - RIGHT, 45)
         canvas.setFont("Body", 9)
-        canvas.drawString(LEFT, 32, "CẨM NANG NGÀNH DEVOPS · BẢN ĐỌC THỬ")
+        canvas.drawString(LEFT, 32, "CẨM NANG NGÀNH DEVOPS")
         canvas.drawRightString(PAGE_W - RIGHT, 32, str(doc.page))
         canvas.restoreState()
 
