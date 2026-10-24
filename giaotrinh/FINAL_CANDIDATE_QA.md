@@ -1,30 +1,28 @@
-# Kiểm toán PDF candidate — 2026-10-22
+# Kiểm tra bản PDF chính — 2026-10-24
 
-## Phạm vi
+## Phạm vi và nội dung
 
-- Cây xuất bản: **15 Phần, 58 Chương, 178 Bài**; cả 178 bài có văn bản và trạng thái `reviewed` trong manifest. Trạng thái này là hợp đồng cấu trúc và hồ sơ biên tập, không tự chứng nhận chất lượng khoa học của từng bài.
-- Hồ sơ migration giữ 88 mục, 216 đoạn, 267 claim, 23 ví dụ và 79 cặp bài tập–đáp án cũ. URL của các ID nguồn cũ vẫn được khóa; nguồn mới chỉ được thêm ID mới.
-- 144 bài tập và lời giải dùng cùng số và tiêu đề tiếng Việt dành cho người đọc; ID nội bộ chỉ còn trong manifest và hồ sơ ngoài PDF.
+- Cây xuất bản giữ **15 Phần, 58 Chương, 178 Bài**; bài tập và lời giải ở cuối sách dùng tiêu đề tiếng Việt cho người đọc. Manifest và các mã nội bộ nằm ngoài PDF.
+- Hồ sơ migration giữ 88 mục, 216 đoạn, 267 claim, 23 ví dụ và 79 cặp bài tập–đáp án cũ. URL của ID nguồn cũ được khóa. Kiểm thử migration cho phép đúng một sửa chữa đã kiểm chứng: ví dụ CPU ở chương 18 là 24 giây trên **mỗi** instance, tổng 48 giây trong 120 giây, tức 0,4 lõi.
+- Tệp chính `Cam_nang_devops.pdf` và candidate là cùng byte; SHA-256: `6a3be1a3aa9c4712263fab2c248ebcbb4a67ef0e1dcd420f9131a16ed77fe5a6`.
 
 ## PDF và điều hướng
 
-- Tệp: `Cam_nang_devops.candidate.pdf`.
-- SHA-256: `2b8b48376639c69b391af1b79fe8b1096ce57b7753a592645eaf90e64fb783b5`.
-- **238 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. Times New Roman Regular/Bold và Consolas được nhúng. Có thêm Helvetica cho thành phần PDF hệ thống; nội dung sách dùng các font đã quy định.
-- Trích xuất 603.821 ký tự, không có ký tự Unicode thay thế. Bộ dựng báo `CANDIDATE_OK pages=238 bookmarks=310 source_leaks=0`. Kiểm tra hình học độc lập tìm thấy 0 khối chữ vượt biên 15 pt và 0 trang sai khổ A4.
-- Mục lục in liệt kê 15 Phần, 58 Chương và **Lời giải bài tập** với số trang đối chiếu được với bookmark. Bookmark vẫn có cấp Bài; mục lục in giữ hai cấp để người đọc quét nhanh. Tất cả tiêu đề Chương bắt đầu gần đầu trang và running header mang số Chương tương ứng.
-- 43 tham chiếu chéo ở 28 vị trí bản thảo dùng ID ngữ nghĩa và được renderer tạo nhãn đọc từ cây xuất bản. Bộ dựng từ chối tham chiếu số chương cũ, ID không tồn tại hoặc ID lệch hợp đồng; ca âm kiểm tra trỏ sang chủ đề sai, thiếu đích và số trang mục lục sai.
-- 14 hình cơ chế dạng vector từ `scripts/science_figures.py`, trong đó 10 hình mới có hồ sơ claim, chủ sở hữu, nguồn và giới hạn ở `manuscript/figure_evidence.json`. Cùng với 4 hình Phần XIII, PDF có 18 hình khoa học. Mỗi Phần trước đây không có hình đã được xem xét và thêm một hình có vai trò giải thích cơ chế hoặc suy luận vận hành. Không có quota hình.
-- Chương Helm có tiêu đề đọc “Gói Helm (Helm chart) và vòng đời bản phát hành”; cấu trúc tri thức và ID khóa không đổi.
+- **264 trang A4**, **310 bookmark**, 148 liên kết nội bộ, 0 liên kết ngoài. PDF trích xuất 687.734 ký tự, không có ký tự Unicode thay thế; chỉ bìa trước có dưới 100 ký tự.
+- Times New Roman Regular/Bold và Consolas được nhúng. Bộ dựng có thêm Arial Bold cho thành phần thiết kế và Helvetica cho thành phần PDF hệ thống.
+- Mục lục in trình bày Phần và Chương với số trang đối chiếu bookmark. Bookmark có cấp Bài. Bộ kiểm tra xác nhận nhãn, thứ tự, đích trang và vị trí mở Chương; bài tập có mặt cả ở đề và lời giải.
+- 18 hình khoa học dạng vector có caption và panel riêng. Bộ kiểm tra xác nhận mỗi hình và caption xuất hiện đúng một lần, không cắt panel. Hồ sơ hình và dữ liệu nguồn ở ngoài PDF.
+- Kiểm tra nguồn tham khảo ở văn bản, bookmark, metadata và hyperlink: **0 rò nguồn**. URL thuộc ví dụ kỹ thuật vẫn được giữ khi cần.
 
-## Kiểm thử và QA hình ảnh
+## Kiểm thử và kiểm tra hình ảnh
 
-- `python -X utf8 -m unittest discover -s giaotrinh/tests -q`: **44 test, 43 PASS, 1 SKIP** (không có Go toolchain trong PATH). Kiểm thử bao gồm ca âm về tham chiếu, trang mục lục, hình/caption, source leak và hợp đồng bản thảo; hồi quy mới yêu cầu mỗi caption Phần XIII chỉ xuất hiện đúng một lần.
-- Đã render **toàn bộ 238 trang** từ PDF này, rà 6 contact sheet bao phủ tất cả trang và xem chi tiết ba trang đổi nội dung 71, 101, 156. Mỗi nhãn caption Phần XIII xuất hiện đúng một lần trong văn bản trích xuất. Contact sheet không bộc lộ tràn lề hoặc hình bị cắt; mức thu nhỏ của contact sheet không thay phép đọc chi tiết từng trang. Đã bỏ bổ sung ở bài dashboard vì bản thử làm bài tập cuối chương rơi sang một trang gần như trống; trang 169 của bản này mở Chương 46.
-- Một số trang chỉ có bài tập cuối Chương và nhiều chỗ trống, ví dụ trang 26, 103 và 147. Đây là hệ quả của việc mở Chương tiếp theo trên trang mới; vẫn là giới hạn biên tập cần cân nhắc ở vòng duyệt bản in, không được mô tả là bố cục đã hoàn hảo.
+- `python -X utf8 -m unittest discover -s giaotrinh/tests -q`: **44 test OK, 1 SKIP** do không có Go toolchain trong PATH. Không có FAIL.
+- `python -X utf8 -m giaotrinh.scripts.build`: `CANDIDATE_OK pages=264 bookmarks=310 source_leaks=0`. Kiểm tra hình học của bộ dựng xác nhận A4, font nhúng, các khối chữ trong vùng an toàn và đích mục lục/bookmark.
+- Đã render **toàn bộ 264 trang**, xem 17 contact sheet bao phủ tất cả trang và xem riêng cả 18 trang chứa hình khoa học. Không thấy hình bị cắt, lỗi font hoặc tràn lề ở các ảnh đã xem. Contact sheet là phép rà toàn sách ở tỷ lệ thu nhỏ; việc này không tương đương soát lỗi chính tả từng dòng.
+- Đã mở lại và chạy cùng bộ kiểm tra trên tệp chính sau khi sao chép từ candidate; hash hai tệp trùng nhau.
 
-## Giới hạn và quyết định
+## Giới hạn thực nghiệm
 
-- **SKIP:** Ví dụ Go chưa được thực thi ở môi trường QA này.
-- **UNKNOWN:** Không chạy AWS, Kubernetes, Docker Engine hoặc host production để xác nhận các tình huống giả định. Validator đối chiếu neo và hồ sơ chứng cứ nhưng không chứng minh độc lập mọi claim kỹ thuật đúng về ngữ nghĩa.
-- PDF là **candidate**. Báo cáo này xác nhận các phép kiểm đã chạy và những trang đã xem, không cấp `Publication PASS`, không phát hành chính thức và không merge.
+- **SKIP:** Chưa chạy ví dụ Go trên máy QA này.
+- **UNKNOWN:** Không tạo tài nguyên AWS, cluster Kubernetes, Docker Engine hay hệ thống production để xác nhận các tình huống giả định. Kiểm tra cấu trúc claim và neo nguồn không chứng minh độc lập ngữ nghĩa của mọi claim.
+- Báo cáo này nêu các phép kiểm đã chạy cho bản PDF chính. Nó không tự thay thế phản biện học thuật hoặc nghiệm thu xuất bản độc lập.

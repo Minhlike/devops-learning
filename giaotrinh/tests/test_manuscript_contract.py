@@ -76,7 +76,15 @@ class ManuscriptContract(unittest.TestCase):
                            if u["primary_lesson_id"] == row["primary_text_owner"]])
             if row["action"] != "split":
                 body = (ROOT / owner["content"]).read_text(encoding="utf-8")
+                corrected_location = "chapters/18-metrics-prometheus-grafana.md#18.3"
+                old = "CPU time tăng 24 giây trên hai instance trong 120 giây mẫu"
+                if row["old_location"] == corrected_location:
+                    self.assertEqual(original.count(old), 1)
                 for paragraph in re.split(r"\n\s*\n", original):
+                    if row["old_location"] == corrected_location and old in paragraph:
+                        corrected = ("CPU time tăng 24 giây trên **mỗi** instance trong 120 giây mẫu, "
+                                     "tổng 48 giây CPU time trên hai instance")
+                        paragraph = paragraph.replace(old, corrected)
                     self.assertIn(self.current_references(row["primary_text_owner"], paragraph), body)
         for unit in units:
             old, rest = unit["old_location"].split("#")

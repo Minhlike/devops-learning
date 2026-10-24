@@ -1,21 +1,21 @@
 # Cẩm nang ngành DevOps
 
-Đây là bản thảo có cấu trúc của một giáo trình đang biên soạn. `Cam_nang_devops.candidate.pdf` chỉ là bản đọc thử cho mốc đầu; tên phát hành `Cam_nang_devops.pdf` chỉ được dùng khi toàn bộ mục lục đã có nội dung, lời giải, kiểm toán nguồn và kiểm tra hình học PDF.
+`Cam_nang_devops.pdf` là bản PDF chính của giáo trình. Bản thảo xuất bản nằm trong `manuscript/`, theo cây 15 Phần, 58 Chương và 178 Bài. `Cam_nang_devops.candidate.pdf` là tệp dựng trước khi chốt bản chính; hồ sơ kiểm tra cụ thể nằm trong `FINAL_CANDIDATE_QA.md`.
 
 ## Quy tắc xuất bản
 
-- `chapters/*.md`, `examples/*` và `answers.md` là nguồn nội dung. `book_plan.md` ghi kiến trúc sách và phân định nội dung đã học với phần mở rộng. `references.md`, `source_map.json` và `source_ids.lock.json` chỉ phục vụ kiểm chứng biên tập; không xuất hiện trong PDF. ID nguồn đã dùng giữ nguyên URL; nguồn mới phải thêm ID mới vào bản đồ và lock.
+- `manuscript/` là nguồn xuất bản theo cây Phần → Chương → Bài; `architecture/` giữ kiến trúc tri thức đã duyệt. `chapters/*.md`, `examples/*` và `answers.md` lưu nội dung nền và ví dụ cũ. `references.md`, `source_map.json` và `source_ids.lock.json` chỉ phục vụ kiểm chứng biên tập; không xuất hiện trong PDF. ID nguồn đã dùng giữ nguyên URL; nguồn mới phải thêm ID mới vào bản đồ và lock.
 - Viết từ cơ chế và quan hệ tiên quyết. Thuật ngữ tiếng Việt tự nhiên, tên API và giao thức giữ nguyên. Không bịa output, benchmark, số liệu hay hành vi theo phiên bản.
 - Mỗi hình phải trả lời một câu hỏi kỹ thuật, có nguồn tạo trong thư mục này, kiểm tra nhãn, cạnh, nhánh lỗi và bố cục. Không mượn hình hoặc font từ repo Go.
-- Bài tập ở cuối chương, đáp án ở cuối sách. Không áp cấu trúc bài tập cố định. Nội dung chỉ có trong roadmap được ghi là kế hoạch, không được gọi là đã học.
+- Bài tập có tiêu đề đọc được và lời giải ở cuối sách. Không áp cấu trúc bài tập cố định. Nội dung chỉ có trong roadmap được ghi là kế hoạch, không được gọi là đã học.
 - PDF không chứa mã nguồn tham khảo, chú thích nguồn, URL tham khảo, danh mục hoặc phụ lục nguồn. URL thuộc ví dụ kỹ thuật vẫn là nội dung hợp lệ. Bộ dựng và kiểm thử kiểm tra ranh giới này ở văn bản, bookmark, metadata và hyperlink.
 - Kiểm toán nội dung trước khi xuất bản: nguồn chính thức cho khẳng định dễ đổi, đối chiếu lab khi mô tả kết quả thực tế, rà soát bản thảo và hình. PDF cần A4, font nhúng, không tràn lề, bookmark, số trang, liên kết và render kiểm tra trang đại diện.
-- Chỉ xuất bản theo mốc có nội dung đủ ý nghĩa. Khi build lỗi, giữ nguyên PDF đang phát hành. Không coi candidate là bản hoàn chỉnh.
+- Chỉ thay bản PDF chính sau khi candidate vượt kiểm thử và kiểm tra trang in. Khi build lỗi, giữ nguyên PDF đang phát hành.
 
-## Dựng bản đọc thử
+## Dựng PDF candidate
 
-Chạy `python giaotrinh/scripts/build.py` từ gốc repo. Cần Python với `reportlab` và `pymupdf`; Times New Roman và Consolas phải có trên máy dựng. Font được tham chiếu từ hệ điều hành, không đưa vào Git. Lệnh dựng chỉ ghi trong `giaotrinh/`.
+Chạy `python -X utf8 -m giaotrinh.scripts.build` từ gốc repo. Cần Python với `reportlab` và `pymupdf`; Times New Roman và Consolas phải có trên máy dựng. Font được tham chiếu từ hệ điều hành, không đưa vào Git. Lệnh dựng chỉ ghi candidate trong `giaotrinh/`; việc chốt bản chính cần đối chiếu PDF sau khi dựng.
 
-## Trạng thái mốc 1
+## Trạng thái bản chính
 
-Đã có kiến trúc sách, khảo sát roadmap S01–S66 và chỉ mục học/lab hiện có, bộ benchmark được xác minh, mười chín chương nền tảng và lời giải. Chương 2 có ví dụ tính toán được gắn nhãn giả định; Chương 3 có unit minh họa; Chương 4 lần theo một kết nối IPv4/TCP qua gateway và NAT; Chương 5 theo yêu cầu từ DNS tới proxy/upstream với trace HTTP hai chặng; Chương 6 giải thích Git bằng object, index và commit graph có conflict; Chương 7 dùng thử nghiệm cô lập để phân tích backup báo thành công giả và sửa đường lỗi Bash; Chương 8 so sánh Python và Go qua một chuỗi tác vụ giả có status lỗi, timeout và trạng thái từng phần; Chương 9 theo một artifact từ commit tới triển khai và phục hồi; Chương 10 phân biệt namespace, cgroup và image qua dữ liệu chẩn đoán giả định; Chương 11 theo dữ liệu qua image, container, volume và bind mount; Chương 12 theo một request giả định qua IAM, VPC, EC2 và S3 để phân biệt lỗi mạng với từ chối quyền; Chương 13 phân biệt cấu hình, state và hạ tầng thực qua dependency graph và sự cố drift có nguy cơ thay máy giữ dữ liệu; Chương 14 giải thích sự hội tụ cấu hình Ansible bằng playbook cục bộ và một sự cố quyền/restart giả định; Chương 15 lần theo vòng điều khiển Kubernetes từ object đến Service và chẩn đoán trường hợp apply thành công nhưng request vẫn lỗi; Chương 16 lần theo điều kiện đặt Pod, mạng, lưu trữ và phép đo CPU trước khi phân tích HPA; Chương 17 nối Helm release với Gateway API và đường request qua một sự cố upgrade giả định. Chương 18 theo mẫu đo từ instrument/scrape tới truy vấn PromQL, dashboard và phân tích dữ liệu thiếu bằng bộ số giả định kiểm chứng được. Chương 19 phân biệt metric, log và trace qua một request giả định với log JSON, timeline span, phép tính latency và đường lỗi của pipeline OpenTelemetry. Chưa có nội dung cho các chương còn lại; PDF hiện là candidate, chưa được phát hành dưới tên cuối.
+PDF chính gồm 15 Phần, 58 Chương, 178 Bài và lời giải cuối sách. Bản chính được sao chép từ đúng candidate đã qua kiểm thử, kiểm tra cấu trúc và rà ảnh render toàn bộ trang. Báo cáo QA ghi rõ những kiểm chứng đã chạy và giới hạn thực nghiệm; sự tồn tại của PDF không thay thế việc đối chiếu độc lập từng khẳng định khoa học.
