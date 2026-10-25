@@ -88,21 +88,21 @@ flowchart LR
 - **S43:** Helm Fundamentals (Charts, Values, Templates, Release Lifecycle & Helm Upgrades) — **COMPLETED — 9.3/10**
 - **S44:** Kubernetes Troubleshooting & Cluster Defense (Cluster & Workload Recovery Simulation) — **COMPLETED — 9.6/10**
 
-> **Mốc quan trọng (Milestone):** Phase Kubernetes & Helm đã hoàn tất; S45–S46 đã triển khai theo lộ trình Observability.
+> **Mốc quan trọng (Milestone):** Phase Kubernetes & Helm và Phase 10 — Observability & SRE đã hoàn tất.
 
-### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — CURRENT PHASE
+### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — COMPLETED
 - **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model) — **COMPLETED — 9.7/10**
 - **S46:** Grafana Monitoring & Practical Dashboards — **COMPLETED — 9.8/10** (24/10/2026)
-- **S47:** Logging & Centralized Logs (Log aggregation, Fluentbit/Loki, LogQL, Log shipping)
-- **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels)
-- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate)
-- **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem)
+- **S47:** Logging & Centralized Logs (Log aggregation, Fluent Bit/Loki, LogQL, Log shipping) — **COMPLETED — 9.8/10** (24/10/2026)
+- **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels) — **COMPLETED — 10/10** (24/10/2026)
+- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **COMPLETED — 10/10** (25/10/2026)
+- **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem) — **COMPLETED — 9/10** (25/10/2026)
 
 > **Kết quả đánh giá S46:** 7/7 trắc nghiệm; tự luận 2.8/3; tổng điểm 9.8/10 — PASS. Không tổ chức kiểm tra lại. Bài thực nghiệm chủ động gây lỗi ứng dụng/No Data đã được bỏ theo yêu cầu người học và không phải điều kiện nghiệm thu.
 
-### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — UPCOMING
-- **S51:** Container & Image Security Scanning (Trivy, Grype, Base image hardening, Distroless)
-- **S52:** Kubernetes Security & Hardening (RBAC, ServiceAccounts, Least privilege, NetworkPolicies)
+### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — CURRENT PHASE
+- **S51:** Container & Image Security Scanning (Trivy, Grype, Base image hardening, Distroless) — **COMPLETED — 10/10** (25/10/2026)
+- **S52:** Kubernetes Security & Hardening (RBAC, ServiceAccounts, Least privilege, NetworkPolicies) — **NEXT**
 - **S53:** Pod Security Standards & Admission Controllers (PSS/PSA, OPA/Kyverno enforcement)
 - **S54:** Secrets Management in Kubernetes (HashiCorp Vault / External Secrets Operator)
 - **S55:** CI/CD Security Pipeline Integration (SAST, DAST, Secret scanning, Dependency check)

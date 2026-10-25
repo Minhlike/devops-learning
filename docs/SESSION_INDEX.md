@@ -88,11 +88,15 @@
 
 - **S45:** Prometheus Fundamentals & Metrics Collection — **COMPLETED — 9.7/10** ([`labs/s45-prometheus-monitoring/`](../labs/s45-prometheus-monitoring/))
 - **S46:** Grafana Monitoring & Practical Dashboards — **COMPLETED — 9.8/10** ([`labs/s46-grafana/`](../labs/s46-grafana/)); nghiệm thu 24/10/2026, 7/7 MCQ, 2.8/3 essay; không thi lại.
-- **S47:** Logging & Centralized Logs (Fluentbit/Loki)
-- **S48:** Alerting (Alertmanager & Notification Channels)
-- **S49:** SLI, SLO & Error Budget
-- **S50:** Incident Response & Runbooks
+- **S47:** Logging & Centralized Logs (Fluent Bit/Loki) — **COMPLETED — 9.8/10** (24/10/2026)
+- **S48:** Alerting (Alertmanager & Notification Channels) — **COMPLETED — 10/10** (24/10/2026)
+- **S49:** SLI, SLO & Error Budget — **COMPLETED — 10/10** (25/10/2026)
+- **S50:** Incident Response & Runbooks — **COMPLETED — 9/10** (25/10/2026)
 
-## 7. Giai đoạn 11+ — Lộ trình Kế tiếp (S51 – S66)
-- **S51 – S55:** DevSecOps (Trivy, RBAC, PSS/PSA, HashiCorp Vault)
+## 7. Giai đoạn 11 — DevSecOps & Security Hardening (S51 – S55)
+- **S51:** Container & Image Security Scanning — **COMPLETED — 10/10** (25/10/2026); Trivy 0.76.1, Grype, quét image Podinfo, phân tích CVE, Security Gate exit code 2.
+- **S52:** Kubernetes Security & Hardening — **NEXT** (RBAC, ServiceAccounts, Least Privilege, NetworkPolicies).
+- **S53 – S55:** DevSecOps (PSS/PSA, HashiCorp Vault, CI/CD security) — UPCOMING.
+
+## 8. Giai đoạn 12 — Capstone & Job Readiness (S56 – S66)
 - **S56 – S66:** Capstone Projects & Job Readiness

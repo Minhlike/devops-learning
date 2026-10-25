@@ -1,23 +1,18 @@
 # NEXT SESSION PLAN
 
-- **Buổi học tiếp theo:** BUỔI 47 — Logging & Centralized Logs (Fluent Bit/Loki).
-- **Trạng thái phiên gần nhất:** S46 Grafana Monitoring đã **COMPLETED — 9.8/10 — PASS** ngày 24/10/2026; không tổ chức kiểm tra lại.
-- **Chuỗi điểm đã nghiệm thu:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10.
-- **Lab S46:** [`labs/s46-grafana/`](../labs/s46-grafana/) lưu cấu hình Podinfo, Prometheus và Grafana. Dashboard `S46 — K3s Podinfo Monitoring` có 4 panel: Successful Scrape Targets, Scrape Status by Pod, HTTP Requests per Second, HTTP Latency P95. Bài thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ; không ghi nhận hoàn tất và không phải điều kiện nghiệm thu.
-- **Đánh giá S46:** 7/7 trắc nghiệm (7 điểm), tự luận 2.8/3; tổng 9.8/10. Đã thực hành khắc phục truy cập Grafana liên quan SSH Tunnel và `kubectl port-forward`.
-- **Tồn đọng độc lập:** S40 vẫn `IN PROGRESS / PARTIALLY VERIFIED` do HPA CPU `<unknown>/50%`, root cause chưa xác định; S42 giữ ghi nhận External LoadBalancer `AddressNotAssigned` trong Kind. Không để các tồn đọng này chặn S47.
+- **Buổi tiếp theo:** S52 — Kubernetes Security & Hardening.
+- **Trạng thái gần nhất:** S51 — Container & Image Security Scanning **COMPLETED — 10/10** ngày 25/10/2026.
+- **Tiến độ:** 51/66 buổi hoàn thành (77,3%). Phase 10 hoàn tất; Phase 11 đang triển khai.
+- **Chuỗi kết quả đã nghiệm thu:** S47 9.8/10; S48 10/10; S49 10/10; S50 9/10; S51 10/10.
+- **S51 đã thực hành:** Trivy 0.76.1, Grype, quét image Podinfo, phân tích CVE và Security Gate trả exit code 2.
+- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway LoadBalancer `AddressNotAssigned` trong Kind; S46 failure injection No Data không thực hiện theo yêu cầu người học. Không suy diễn kết quả hoặc biến các tồn đọng này thành điều kiện cho S52.
 
-## 1. Quy chuẩn giảng dạy
+## Chuẩn triển khai S52
 
-- Dạy lý thuyết và giải thích cơ chế/cú pháp lệnh trước khi thực hành từng khái niệm.
-- Phân biệt rõ thao tác trên Windows, WSL và Ubuntu Server từ xa; nêu đúng nơi cần chạy mỗi lệnh.
-- Đi theo thứ tự, từng bước nhỏ; có checkpoint hợp lý, đọc và giải thích output thật trước khi kết luận.
-- Failure Injection/Troubleshooting chỉ thực hiện khi phù hợp phạm vi và được thống nhất; không tự biến thành điều kiện nghiệm thu bổ sung.
-- Chỉ có một bài kiểm tra cuối buổi gồm 7 câu trắc nghiệm và 2 câu tự luận, giới hạn trong kiến thức đã dạy và lab đã làm. Chấm một lượt; không tự tổ chức thi lại.
+- Bắt đầu bằng lý thuyết cần thiết về RBAC, ServiceAccounts, nguyên tắc least privilege và NetworkPolicies; giải thích cơ chế và cú pháp trước từng phần thực hành.
+- Phân biệt rõ Windows, WSL và Ubuntu Server; kiểm tra context/namespace và trạng thái hiện tại trước khi thao tác.
+- Đi theo từng checkpoint nhỏ, đọc output thật trước khi kết luận; chỉ thực hiện Failure Injection/Troubleshooting nếu nằm trong phạm vi đã thống nhất.
+- Chỉ tổ chức một bài nghiệm thu cuối buổi gồm 7 câu trắc nghiệm và 2 câu tự luận, dựa trên nội dung đã dạy và thực hành.
+- Không đưa credentials, private key, kubeconfig quản trị hoặc Kubernetes Secret thực tế vào Git; không xóa cluster hay tài nguyên đang chạy khi chưa được yêu cầu.
 
-## 2. Chuẩn bị S47 — Logging & Centralized Logs
-
-- **Mục tiêu dự kiến:** Tìm hiểu luồng thu thập, chuyển tiếp, lưu trữ và truy vấn log tập trung với Fluent Bit/Loki theo Roadmap.
-- **Trước khi chốt lab:** Đọc cấu hình và trạng thái mới nhất của môi trường; chọn lab nhỏ, có thể kiểm chứng bằng output thật, không làm thay đổi tài nguyên đang chạy ngoài phạm vi đã thống nhất.
-- **Nhịp triển khai:** Lý thuyết cần thiết → Guided Lab nhỏ → học viên chạy → đọc và giải thích output → checkpoint → Troubleshooting phù hợp → bài kiểm tra cuối buổi (7 MCQ + 2 essays).
-- **Lưu ý vận hành:** Không xóa cluster, volume, database hay tài nguyên cloud nếu chưa có yêu cầu trực tiếp. Không đưa credentials, private key, Secret thực tế hoặc kubeconfig quản trị vào Git.
+**S53:** Pod Security Standards & Admission Controllers — UPCOMING.

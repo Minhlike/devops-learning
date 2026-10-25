@@ -1,9 +1,10 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 10 — Observability & Site Reliability Engineering.
-- **Current Status:** S46 — Grafana Monitoring **COMPLETED — 9.8/10 — PASS** ngày 24/10/2026. Trắc nghiệm 7/7 (7 điểm), tự luận 2.8/3; không tổ chức kiểm tra lại. Bài thực nghiệm chủ động gây lỗi ứng dụng/No Data được bỏ theo yêu cầu và không phải điều kiện nghiệm thu. Tiếp theo: S47 — Logging & Centralized Logs.
-- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**.
-- **Current Week:** Tuần 11 (Nghiệm thu S46 ngày 24/10/2026)
+- **Current Phase:** PHASE 11 — DevSecOps & Security Hardening (Phase 10 đã hoàn thành).
+- **Current Status:** S51 — Container & Image Security Scanning **COMPLETED — 10/10** ngày 25/10/2026. Tiếp theo: S52 — Kubernetes Security & Hardening.
+- **Tiến độ:** **51/66 buổi (77,3%)**.
+- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**; S47 **COMPLETED — 9.8/10**; S48 **COMPLETED — 10/10**; S49 **COMPLETED — 10/10**; S50 **COMPLETED — 9/10**; S51 **COMPLETED — 10/10**.
+- **Current Week:** Cập nhật đến S51 (25/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -690,3 +691,13 @@
         - Tổng kết bài kiểm tra: 8,5/11 quy đổi **7,7/10 — ĐẠT (PASS)**.
         - Điểm cần củng cố: Nguyên tắc ưu tiên tuyến cụ thể hơn, chẩn đoán dựa trên bằng chứng (evidence-based troubleshooting), phân biệt Gateway hợp lệ về cấu hình vs Gateway có External IP.
       - Kết quả: **COMPLETED — LEARNING & ASSESSMENT PASS (7,7/10 — Ngày 15/10/2026)**.
+
+## [2026-10-25] Cập nhật tiến độ S47–S51
+
+- **Tiến độ:** Hoàn thành 51/66 buổi (77,3%). Phase 10 COMPLETED; Phase 11 đang triển khai.
+- **S47:** COMPLETED — 9.8/10 (24/10/2026). Loki/Fluent Bit tập trung log Podinfo; xác minh 4 log qua Loki API và Grafana Explore.
+- **S48:** COMPLETED — 10/10 (24/10/2026). Alertmanager, alert lifecycle, routing/grouping, silence, inhibition và webhook HTTP 200; rule thử nghiệm đã cleanup.
+- **S49:** COMPLETED — 10/10 (25/10/2026).
+- **S50:** COMPLETED — 9/10 (25/10/2026).
+- **S51:** COMPLETED — 10/10 (25/10/2026). Thực hành Trivy 0.76.1, Grype, quét image Podinfo, phân tích CVE và Security Gate exit code 2.
+- **Tiếp theo:** S52 — Kubernetes Security & Hardening.

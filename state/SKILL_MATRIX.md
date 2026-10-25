@@ -6,6 +6,11 @@
 | Kubernetes Troubleshooting | Cluster & Workload Troubleshooting (S44) | Hoàn thành buổi học | 2026-10-24 | State nghiệm thu: 9.6/10 |
 | Observability | Prometheus Metrics & Collection (S45) | Hoàn thành buổi học | 2026-10-24 | State nghiệm thu: 9.7/10 |
 | Observability | Grafana Data Source, Dashboard & Panels (S46) | Hoàn thành buổi học | 2026-10-24 | Dashboard 4 panel; assessment 9.8/10 PASS; 7/7 MCQ, essays 2.8/3; labs/s46-grafana/README.md |
+| Observability | Centralized Logging with Loki & Fluent Bit (S47) | Hoàn thành buổi học | 2026-10-24 | LogQL, Loki API, Grafana Explore; assessment 9.8/10 |
+| Observability | Alerting with Prometheus & Alertmanager (S48) | Hoàn thành buổi học | 2026-10-24 | Alert lifecycle, routing, silence, inhibition, webhook; assessment 10/10 |
+| SRE | SLI, SLO & Error Budget (S49) | Hoàn thành buổi học | 2026-10-25 | Assessment 10/10 |
+| SRE | Incident Response & Runbooks (S50) | Hoàn thành buổi học | 2026-10-25 | Assessment 9/10 |
+| DevSecOps | Container & Image Security Scanning (S51) | Hoàn thành buổi học | 2026-10-25 | Trivy 0.76.1, Grype, Podinfo image/CVE analysis, Security Gate exit code 2; assessment 10/10 |
 | OS & Computer | Hardware & OS Basics | Làm được độc lập | 2026-07-31 | Diagnostic test + Cài đặt WSL2 Ubuntu 24.04 thành công |
 | OS & Computer | Filesystem Mounting (`/mnt/d`) | Làm được độc lập | 2026-07-31 | Lab 1: Truy cập `/mnt/d/Devops`, chạy `pwd`, `ls -la` |
 | OS & Computer | Case Sensitivity (ext4 vs NTFS) | Làm được độc lập | 2026-07-31 | Failure Injection 1: Thử `cat` file hoa/thường trên ext4 và NTFS |

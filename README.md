@@ -25,11 +25,12 @@ Repository được chuẩn hóa theo kiến trúc tự chứa (self-contained),
 
 ## 2. Trạng thái Đào tạo Hiện tại
 
-- **Giai đoạn Hiện tại:** Phase 10 — Observability & Site Reliability Engineering.
-- **Buổi Hoàn thành Gần nhất:** **Buổi 46 — Grafana Monitoring** (COMPLETED — 9.8/10 — Ngày 24/10/2026).
-- **Buổi Tiếp theo:** **Buổi 47 — Logging & Centralized Logs (Fluent Bit/Loki)**.
+- **Giai đoạn Hiện tại:** Phase 11 — DevSecOps & Security Hardening.
+- **Buổi Hoàn thành Gần nhất:** **Buổi 51 — Container & Image Security Scanning** (COMPLETED — 10/10 — Ngày 25/10/2026).
+- **Buổi Tiếp theo:** **Buổi 52 — Kubernetes Security & Hardening**.
 - **Sự cố Tồn đọng Độc lập:** Buổi 40 (Kubernetes Resources & Scaling) tiếp tục giữ trạng thái **IN PROGRESS / PARTIALLY VERIFIED** do sự cố HPA CPU: `<unknown>/50%` đang nằm trong backlog điều tra riêng biệt, cụm Kind `s40` và `s41` được duy trì nguyên vẹn; Gateway External LoadBalancer provisioning của S42 là tồn đọng UNRESOLVED do môi trường Kind không có LoadBalancer controller.
-- **Kết quả gần nhất:** S43 9.3/10, S44 9.6/10, S45 9.7/10, S46 9.8/10 — đều COMPLETED.
+- **Kết quả gần nhất:** S43 9.3/10, S44 9.6/10, S45 9.7/10, S46 9.8/10, S47 9.8/10, S48 10/10, S49 10/10, S50 9/10, S51 10/10 — đều COMPLETED.
+- **Tiến độ:** Hoàn thành **51/66 buổi (77,3%)**. Phase 10 hoàn tất; Phase 11 đang triển khai.
 
 ---
 

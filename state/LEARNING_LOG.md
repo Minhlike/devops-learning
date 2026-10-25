@@ -1089,3 +1089,29 @@
 - **Giới hạn ghi nhận:** Thực nghiệm chủ động gây lỗi ứng dụng/No Data được người học yêu cầu bỏ. Không ghi nhận đã thực hiện, không tạo kết quả/bằng chứng giả và không coi đây là điều kiện nghiệm thu.
 - **Chuỗi điểm gần nhất:** S43 9.3/10; S44 9.6/10; S45 9.7/10; S46 9.8/10.
 - **Kết quả:** **ĐẠT BUỔI 46 (COMPLETED — 9.8/10 — Ngày 24/10/2026)**.
+
+## [2026-10-24] Session 47: Centralized Logging
+- **Trạng thái:** COMPLETED — **9.8/10**.
+- **Thực hành:** Loki Helm chart 19.2.0/app 3.7.9 chạy Monolithic StatefulSet 1/1, PVC 2Gi `local-path`; Fluent Bit chart 0.58.3/app 5.1.3 DaemonSet thu log Podinfo namespace `staging` và gửi tới Loki namespace `monitoring`.
+- **Xác minh:** Loki API trả 4 bản ghi log Podinfo; Grafana Explore hiển thị log; đã dùng LogQL và `count_over_time`.
+- **Đánh giá:** 7/7 MCQ, tự luận 2.8/3, tổng **9.8/10 — PASS**. Giới hạn: single-node/local-path chưa HA/backup; Fluent Bit buffer không persistent.
+
+## [2026-10-24] Session 48: Alerting
+- **Trạng thái:** COMPLETED — **10/10**.
+- **Thực hành:** Bật Alertmanager trong Prometheus Helm release; xác minh endpoint active. Quan sát `S48TrainingAlert` chuyển Pending → Firing; thực hành routing/grouping, Silence, Inhibition và HTTP webhook.
+- **Bằng chứng nghiệm thu:** webhook nhận `S48ParentAlert` lúc 13:29:48 và `S48TrainingAlert` lúc 13:31:14, HTTP 200; xác minh alert con `suppressed` với `inhibitedBy` ID.
+- **Cleanup:** Rules API trả `[]`, Alertmanager config `CLEAN`, webhook listener dừng; giữ Alertmanager và PVC. Đánh giá 7/7 MCQ, 3/3 essays; **10/10 — PASS**.
+
+## [2026-10-25] Session 49: SLI, SLO & Error Budget
+- **Trạng thái:** COMPLETED — **10/10**.
+- **Đánh giá:** Kết quả nghiệm thu được ghi nhận 10/10. Không bổ sung chi tiết lab hoặc kết quả metric ngoài thông tin đã xác nhận.
+
+## [2026-10-25] Session 50: Incident Response & Runbooks
+- **Trạng thái:** COMPLETED — **9/10**.
+- **Đánh giá:** Kết quả nghiệm thu được ghi nhận 9/10. Không bổ sung chi tiết lab hoặc incident ngoài thông tin đã xác nhận.
+
+## [2026-10-25] Session 51: Container & Image Security Scanning
+- **Trạng thái:** COMPLETED — **10/10**.
+- **Thực hành được ghi nhận:** Trivy 0.76.1 và Grype; quét image Podinfo, phân tích CVE, chạy Security Gate và quan sát exit code `2`.
+- **Đánh giá:** Kết quả nghiệm thu được ghi nhận 10/10.
+- **Chuyển tiếp:** Hoàn thành 51/66 buổi (77,3%); Phase 10 COMPLETED, Phase 11 đang triển khai, S52 — Kubernetes Security & Hardening là NEXT.
