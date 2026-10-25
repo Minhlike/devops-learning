@@ -1,6 +1,6 @@
 # Cẩm nang ngành DevOps
 
-`Cam_nang_devops.pdf` là bản PDF chính của giáo trình. Bản thảo xuất bản nằm trong `manuscript/`, theo cây 15 Phần, 59 Chương và 186 Bài. `Cam_nang_devops.candidate.pdf` là tệp dựng trước khi chốt bản chính; hồ sơ kiểm tra của chương tích hợp mới nằm trong `qa/P15_C04_QA.md`. `FINAL_CANDIDATE_QA.md` ghi lại một đợt kiểm tra trước đó.
+`Cam_nang_devops.pdf` là bản PDF chính của giáo trình. Bản thảo xuất bản nằm trong `manuscript/`, theo cây 16 Phần, 64 Chương và 202 Bài. `Cam_nang_devops.candidate.pdf` là tệp dựng trước khi chốt bản chính; hồ sơ Phần XVI nằm trong `qa/P16_QA.md`. `FINAL_CANDIDATE_QA.md` ghi lại một đợt kiểm tra trước đó.
 
 ## Quy tắc xuất bản
 
@@ -18,4 +18,4 @@ Chạy `python -X utf8 -m giaotrinh.scripts.build` từ gốc repo. Cần Python
 
 ## Trạng thái bản chính
 
-PDF chính gồm 15 Phần, 59 Chương, 186 Bài và lời giải cuối sách. Chương P15.C04 bổ sung tám bài về tích hợp chuỗi công cụ và ví dụ `orders-api` trong `examples/orders_toolchain/`. Bản chính chỉ được sao chép từ candidate sau khi kiểm tra cấu trúc và những trang bị ảnh hưởng; báo cáo QA ghi rõ phạm vi rà ảnh và giới hạn thực nghiệm. Sự tồn tại của PDF không thay thế việc đối chiếu độc lập từng khẳng định khoa học.
+Phần XVI độc lập gồm sáu chương và 24 bài về kiến trúc dự án, hợp đồng giữa công cụ, phát hành một artifact, lựa chọn stack, an toàn vận hành và phương pháp thiết kế dự án mới. Tám bài P15.C04 cũ cùng metadata được lưu trong `architecture/history_p15_c04/` để truy vết, không còn trong cây xuất bản. PDF chính chỉ được thay từ candidate sau khi kiểm tra cấu trúc và trang bị ảnh hưởng; hồ sơ QA ghi rõ phạm vi rà ảnh và giới hạn thực nghiệm. Sự tồn tại của PDF không thay thế đối chiếu khoa học độc lập.

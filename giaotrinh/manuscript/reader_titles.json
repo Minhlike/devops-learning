@@ -6,7 +6,8 @@
     "P12": "Quan sát hệ thống và dữ liệu đo",
     "P13": "Độ tin cậy và phục hồi dịch vụ",
     "P14": "Bảo mật và DevSecOps",
-    "P15": "Thiết kế và vận hành hệ thống thực tế"
+    "P15": "Thiết kế và vận hành hệ thống thực tế",
+    "P16": "Tư duy kiến trúc và tích hợp hệ sinh thái DevOps"
   },
   "chapters": {
     "P01.C01": "Công việc, thời gian và đường đi dữ liệu",
@@ -67,7 +68,12 @@
     "P15.C01": "Thiết kế một dịch vụ vận hành thực tế",
     "P15.C02": "Mở rộng và tối ưu chi phí có ràng buộc",
     "P15.C03": "Bài tổng hợp: thay đổi, sự cố và phục hồi",
-    "P15.C04": "Kết nối công cụ DevOps và thiết kế chuỗi vận hành"
+    "P16.C01": "Từ yêu cầu sản phẩm đến kiến trúc hệ thống",
+    "P16.C02": "Hợp đồng tích hợp giữa các công cụ",
+    "P16.C03": "Xây dựng một toolchain DevOps hoàn chỉnh",
+    "P16.C04": "Lựa chọn và thay thế chuỗi công cụ",
+    "P16.C05": "Bảo mật, độ tin cậy và vận hành toàn chuỗi",
+    "P16.C06": "Phương pháp tự thiết kế DevOps cho mọi dự án"
   },
   "lessons": {
     "P01.C02.L02": "Tạo và thay thế tiến trình",
@@ -162,13 +168,29 @@
     "P14.C04.L01": "Kiểm soát lúc tiếp nhận",
     "P14.C04.L02": "Gia cố lúc chạy",
     "P14.C04.L03": "Mạng và đám mây",
-    "P15.C04.L01": "Từ yêu cầu đến năng lực",
-    "P15.C04.L02": "Hợp đồng tích hợp",
-    "P15.C04.L03": "Lựa chọn công cụ",
-    "P15.C04.L04": "Chuỗi tham chiếu",
-    "P15.C04.L05": "Từ deploy tới người dùng",
-    "P15.C04.L06": "Bảo vệ và phục hồi",
-    "P15.C04.L07": "Đổi hình dạng dự án",
-    "P15.C04.L08": "Tự thiết kế"
+    "P16.C01.L01": "Hiểu dự án trước khi chọn công cụ",
+    "P16.C01.L02": "Phân tích luồng và ranh giới",
+    "P16.C01.L03": "Biến yêu cầu thành năng lực kỹ thuật",
+    "P16.C01.L04": "Kiến trúc ban đầu có thể phản biện",
+    "P16.C02.L01": "Công cụ, năng lực, pipeline và platform",
+    "P16.C02.L02": "API, webhook, event, artifact và trạng thái",
+    "P16.C02.L03": "Chuỗi thay đổi và danh tính artifact",
+    "P16.C02.L04": "Control plane, data plane và feedback loop",
+    "P16.C03.L01": "Dự án tham chiếu và hợp đồng nghiệp vụ",
+    "P16.C03.L02": "Từ Git tới artifact truy xuất được",
+    "P16.C03.L03": "Từ artifact đến môi trường phục vụ",
+    "P16.C03.L04": "Quan sát, phá vỡ và phục hồi",
+    "P16.C04.L01": "Bộ tiêu chí chọn stack kiểm chứng được",
+    "P16.C04.L02": "Kiến trúc nhỏ và vừa",
+    "P16.C04.L03": "Nhiều dịch vụ và dữ liệu",
+    "P16.C04.L04": "Thay công cụ không đứt hợp đồng",
+    "P16.C05.L01": "Danh tính, quyền và bí mật",
+    "P16.C05.L02": "Chuỗi cung ứng phần mềm",
+    "P16.C05.L03": "Observability và phát hành",
+    "P16.C05.L04": "Phục hồi và học từ sự cố",
+    "P16.C06.L01": "Phân tích dự án chưa biết",
+    "P16.C06.L02": "Thiết kế tái sử dụng",
+    "P16.C06.L03": "Phản biện bằng kịch bản đối nghịch",
+    "P16.C06.L04": "Bài tập kiến trúc sư DevOps"
   }
 }

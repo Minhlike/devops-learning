@@ -39,10 +39,66 @@ FIGURES = {
     "V46": ("Hình IV.1.3 — Ref là tên cục bộ có thể dời; quan hệ parent thuộc commit.", 225),
     "V47": ("Hình IV.2.2 — Fast-forward dời ref; nhánh phân kỳ cần hợp ba phía và giải conflict.", 242),
     "V48": ("Hình IV.2.3 — Revert thêm commit đảo tác động; reset dời ref và tùy mode đổi index, worktree.", 238),
-    "V49": ("Hình XV.4.1 — Hai đường khảo sát: thay đổi tạo bản chạy; request kiểm giá trị và dữ liệu.", 220),
-    "V50": ("Hình XV.4.2 — Hợp đồng toolchain: control, request và telemetry có hướng và quyền khác nhau.", 226),
-    "V51": ("Hình XV.4.3 — Bốn dự án, bốn chuỗi tối thiểu: mỗi chuỗi bảo vệ rủi ro chi phối riêng.", 236),
-    "V52": ("Hình XV.4.4 — Từ yêu cầu tới stack tối thiểu và bằng chứng; tín hiệu vận hành đưa thiết kế quay lại.", 220),
+    "V49": ("Hình XVI.1.1 — Hai đường khảo sát: thay đổi tạo bản chạy; request kiểm giá trị và dữ liệu.", 220),
+    "V50": ("Hình XVI.2.1 — Hợp đồng toolchain: control, request và telemetry có hướng và quyền khác nhau.", 226),
+    "V51": ("Hình XVI.4.1 — Bốn dự án, bốn chuỗi tối thiểu: mỗi chuỗi bảo vệ rủi ro chi phối riêng.", 236),
+    "V52": ("Hình XVI.6.1 — Từ yêu cầu tới stack tối thiểu và bằng chứng; tín hiệu vận hành đưa thiết kế quay lại.", 220),
+    "V53": ("Hình XVI.1.2 — Request, dữ liệu và thay đổi có nguồn chuẩn và điểm xác nhận khác nhau.", 224),
+    "V54": ("Hình XVI.1.3 — Yêu cầu chuyển thành năng lực cùng phép chấp nhận, trước tên công cụ.", 224),
+    "V55": ("Hình XVI.2.2 — Hợp đồng trên cạnh: identity, deadline, quyền và trạng thái lỗi.", 224),
+    "V56": ("Hình XVI.2.3 — Commit, build input, local image ID, manifest digest và runtime không là một.", 224),
+    "V57": ("Hình XVI.2.4 — Vòng phản hồi chỉ khép khi telemetry làm thay đổi quyết định.", 224),
+    "V58": ("Hình XVI.3.1 — Build một lần; cùng image được thử, publish, pull và kiểm runtime.", 224),
+    "V59": ("Hình XVI.3.2 — Desired, observed và business verified là ba hàng bằng chứng.", 224),
+    "V60": ("Hình XVI.4.2 — Hai phương án runtime cùng hợp lý dưới những điều kiện khác nhau.", 224),
+    "V61": ("Hình XVI.4.3 — Đổi công cụ phải giữ hợp đồng trên mỗi cạnh và có kế hoạch quay lại.", 224),
+    "V62": ("Hình XVI.5.1 — SBOM, scan, provenance và chữ ký trả lời các câu hỏi khác nhau.", 224),
+    "V63": ("Hình XVI.5.2 — Request ID nối log, revision, instance và record; metric có vùng mù.", 224),
+    "V64": ("Hình XVI.5.3 — Recreate, rollback và restore có tác động dữ liệu khác nhau.", 224),
+    "V65": ("Hình XVI.6.2 — Architecture canvas dẫn tới capability, hợp đồng và phép chấp nhận.", 224),
+    "V66": ("Hình XVI.6.3 — Kịch bản đối nghịch bác giả định trước khi chốt kiến trúc.", 224),
+}
+
+P16_LANES = {
+    "V53": ("BA ĐƯỜNG, BA CÂU HỎI", "Request / dữ liệu",
+            ("Client", "Edge", "API", "DB"), "Đường thay đổi",
+            ("Git", "CI", "Registry", "Runtime"), "201 không tự chứng minh backup; CI xanh không tự chứng minh request."),
+    "V54": ("TỪ LỜI HỨA TỚI PHÉP KIỂM", "Yêu cầu",
+            ("Không trùng", "Không mất", "Phục hồi", "Giới hạn quyền"), "Năng lực",
+            ("Unique key", "Transaction", "Restore thử", "Least privilege"), "Gắn test cho từng năng lực; tên tool là lựa chọn sau."),
+    "V55": ("MỖI CẠNH LÀ MỘT HỢP ĐỒNG", "Producer → consumer",
+            ("Event", "Schema", "Identity", "Deadline"), "Đường lỗi",
+            ("Retry", "Trạng thái", "Owner", "Hậu kiểm"), "Timeout không nói consumer đã xử lý hay chưa."),
+    "V56": ("DANH TÍNH KHÔNG HOÁN ĐỔI", "Nguồn → artifact",
+            ("Commit", "Input hash", "Image ID", "Digest"), "Phát hành → chạy",
+            ("Approval", "Pull digest", "Runtime ID", "Request"), "So cùng loại đối tượng ở đúng điểm chuyển giao."),
+    "V57": ("VÒNG PHẢN HỒI", "Control plane",
+            ("Desired", "Deployer", "Runtime", "Traffic"), "Feedback",
+            ("Log/metric", "Phân nhóm", "Stop rule", "ADR mới"), "Thiếu telemetry → dừng tăng canary, không suy đoán xanh."),
+    "V58": ("ỨNG VIÊN CHỈ ĐƯỢC BUILD MỘT LẦN", "Tạo và thử",
+            ("Source", "Unit test", "Build I", "Smoke I"), "Chuyển giao",
+            ("Push I", "Digest H", "Pull H", "Inspect I"), "Publish không gọi build lần thứ hai."),
+    "V59": ("BA HÀNG NGHIỆM THU DEPLOY", "Trạng thái hệ thống",
+            ("Desired H", "Pulled H", "Image I", "Ready"), "Hậu điều kiện",
+            ("POST", "Order ID", "GET", "Record"), "Up/Ready là điều kiện cần, chưa đủ cho nghiệp vụ."),
+    "V61": ("DI CHUYỂN MÀ KHÔNG ĐỨT HỢP ĐỒNG", "Trước cutover",
+            ("CI A", "Registry A", "Runtime A", "Record"), "Sau cutover",
+            ("CI B", "Registry B", "Runtime B", "Record"), "So input/output, quyền, digest, smoke và đường quay lại."),
+    "V62": ("CHỨNG CỨ CHUỖI CUNG ỨNG", "Đối tượng",
+            ("Dependency", "Builder", "Manifest", "Runtime"), "Bằng chứng",
+            ("SBOM", "Provenance", "Signature", "Policy"), "Mỗi bằng chứng có phạm vi; scan xanh không là an toàn toàn cục."),
+    "V63": ("NỐI REQUEST TỚI DỮ LIỆU", "Đường nghiệp vụ",
+            ("Request q", "Instance i", "Order o", "DB record"), "Đường quan sát",
+            ("Log q/o", "Revision", "Metric", "Owner"), "Counter một process reset khi restart; log có thể thiếu."),
+    "V64": ("BA ĐƯỜNG PHỤC HỒI", "Sự cố",
+            ("Process lỗi", "Code lỗi", "Data mất", "Host mất"), "Hành động",
+            ("Recreate", "Rollback", "Restore", "DR"), "Rollback code không tự đảo dữ liệu hoặc tác dụng phụ."),
+    "V65": ("CANVAS CÓ THỂ KIỂM", "Từ discovery",
+            ("Người dùng", "Dữ liệu", "Ràng buộc", "UNKNOWN"), "Tới quyết định",
+            ("Năng lực", "Hợp đồng", "ADR", "Acceptance"), "Thiếu dữ kiện phải có owner và phép đo."),
+    "V66": ("PHẢN BIỆN BẰNG BIẾN CỐ", "Giả định bị thử",
+            ("Tải x8", "Mất host", "Lộ token", "Giảm tiền"), "Cần quan sát",
+            ("Queue", "RPO/RTO", "Digest", "SLO/TCO"), "Đổi thiết kế khi bằng chứng bác giả định."),
 }
 
 
@@ -95,7 +151,10 @@ class MechanismFigure(Flowable):
         c.setStrokeColor(MID)
         c.setLineWidth(0.5)
         c.rect(0, y0, self.width, self.panel_height, fill=0, stroke=1)
-        getattr(self, f"draw_{self.figure_id}")(y0)
+        if self.figure_id in P16_LANES:
+            self.draw_p16_lanes(y0)
+        else:
+            getattr(self, f"draw_{self.figure_id}")(y0)
         self.text(self.width - 31, y0 + self.panel_height - 17, self.figure_id, 7)
         self.caption.drawOn(c, 0, 2)
         c.restoreState()
@@ -488,6 +547,30 @@ class MechanismFigure(Flowable):
         self.line(393, y0 + 132, 393, y0 + 91, arrow=True)
         self.line(78, y0 + 132, 78, y0 + 91, arrow=True)
         self.text(15, y0 + 15, "Tín hiệu mới bác giả định → quay lại yêu cầu; không bảo vệ stack cũ bằng quán tính.", 8)
+
+    def draw_p16_lanes(self, y0):
+        title, top_name, top, bottom_name, bottom, note = P16_LANES[self.figure_id]
+        self.text(14, y0 + 199, title, 9, True)
+        self.text(14, y0 + 177, top_name, 8.4, True)
+        self.text(14, y0 + 98, bottom_name, 8.4, True)
+        for labels, y in ((top, y0 + 127), (bottom, y0 + 48)):
+            for index, label in enumerate(labels):
+                x = 14 + 114 * index
+                self.box(x, y, 101, 33, label, fill=index == 2)
+                if index < len(labels) - 1:
+                    self.line(x + 101, y + 16, x + 114, y + 16, arrow=True)
+        self.text(14, y0 + 17, note, 7.6)
+
+    def draw_V60(self, y0):
+        self.text(14, y0 + 199, "HAI PHƯƠNG ÁN, CÙNG MỘT BỘ DỮ KIỆN", 9, True)
+        self.box(14, y0 + 151, 211, 32, "Managed runtime", "ít chăm host / phí platform")
+        self.box(246, y0 + 151, 211, 32, "Kubernetes", "policy chung / cần đội platform")
+        for y, left, right in ((y0 + 113, "Giới hạn cấu hình", "Control plane và nâng cấp"),
+                               (y0 + 78, "Egress / API lock-in", "CNI / storage / RBAC"),
+                               (y0 + 43, "Tốt khi ít người trực", "Tốt khi năng lực đã có")):
+            self.box(14, y, 211, 27, left)
+            self.box(246, y, 211, 27, right)
+        self.text(14, y0 + 17, "Hard constraint loại trước; SLO, TCO và exit cost quyết định sau.", 7.8)
 
     def draw_V23(self, y0):
         self.text(15, y0 + 206, "ĐƯỜNG ĐIỀU KHIỂN", 9, True)

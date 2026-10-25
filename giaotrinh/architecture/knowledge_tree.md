@@ -5,11 +5,11 @@
 **Chủ chứng cứ:** `evidence_ownership.csv` gán một primary lesson cho từng claim/ví dụ/cặp đề–đáp án; `legacy_content_units.csv` gán chủ đoạn ở mục split; `legacy_migration.csv` ghi liên kết cũ–mới. Nguồn liệt kê trong JSON chỉ đến từ claim thuộc bài, không là xác nhận ngữ nghĩa mới.
 **Phạm vi đã chốt:** Go là CLI DevOps nhỏ; UDP/IPv6/MTU ở mức chẩn đoán nền; AWS-first với nguyên lý cloud-neutral; capstone theo `capstone_contract.md` có bản local không phí.
 
-Tổng: 15 Phần, 59 Chương, 186 Bài/Mục. Cấu trúc phản ánh ranh giới cơ chế và tiên quyết, không phải quota.
+Tổng: 16 Phần, 64 Chương, 202 Bài/Mục. Cấu trúc phản ánh ranh giới cơ chế và tiên quyết, không phải quota.
 
 ## Đồ thị tiên quyết đọc nhanh
 
-Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh hữu ích và 8 đường đào sâu. Chỉ cạnh bắt buộc tạo trật tự học; mọi cạnh đi từ bài xuất hiện trước tới bài xuất hiện sau. Các chuỗi minh họa dưới đây có thể bỏ qua nút trung gian; cạnh chính xác nằm trong JSON.
+Bản đầy đủ ở `knowledge_tree.json`: 280 cạnh bắt buộc, 8 cạnh hữu ích và 8 đường đào sâu. Chỉ cạnh bắt buộc tạo trật tự học; mọi cạnh đi từ bài xuất hiện trước tới bài xuất hiện sau. Các chuỗi minh họa dưới đây có thể bỏ qua nút trung gian; cạnh chính xác nằm trong JSON.
 
 - `P01.C02.L03` (process/FD) → `P07.C01.L01` (namespace) → `P07.C03.L01` (container là lần chạy).
 - `P03.C02.L03` (đường TCP/NAT) → `P08.C02.L01` (VPC route) → `P11.C04.L02` (Service dataplane áp dụng mạng gốc).
@@ -366,7 +366,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Unit test và readiness xanh xác nhận hành vi tiền bạc của đơn hàng.
 - **Cách dạy:** Đọc gate bỏ sót amount_cents; bổ sung phép kiểm nghiệp vụ.
 - **Đánh giá:** Lập ma trận unit/integration/contract/production smoke và quyền phê duyệt.
-- **Nối tới:** P06.C03, P09.C04, P14.C03.
+- **Nối tới:** P06.C03, P09.C04, P14.C03, P16.C02.
 - **Nguồn cũ:** Ch09.
 - **Cây bài:**
   - `P06.C02.L01` **CI vs CD** [needs_extension; 1 mục cũ; 1 claim] — build, test, delivery, deployment
@@ -440,7 +440,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Tag v2 là artifact bất biến; xóa secret ở layer sau xóa mọi dấu vết.
 - **Cách dạy:** Giải phẫu build context, cache, digest và image cục bộ khác registry.
 - **Đánh giá:** Chứng minh digest đang chạy thay vì chỉ đọc tag.
-- **Nối tới:** P07.C03, P14.C03.
+- **Nối tới:** P07.C03, P14.C03, P16.C03.
 - **Nguồn cũ:** Ch10, Ch11.
 - **Cây bài:**
   - `P07.C02.L01` **Build** [reviewed_draft; 1 mục cũ; 1 claim] — context, Dockerfile, layer cache, secret mount
@@ -590,7 +590,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Plan là giao dịch; sensitive flag mã hóa state.
 - **Cách dạy:** Lần theo partial apply và remote write failure.
 - **Đánh giá:** Liệt kê object thực/state/config và bước đối chiếu trước retry.
-- **Nối tới:** P09.C03, P10.C01, P14.C02.
+- **Nối tới:** P09.C03, P10.C01, P14.C02, P16.C04.
 - **Nguồn cũ:** Ch13.
 - **Cây bài:**
   - `P09.C02.L01` **Ba trạng thái** [reviewed_draft; 1 mục cũ; 1 claim] — config, state binding, real object
@@ -920,7 +920,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** SLO 99.9% nghĩa không bao giờ được lỗi.
 - **Cách dạy:** Tính ngân sách theo request và so client/server measurement.
 - **Đánh giá:** Phản biện một SLI loại bỏ request thất bại do target biến mất.
-- **Nối tới:** P13.C02, P13.C04.
+- **Nối tới:** P13.C02, P13.C04, P16.C01.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
   - `P13.C01.L01` **SLI** [planned_new; 0 mục cũ; 0 claim] — good/total events, latency, availability, exclusion
@@ -936,7 +936,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Postmortem là tìm cá nhân chịu lỗi; root cause luôn đơn nhất.
 - **Cách dạy:** Điều tra request chậm qua metric/log/trace và change timeline.
 - **Đánh giá:** Lập runbook với trigger, stop, verification và mốc thông báo.
-- **Nối tới:** P15.C03.
+- **Nối tới:** P15.C03, P16.C05.
 - **Nguồn cũ:** Ch09, Ch19.
 - **Cây bài:**
   - `P13.C02.L01` **Phản ứng** [planned_new; 0 mục cũ; 0 claim] — detect, triage, severity, incident command
@@ -952,7 +952,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Multi-AZ hoặc PVC Bound chứng minh restore được.
 - **Cách dạy:** Diễn tập mất AZ và xóa object, kiểm manifest dữ liệu trước/sau.
 - **Đánh giá:** Đề xuất RPO/RTO thực tế và phép thử restore.
-- **Nối tới:** P15.C01, P15.C04.
+- **Nối tới:** P15.C01, P16.C03.
 - **Nguồn cũ:** Ch11, Ch12, Ch13, Ch16.
 - **Cây bài:**
   - `P13.C03.L01` **Mục tiêu** [planned_new; 0 mục cũ; 0 claim] — RPO, RTO, failure domain
@@ -994,7 +994,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Ẩn endpoint hoặc dùng private subnet là đủ kiểm soát truy cập.
 - **Cách dạy:** Vẽ luồng request và đánh dấu nơi xác thực/ủy quyền.
 - **Đánh giá:** Viết threat scenario và phép thử denial/allow theo least privilege.
-- **Nối tới:** P14.C02.
+- **Nối tới:** P14.C02, P16.C01.
 - **Nguồn cũ:** Ch12.
 - **Cây bài:**
   - `P14.C01.L01` **Bề mặt** [planned_new; 0 mục cũ; 0 claim] — asset, actor, entrypoint, data flow
@@ -1026,7 +1026,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Scanner xanh hoặc chữ ký hợp lệ chứng minh image không có lỗi.
 - **Cách dạy:** Kiểm một artifact có dependency đổi ngầm và tag bị dịch.
 - **Đánh giá:** Chỉ ra chuỗi bằng chứng và điểm còn chưa xác minh.
-- **Nối tới:** P14.C04, P15.C03, P15.C04.
+- **Nối tới:** P14.C04, P15.C03, P16.C02.
 - **Nguồn cũ:** Ch09, Ch11.
 - **Cây bài:**
   - `P14.C03.L01` **Nguồn** [planned_new; 0 mục cũ; 0 claim] — dependency pin, SBOM, license/vulnerability
@@ -1042,7 +1042,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Pod chạy non-root thì không thể đọc secret hoặc đi ra internet.
 - **Cách dạy:** Dựng chuỗi tấn công từ image tới API/data và thử policy âm.
 - **Đánh giá:** Lập ma trận kiểm soát và giới hạn thực thi của plugin/provider.
-- **Nối tới:** P15.C01.
+- **Nối tới:** P15.C01, P16.C05.
 - **Nguồn cũ:** Ch15, Ch16, Ch17.
 - **Cây bài:**
   - `P14.C04.L01` **Admission** [planned_new; 0 mục cũ; 0 claim] — PSS/policy engine và image policy
@@ -1084,7 +1084,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Giảm chi phí bằng cách tắt backup hoặc giảm replica luôn tối ưu.
 - **Cách dạy:** So ba phương án từ số liệu workload, nêu dữ liệu giá cần cập nhật.
 - **Đánh giá:** Tính điểm hòa vốn và rủi ro mất SLO/DR.
-- **Nối tới:** P15.C03.
+- **Nối tới:** P15.C03, P16.C04.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
   - `P15.C02.L01` **Mô hình tải** [planned_new; 0 mục cũ; 0 claim] — peak, headroom, burst, queue
@@ -1100,7 +1100,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Mọi test xanh loại bỏ nhu cầu quan sát người dùng.
 - **Cách dạy:** Đưa cùng một dịch vụ qua rollout, failure injection giới hạn, restore và review.
 - **Đánh giá:** Nộp evidence ledger, kết quả âm/dương, giới hạn và quyết định vận hành.
-- **Nối tới:** P15.C04.
+- **Nối tới:** P16.C01, P16.C06.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
   - `P15.C03.L01` **Chuẩn bị** [planned_new; 0 mục cũ; 0 claim] — source/digest, policy, state, backup, SLO
@@ -1108,23 +1108,114 @@ Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh 
   - `P15.C03.L03` **Bảo vệ** [planned_new; 0 mục cũ; 0 claim] — restore, security check, postmortem và chi phí
   - `P15.C03.L04` **Kiểm toán** [planned_new; 0 mục cũ; 0 claim] — evidence ledger, phép kiểm âm/dương, SKIP, stop rule và quyết định vận hành
 
-### P15.C04 — Tích hợp hệ sinh thái DevOps và tư duy thiết kế chuỗi công cụ [planned_new]
+## P16 — Tư duy kiến trúc và tích hợp hệ sinh thái DevOps
 
-- **Đích học:** Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.
-- **Mô hình nối bài:** Đường thay đổi, request, dữ liệu và telemetry có identity, quyền, owner và đường lỗi riêng; stack là quyết định theo rủi ro.
-- **Tiên quyết bắt buộc:** P15.C03.L04, P14.C03.L03, P13.C03.L03.
-- **Ranh giới:** Không lặp capstone hoặc biến chương thành danh mục sản phẩm; ví dụ một host không được gọi là production.
-- **Ngộ nhận:** Nối được nhiều công cụ đồng nghĩa hệ thống phục vụ đúng và phục hồi được.
-- **Cách dạy:** Dùng orders-api cục bộ rồi đổi sang bốn dự án có hợp đồng khác nhau.
-- **Đánh giá:** Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi.
+**Câu hỏi:** Đứng trước dự án chưa biết, làm sao chọn, nối, vận hành và chứng minh một chuỗi năng lực phù hợp?
+**Mô hình:** Bắt đầu từ kết quả và ràng buộc, thiết kế hợp đồng giữa các năng lực; mỗi thay đổi đi qua artifact có identity, runtime, dữ liệu và vòng phản hồi có chứng cứ.
+**Tiên quyết:** P01–P15; đặc biệt Git, phát hành, container, dữ liệu, bảo mật, telemetry và phục hồi.
+**Ranh giới:** Không có stack mẫu nào đúng cho mọi dự án; lab cục bộ không là chứng chỉ production.
+**Năng lực ra:** Tự thiết kế và bảo vệ kiến trúc DevOps cho dự án mới, chạy một chuỗi tham chiếu trọn vòng đời và nêu giới hạn kiểm chứng.
+**Ngộ nhận cần sửa:** Nối được nhiều công cụ hoặc CI xanh nghĩa là hệ thống đáp ứng nghiệp vụ.
+**Chuyển tiếp:** Kết thúc sách bằng phương pháp thiết kế có thể chuyển giao và phản biện.
+
+### P16.C01 — Từ yêu cầu sản phẩm đến kiến trúc hệ thống [planned_new]
+
+- **Đích học:** Biến nhu cầu chưa rõ thành ranh giới, năng lực và phép chấp nhận.
+- **Mô hình nối bài:** Kết quả cần bảo vệ và ràng buộc quyết định năng lực; công cụ chỉ được chọn sau.
+- **Tiên quyết bắt buộc:** P15.C03.L04, P14.C01.L01, P13.C01.L02.
+- **Ranh giới:** Không đánh đồng yêu cầu giả định với SLA đã cam kết.
+- **Ngộ nhận:** Một sơ đồ stack đẹp đủ thay discovery.
+- **Cách dạy:** Đi từ dự án chưa biết tới architecture decision record có số liệu còn thiếu.
+- **Đánh giá:** Bảo vệ kiến trúc tối thiểu bằng hậu điều kiện và stop rule.
+- **Nối tới:** P16.C02.
+- **Nguồn cũ:** Cần biên soạn mới.
+- **Cây bài:**
+  - `P16.C01.L01` **Hiểu dự án trước khi chọn công cụ** [planned_new; 0 mục cũ; 0 claim] — functional requirement, quality attribute, dữ liệu, traffic, budget và đội ngũ
+  - `P16.C01.L02` **Phân tích luồng và ranh giới** [planned_new; 0 mục cũ; 0 claim] — request, data, change, trust boundary, failure domain và owner
+  - `P16.C01.L03` **Biến yêu cầu thành năng lực kỹ thuật** [planned_new; 0 mục cũ; 0 claim] — CI, artifact, infrastructure, configuration, observability, recovery
+  - `P16.C01.L04` **Kiến trúc ban đầu có thể phản biện** [planned_new; 0 mục cũ; 0 claim] — MVP, hard constraint, acceptance criterion, ADR và trigger
+
+### P16.C02 — Hợp đồng tích hợp giữa các công cụ [planned_new]
+
+- **Đích học:** Định nghĩa đầu vào, đầu ra, identity, quyền và đường lỗi trên từng cạnh.
+- **Mô hình nối bài:** Một cạnh chỉ tồn tại khi hai đầu cùng hiểu hợp đồng và có phép kiểm hậu điều kiện.
+- **Tiên quyết bắt buộc:** P16.C01.L04, P06.C02.L03, P14.C03.L03.
+- **Ranh giới:** Không biến CI event thành bằng chứng deploy hoặc nghiệp vụ.
+- **Ngộ nhận:** Pipeline xanh chứng minh toàn bộ chuỗi.
+- **Cách dạy:** Đọc contract graph và tìm mắt xích không có hậu điều kiện.
+- **Đánh giá:** Chỉ ra bằng chứng thiếu giữa source, artifact, registry và runtime.
+- **Nối tới:** P16.C03.
+- **Nguồn cũ:** Cần biên soạn mới.
+- **Cây bài:**
+  - `P16.C02.L01` **Công cụ, năng lực, pipeline và platform** [planned_new; 0 mục cũ; 0 claim] — vai trò, owner và mức trừu tượng
+  - `P16.C02.L02` **API, webhook, event, artifact và trạng thái** [planned_new; 0 mục cũ; 0 claim] — schema, timeout, retry, idempotency, consistency
+  - `P16.C02.L03` **Chuỗi thay đổi và danh tính artifact** [planned_new; 0 mục cũ; 0 claim] — commit, build input, digest, attestation, promotion và runtime
+  - `P16.C02.L04` **Control plane, data plane và feedback loop** [planned_new; 0 mục cũ; 0 claim] — desired state, telemetry, drift, policy gate, approval
+
+### P16.C03 — Xây dựng một toolchain DevOps hoàn chỉnh [planned_new]
+
+- **Đích học:** Thực thi một thay đổi qua build, registry, deploy, request và phục hồi cục bộ.
+- **Mô hình nối bài:** Test cùng artifact, push/pull bằng digest, inspect runtime và truy request tới bản ghi.
+- **Tiên quyết bắt buộc:** P16.C02.L04, P07.C02.L03, P13.C03.L03.
+- **Ranh giới:** Ví dụ một host không đại diện production hoặc CI từ xa.
+- **Ngộ nhận:** Build lại ở publish vẫn là cùng artifact.
+- **Cách dạy:** Chạy local registry trong lab cô lập, đo từng hậu điều kiện và nhánh lỗi.
+- **Đánh giá:** Nộp evidence ledger thực, chỉ rõ PASS/SKIP và dữ liệu restore.
+- **Nối tới:** P16.C04, P16.C05.
+- **Nguồn cũ:** Cần biên soạn mới.
+- **Cây bài:**
+  - `P16.C03.L01` **Dự án tham chiếu và hợp đồng nghiệp vụ** [planned_new; 0 mục cũ; 0 claim] — orders-api, transaction, idempotency, schema, health và test
+  - `P16.C03.L02` **Từ Git tới artifact truy xuất được** [planned_new; 0 mục cũ; 0 claim] — test, build một lần, identity, local registry và publish
+  - `P16.C03.L03` **Từ artifact đến môi trường phục vụ** [planned_new; 0 mục cũ; 0 claim] — pull digest, deploy, inspect, smoke và quyền
+  - `P16.C03.L04` **Quan sát, phá vỡ và phục hồi** [planned_new; 0 mục cũ; 0 claim] — request correlation, telemetry, failure injection, backup, restore
+
+### P16.C04 — Lựa chọn và thay thế chuỗi công cụ [planned_new]
+
+- **Đích học:** So phương án có dữ kiện, bỏ bớt hoặc thay tool mà giữ hợp đồng.
+- **Mô hình nối bài:** Hard constraints loại lựa chọn; phần còn lại đánh đổi TCO, rủi ro, năng lực và chi phí chuyển.
+- **Tiên quyết bắt buộc:** P16.C03.L04, P15.C02.L03, P09.C02.L03.
+- **Ranh giới:** Không có một sản phẩm mặc định cho mọi quy mô.
+- **Ngộ nhận:** Kubernetes hoặc serverless luôn là đích trưởng thành.
+- **Cách dạy:** Đối chiếu ba dự án, hai phương án đều hợp lý và một kế hoạch thoát.
+- **Đánh giá:** Giải thích điều kiện đổi kiến trúc và chi phí migration.
+- **Nối tới:** P16.C06.
+- **Nguồn cũ:** Cần biên soạn mới.
+- **Cây bài:**
+  - `P16.C04.L01` **Bộ tiêu chí chọn stack kiểm chứng được** [planned_new; 0 mục cũ; 0 claim] — SLO, security, TCO, team, audit và exit
+  - `P16.C04.L02` **Kiến trúc nhỏ và vừa** [planned_new; 0 mục cũ; 0 claim] — static, monolith, VM, managed runtime, Compose
+  - `P16.C04.L03` **Nhiều dịch vụ và dữ liệu** [planned_new; 0 mục cũ; 0 claim] — microservices, Kubernetes, GitOps, event-driven, batch
+  - `P16.C04.L04` **Thay công cụ không đứt hợp đồng** [planned_new; 0 mục cũ; 0 claim] — CI, registry, runtime, secret backend và migration
+
+### P16.C05 — Bảo mật, độ tin cậy và vận hành toàn chuỗi [planned_new]
+
+- **Đích học:** Xem toolchain như hệ thống production có quyền, miền lỗi và đường hồi phục.
+- **Mô hình nối bài:** Identity và artifact policy giảm rủi ro; telemetry và restore chứng minh được phạm vi bảo vệ.
+- **Tiên quyết bắt buộc:** P16.C03.L04, P14.C04.L03, P13.C02.L03.
+- **Ranh giới:** Scanner, chữ ký, health hay rollback đều có phạm vi hữu hạn.
+- **Ngộ nhận:** Một green gate thay được phép thử nghiệp vụ và dữ liệu.
+- **Cách dạy:** Đi qua credential leak, registry outage, canary lỗi và missing telemetry.
+- **Đánh giá:** Chọn dừng, rollback, forward fix hoặc restore theo bằng chứng.
+- **Nối tới:** P16.C06.
+- **Nguồn cũ:** Cần biên soạn mới.
+- **Cây bài:**
+  - `P16.C05.L01` **Danh tính, quyền và bí mật** [planned_new; 0 mục cũ; 0 claim] — CI, OIDC, registry, deployer, runtime và incident
+  - `P16.C05.L02` **Chuỗi cung ứng phần mềm** [planned_new; 0 mục cũ; 0 claim] — SBOM, scanning, provenance, signing, policy và giới hạn
+  - `P16.C05.L03` **Observability và phát hành** [planned_new; 0 mục cũ; 0 claim] — SLI/SLO, log/metric/trace, canary và stop rule
+  - `P16.C05.L04` **Phục hồi và học từ sự cố** [planned_new; 0 mục cũ; 0 claim] — rollback, restore, outage, DR và postmortem
+
+### P16.C06 — Phương pháp tự thiết kế DevOps cho mọi dự án [planned_new]
+
+- **Đích học:** Dùng phương pháp có thể lặp để thiết kế dự án mới và tự phản biện.
+- **Mô hình nối bài:** Discovery, capability map, contract graph, acceptance và adversarial review tạo kiến trúc có thể sửa.
+- **Tiên quyết bắt buộc:** P16.C04.L04, P16.C05.L04, P15.C03.L04.
+- **Ranh giới:** Không sao chép lab như đáp án thương hiệu.
+- **Ngộ nhận:** Hoàn thành tutorial nghĩa là có năng lực thiết kế.
+- **Cách dạy:** Thiết kế hai phương án cho dự án mới, rồi thử biến cố và ngân sách.
+- **Đánh giá:** Bảo vệ lựa chọn, rủi ro còn lại, phép đo và trigger thay đổi.
 - **Nối tới:** Tổng hợp cuối sách.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
-  - `P15.C04.L01` **Từ yêu cầu đến năng lực** [planned_new; 0 mục cũ; 0 claim] — khảo sát sản phẩm, dữ liệu, SLO, đội ngũ
-  - `P15.C04.L02` **Hợp đồng tích hợp** [planned_new; 0 mục cũ; 0 claim] — luồng thay đổi, request, quyền, identity và failure
-  - `P15.C04.L03` **Lựa chọn công cụ** [planned_new; 0 mục cũ; 0 claim] — tiêu chí và phương án bỏ bớt
-  - `P15.C04.L04` **Chuỗi tham chiếu** [planned_new; 0 mục cũ; 0 claim] — orders-api cục bộ, CI, image, volume, smoke
-  - `P15.C04.L05` **Từ deploy tới người dùng** [planned_new; 0 mục cũ; 0 claim] — revision, request và record
-  - `P15.C04.L06` **Bảo vệ và phục hồi** [planned_new; 0 mục cũ; 0 claim] — least privilege, telemetry, restore và quyết định dừng
-  - `P15.C04.L07` **Đổi hình dạng dự án** [planned_new; 0 mục cũ; 0 claim] — static, monolith, microservices, batch
-  - `P15.C04.L08` **Tự thiết kế** [planned_new; 0 mục cũ; 0 claim] — mười hai lượt, hồ sơ tối thiểu và bảo vệ quyết định
+  - `P16.C06.L01` **Phân tích dự án chưa biết** [planned_new; 0 mục cũ; 0 claim] — discovery, data, change, risk và unknowns
+  - `P16.C06.L02` **Thiết kế tái sử dụng** [planned_new; 0 mục cũ; 0 claim] — architecture canvas, capability map, contracts, ADR, acceptance
+  - `P16.C06.L03` **Phản biện bằng kịch bản đối nghịch** [planned_new; 0 mục cũ; 0 claim] — load, host, DB, secret, release và budget
+  - `P16.C06.L04` **Bài tập kiến trúc sư DevOps** [planned_new; 0 mục cũ; 0 claim] — thiết kế độc lập, lựa chọn, rủi ro, phép kiểm và lộ trình

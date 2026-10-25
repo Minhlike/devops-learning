@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "urls": {
+    "TC-01": "https://docs.python.org/3.12/library/http.server.html",
+    "TC-02": "https://docs.python.org/3.12/library/sqlite3.html",
+    "TC-03": "https://www.sqlite.org/wal.html",
+    "TC-04": "https://docs.docker.com/reference/compose-file/services/",
+    "TC-05": "https://docs.docker.com/compose/how-tos/startup-order/",
+    "TC-06": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+    "TC-07": "https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images",
+    "TC-08": "https://docs.docker.com/dhi/explore/security-concepts/digests/",
+    "TC-09": "https://docs.github.com/en/actions/reference/security/oidc",
+    "TC-10": "https://www.sqlite.org/lang_transaction.html",
+    "TC-11": "https://docs.docker.com/build/ci/github-actions/share-image-jobs/",
+    "TC-12": "https://docs.docker.com/reference/cli/docker/image/pull/",
+    "TC-13": "https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts",
+    "TC-14": "https://docs.docker.com/engine/security/protect-access/"
+  }
+}

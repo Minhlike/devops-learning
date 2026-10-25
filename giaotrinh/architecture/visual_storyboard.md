@@ -1,6 +1,6 @@
 # Bản đồ trực quan hóa cho A2
 
-**Quy tắc chọn:** chỉ trực quan hóa khi vị trí, thứ tự, trạng thái, quan hệ nhân quả hoặc số liệu khó đọc hơn trong văn xuôi. Đây là 52 ứng viên kỹ thuật và nghệ thuật có thể chọn theo giá trị sư phạm. Đây là danh sách có hợp đồng kiểm chứng, **không phải quota**. `P0` cần trước khi di chuyển khối tương ứng; `P1` cần trước khi nghiệm thu Phần; `P2` là phương án nghệ thuật/đào sâu có thể bỏ nếu không giúp hiểu. Hình kỹ thuật xuất SVG/vector có source chỉnh được; đồ thị từ dữ liệu phải lưu dữ liệu và mã dựng; ảnh thực chỉ từ thí nghiệm được phép có metadata; nghệ thuật không được mang claim kỹ thuật. Không dùng ASCII art làm hình xuất bản. Các `source_map`/URL chỉ ở hồ sơ A2, không vào PDF.
+**Quy tắc chọn:** chỉ trực quan hóa khi vị trí, thứ tự, trạng thái, quan hệ nhân quả hoặc số liệu khó đọc hơn trong văn xuôi. Đây là 66 ứng viên kỹ thuật và nghệ thuật có thể chọn theo giá trị sư phạm. Đây là danh sách có hợp đồng kiểm chứng, **không phải quota**. `P0` cần trước khi di chuyển khối tương ứng; `P1` cần trước khi nghiệm thu Phần; `P2` là phương án nghệ thuật/đào sâu có thể bỏ nếu không giúp hiểu. Hình kỹ thuật xuất SVG/vector có source chỉnh được; đồ thị từ dữ liệu phải lưu dữ liệu và mã dựng; ảnh thực chỉ từ thí nghiệm được phép có metadata; nghệ thuật không được mang claim kỹ thuật. Không dùng ASCII art làm hình xuất bản. Các `source_map`/URL chỉ ở hồ sơ A2, không vào PDF.
 
 ## Máy, Linux và mạng
 
@@ -237,25 +237,84 @@
 - **Bắt buộc:** commit/digest, triển khai dịch vụ có dữ liệu, request path, IAM/secret, metric/log/trace, failure injection cục bộ, stop/rollback, restore dữ liệu, SLI/SLO và SKIP có lý do. Mỗi hàng dẫn tới tệp/log/dataset tái lập; không điền PASS cho thử nghiệm chưa chạy.
 - **Kiểm / sai lệch:** `capstone_contract.md`, test/dataset A2 sẽ tạo và Reviewer kiểm; sai nếu một sơ đồ production hoặc status xanh được xem là đủ evidence. **Medium:** bảng vector dùng mã evidence ID; hồ sơ kiểm ngoài PDF, không chèn URL nguồn vào sách. **P0:** hợp đồng đầu ra, không phải hình trang trí.
 
-### V49 · `P15.C04.L01` · Hai đường khảo sát dự án
+### V49 · `P16.C01.L01` · Hai đường khảo sát dự án
 - **Hỏi / dạng:** người thiết kế phân biệt đường thay đổi với đường request và điểm nối hai đường ở đâu? Hai làn có identity C/H/D và q/i/r.
 - **Bắt buộc:** commit/test/artifact/runtime khác client/edge/API/data; nối revision với instance và request trước khi kết luận bản được thử đang phục vụ.
-- **Kiểm / sai lệch:** `P15.C04.L01` và `L05`; sai nếu commit ID được dùng như request ID. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+- **Kiểm / sai lệch:** `P16.C01.L01` và `L05`; sai nếu commit ID được dùng như request ID. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
 
-### V50 · `P15.C04.L02` · Ba mặt phẳng của chuỗi công cụ
+### V50 · `P16.C02.L01` · Ba mặt phẳng của chuỗi công cụ
 - **Hỏi / dạng:** ai quyết định, ai phục vụ request và tín hiệu quay về ai? Ba dải tách quyền.
 - **Bắt buộc:** CI/registry/deployer ở control path; client/API/DB ở data path; runtime/telemetry/người trực ở feedback path. Mũi tên không hàm ý triển khai tự động từ workflow mẫu.
-- **Kiểm / sai lệch:** `P15.C04.L02`, `examples/orders_toolchain/ci.yml`; sai nếu coi registry là runtime hoặc metric là gate nghiệp vụ. **Tài sản:** vector gốc.
+- **Kiểm / sai lệch:** `P16.C02.L01`, `examples/orders_toolchain/ci.yml`; sai nếu coi registry là runtime hoặc metric là gate nghiệp vụ. **Tài sản:** vector gốc.
 
-### V51 · `P15.C04.L07` · Bốn hình dạng dự án
+### V51 · `P16.C04.L02` · Bốn hình dạng dự án
 - **Hỏi / dạng:** cùng phương pháp nhưng năng lực ưu tiên thay đổi thế nào giữa static, monolith, microservices và batch? Bốn hàng rủi ro.
 - **Bắt buộc:** static/cache-domain, monolith/schema-restore, nhiều dịch vụ/version skew, batch/retry-checkpoint; không vẽ cùng một Kubernetes stack ở cả bốn hàng.
-- **Kiểm / sai lệch:** `P15.C04.L07`; sai nếu readiness HTTP được đặt làm cổng duy nhất cho batch. **Tài sản:** vector gốc.
+- **Kiểm / sai lệch:** `P16.C04.L02`; sai nếu readiness HTTP được đặt làm cổng duy nhất cho batch. **Tài sản:** vector gốc.
 
-### V52 · `P15.C04.L08` · Quyết định có thể quay lại
+### V52 · `P16.C06.L01` · Quyết định có thể quay lại
 - **Hỏi / dạng:** khi số liệu mới bác giả định, quay lại lớp nào? Sáu ô từ yêu cầu tới tín hiệu thay đổi.
 - **Bắt buộc:** yêu cầu → năng lực → stack; hợp đồng → bằng chứng → tín hiệu đổi, vòng quay về khảo sát. Không gợi một stack cố định là đáp án vĩnh viễn.
-- **Kiểm / sai lệch:** `P15.C04.L08`; sai nếu chọn công cụ trước yêu cầu hoặc thiếu bằng chứng hậu điều kiện. **Tài sản:** vector gốc.
+- **Kiểm / sai lệch:** `P16.C06.L01`; sai nếu chọn công cụ trước yêu cầu hoặc thiếu bằng chứng hậu điều kiện. **Tài sản:** vector gốc.
+
+
+## Hình Phần XVI bổ sung
+
+### V53 · `P16.C01.L02` · Ba đường và điểm xác nhận
+- **Hỏi / dạng:** Request/DB và commit/runtime không được gộp; đánh dấu ranh giới chứng cứ.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V54 · `P16.C01.L03` · Từ yêu cầu đến năng lực
+- **Hỏi / dạng:** Năng lực và phép kiểm đi trước sản phẩm; không suy tool từ một yêu cầu.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V55 · `P16.C02.L02` · Cạnh hợp đồng
+- **Hỏi / dạng:** Identity, deadline, retry, owner và hậu trạng thái phải có mặt.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V56 · `P16.C02.L03` · Chuỗi danh tính
+- **Hỏi / dạng:** Commit/input/image ID/manifest digest/runtime là các loại đối tượng khác.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V57 · `P16.C02.L04` · Feedback loop
+- **Hỏi / dạng:** Telemetry quay về stop rule và ADR, không chỉ về dashboard.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V58 · `P16.C03.L02` · Build một lần
+- **Hỏi / dạng:** Chính image được smoke đi qua push và pull, không có build ở publish.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V59 · `P16.C03.L03` · Ba hàng nghiệm thu
+- **Hỏi / dạng:** Desired, observed và business verification được kiểm riêng.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V60 · `P16.C04.L03` · Hai phương án runtime
+- **Hỏi / dạng:** Managed và Kubernetes có lợi ích/chi phí khác, hard constraint loại trước.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V61 · `P16.C04.L04` · Migration hợp đồng
+- **Hỏi / dạng:** Cạnh giữ input/output/quyền và có kế hoạch cutover/rollback.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V62 · `P16.C05.L02` · Bốn lớp chứng cứ supply chain
+- **Hỏi / dạng:** SBOM, provenance, signature và policy có phạm vi khác.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V63 · `P16.C05.L03` · Correlation
+- **Hỏi / dạng:** Request ID nối log, instance và record; metric reset/thiếu.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V64 · `P16.C05.L04` · Ba đường phục hồi
+- **Hỏi / dạng:** Recreate, rollback, restore không hoán đổi tác động dữ liệu.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V65 · `P16.C06.L02` · Canvas kiến trúc
+- **Hỏi / dạng:** Discovery dẫn đến năng lực, hợp đồng, ADR và acceptance.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V66 · `P16.C06.L03` · Kịch bản đối nghịch
+- **Hỏi / dạng:** Biến cố bác giả định và chỉ ra phép đo cần thiết.
+- **Kiểm / sai lệch:** nhãn và mũi tên chỉ mô hình, không là log thực nghiệm; đối chiếu nội dung bài và bản in A4. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
 
 ## Trang mở Phần và hình mang tính khái niệm
 

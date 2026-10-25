@@ -1,5 +1,5 @@
-# Copy to .github/workflows/orders.yml in the standalone sample repository.
-# This file is instructional inside the textbook repository; it is not active CI here.
+# Copy as .github/workflows/orders.yml into a separate sandbox repository.
+# Remote execution is not asserted by the textbook repository.
 name: orders-toolchain
 on:
   push:
@@ -15,19 +15,38 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Syntax and tests
+      - name: Check source behavior
+        run: python -m unittest -v test_app.py
+      - name: Build candidate once
         run: |
-          python -m compileall -q app.py smoke.py test_app.py
-          python -m unittest -v test_app.py
-      - name: Local container integration
+          INPUT_SHA=$(sha256sum app.py Dockerfile | sha256sum | cut -d' ' -f1)
+          docker build --build-arg APP_REVISION="${{ github.sha }}" \
+            --build-arg BUILD_INPUT_SHA256="$INPUT_SHA" \
+            -t "orders-api:${{ github.sha }}" .
+          docker image inspect "orders-api:${{ github.sha }}" --format '{{.Id}}' > image-id.txt
+      - name: Test the built image
         run: |
-          docker compose up --build -d --wait
-          python smoke.py
-          docker compose down
-      - name: Build image and record local identity
+          docker run -d --name candidate -p 127.0.0.1:18080:8080 \
+            -v orders-ci-data:/data "orders-api:${{ github.sha }}"
+          for n in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:18080/readyz >/dev/null; then break; fi
+            sleep 1
+          done
+          ORDERS_URL=http://127.0.0.1:18080 python smoke.py
+          docker stop candidate
+          docker rm candidate
+      - name: Transfer this exact candidate
         run: |
-          docker build -t orders-api:${{ github.sha }} .
-          docker image inspect orders-api:${{ github.sha }} --format '{{.Id}}'
+          docker save "orders-api:${{ github.sha }}" -o image.tar
+          sha256sum image.tar > image.tar.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tested-image
+          path: |
+            image.tar
+            image.tar.sha256
+            image-id.txt
+          if-no-files-found: error
   publish:
     if: github.event_name == 'push'
     needs: verify
@@ -36,16 +55,24 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-      - name: Build and push
+      - uses: actions/download-artifact@v4
+        with:
+          name: tested-image
+      - name: Load the tested image and verify identity
+        run: |
+          sha256sum -c image.tar.sha256
+          docker load --input image.tar
+          test "$(docker image inspect "orders-api:${{ github.sha }}" --format '{{.Id}}')" = "$(cat image-id.txt)"
+      - name: Publish without rebuilding
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REVISION: ${{ github.sha }}
         run: |
+          echo "$GH_TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
           IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/orders-api"
-          docker build -t "$IMAGE:$REVISION" .
-          docker push "$IMAGE:$REVISION"
+          docker tag "orders-api:$REVISION" "$IMAGE:$REVISION"
+          docker push "$IMAGE:$REVISION" | tee push.log
+          grep -E 'digest: sha256:[0-9a-f]{64}' push.log
           docker buildx imagetools inspect "$IMAGE:$REVISION"
-# No deploy job: promotion requires environment identity, permission and a
-# pinned digest, which the reader must configure for a real target.
+# Deliberately no remote deploy: each environment needs its own authority and
+# a digest-pinned promotion gate. The local pipeline exercises that contract.

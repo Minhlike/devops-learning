@@ -50,9 +50,9 @@ class ManuscriptContract(unittest.TestCase):
         return text
 
     def test_all_ids_have_exact_parent_and_no_fake_completed_lesson(self):
-        self.assertEqual(len(self.tree["parts"]), 15)
-        self.assertEqual(sum(len(p["chapters"]) for p in self.tree["parts"]), 59)
-        self.assertEqual(len(self.manifest["lessons"]), 186)
+        self.assertEqual(len(self.tree["parts"]), 16)
+        self.assertEqual(sum(len(p["chapters"]) for p in self.tree["parts"]), 64)
+        self.assertEqual(len(self.manifest["lessons"]), 202)
         wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
         editorial = json.loads((ROOT / "manuscript" / "editorial_evidence.json").read_text(encoding="utf-8"))
         reviewed = len(wave2["lessons"])
@@ -66,17 +66,18 @@ class ManuscriptContract(unittest.TestCase):
                         if lid.startswith("P13.") and row["status"] == "reviewed" and
                         row["verification"] == "reviewed_p13_publication_contract"}
         self.assertEqual(len(p13_reviewed), 12)
-        toolchain_ids = {f"P15.C04.L{i:02d}" for i in range(1, 9)}
+        toolchain_ids = {f"P16.C{c:02d}.L{l:02d}"
+                         for c in range(1, 7) for l in range(1, 5)}
         reviewed_ids = set(wave2["lessons"]) | p13_reviewed | set(editorial["lessons"]) | toolchain_ids
-        self.assertEqual(self.manifest["phase"], "complete_scientific_candidate")
-        self.assertEqual(len(reviewed_ids), 186)
+        self.assertEqual(self.manifest["phase"], "part16_author_verified_candidate")
+        self.assertEqual(len(reviewed_ids), 202)
         self.assertEqual({lid for lid, row in self.manifest["lessons"].items()
                           if row["status"] == "reviewed"}, reviewed_ids)
         self.assertEqual(Counter(x["status"] for x in self.manifest["lessons"].values()),
-                         Counter({"migrated_draft": 186 - len(reviewed_ids),
+                         Counter({"migrated_draft": 202 - len(reviewed_ids),
                                   "reviewed": len(reviewed_ids)}))
         self.assertEqual(sum(len(ls) for _, chapters in build.published_lessons(self.tree, self.manifest)
-                             for _, ls in chapters), 186)
+                             for _, ls in chapters), 202)
 
     def test_legacy_sections_and_split_paragraphs_are_preserved(self):
         migration = [r for r in ledger("legacy_migration.csv") if r["action"] != "move_rekey_after_review"]
@@ -367,7 +368,7 @@ class ManuscriptContract(unittest.TestCase):
         with pymupdf.open(build.OUTPUT) as doc:
             chapters = [(title, page) for level, title, page in doc.get_toc()
                         if level == 2 and title.startswith("Chương ")]
-            self.assertEqual(len(chapters), 59)
+            self.assertEqual(len(chapters), 64)
             for title, page in chapters:
                 self.assertLess(doc[page - 1].search_for(title)[0].y0, 100, title)
             answer_page = next(page for level, title, page in doc.get_toc()

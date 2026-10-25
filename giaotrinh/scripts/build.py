@@ -476,7 +476,7 @@ def reference_urls() -> set[str]:
             urls.update(row["source_url"] for row in csv.DictReader(stream))
     wave2 = json.loads((ROOT / "manuscript" / "wave2_evidence.json").read_text(encoding="utf-8"))
     urls.update(source["url"] for source in wave2["sources"].values())
-    toolchain = json.loads((ROOT / "manuscript" / "P15" / "C04" / "source_map.json").read_text(encoding="utf-8"))
+    toolchain = json.loads((ROOT / "manuscript" / "P16" / "source_map.json").read_text(encoding="utf-8"))
     urls.update(source["url"] for source in toolchain["sources"].values())
     return urls
 
@@ -657,8 +657,10 @@ def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> t
                 if lid in lessons or lesson["parent"] != cid or not lid.startswith(cid + "."):
                     raise ValueError(f"Bài trùng hoặc sai parent: {lid}")
                 lessons[lid] = lesson
-    if len(part_ids) != 15 or len(chapter_ids) != 59 or len(lessons) != 186:
-        raise ValueError("Cây kiến thức không còn đủ 15/59/186")
+    if len(part_ids) != 16 or len(chapter_ids) != 64 or len(lessons) != 202:
+        raise ValueError("Cây kiến thức không còn đủ 16/64/202")
+    if "P15.C04" in chapter_ids or any(lid.startswith("P15.C04.") for lid in lessons):
+        raise ValueError("Chương cũ P15.C04 còn trong bản xuất bản")
     if set(manifest["lessons"]) != set(lessons):
         raise ValueError("Manifest thiếu hoặc thừa bài so với cây đã duyệt")
     for lid, row in manifest["lessons"].items():
@@ -668,7 +670,7 @@ def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> t
             raise ValueError(f"Trạng thái bài sai: {lid}")
         if row["status"] == "reviewed" and row["verification"] not in (
             "source_reviewed_wave2", "reviewed_p13_publication_contract",
-            "reviewed_editorial_evidence", "author_verified_p15_toolchain",
+            "reviewed_editorial_evidence", "author_verified_p16",
         ):
             raise ValueError(f"Bài được đánh dấu reviewed nhưng thiếu hợp đồng kiểm chứng: {lid}")
         if row["verification"] == "reviewed_p13_publication_contract" and not lid.startswith("P13."):
@@ -687,44 +689,51 @@ def load_manuscript(tree: dict | None = None, manifest: dict | None = None) -> t
     check_migration_evidence(manifest)
     check_wave2_evidence(manifest)
     check_editorial_evidence(manifest)
-    check_p15_c04_evidence(manifest)
+    check_p16_evidence(manifest)
     return tree, manifest
 
 
-def check_p15_c04_evidence(manifest: dict, data: dict | None = None) -> None:
-    """Keep new chapter sources and code separate from the frozen legacy map."""
+def check_p16_evidence(manifest: dict, data: dict | None = None) -> None:
+    """Keep final-part sources separate from the frozen legacy map."""
     if data is None:
-        data = json.loads((ROOT / "manuscript/P15/C04/source_map.json").read_text(encoding="utf-8"))
+        data = json.loads((ROOT / "manuscript/P16/source_map.json").read_text(encoding="utf-8"))
     if data.get("schema_version") != 1 or not data.get("checked_on"):
-        raise ValueError("P15.C04 thiếu ngày hoặc schema nguồn")
+        raise ValueError("P16 thiếu ngày hoặc schema nguồn")
     sources = data["sources"]
     old = json.loads((ROOT / "source_ids.lock.json").read_text(encoding="utf-8"))["urls"]
     if set(sources) & set(old):
-        raise ValueError("P15.C04 tái sử dụng mã nguồn cũ")
+        raise ValueError("P16 tái sử dụng mã nguồn cũ")
+    historical = json.loads((ROOT / "architecture/history_p15_c04/source_map.json").read_text(encoding="utf-8"))["sources"]
+    locked = json.loads((ROOT / "manuscript/P16/source_ids.lock.json").read_text(encoding="utf-8"))["urls"]
+    if {sid: source["url"] for sid, source in sources.items()} != locked:
+        raise ValueError("P16 đổi ID hoặc URL nguồn đã khóa")
+    if any(sources.get(sid, {}).get("url") != source["url"]
+           for sid, source in historical.items()):
+        raise ValueError("P16 đổi nguồn lịch sử TC-01..TC-09")
     for sid, source in sources.items():
         if not all(source.get(key) for key in ("url", "version", "evidence", "scope")):
-            raise ValueError(f"Nguồn P15.C04 thiếu metadata: {sid}")
+            raise ValueError(f"Nguồn P16 thiếu metadata: {sid}")
     claims_by_lesson: dict[str, list[dict]] = {}
     for claim in data["claims"]:
         lid = claim["lesson"]
-        if lid not in manifest["lessons"] or not lid.startswith("P15.C04.L"):
-            raise ValueError(f"Claim P15.C04 sai bài: {lid}")
+        if lid not in manifest["lessons"] or not lid.startswith("P16.C"):
+            raise ValueError(f"Claim P16 sai bài: {lid}")
         body = (ROOT / manifest["lessons"][lid]["content"]).read_text(encoding="utf-8")
         if not claim.get("anchor") or claim["anchor"] not in body:
-            raise ValueError(f"Claim P15.C04 mất neo: {lid}")
+            raise ValueError(f"Claim P16 mất neo: {lid}")
         if not claim.get("sources") or not set(claim["sources"]) <= set(sources):
-            raise ValueError(f"Claim P15.C04 thiếu nguồn: {lid}")
+            raise ValueError(f"Claim P16 thiếu nguồn: {lid}")
         if not claim.get("verification"):
-            raise ValueError(f"Claim P15.C04 thiếu phạm vi đối chiếu: {lid}")
+            raise ValueError(f"Claim P16 thiếu phạm vi đối chiếu: {lid}")
         claims_by_lesson.setdefault(lid, []).append(claim)
     for lid, row in manifest["lessons"].items():
-        if not lid.startswith("P15.C04.L"):
+        if not lid.startswith("P16.C"):
             continue
-        if row["status"] != "reviewed" or row["verification"] != "author_verified_p15_toolchain":
-            raise ValueError(f"Bài P15.C04 thiếu trạng thái tác giả kiểm: {lid}")
+        if row["status"] != "reviewed" or row["verification"] != "author_verified_p16":
+            raise ValueError(f"Bài P16 thiếu trạng thái tác giả kiểm: {lid}")
         actual = sorted({sid for claim in claims_by_lesson.get(lid, []) for sid in claim["sources"]})
         if row["source_ids"] != actual:
-            raise ValueError(f"Nguồn P15.C04 sai bài: {lid}")
+            raise ValueError(f"Nguồn P16 sai bài: {lid}")
 
 
 def check_migration_evidence(manifest: dict) -> None:
@@ -1019,7 +1028,8 @@ def audit_document(doc: pymupdf.Document) -> None:
     if actual != expected:
         raise RuntimeError(f"Sai nhãn/cấp/thứ tự bookmark: {actual[:8]} != {expected[:8]}")
     for level, title, page in toc_entries[:len(expected)]:
-        if page < 3 or page > len(doc) or title not in doc[page - 1].get_text():
+        page_text = re.sub(r"\s+", " ", doc[page - 1].get_text()) if 1 <= page <= len(doc) else ""
+        if page < 3 or page > len(doc) or re.sub(r"\s+", " ", title) not in page_text:
             raise RuntimeError(f"Bookmark trỏ sai trang: {title} -> {page}")
         if level == 2 and title.startswith("Chương "):
             locations = doc[page - 1].search_for(title)

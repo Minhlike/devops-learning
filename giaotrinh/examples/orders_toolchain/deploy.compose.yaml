@@ -1,0 +1,17 @@
+services:
+  api:
+    image: ${ORDERS_IMAGE:?set a registry image reference with @sha256 digest}
+    environment:
+      FAIL_READINESS: ${FAIL_READINESS:-0}
+      FAIL_BUSINESS: ${FAIL_BUSINESS:-0}
+    ports:
+      - "127.0.0.1:${PUBLISH_PORT:-18080}:8080"
+    volumes:
+      - orders-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  orders-data:

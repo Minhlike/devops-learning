@@ -184,8 +184,8 @@ class ArchitectureContracts(unittest.TestCase):
         storyboard = (self.root / "visual_storyboard.md").read_text(encoding="utf-8")
         entries = re.findall(r"(?m)^### (V\d+) · `([^`]+)`", storyboard)
         self.assertEqual({ident for ident, _ in entries},
-                         {f"V{i:02d}" for i in range(1, 53)})
-        self.assertIn("52 ứng viên", storyboard)
+                         {f"V{i:02d}" for i in range(1, 67)})
+        self.assertIn("66 ứng viên", storyboard)
         valid = {part["id"] for part in self.tree["parts"]}
         valid.update(lesson["id"] for part in self.tree["parts"] for ch in part["chapters"]
                      for lesson in ch["lessons"])
@@ -196,8 +196,15 @@ class ArchitectureContracts(unittest.TestCase):
             "V41": "P11.C03.L01", "V42": "P11.C08.L03", "V43": "P15.C03.L04",
             "V44": "P04.C01.L01", "V45": "P04.C01.L02", "V46": "P04.C01.L03",
             "V47": "P04.C02.L01", "V48": "P04.C02.L03",
-            "V49": "P15.C04.L01", "V50": "P15.C04.L02",
-            "V51": "P15.C04.L07", "V52": "P15.C04.L08",
+            "V49": "P16.C01.L01", "V50": "P16.C02.L01",
+            "V51": "P16.C04.L02", "V52": "P16.C06.L01",
+            "V53": "P16.C01.L02", "V54": "P16.C01.L03",
+            "V55": "P16.C02.L02", "V56": "P16.C02.L03",
+            "V57": "P16.C02.L04", "V58": "P16.C03.L02",
+            "V59": "P16.C03.L03", "V60": "P16.C04.L03",
+            "V61": "P16.C04.L04", "V62": "P16.C05.L02",
+            "V63": "P16.C05.L03", "V64": "P16.C05.L04",
+            "V65": "P16.C06.L02", "V66": "P16.C06.L03",
         })
         self.assertIn("P0", storyboard)
         self.assertIn("P2", storyboard)

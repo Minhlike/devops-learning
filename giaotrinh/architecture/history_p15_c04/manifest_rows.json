@@ -1,0 +1,246 @@
+{
+  "lessons": {
+    "P15.C04.L01": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C03.L04",
+          "P14.C03.L03",
+          "P13.C03.L03"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L01.md",
+      "sha256": "52b160f95282c139ab64e037f01b5d0135f6506171e72f8a187e7ce871eb085b",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [],
+      "qa": [
+        {
+          "id": "P15.C04.L01.Q01",
+          "publication_id": "P15.C04.L01.Q01",
+          "question": "Một API ba người vận hành và một API ngân hàng có cùng endpoint tạo đơn. Nêu ba dữ kiện làm quyết định toolchain khác nhau và một điều chưa biết cần đo.",
+          "answer": "Tải/đỉnh và tần suất thay đổi, nghĩa vụ mất dữ liệu và RPO/RTO, quyền/audit/compliance, ngân sách và năng lực trực là dữ kiện chi phối. Ví dụ cần đo đỉnh đồng thời hoặc thử restore. Tên endpoint không quyết định orchestrator."
+        }
+      ]
+    },
+    "P15.C04.L02": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L01"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L02.md",
+      "sha256": "0619456494b0f6f4d058d796cd057fe8a7e71db56e28bafe07d9170d7833ba59",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [
+        "TC-07",
+        "TC-08"
+      ],
+      "qa": [
+        {
+          "id": "P15.C04.L02.Q01",
+          "publication_id": "P15.C04.L02.Q01",
+          "question": "CI ghi commit C, local image ID I, registry tag T và runtime revision D. Đã đủ chứng minh D chạy byte đã test chưa? Cần bổ sung mắt xích nào?",
+          "answer": "Chưa. Cần ghi build input và registry manifest digest H, gate test của đúng artifact, D pin H, quan sát runtime image/platform digest và instance phục vụ request. I local không tự bằng H; T có thể dời."
+        }
+      ]
+    },
+    "P15.C04.L03": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L02"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L03.md",
+      "sha256": "e81c982b3efdd48ea65d4c007f619f89ec38dc176809801b7b0c0cb1468702bb",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [],
+      "qa": [
+        {
+          "id": "P15.C04.L03.Q01",
+          "publication_id": "P15.C04.L03.Q01",
+          "question": "Một ứng dụng một host định thêm Kubernetes và Helm. Chọn một công cụ để bỏ, nêu năng lực vẫn giữ và tín hiệu phải xem xét lại.",
+          "answer": "Có thể bỏ cả Kubernetes và Helm, dùng Compose/systemd với test, deploy có revision, volume/DB bền vững, health/smoke, backup và runbook. Xem xét lại khi nhiều workload/host, tần suất rollout, placement hoặc SLO vượt năng lực thủ công. Không bỏ backup chỉ vì có volume."
+        }
+      ]
+    },
+    "P15.C04.L04": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L03"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L04.md",
+      "sha256": "2e13dd5646a2abf5e3b0c924230b2ae116e20f50e88003cdf5654dab8219c837",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [
+        "TC-02",
+        "TC-03",
+        "TC-04",
+        "TC-06",
+        "TC-07"
+      ],
+      "qa": [
+        {
+          "id": "P15.C04.L04.Q01",
+          "publication_id": "P15.C04.L04.Q01",
+          "question": "Trong fixture, /healthz 200, /readyz 200 nhưng POST tạo đơn 201 và GET trả 404. Cổng nào đã đạt, cổng nào thất bại và cần quan sát gì?",
+          "answer": "Process và phép truy vấn readiness đã đạt ở thời điểm đo; hậu điều kiện nghiệp vụ thất bại. Kiểm request ID, instance/revision, DB path/mount, commit transaction, ID trả về, log và đường routing giữa hai request. Không kết luận nguyên nhân từ hai mã status."
+        }
+      ]
+    },
+    "P15.C04.L05": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L04"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L05.md",
+      "sha256": "d6e938ad940c2deba4b35a7bd32a2bba50e65326daf9074d4b4611822abe51e8",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [
+        "TC-01",
+        "TC-02"
+      ],
+      "qa": [
+        {
+          "id": "P15.C04.L05.Q01",
+          "publication_id": "P15.C04.L05.Q01",
+          "question": "Manifest được API chấp nhận, Pod Running, nhưng Service không có backend. Vì sao chưa thể nói người dùng đã phục vụ?",
+          "answer": "API accept và Running thuộc các tầng khác. Kiểm readiness, selector và EndpointSlice, rồi đường DNS/TCP/TLS/HTTP và phép đọc ghi nghiệp vụ; không sửa DNS trước khi xác định Service endpoint."
+        }
+      ]
+    },
+    "P15.C04.L06": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L05"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L06.md",
+      "sha256": "794297512005624baf1b993de5f72f145c5d4b69efdb9b607b5831996043ca50",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [
+        "TC-09"
+      ],
+      "qa": [
+        {
+          "id": "P15.C04.L06.Q01",
+          "publication_id": "P15.C04.L06.Q01",
+          "question": "Một canary có 5xx tăng, 30% request thiếu telemetry, migration đã ghi record phiên bản mới. Vì sao không chỉ ấn rollback?",
+          "answer": "Dừng rollout, xác định population và impact, kiểm schema/bản cũ có đọc record mới không, backup/restore thử và dữ liệu đã ghi. Rollback code không đảo schema hoặc tác dụng phụ. Owner chọn forward fix, rollback có điều kiện hay restore theo bằng chứng."
+        }
+      ]
+    },
+    "P15.C04.L07": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L06"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L07.md",
+      "sha256": "70dc36733c60ce341b11c0382e25bffee882a8f370d533df8f56f2f494f9f192",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [],
+      "qa": [
+        {
+          "id": "P15.C04.L07.Q01",
+          "publication_id": "P15.C04.L07.Q01",
+          "question": "Vì sao website tĩnh và batch gửi SMS không nên dùng cùng một phép readiness HTTP làm cổng duy nhất?",
+          "answer": "Website cần kiểm asset, CDN/cache, DNS/TLS và link sau deploy. Batch cần kiểm input, checkpoint, idempotency/retry, dead-letter và chất lượng output theo job ID. HTTP readiness không kiểm được kết quả batch; không cần Service/Ingress nếu job không phục vụ HTTP."
+        }
+      ]
+    },
+    "P15.C04.L08": {
+      "parent": "P15.C04",
+      "prerequisites": {
+        "required": [
+          "P15.C04.L07"
+        ],
+        "helpful": [],
+        "extension": []
+      },
+      "status": "reviewed",
+      "verification": "author_verified_p15_toolchain",
+      "editorial_override": true,
+      "content": "manuscript/P15/C04/L08.md",
+      "sha256": "5beed7799e15ba2da1d94030a200b15ba3ee2ca17dc3ea86ede4752dde4c6df5",
+      "legacy_units": [],
+      "claim_ids": [],
+      "examples": [],
+      "source_ids": [],
+      "qa": [
+        {
+          "id": "P15.C04.L08.Q01",
+          "publication_id": "P15.C04.L08.Q01",
+          "question": "Một hợp tác xã giao rau có website đặt hàng, 1.000 đơn mỗi ngày nhưng đỉnh vào sáng cuối tuần, năm nhân viên hỗ trợ, dữ liệu địa chỉ cần giới hạn truy cập, ngân sách vận hành nhỏ, chấp nhận gián đoạn 30 phút nhưng không muốn mất đơn đã xác nhận. Họ dự định thêm batch gửi SMS; có thể phát lại khi nhà cung cấp chậm. Bạn hãy viết bản yêu cầu và điểm chưa biết; vẽ luồng request, dữ liệu và thay đổi; chọn stack tối thiểu có lý do; nêu công cụ cố ý chưa dùng; định hợp đồng giữa CI, artifact, deploy, database và SMS job; đặt phép kiểm dừng release, thử restore và đề xuất trigger để mở rộng. Không có một đáp án thương hiệu duy nhất.",
+          "answer": "Một đáp án hợp lý: Git+review, CI test nghiệp vụ/idempotency, artifact theo digest, một runtime đơn giản, DB bền vững với backup/restore thử, secret giới hạn, edge TLS, log/metric theo request/job. SMS job cần idempotency key và checkpoint/outbox để retry không gửi trùng; nêu giới hạn RPO=0 đòi kiến trúc commit/replication phù hợp, backup theo giờ không đủ. Dừng release khi artifact/runtime không khớp hoặc smoke tạo/đọc thất bại; dừng rollback khi schema cũ không đọc dữ liệu mới. Kubernetes/Terraform chưa bắt buộc nếu không có căn cứ tải/đội ngũ. Cần đo traffic đỉnh, retention và thử restore để bảo vệ quyết định."
+        }
+      ]
+    }
+  },
+  "exercise_titles": {
+    "P15.C04.L01.Q01": "Từ yêu cầu tới năng lực",
+    "P15.C04.L02.Q01": "Hợp đồng giữa build và runtime",
+    "P15.C04.L03.Q01": "Bỏ công cụ không mất năng lực",
+    "P15.C04.L04.Q01": "Kiểm chứng đường tạo và đọc đơn",
+    "P15.C04.L05.Q01": "Từ deploy tới request",
+    "P15.C04.L06.Q01": "Quyền tối thiểu và quyết định phục hồi",
+    "P15.C04.L07.Q01": "Đổi stack theo hình dạng dự án",
+    "P15.C04.L08.Q01": "Bảo vệ thiết kế dự án mới"
+  }
+}

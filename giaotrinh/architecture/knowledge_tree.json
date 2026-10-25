@@ -2180,7 +2180,8 @@
           "prepares_for": [
             "P06.C03",
             "P09.C04",
-            "P14.C03"
+            "P14.C03",
+            "P16.C02"
           ],
           "source_ids_to_recheck": [
             "GH1"
@@ -2686,7 +2687,8 @@
           "status": "reviewed_draft",
           "prepares_for": [
             "P07.C03",
-            "P14.C03"
+            "P14.C03",
+            "P16.C03"
           ],
           "source_ids_to_recheck": [
             "DD9",
@@ -3657,7 +3659,8 @@
           "prepares_for": [
             "P09.C03",
             "P10.C01",
-            "P14.C02"
+            "P14.C02",
+            "P16.C04"
           ],
           "source_ids_to_recheck": [
             "TF1",
@@ -5859,7 +5862,8 @@
           "status": "planned_new",
           "prepares_for": [
             "P13.C02",
-            "P13.C04"
+            "P13.C04",
+            "P16.C01"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -5949,7 +5953,8 @@
           ],
           "status": "planned_new",
           "prepares_for": [
-            "P15.C03"
+            "P15.C03",
+            "P16.C05"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6042,7 +6047,7 @@
           "status": "planned_new",
           "prepares_for": [
             "P15.C01",
-            "P15.C04"
+            "P16.C03"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6238,7 +6243,8 @@
           ],
           "status": "planned_new",
           "prepares_for": [
-            "P14.C02"
+            "P14.C02",
+            "P16.C01"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6434,7 +6440,7 @@
           "prepares_for": [
             "P14.C04",
             "P15.C03",
-            "P15.C04"
+            "P16.C02"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6525,7 +6531,8 @@
           ],
           "status": "planned_new",
           "prepares_for": [
-            "P15.C01"
+            "P15.C01",
+            "P16.C05"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6713,7 +6720,8 @@
           "legacy_chapters": [],
           "status": "planned_new",
           "prepares_for": [
-            "P15.C03"
+            "P15.C03",
+            "P16.C04"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6818,7 +6826,8 @@
           "legacy_chapters": [],
           "status": "planned_new",
           "prepares_for": [
-            "P15.C04"
+            "P16.C01",
+            "P16.C06"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6826,35 +6835,259 @@
             "Chứng minh toàn hành trình từ commit đến phục hồi bằng artifact và phép đo.",
             "Nộp evidence ledger, kết quả âm/dương, giới hạn và quyết định vận hành."
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": "P16",
+      "parent": "BOOK",
+      "title": "Tư duy kiến trúc và tích hợp hệ sinh thái DevOps",
+      "central_question": "Đứng trước dự án chưa biết, làm sao chọn, nối, vận hành và chứng minh một chuỗi năng lực phù hợp?",
+      "mental_model": "Bắt đầu từ kết quả và ràng buộc, thiết kế hợp đồng giữa các năng lực; mỗi thay đổi đi qua artifact có identity, runtime, dữ liệu và vòng phản hồi có chứng cứ.",
+      "prerequisites": "P01–P15; đặc biệt Git, phát hành, container, dữ liệu, bảo mật, telemetry và phục hồi.",
+      "boundary": "Không có stack mẫu nào đúng cho mọi dự án; lab cục bộ không là chứng chỉ production.",
+      "exit_capability": "Tự thiết kế và bảo vệ kiến trúc DevOps cho dự án mới, chạy một chuỗi tham chiếu trọn vòng đời và nêu giới hạn kiểm chứng.",
+      "misconception": "Nối được nhiều công cụ hoặc CI xanh nghĩa là hệ thống đáp ứng nghiệp vụ.",
+      "transfer": "Kết thúc sách bằng phương pháp thiết kế có thể chuyển giao và phản biện.",
+      "chapters": [
         {
-          "id": "P15.C04",
-          "part": "P15",
-          "title": "Tích hợp hệ sinh thái DevOps và tư duy thiết kế chuỗi công cụ",
-          "objective": "Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.",
-          "mental_model": "Đường thay đổi, request, dữ liệu và telemetry có identity, quyền, owner và đường lỗi riêng; stack là quyết định theo rủi ro.",
+          "id": "P16.C01",
+          "part": "P16",
+          "title": "Từ yêu cầu sản phẩm đến kiến trúc hệ thống",
+          "objective": "Biến nhu cầu chưa rõ thành ranh giới, năng lực và phép chấp nhận.",
+          "mental_model": "Kết quả cần bảo vệ và ràng buộc quyết định năng lực; công cụ chỉ được chọn sau.",
           "required": [
             "P15.C03.L04",
-            "P14.C03.L03",
-            "P13.C03.L03"
+            "P14.C01.L01",
+            "P13.C01.L02"
           ],
           "helpful": [],
           "extension": [],
-          "boundary": "Không lặp capstone hoặc biến chương thành danh mục sản phẩm; ví dụ một host không được gọi là production.",
-          "misconception": "Nối được nhiều công cụ đồng nghĩa hệ thống phục vụ đúng và phục hồi được.",
-          "teaching_strategy": "Dùng orders-api cục bộ rồi đổi sang bốn dự án có hợp đồng khác nhau.",
-          "assessment": "Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi.",
+          "boundary": "Không đánh đồng yêu cầu giả định với SLA đã cam kết.",
+          "misconception": "Một sơ đồ stack đẹp đủ thay discovery.",
+          "teaching_strategy": "Đi từ dự án chưa biết tới architecture decision record có số liệu còn thiếu.",
+          "assessment": "Bảo vệ kiến trúc tối thiểu bằng hậu điều kiện và stop rule.",
           "lessons": [
             {
-              "id": "P15.C04.L01",
-              "parent": "P15.C04",
-              "title": "Từ yêu cầu đến năng lực",
-              "core": "khảo sát sản phẩm, dữ liệu, SLO, đội ngũ",
+              "id": "P16.C01.L01",
+              "parent": "P16.C01",
+              "title": "Hiểu dự án trước khi chọn công cụ",
+              "core": "functional requirement, quality attribute, dữ liệu, traffic, budget và đội ngũ",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
                   "P15.C03.L04",
-                  "P14.C03.L03",
+                  "P14.C01.L01",
+                  "P13.C01.L02"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C01.L02",
+              "parent": "P16.C01",
+              "title": "Phân tích luồng và ranh giới",
+              "core": "request, data, change, trust boundary, failure domain và owner",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C01.L01"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C01.L03",
+              "parent": "P16.C01",
+              "title": "Biến yêu cầu thành năng lực kỹ thuật",
+              "core": "CI, artifact, infrastructure, configuration, observability, recovery",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C01.L02"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C01.L04",
+              "parent": "P16.C01",
+              "title": "Kiến trúc ban đầu có thể phản biện",
+              "core": "MVP, hard constraint, acceptance criterion, ADR và trigger",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C01.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            }
+          ],
+          "legacy_chapters": [],
+          "status": "planned_new",
+          "prepares_for": [
+            "P16.C02"
+          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
+          "learning_outcomes": [
+            "Biến nhu cầu chưa rõ thành ranh giới, năng lực và phép chấp nhận.",
+            "Bảo vệ kiến trúc tối thiểu bằng hậu điều kiện và stop rule."
+          ]
+        },
+        {
+          "id": "P16.C02",
+          "part": "P16",
+          "title": "Hợp đồng tích hợp giữa các công cụ",
+          "objective": "Định nghĩa đầu vào, đầu ra, identity, quyền và đường lỗi trên từng cạnh.",
+          "mental_model": "Một cạnh chỉ tồn tại khi hai đầu cùng hiểu hợp đồng và có phép kiểm hậu điều kiện.",
+          "required": [
+            "P16.C01.L04",
+            "P06.C02.L03",
+            "P14.C03.L03"
+          ],
+          "helpful": [],
+          "extension": [],
+          "boundary": "Không biến CI event thành bằng chứng deploy hoặc nghiệp vụ.",
+          "misconception": "Pipeline xanh chứng minh toàn bộ chuỗi.",
+          "teaching_strategy": "Đọc contract graph và tìm mắt xích không có hậu điều kiện.",
+          "assessment": "Chỉ ra bằng chứng thiếu giữa source, artifact, registry và runtime.",
+          "lessons": [
+            {
+              "id": "P16.C02.L01",
+              "parent": "P16.C02",
+              "title": "Công cụ, năng lực, pipeline và platform",
+              "core": "vai trò, owner và mức trừu tượng",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C01.L04",
+                  "P06.C02.L03",
+                  "P14.C03.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C02.L02",
+              "parent": "P16.C02",
+              "title": "API, webhook, event, artifact và trạng thái",
+              "core": "schema, timeout, retry, idempotency, consistency",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C02.L01"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C02.L03",
+              "parent": "P16.C02",
+              "title": "Chuỗi thay đổi và danh tính artifact",
+              "core": "commit, build input, digest, attestation, promotion và runtime",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C02.L02"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C02.L04",
+              "parent": "P16.C02",
+              "title": "Control plane, data plane và feedback loop",
+              "core": "desired state, telemetry, drift, policy gate, approval",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C02.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            }
+          ],
+          "legacy_chapters": [],
+          "status": "planned_new",
+          "prepares_for": [
+            "P16.C03"
+          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
+          "learning_outcomes": [
+            "Định nghĩa đầu vào, đầu ra, identity, quyền và đường lỗi trên từng cạnh.",
+            "Chỉ ra bằng chứng thiếu giữa source, artifact, registry và runtime."
+          ]
+        },
+        {
+          "id": "P16.C03",
+          "part": "P16",
+          "title": "Xây dựng một toolchain DevOps hoàn chỉnh",
+          "objective": "Thực thi một thay đổi qua build, registry, deploy, request và phục hồi cục bộ.",
+          "mental_model": "Test cùng artifact, push/pull bằng digest, inspect runtime và truy request tới bản ghi.",
+          "required": [
+            "P16.C02.L04",
+            "P07.C02.L03",
+            "P13.C03.L03"
+          ],
+          "helpful": [],
+          "extension": [],
+          "boundary": "Ví dụ một host không đại diện production hoặc CI từ xa.",
+          "misconception": "Build lại ở publish vẫn là cùng artifact.",
+          "teaching_strategy": "Chạy local registry trong lab cô lập, đo từng hậu điều kiện và nhánh lỗi.",
+          "assessment": "Nộp evidence ledger thực, chỉ rõ PASS/SKIP và dữ liệu restore.",
+          "lessons": [
+            {
+              "id": "P16.C03.L01",
+              "parent": "P16.C03",
+              "title": "Dự án tham chiếu và hợp đồng nghiệp vụ",
+              "core": "orders-api, transaction, idempotency, schema, health và test",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C02.L04",
+                  "P07.C02.L03",
                   "P13.C03.L03"
                 ],
                 "helpful": [],
@@ -6866,14 +7099,14 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L02",
-              "parent": "P15.C04",
-              "title": "Hợp đồng tích hợp",
-              "core": "luồng thay đổi, request, quyền, identity và failure",
+              "id": "P16.C03.L02",
+              "parent": "P16.C03",
+              "title": "Từ Git tới artifact truy xuất được",
+              "core": "test, build một lần, identity, local registry và publish",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L01"
+                  "P16.C03.L01"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6884,14 +7117,14 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L03",
-              "parent": "P15.C04",
-              "title": "Lựa chọn công cụ",
-              "core": "tiêu chí và phương án bỏ bớt",
+              "id": "P16.C03.L03",
+              "parent": "P16.C03",
+              "title": "Từ artifact đến môi trường phục vụ",
+              "core": "pull digest, deploy, inspect, smoke và quyền",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L02"
+                  "P16.C03.L02"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6902,14 +7135,66 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L04",
-              "parent": "P15.C04",
-              "title": "Chuỗi tham chiếu",
-              "core": "orders-api cục bộ, CI, image, volume, smoke",
+              "id": "P16.C03.L04",
+              "parent": "P16.C03",
+              "title": "Quan sát, phá vỡ và phục hồi",
+              "core": "request correlation, telemetry, failure injection, backup, restore",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L03"
+                  "P16.C03.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            }
+          ],
+          "legacy_chapters": [],
+          "status": "planned_new",
+          "prepares_for": [
+            "P16.C04",
+            "P16.C05"
+          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
+          "learning_outcomes": [
+            "Thực thi một thay đổi qua build, registry, deploy, request và phục hồi cục bộ.",
+            "Nộp evidence ledger thực, chỉ rõ PASS/SKIP và dữ liệu restore."
+          ]
+        },
+        {
+          "id": "P16.C04",
+          "part": "P16",
+          "title": "Lựa chọn và thay thế chuỗi công cụ",
+          "objective": "So phương án có dữ kiện, bỏ bớt hoặc thay tool mà giữ hợp đồng.",
+          "mental_model": "Hard constraints loại lựa chọn; phần còn lại đánh đổi TCO, rủi ro, năng lực và chi phí chuyển.",
+          "required": [
+            "P16.C03.L04",
+            "P15.C02.L03",
+            "P09.C02.L03"
+          ],
+          "helpful": [],
+          "extension": [],
+          "boundary": "Không có một sản phẩm mặc định cho mọi quy mô.",
+          "misconception": "Kubernetes hoặc serverless luôn là đích trưởng thành.",
+          "teaching_strategy": "Đối chiếu ba dự án, hai phương án đều hợp lý và một kế hoạch thoát.",
+          "assessment": "Giải thích điều kiện đổi kiến trúc và chi phí migration.",
+          "lessons": [
+            {
+              "id": "P16.C04.L01",
+              "parent": "P16.C04",
+              "title": "Bộ tiêu chí chọn stack kiểm chứng được",
+              "core": "SLO, security, TCO, team, audit và exit",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C03.L04",
+                  "P15.C02.L03",
+                  "P09.C02.L03"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6920,14 +7205,14 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L05",
-              "parent": "P15.C04",
-              "title": "Từ deploy tới người dùng",
-              "core": "revision, request và record",
+              "id": "P16.C04.L02",
+              "parent": "P16.C04",
+              "title": "Kiến trúc nhỏ và vừa",
+              "core": "static, monolith, VM, managed runtime, Compose",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L04"
+                  "P16.C04.L01"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6938,14 +7223,14 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L06",
-              "parent": "P15.C04",
-              "title": "Bảo vệ và phục hồi",
-              "core": "least privilege, telemetry, restore và quyết định dừng",
+              "id": "P16.C04.L03",
+              "parent": "P16.C04",
+              "title": "Nhiều dịch vụ và dữ liệu",
+              "core": "microservices, Kubernetes, GitOps, event-driven, batch",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L05"
+                  "P16.C04.L02"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6956,14 +7241,65 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L07",
-              "parent": "P15.C04",
-              "title": "Đổi hình dạng dự án",
-              "core": "static, monolith, microservices, batch",
+              "id": "P16.C04.L04",
+              "parent": "P16.C04",
+              "title": "Thay công cụ không đứt hợp đồng",
+              "core": "CI, registry, runtime, secret backend và migration",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L06"
+                  "P16.C04.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            }
+          ],
+          "legacy_chapters": [],
+          "status": "planned_new",
+          "prepares_for": [
+            "P16.C06"
+          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
+          "learning_outcomes": [
+            "So phương án có dữ kiện, bỏ bớt hoặc thay tool mà giữ hợp đồng.",
+            "Giải thích điều kiện đổi kiến trúc và chi phí migration."
+          ]
+        },
+        {
+          "id": "P16.C05",
+          "part": "P16",
+          "title": "Bảo mật, độ tin cậy và vận hành toàn chuỗi",
+          "objective": "Xem toolchain như hệ thống production có quyền, miền lỗi và đường hồi phục.",
+          "mental_model": "Identity và artifact policy giảm rủi ro; telemetry và restore chứng minh được phạm vi bảo vệ.",
+          "required": [
+            "P16.C03.L04",
+            "P14.C04.L03",
+            "P13.C02.L03"
+          ],
+          "helpful": [],
+          "extension": [],
+          "boundary": "Scanner, chữ ký, health hay rollback đều có phạm vi hữu hạn.",
+          "misconception": "Một green gate thay được phép thử nghiệp vụ và dữ liệu.",
+          "teaching_strategy": "Đi qua credential leak, registry outage, canary lỗi và missing telemetry.",
+          "assessment": "Chọn dừng, rollback, forward fix hoặc restore theo bằng chứng.",
+          "lessons": [
+            {
+              "id": "P16.C05.L01",
+              "parent": "P16.C05",
+              "title": "Danh tính, quyền và bí mật",
+              "core": "CI, OIDC, registry, deployer, runtime và incident",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C03.L04",
+                  "P14.C04.L03",
+                  "P13.C02.L03"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6974,14 +7310,155 @@
               "source_research_needed": true
             },
             {
-              "id": "P15.C04.L08",
-              "parent": "P15.C04",
-              "title": "Tự thiết kế",
-              "core": "mười hai lượt, hồ sơ tối thiểu và bảo vệ quyết định",
+              "id": "P16.C05.L02",
+              "parent": "P16.C05",
+              "title": "Chuỗi cung ứng phần mềm",
+              "core": "SBOM, scanning, provenance, signing, policy và giới hạn",
               "status": "planned_new",
               "prerequisites": {
                 "required": [
-                  "P15.C04.L07"
+                  "P16.C05.L01"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C05.L03",
+              "parent": "P16.C05",
+              "title": "Observability và phát hành",
+              "core": "SLI/SLO, log/metric/trace, canary và stop rule",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C05.L02"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C05.L04",
+              "parent": "P16.C05",
+              "title": "Phục hồi và học từ sự cố",
+              "core": "rollback, restore, outage, DR và postmortem",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C05.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            }
+          ],
+          "legacy_chapters": [],
+          "status": "planned_new",
+          "prepares_for": [
+            "P16.C06"
+          ],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
+          "learning_outcomes": [
+            "Xem toolchain như hệ thống production có quyền, miền lỗi và đường hồi phục.",
+            "Chọn dừng, rollback, forward fix hoặc restore theo bằng chứng."
+          ]
+        },
+        {
+          "id": "P16.C06",
+          "part": "P16",
+          "title": "Phương pháp tự thiết kế DevOps cho mọi dự án",
+          "objective": "Dùng phương pháp có thể lặp để thiết kế dự án mới và tự phản biện.",
+          "mental_model": "Discovery, capability map, contract graph, acceptance và adversarial review tạo kiến trúc có thể sửa.",
+          "required": [
+            "P16.C04.L04",
+            "P16.C05.L04",
+            "P15.C03.L04"
+          ],
+          "helpful": [],
+          "extension": [],
+          "boundary": "Không sao chép lab như đáp án thương hiệu.",
+          "misconception": "Hoàn thành tutorial nghĩa là có năng lực thiết kế.",
+          "teaching_strategy": "Thiết kế hai phương án cho dự án mới, rồi thử biến cố và ngân sách.",
+          "assessment": "Bảo vệ lựa chọn, rủi ro còn lại, phép đo và trigger thay đổi.",
+          "lessons": [
+            {
+              "id": "P16.C06.L01",
+              "parent": "P16.C06",
+              "title": "Phân tích dự án chưa biết",
+              "core": "discovery, data, change, risk và unknowns",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C04.L04",
+                  "P16.C05.L04",
+                  "P15.C03.L04"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C06.L02",
+              "parent": "P16.C06",
+              "title": "Thiết kế tái sử dụng",
+              "core": "architecture canvas, capability map, contracts, ADR, acceptance",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C06.L01"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C06.L03",
+              "parent": "P16.C06",
+              "title": "Phản biện bằng kịch bản đối nghịch",
+              "core": "load, host, DB, secret, release và budget",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C06.L02"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P16.C06.L04",
+              "parent": "P16.C06",
+              "title": "Bài tập kiến trúc sư DevOps",
+              "core": "thiết kế độc lập, lựa chọn, rủi ro, phép kiểm và lộ trình",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P16.C06.L03"
                 ],
                 "helpful": [],
                 "extension": []
@@ -6998,8 +7475,8 @@
           "source_ids_to_recheck": [],
           "source_research_needed": true,
           "learning_outcomes": [
-            "Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.",
-            "Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi."
+            "Dùng phương pháp có thể lặp để thiết kế dự án mới và tự phản biện.",
+            "Bảo vệ lựa chọn, rủi ro còn lại, phép đo và trigger thay đổi."
           ]
         }
       ]
@@ -8308,52 +8785,182 @@
     },
     {
       "from": "P15.C03.L04",
-      "to": "P15.C04.L01",
+      "to": "P16.C01.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P14.C01.L01",
+      "to": "P16.C01.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P13.C01.L02",
+      "to": "P16.C01.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C01.L01",
+      "to": "P16.C01.L02",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C01.L02",
+      "to": "P16.C01.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C01.L03",
+      "to": "P16.C01.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C01.L04",
+      "to": "P16.C02.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P06.C02.L03",
+      "to": "P16.C02.L01",
       "kind": "required"
     },
     {
       "from": "P14.C03.L03",
-      "to": "P15.C04.L01",
+      "to": "P16.C02.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C02.L01",
+      "to": "P16.C02.L02",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C02.L02",
+      "to": "P16.C02.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C02.L03",
+      "to": "P16.C02.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C02.L04",
+      "to": "P16.C03.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P07.C02.L03",
+      "to": "P16.C03.L01",
       "kind": "required"
     },
     {
       "from": "P13.C03.L03",
-      "to": "P15.C04.L01",
+      "to": "P16.C03.L01",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L01",
-      "to": "P15.C04.L02",
+      "from": "P16.C03.L01",
+      "to": "P16.C03.L02",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L02",
-      "to": "P15.C04.L03",
+      "from": "P16.C03.L02",
+      "to": "P16.C03.L03",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L03",
-      "to": "P15.C04.L04",
+      "from": "P16.C03.L03",
+      "to": "P16.C03.L04",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L04",
-      "to": "P15.C04.L05",
+      "from": "P16.C03.L04",
+      "to": "P16.C04.L01",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L05",
-      "to": "P15.C04.L06",
+      "from": "P15.C02.L03",
+      "to": "P16.C04.L01",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L06",
-      "to": "P15.C04.L07",
+      "from": "P09.C02.L03",
+      "to": "P16.C04.L01",
       "kind": "required"
     },
     {
-      "from": "P15.C04.L07",
-      "to": "P15.C04.L08",
+      "from": "P16.C04.L01",
+      "to": "P16.C04.L02",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C04.L02",
+      "to": "P16.C04.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C04.L03",
+      "to": "P16.C04.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C03.L04",
+      "to": "P16.C05.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P14.C04.L03",
+      "to": "P16.C05.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P13.C02.L03",
+      "to": "P16.C05.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C05.L01",
+      "to": "P16.C05.L02",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C05.L02",
+      "to": "P16.C05.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C05.L03",
+      "to": "P16.C05.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C04.L04",
+      "to": "P16.C06.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C05.L04",
+      "to": "P16.C06.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C03.L04",
+      "to": "P16.C06.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C06.L01",
+      "to": "P16.C06.L02",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C06.L02",
+      "to": "P16.C06.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P16.C06.L03",
+      "to": "P16.C06.L04",
       "kind": "required"
     }
   ],

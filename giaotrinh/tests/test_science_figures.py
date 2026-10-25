@@ -42,12 +42,26 @@ class ScienceFigureContract(unittest.TestCase):
             "V46": ("Hình IV.1.3", "origin/main", "tag v1.4"),
             "V47": ("Hình IV.2.2", "stage 1", "stage 3"),
             "V48": ("Hình IV.2.3", "revert mới", "mixed"),
-            "V49": ("Hình XV.4.1", "ĐƯỜNG THAY ĐỔI", "ĐƯỜNG REQUEST"),
-            "V50": ("Hình XV.4.2", "MẶT PHẲNG ĐIỀU KHIỂN", "ĐƯỜNG QUAN SÁT"),
-            "V51": ("Hình XV.4.3", "Website tĩnh", "Batch / event"),
-            "V52": ("Hình XV.4.4", "Yêu cầu", "Bằng chứng"),
+            "V49": ("Hình XVI.1.1", "ĐƯỜNG THAY ĐỔI", "ĐƯỜNG REQUEST"),
+            "V50": ("Hình XVI.2.1", "MẶT PHẲNG ĐIỀU KHIỂN", "ĐƯỜNG QUAN SÁT"),
+            "V51": ("Hình XVI.4.1", "Website tĩnh", "Batch / event"),
+            "V52": ("Hình XVI.6.1", "Yêu cầu", "Bằng chứng"),
+            "V53": ("Hình XVI.1.2", "Client", "Registry"),
+            "V54": ("Hình XVI.1.3", "Không trùng", "Transaction"),
+            "V55": ("Hình XVI.2.2", "Identity", "Retry"),
+            "V56": ("Hình XVI.2.3", "Image ID", "Runtime ID"),
+            "V57": ("Hình XVI.2.4", "Desired", "Stop rule"),
+            "V58": ("Hình XVI.3.1", "Build I", "Pull H"),
+            "V59": ("Hình XVI.3.2", "Desired H", "Record"),
+            "V60": ("Hình XVI.4.2", "Managed runtime", "Kubernetes"),
+            "V61": ("Hình XVI.4.3", "Registry A", "Registry B"),
+            "V62": ("Hình XVI.5.1", "SBOM", "Signature"),
+            "V63": ("Hình XVI.5.2", "Request q", "DB record"),
+            "V64": ("Hình XVI.5.3", "Recreate", "Restore"),
+            "V65": ("Hình XVI.6.2", "UNKNOWN", "Acceptance"),
+            "V66": ("Hình XVI.6.3", "Mất host", "RPO/RTO"),
         }
-        self.assertEqual(len(build.FIGURES), 23)
+        self.assertEqual(len(build.FIGURES), 37)
         with pymupdf.open(build.OUTPUT) as doc:
             for figure_id, (caption, *terms) in concepts.items():
                 with self.subTest(figure=figure_id):
@@ -65,8 +79,8 @@ class ScienceFigureContract(unittest.TestCase):
 
     def test_all_part_openers_have_their_route(self):
         with pymupdf.open(build.OUTPUT) as doc:
-            part_pages = [page for level, _, page in doc.get_toc() if level == 1][:15]
-            self.assertEqual(len(part_pages), 15)
+            part_pages = [page for level, _, page in doc.get_toc() if level == 1][:16]
+            self.assertEqual(len(part_pages), 16)
             for number in part_pages:
                 self.assertIn("LỘ TRÌNH PHẦN", doc[number - 1].get_text())
 
