@@ -51,6 +51,31 @@
 - **Bắt buộc:** B là merge base, main B→D, feature B→C; merge M có D/C làm hai cha; rebase tạo C′ trên D với ID mới; conflict marker không quyết định đúng giá trị.
 - **Kiểm / sai lệch:** Ch6.3–6.5, C6.2–C6.4; sai nếu vẽ C bị sửa tại chỗ. **Medium:** SVG. **P0:** đồ thị là nội dung, không trang trí.
 
+### V44 · `P04.C01.L01` · object graph của atlas
+- **Hỏi / dạng:** đổi tên nhưng không đổi byte làm đổi object nào? Vector gốc trong `scripts/science_figures.py`.
+- **Bắt buộc:** C1→T1→B1 và C2→T2→cùng B1; tên ở tree, không ở blob; nhãn là giả định.
+- **Kiểm / sai lệch:** G1/G3/G8; sai nếu vẽ rename là object riêng. **Tài sản:** mã gốc của repository, không lấy hình bên ngoài.
+
+### V45 · `P04.C01.L02` · HEAD, index và working tree
+- **Hỏi / dạng:** sau một lần add và lần sửa tiếp, commit lấy 2000 hay 3000?
+- **Bắt buộc:** ba thời điểm của timeout_ms; HEAD 1000, index 2000, working tree 3000 ở trạng thái cuối.
+- **Kiểm / sai lệch:** G2/G3; sai nếu mũi tên add khiến working tree 3000 tự cập nhật index. **Tài sản:** vector gốc.
+
+### V46 · `P04.C01.L03` · ref và parent
+- **Hỏi / dạng:** tên nào là ref cục bộ và tên nào là object bất biến?
+- **Bắt buộc:** HEAD tượng trưng qua main tới D; origin/main ở C; tag ở B; parent D→C→B.
+- **Kiểm / sai lệch:** G2/G3; sai nếu origin/main là truy vấn server thời gian thực. **Tài sản:** vector gốc.
+
+### V47 · `P04.C02.L01` · fast-forward, phân kỳ và ba stage
+- **Hỏi / dạng:** vì sao B→C có thể dời ref, nhưng B→D và B→C dừng conflict?
+- **Bắt buộc:** B/D/C; index stage 1=1000, 2=3000, 3=2000; 2500 là quyết định giả định cần test.
+- **Kiểm / sai lệch:** G4/G9; không suy mọi loại conflict có đủ ba stage. **Tài sản:** vector gốc.
+
+### V48 · `P04.C02.L03` · revert và reset
+- **Hỏi / dạng:** thao tác nào giữ M trên lịch sử chung, thao tác nào dời main về D?
+- **Bắt buộc:** D→M→R cho revert; soft/mixed/hard khác nhau ở index và worktree; runtime nằm ngoài hình.
+- **Kiểm / sai lệch:** G6/G7; sai nếu hình gợi Git tự hoàn nguyên dữ liệu production. **Tài sản:** vector gốc.
+
 ### V10 · `P05.C01.L02` · pipeline báo thành công giả
 - **Hỏi / dạng:** `tar` lỗi nhưng shell in BACKUP_OK ra sao? Sơ đồ luồng FD và status.
 - **Bắt buộc:** tar stderr→tee qua `2>&1`, tar=2, tee=0, pipeline=0 khi không pipefail, `set -e` không thoát; bên cạnh là nhánh checked với kiểm tar/list/không ghi đè.

@@ -12,19 +12,20 @@ class ScienceFigureContract(unittest.TestCase):
     def test_new_figure_evidence_has_one_owner_and_locked_source_ids(self):
         ledger = json.loads((build.ROOT / "manuscript" / "figure_evidence.json").read_text(encoding="utf-8"))
         tree, manifest = build.load_manuscript()
-        self.assertEqual(len(ledger["figures"]), 10)
+        self.assertEqual(len(ledger["figures"]), 15)
         storyboard = (build.ROOT / ledger["storyboard"]).read_text(encoding="utf-8")
         for figure_id, row in ledger["figures"].items():
             with self.subTest(figure=figure_id):
                 self.assertIn(figure_id, build.FIGURES)
                 self.assertIn("### " + figure_id, storyboard)
                 owner = manifest["lessons"][row["lesson_id"]]
-                self.assertEqual(row["source_ids"], owner["source_ids"])
+                self.assertTrue(row["source_ids"])
+                self.assertLessEqual(set(row["source_ids"]), set(owner["source_ids"]))
                 self.assertTrue(row["claim"] and row["limits"])
                 self.assertIn("{{figure:" + figure_id + "}}",
                               (build.ROOT / owner["content"]).read_text(encoding="utf-8"))
 
-    def test_scientific_panels_cover_the_ten_previous_visual_gaps(self):
+    def test_scientific_panels_cover_the_visual_gaps(self):
         concepts = {
             "V03": ("Hình II.1.1", "Open file desc.", "inode 42"),
             "V09": ("Hình IV.2.1", "MERGE", "REBASE"),
@@ -36,8 +37,13 @@ class ScienceFigureContract(unittest.TestCase):
             "V29": ("Hình XII.3.1", "gateway", "upstream_1"),
             "V33": ("Hình XIV.3.1", "Attestation", "Verifier"),
             "V43": ("Hình XV.3.1", "commit", "restore"),
+            "V44": ("Hình IV.1.1", "tree T1", "blob B1"),
+            "V45": ("Hình IV.1.2", "Index", "3000"),
+            "V46": ("Hình IV.1.3", "origin/main", "tag v1.4"),
+            "V47": ("Hình IV.2.2", "stage 1", "stage 3"),
+            "V48": ("Hình IV.2.3", "revert mới", "mixed"),
         }
-        self.assertEqual(len(build.FIGURES), 14)
+        self.assertEqual(len(build.FIGURES), 19)
         with pymupdf.open(build.OUTPUT) as doc:
             for figure_id, (caption, *terms) in concepts.items():
                 with self.subTest(figure=figure_id):

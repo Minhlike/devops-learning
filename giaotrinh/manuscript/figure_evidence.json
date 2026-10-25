@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_on": "2026-10-21",
+  "reviewed_on": "2026-10-25",
   "render_source": "scripts/science_figures.py",
   "storyboard": "architecture/visual_storyboard.md",
   "figures": {
@@ -21,7 +21,54 @@
         "G5"
       ],
       "input_fixture": null,
+      "asset_origin": "vector V09 hiện có trong scripts/science_figures.py; giữ nguyên bản vẽ",
+      "license": "repository-authored; không dùng asset bên ngoài",
       "limits": "Cùng snapshot cuối không làm lịch sử giống nhau."
+    },
+    "V44": {
+      "lesson_id": "P04.C01.L01",
+      "claim": "blob giữ byte; tree entry giữ tên và mode; commit trỏ root tree và parent",
+      "source_ids": ["G1", "G3", "G8"],
+      "input_fixture": "atlas C1/C2/C3 giả định trong bản thảo",
+      "asset_origin": "vector gốc tạo trong scripts/science_figures.py",
+      "license": "repository-authored; không dùng asset bên ngoài",
+      "limits": "B1/T1/T2/C1/C2 là nhãn sư phạm, không phải SHA thực nghiệm."
+    },
+    "V45": {
+      "lesson_id": "P04.C01.L02",
+      "claim": "git add chỉ chụp byte tại thời điểm chạy; commit lấy index",
+      "source_ids": ["G2", "G3"],
+      "input_fixture": "timeout_ms 1000/2000/3000 giả định",
+      "asset_origin": "vector gốc tạo trong scripts/science_figures.py",
+      "license": "repository-authored; không dùng asset bên ngoài",
+      "limits": "Không trình bày trạng thái conflict stage; xem V47."
+    },
+    "V46": {
+      "lesson_id": "P04.C01.L03",
+      "claim": "ref là tên cục bộ trỏ object; origin/main chỉ được cập nhật khi fetch",
+      "source_ids": ["G2", "G3"],
+      "input_fixture": "A/B/C/D và ref giả định trong bản thảo",
+      "asset_origin": "vector gốc tạo trong scripts/science_figures.py",
+      "license": "repository-authored; không dùng asset bên ngoài",
+      "limits": "Không vẽ giao thức mạng hoặc bảo đảm tag đã ký."
+    },
+    "V47": {
+      "lesson_id": "P04.C02.L01",
+      "claim": "fast-forward chỉ dời ref; conflict giữ base/ours/theirs ở stage 1/2/3",
+      "source_ids": ["G4", "G9"],
+      "input_fixture": "B/D/C và timeout_ms giả định trong bản thảo",
+      "asset_origin": "vector gốc tạo trong scripts/science_figures.py",
+      "license": "repository-authored; không dùng asset bên ngoài",
+      "limits": "Một số conflict không có đủ ba stage; 2500 cần kiểm nghiệp vụ."
+    },
+    "V48": {
+      "lesson_id": "P04.C02.L03",
+      "claim": "revert nối thêm commit; reset dịch ref và cập nhật index/worktree theo mode",
+      "source_ids": ["G6", "G7"],
+      "input_fixture": "D/M/R giả định trong bản thảo",
+      "asset_origin": "vector gốc tạo trong scripts/science_figures.py",
+      "license": "repository-authored; không dùng asset bên ngoài",
+      "limits": "Không mô tả tác dụng với dữ liệu ứng dụng hay file untracked cản trở."
     },
     "V10": {
       "lesson_id": "P05.C01.L02",

@@ -54,6 +54,8 @@
     "G7": {"type": "official Git manual", "version": "Git 2.51.0", "url": "https://git-scm.com/docs/git-reset/2.51.0.html"},
     "G8": {"type": "official Git manual", "version": "Git 2.48.0", "url": "https://git-scm.com/docs/git-init/2.48.0"},
     "G9": {"type": "upstream Git source documentation", "version": "Git v2.51.0 tag", "url": "https://github.com/git/git/blob/v2.51.0/Documentation/git-merge.adoc"},
+    "G10": {"type": "official Git manual", "version": "Git 2.52.0", "url": "https://git-scm.com/docs/git-push/2.52.0"},
+    "G11": {"type": "official Git manual", "version": "Git 2.51.0", "url": "https://git-scm.com/docs/git-restore/2.51.0.html"},
     "SH1": {"type": "official GNU manual", "version": "GNU Bash Reference Manual 5.3 (2025-05-18)", "url": "https://www.gnu.org/software/bash/manual/bash.html"},
     "TA1": {"type": "official GNU manual", "version": "GNU tar 1.35 (2023-08-22)", "url": "https://www.gnu.org/software/tar/manual/tar.html"},
     "CU1": {"type": "official GNU source documentation", "version": "GNU coreutils v9.4 tag", "url": "https://github.com/coreutils/coreutils/blob/v9.4/doc/coreutils.texi"},

@@ -34,6 +34,11 @@ FIGURES = {
     "V29": ("Hình XII.3.1 — Năm span trên một trục 420 ms; số liệu từ fixture trace và log.", 244),
     "V33": ("Hình XIV.3.1 — Chứng cứ nguồn, build và deploy: chữ ký không chứng minh chất lượng ứng dụng.", 232),
     "V43": ("Hình XV.3.1 — Ledger capstone: mỗi hậu điều kiện cần phép kiểm và trạng thái riêng.", 248),
+    "V44": ("Hình IV.1.1 — Commit trỏ tree; tree giữ tên và mode, blob chỉ giữ byte.", 246),
+    "V45": ("Hình IV.1.2 — Ba ảnh của app.conf sau hai lần sửa nhưng chỉ một lần stage; số liệu giả định.", 225),
+    "V46": ("Hình IV.1.3 — Ref là tên cục bộ có thể dời; quan hệ parent thuộc commit.", 225),
+    "V47": ("Hình IV.2.2 — Fast-forward dời ref; nhánh phân kỳ cần hợp ba phía và giải conflict.", 242),
+    "V48": ("Hình IV.2.3 — Revert thêm commit đảo tác động; reset dời ref và tùy mode đổi index, worktree.", 238),
 }
 
 
@@ -138,6 +143,94 @@ class MechanismFigure(Flowable):
         self.line(10, y0 + 58, 461, y0 + 58)
         self.text(15, y0 + 37, "Cả hai cách đều cần giải conflict và chạy kiểm thử trên kết quả.", 8.5)
         self.text(15, y0 + 19, "Đồ thị giả định: B là merge base, main đi B→D, feature đi B→C.", 8)
+
+    def draw_V44(self, y0):
+        self.text(15, y0 + 225, "C1: cùng byte có thể được nhiều tên tham chiếu", 10, True)
+        self.box(15, y0 + 164, 114, 40, "commit C1", "tree T1; parent A", fill=True)
+        self.box(179, y0 + 164, 114, 40, "tree T1", "100644 app.conf → B1")
+        self.box(343, y0 + 164, 114, 40, "blob B1", "byte: port=8080")
+        self.line(129, y0 + 184, 179, y0 + 184, arrow=True)
+        self.line(293, y0 + 184, 343, y0 + 184, arrow=True)
+        self.box(15, y0 + 91, 114, 40, "commit C2", "tree T2; parent C1", fill=True)
+        self.box(179, y0 + 91, 114, 40, "tree T2", "100644 service.conf → B1")
+        self.line(71, y0 + 131, 71, y0 + 164, arrow=True)
+        self.line(129, y0 + 111, 179, y0 + 111, arrow=True)
+        self.line(293, y0 + 111, 391, y0 + 164, arrow=True)
+        self.text(15, y0 + 69, "Đổi tên: B1 giữ byte; tên entry đổi nên tree và commit đổi.", 8.5)
+        self.line(10, y0 + 51, 461, y0 + 51)
+        self.text(15, y0 + 33, "Sửa port=9090 sau đó: blob B2, tree T3, commit C3.", 8.5)
+        self.text(15, y0 + 16, "Các ký hiệu B/T/C là nhãn mô hình, không phải SHA quan sát.", 8)
+
+    def draw_V45(self, y0):
+        self.text(15, y0 + 205, "Cùng app.conf ở ba thời điểm · timeout_ms", 10, True)
+        for x, label in ((17, "HEAD"), (169, "Index"), (321, "Working tree")):
+            self.text(x, y0 + 177, label, 9, True)
+        rows = (("B: chưa sửa", "1000", "1000", "1000"),
+                ("sửa, add", "1000", "2000", "2000"),
+                ("sửa tiếp", "1000", "2000", "3000"))
+        for i, (name, head, index, work) in enumerate(rows):
+            y = y0 + 140 - i * 44
+            self.text(17, y + 27, name, 7.7)
+            for x, value in ((105, head), (218, index), (370, work)):
+                self.box(x, y, 82, 27, value, fill=i == 2 and x == 218)
+        self.line(10, y0 + 34, 461, y0 + 34)
+        self.text(15, y0 + 17, "Commit sau hàng cuối lấy 2000 từ index; 3000 còn trên đĩa.", 8.5)
+
+    def draw_V46(self, y0):
+        self.text(15, y0 + 203, "Tên ref → object; parent ← commit trước", 10, True)
+        self.box(15, y0 + 146, 97, 38, "tag v1.4", "ref → B")
+        self.box(126, y0 + 146, 110, 38, "origin/main", "ref local → C")
+        self.box(252, y0 + 146, 93, 38, "main", "ref → D", fill=True)
+        self.box(361, y0 + 146, 94, 38, "HEAD", "symbolic → main", fill=True)
+        self.line(361, y0 + 165, 345, y0 + 165, arrow=True)
+        for x, label in ((32, "B"), (188, "C"), (344, "D")):
+            self.box(x, y0 + 82, 79, 32, label)
+        self.line(63, y0 + 146, 71, y0 + 114, arrow=True)
+        self.line(181, y0 + 146, 227, y0 + 114, arrow=True)
+        self.line(298, y0 + 146, 383, y0 + 114, arrow=True)
+        self.line(344, y0 + 98, 267, y0 + 98, arrow=True)
+        self.line(188, y0 + 98, 111, y0 + 98, arrow=True)
+        self.text(15, y0 + 58, "D → C → B là quan hệ parent; origin/main chỉ là bản ghi sau fetch.", 8.3)
+        self.line(10, y0 + 42, 461, y0 + 42)
+        self.text(15, y0 + 23, "Tag minh họa trỏ B; các ref có thể cùng hoặc khác đích.", 8.2)
+
+    def draw_V47(self, y0):
+        self.text(15, y0 + 220, "FAST-FORWARD", 9.5, True)
+        self.text(249, y0 + 220, "PHÂN KỲ + CONFLICT", 9.5, True)
+        self.box(17, y0 + 166, 52, 30, "B")
+        self.box(138, y0 + 166, 52, 30, "C")
+        self.line(69, y0 + 181, 138, y0 + 181, arrow=True)
+        self.text(17, y0 + 148, "main: B → C; không cần M", 8)
+        self.box(256, y0 + 166, 52, 30, "B")
+        self.box(353, y0 + 188, 52, 30, "D")
+        self.box(353, y0 + 143, 52, 30, "C")
+        self.line(308, y0 + 181, 353, y0 + 203, arrow=True)
+        self.line(308, y0 + 181, 353, y0 + 158, arrow=True)
+        self.text(249, y0 + 125, "B là base; D/C cùng sửa timeout.", 8)
+        self.line(10, y0 + 111, 461, y0 + 111)
+        self.text(15, y0 + 91, "Index khi merge dừng ở app.conf:", 8.5, True)
+        for x, label, small in ((17, "stage 1", "B: 1000"),
+                                (168, "stage 2", "D: 3000"),
+                                (319, "stage 3", "C: 2000")):
+            self.box(x, y0 + 38, 135, 39, label, small, fill=x == 168)
+        self.text(15, y0 + 18, "Giải thành 2500 là quyết định giả định; stage rồi test trước M.", 8)
+
+    def draw_V48(self, y0):
+        self.text(15, y0 + 217, "SAU M ĐÃ CÔNG BỐ", 9.5, True)
+        self.box(16, y0 + 164, 99, 36, "D", "cha 1 của M")
+        self.box(182, y0 + 164, 99, 36, "M", "main hiện tại")
+        self.box(349, y0 + 164, 107, 36, "R", "revert mới", fill=True)
+        self.line(115, y0 + 182, 182, y0 + 182, arrow=True)
+        self.line(281, y0 + 182, 349, y0 + 182, arrow=True)
+        self.text(17, y0 + 143, "Revert: main → R; M vẫn ở lịch sử.", 8.5)
+        self.line(10, y0 + 128, 461, y0 + 128)
+        self.text(15, y0 + 108, "Reset M → D dịch ref; tác động lên ba lớp:", 8.5, True)
+        for y, mode, state in ((84, "soft", "index và worktree giữ bản M"),
+                               (61, "mixed", "index về D; worktree giữ M"),
+                               (38, "hard", "index và worktree về D")):
+            self.text(22, y0 + y, mode, 8.5, True)
+            self.text(100, y0 + y, state, 8.5)
+        self.text(15, y0 + 14, "Cả hai không tự đảo dữ liệu hay bản chạy ở production.", 8)
 
     def draw_V10(self, y0):
         self.text(15, y0 + 197, "Một pipeline Bash bị hiểu nhầm", 10, True)

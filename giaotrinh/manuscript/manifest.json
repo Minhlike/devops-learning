@@ -1245,7 +1245,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C01/L01.md",
-      "sha256": "21146b4ebb306075eb5776047ccc1fd0b51d820d8c42f868bc2cb7dac7f41fde",
+      "sha256": "c8b560a6ae2f9b34a2f3b501661bffbced0bb893f14e67ef73a08d6b8d36998d",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#intro",
         "chapters/06-git-do-thi-lich-su.md#6.1"
@@ -1282,7 +1282,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C01/L02.md",
-      "sha256": "a287c78c9b7e497832fa4eafce857ea0d6dec0335c8d32636a6ff5122f50fbc2",
+      "sha256": "53ed894baf51006faf6677b5918436fbc861392f82ad5373d721dff3dccfb07b",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.2"
       ],
@@ -1292,6 +1292,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "G11",
         "G2",
         "G3"
       ],
@@ -1317,7 +1318,7 @@
       "verification": "source_reviewed_wave2",
       "editorial_override": true,
       "content": "manuscript/P04/C01/L03.md",
-      "sha256": "518f51d51b207fba99e1a81eed3f678c50e35f2e6201cdb437a3a0760ea85f5e",
+      "sha256": "1053d8913171c6336be6588a23044017cebf03ff1b738e66866f9e5b8e3ad923",
       "legacy_units": [],
       "claim_ids": [],
       "examples": [],
@@ -1347,7 +1348,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C02/L01.md",
-      "sha256": "44f64af930df3216f0a858360134c1ad2d7991fcf44c645bedbf316e101d87bc",
+      "sha256": "8f293b50b749e52acecae263e50679b3f5a4ae50f41d9de6736e8b6266277e9c",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.3"
       ],
@@ -1382,7 +1383,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C02/L02.md",
-      "sha256": "8e69c8c8064a61f80a7954c4c1730542f9ac7a07d287a2995f8c05cf40732f3a",
+      "sha256": "cf12e637243a449b3058b388738660b98cd5ac0c820e2577cd09926a72e3dbf1",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.4"
       ],
@@ -1391,6 +1392,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "G10",
         "G5"
       ],
       "qa": [
@@ -1415,7 +1417,7 @@
       "verification": "reviewed_editorial_evidence",
       "editorial_override": true,
       "content": "manuscript/P04/C02/L03.md",
-      "sha256": "949da99c4a7ce10660dad75b9505c9021aee70f9c649b6ae6955961fd963c243",
+      "sha256": "dfce3f67a5a2503e5344e97ba6e0c23b7c5fa2521fc03f5627c74b1f7bbf0dcb",
       "legacy_units": [
         "chapters/06-git-do-thi-lich-su.md#6.5",
         "chapters/06-git-do-thi-lich-su.md#6.6"
@@ -1426,6 +1428,7 @@
       ],
       "examples": [],
       "source_ids": [
+        "G11",
         "G6",
         "G7"
       ],

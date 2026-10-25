@@ -500,6 +500,17 @@
           "source_location": "Git user manual 2.51.0, Dangling objects and reflog",
           "support": "Object không còn reachable từ refs có thể tồn tại tạm nhờ reflog hoặc chính sách dọn.",
           "limits": "Không hứa thời điểm thu gom hoặc tính bền của reflog."
+        },
+        {
+          "anchor": "`HEAD` ở trạng thái **detached**",
+          "sources": [
+            "G2",
+            "G3"
+          ],
+          "source_location": "Pro Git Git References: HEAD; user-manual: detached HEAD",
+          "support": "HEAD can directly name a commit; new commits there do not advance an existing branch ref.",
+          "limits": "A new commit may remain recoverable via reflog until expiration, not guaranteed backup.",
+          "checked_on": "2026-10-25"
         }
       ],
       "qa": [

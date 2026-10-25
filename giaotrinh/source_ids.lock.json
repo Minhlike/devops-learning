@@ -54,6 +54,8 @@
     "G7": "https://git-scm.com/docs/git-reset/2.51.0.html",
     "G8": "https://git-scm.com/docs/git-init/2.48.0",
     "G9": "https://github.com/git/git/blob/v2.51.0/Documentation/git-merge.adoc",
+    "G10": "https://git-scm.com/docs/git-push/2.52.0",
+    "G11": "https://git-scm.com/docs/git-restore/2.51.0.html",
     "SH1": "https://www.gnu.org/software/bash/manual/bash.html",
     "TA1": "https://www.gnu.org/software/tar/manual/tar.html",
     "CU1": "https://github.com/coreutils/coreutils/blob/v9.4/doc/coreutils.texi",

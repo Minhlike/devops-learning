@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_on": "2026-10-21",
+  "checked_on": "2026-10-25",
   "purpose": "Per-lesson semantic review outside PDF render path; source IDs resolve through source_map and wave2_evidence",
   "lessons": {
     "P01.C01.L02": {
@@ -1001,8 +1001,8 @@
       ]
     },
     "P04.C01.L01": {
-      "content_sha256": "21146b4ebb306075eb5776047ccc1fd0b51d820d8c42f868bc2cb7dac7f41fde",
-      "editorial_decision": "Blob/tree/commit và hash object đúng mô hình; SHA không được coi là bằng chứng tác giả hoặc an toàn mã.",
+      "content_sha256": "c8b560a6ae2f9b34a2f3b501661bffbced0bb893f14e67ef73a08d6b8d36998d",
+      "editorial_decision": "Viết lại object graph từ byte→blob→tree→commit, ba snapshot C1/C2/C3 và giới hạn hash/rename; kiểm trực tiếp Git Objects và fixture.",
       "checks": [
         {
           "anchor": "Một blob chứa nội dung tệp, không chứa tên tệp",
@@ -1034,12 +1034,22 @@
           "source_location": "Git Internals, Git Objects: blob content, tree entries and commit tree/parent",
           "support": "A filename-only change preserves file-content blob while changing the tree entry; the new commit refers to the new tree and parent.",
           "limits": "Assumes byte and mode are unchanged; B1/T2 are pedagogical labels, not observed object IDs."
+        },
+        {
+          "anchor": "Git có thể trình bày cặp xóa–thêm",
+          "kind": "documented",
+          "sources": [
+            "G3"
+          ],
+          "source_location": "user-manual: rename detection and snapshot diffs",
+          "support": "Diff may infer rename from similarity while tree entries carry names and object IDs.",
+          "limits": "Threshold and diff options affect presentation."
         }
       ]
     },
     "P04.C01.L02": {
-      "content_sha256": "a287c78c9b7e497832fa4eafce857ea0d6dec0335c8d32636a6ff5122f50fbc2",
-      "editorial_decision": "Ví dụ HEAD 1000, index 2000, working tree 3000 cho thấy chính xác sự khác biệt sau git add. Đã bổ sung phép dự đoán, bằng chứng phân biệt lỗi và hậu kiểm trong bản thảo mới.",
+      "content_sha256": "53ed894baf51006faf6677b5918436fbc861392f82ad5373d721dff3dccfb07b",
+      "editorial_decision": "Viết lại three-tree model theo ba thời điểm, partial staging, secret còn trong index và thao tác restore hẹp; đối chiếu Git manual.",
       "checks": [
         {
           "anchor": "`git add` chép nội dung hiện tại của đường dẫn vào index",
@@ -1070,12 +1080,22 @@
           "source_location": "Git user manual: index and revisions",
           "support": "Revision :path trỏ nội dung index của đường dẫn; HEAD:path trỏ tree tại HEAD.",
           "limits": "Tình huống cần chạy trên repository thử, không phải output đã đo."
+        },
+        {
+          "anchor": "`git restore --staged app.conf` đưa index",
+          "kind": "documented",
+          "sources": [
+            "G11"
+          ],
+          "source_location": "git-restore(1): --staged and default source",
+          "support": "--staged restores index from HEAD by default without writing working tree.",
+          "limits": "Without --staged the command targets worktree and may discard edits."
         }
       ]
     },
     "P04.C02.L01": {
-      "content_sha256": "44f64af930df3216f0a858360134c1ad2d7991fcf44c645bedbf316e101d87bc",
-      "editorial_decision": "Tình huống B–C/D tạo conflict và ba index stages; merge commit hai cha chỉ sau giải conflict và kiểm thử.",
+      "content_sha256": "8f293b50b749e52acecae263e50679b3f5a4ae50f41d9de6736e8b6266277e9c",
+      "editorial_decision": "Viết lại merge từ ancestry và ba phía, đọc index stage 1/2/3, phân biệt conflict văn bản với yêu cầu nghiệp vụ; đối chiếu Git merge manual.",
       "checks": [
         {
           "anchor": "index có thể giữ ba stage cho tệp xung đột",
@@ -1097,12 +1117,23 @@
           "source_location": "git-merge(1): FAST-FORWARD MERGE, TRUE MERGE",
           "support": "diverged histories require a new two-parent commit while fast-forward can move a ref without new commit",
           "limits": "A user may choose other strategies or squash; model assumes ordinary merge"
+        },
+        {
+          "anchor": "stage 1 là bản ở `B`",
+          "kind": "documented",
+          "sources": [
+            "G4",
+            "G9"
+          ],
+          "source_location": "git-merge(1): TRUE MERGE",
+          "support": "Stages 1/2/3 hold base/HEAD/MERGE_HEAD for conflicted paths.",
+          "limits": "Some conflicts omit a stage."
         }
       ]
     },
     "P04.C02.L02": {
-      "content_sha256": "8e69c8c8064a61f80a7954c4c1730542f9ac7a07d287a2995f8c05cf40732f3a",
-      "editorial_decision": "Rebase tạo commit mới trên D và đổi đồ thị; giới hạn an toàn khi lịch sử đã chia sẻ được nêu rõ. Bản mới bổ sung dự đoán trạng thái, phân biệt nguyên nhân và hậu kiểm.",
+      "content_sha256": "cf12e637243a449b3058b388738660b98cd5ac0c820e2577cd09926a72e3dbf1",
+      "editorial_decision": "Viết lại replay nhiều commit, giải nghĩa ours/theirs khi rebase, giới hạn lịch sử chia sẻ và force-with-lease; đối chiếu Git rebase/push manual.",
       "checks": [
         {
           "anchor": "tạo commit mới `C′` có cha là `D`",
@@ -1123,12 +1154,32 @@
           "source_location": "git-rebase(1): DESCRIPTION; resolving conflicts",
           "support": "Rebase reapplies commits on a new base and may stop for conflict resolution.",
           "limits": "Exact commit sequence depends on branch and selected rebase mode."
+        },
+        {
+          "anchor": "trong rebase, **ours** là trạng thái",
+          "kind": "documented",
+          "sources": [
+            "G5"
+          ],
+          "source_location": "git-rebase(1): merge option and ours/theirs note",
+          "support": "Ours denotes rebased-so-far series starting with upstream, theirs working branch commit being replayed.",
+          "limits": "Applies to rebase merge conflict context."
+        },
+        {
+          "anchor": "`--force-with-lease` từ chối cập nhật",
+          "kind": "documented",
+          "sources": [
+            "G10"
+          ],
+          "source_location": "git-push(1): --force-with-lease",
+          "support": "Remote ref must equal expected value; implicit lease can rely on local remote-tracking ref.",
+          "limits": "Lease does not replace team coordination; background fetch can alter implicit expectation."
         }
       ]
     },
     "P04.C02.L03": {
-      "content_sha256": "949da99c4a7ce10660dad75b9505c9021aee70f9c649b6ae6955961fd963c243",
-      "editorial_decision": "Revert tạo commit đảo chiều, reset dịch ref; thao tác với merge parent và tác động tới index/tree không bị đánh đồng.",
+      "content_sha256": "dfce3f67a5a2503e5344e97ba6e0c23b7c5fa2521fc03f5627c74b1f7bbf0dcb",
+      "editorial_decision": "Viết lại revert/reset từ hậu quả lên ref/index/worktree, merge mainline và ranh giới rollback runtime; đối chiếu Git revert/reset/restore manual.",
       "checks": [
         {
           "anchor": "`git revert -m 1 M` xem `D` là mainline",
@@ -1149,6 +1200,16 @@
           "source_location": "git-reset(1): DESCRIPTION and --soft/--mixed/--hard",
           "support": "reset moves current branch tip and updates index/worktree according to mode; hard can discard tracked local changes",
           "limits": "Pathspec form of reset updates index without moving HEAD"
+        },
+        {
+          "anchor": "`git restore --staged app.conf`",
+          "kind": "documented",
+          "sources": [
+            "G11"
+          ],
+          "source_location": "git-restore(1): --staged",
+          "support": "Path-oriented restore updates index without moving branch tip.",
+          "limits": "Default worktree restore is a different operation and can discard local edits."
         }
       ]
     },
