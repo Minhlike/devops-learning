@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "run_id": "p16-20261025-083937-1825",
+  "scope": "single-host local lab; remote CI and GHCR not exercised",
+  "started_at": "2026-10-25T08:39:37.010445+00:00",
+  "change_id": "f93a7bc8e7d74feb935847bcbcef931f",
+  "commit": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+  "build_input_sha256": "3808a5020f3897ba28cdfa30dc5a540d785f522e3e402efd1f53b3d3b892fbbf",
+  "revision_claim": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+  "unit_tests": "test_concurrent_same_key_creates_one_record (test_app.OrdersServiceTest.test_concurrent_same_key_creates_one_record) ... ok\ntest_health_can_be_green_while_readiness_fails (test_app.OrdersServiceTest.test_health_can_be_green_while_readiness_fails) ... ok\ntest_idempotency_replay_conflict_and_missing_key (test_app.OrdersServiceTest.test_idempotency_replay_conflict_and_missing_key) ... ok\ntest_order_roundtrip_and_revision (test_app.OrdersServiceTest.test_order_roundtrip_and_revision) ... ok\ntest_rejects_invalid_order_without_writing (test_app.OrdersServiceTest.test_rejects_invalid_order_without_writing) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.970s\n\nOK",
+  "registry_address": "127.0.0.1:32768",
+  "tested_image_id": "sha256:ca62bcbb80533936039b595345cee14677ee25886f65190e81fbc7ddbcee4e2a",
+  "candidate_smoke": {
+    "result": "PASS",
+    "request_id": "smoke-2d8e5df832464d33",
+    "order_id": "f321b5f477804efab7d9698ad6c694be",
+    "revision": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+    "instance": "ffbfc531308d",
+    "idempotency_key": "order-e681e8f8a470473493c337a1da8e04dd"
+  },
+  "registry_manifest_digest": "sha256:ca62bcbb80533936039b595345cee14677ee25886f65190e81fbc7ddbcee4e2a",
+  "pinned_image": "127.0.0.1:32768/orders-api@sha256:ca62bcbb80533936039b595345cee14677ee25886f65190e81fbc7ddbcee4e2a",
+  "pulled_image_id": "sha256:ca62bcbb80533936039b595345cee14677ee25886f65190e81fbc7ddbcee4e2a",
+  "deployment": {
+    "project": "p16-20261025-083937-1825",
+    "container_id": "000caedbfdc76bd44a6201c73ab5e59b7d47d78481f084ab313718826e15c549",
+    "runtime_image_id": "sha256:ca62bcbb80533936039b595345cee14677ee25886f65190e81fbc7ddbcee4e2a",
+    "runtime_image_ref": "127.0.0.1:32768/orders-api@sha256:ca62bcbb80533936039b595345cee14677ee25886f65190e81fbc7ddbcee4e2a"
+  },
+  "deployed_smoke": {
+    "result": "PASS",
+    "request_id": "smoke-fe7205c1256f462f",
+    "order_id": "51c0a16c3017431ebfb9ddbb2a5df606",
+    "revision": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+    "instance": "000caedbfdc7",
+    "idempotency_key": "order-078043d6dbe0407abc68ac1bf77ca71c"
+  },
+  "record_before_failure": {
+    "id": "51c0a16c3017431ebfb9ddbb2a5df606",
+    "item": "Bút",
+    "quantity": 1,
+    "created_at": "2026-10-25 08:40:06",
+    "origin_request_id": "smoke-fe7205c1256f462f",
+    "origin_revision": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+    "origin_instance": "000caedbfdc7"
+  },
+  "metrics": "orders_http_requests_total 6\norders_http_errors_total 0\n",
+  "request_log_matched": true,
+  "failure": {
+    "health": 200,
+    "readiness": 200,
+    "business_post": 503
+  },
+  "record_after_recovery": {
+    "id": "51c0a16c3017431ebfb9ddbb2a5df606",
+    "item": "Bút",
+    "quantity": 1,
+    "created_at": "2026-10-25 08:40:06",
+    "origin_request_id": "smoke-fe7205c1256f462f",
+    "origin_revision": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+    "origin_instance": "000caedbfdc7"
+  },
+  "backup_sha256": "028a88025f5b3a9d6e401355ffd5c5b69739d16db2ede20750626ce67354c8f0",
+  "independent_restore": {
+    "volume": "p16-20261025-083937-1825-restored-data",
+    "record": {
+      "id": "51c0a16c3017431ebfb9ddbb2a5df606",
+      "item": "Bút",
+      "quantity": 1,
+      "created_at": "2026-10-25 08:40:06",
+      "origin_request_id": "smoke-fe7205c1256f462f",
+      "origin_revision": "4825aa3b54412ccc5f7b2ca3e671dd04fa261d05",
+      "origin_instance": "000caedbfdc7"
+    }
+  },
+  "result": "PASS",
+  "ended_at": "2026-10-25T08:41:03.462496+00:00"
+}
