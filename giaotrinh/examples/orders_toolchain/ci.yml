@@ -1,0 +1,51 @@
+# Copy to .github/workflows/orders.yml in the standalone sample repository.
+# This file is instructional inside the textbook repository; it is not active CI here.
+name: orders-toolchain
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax and tests
+        run: |
+          python -m compileall -q app.py smoke.py test_app.py
+          python -m unittest -v test_app.py
+      - name: Local container integration
+        run: |
+          docker compose up --build -d --wait
+          python smoke.py
+          docker compose down
+      - name: Build image and record local identity
+        run: |
+          docker build -t orders-api:${{ github.sha }} .
+          docker image inspect orders-api:${{ github.sha }} --format '{{.Id}}'
+  publish:
+    if: github.event_name == 'push'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Build and push
+        env:
+          REVISION: ${{ github.sha }}
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/orders-api"
+          docker build -t "$IMAGE:$REVISION" .
+          docker push "$IMAGE:$REVISION"
+          docker buildx imagetools inspect "$IMAGE:$REVISION"
+# No deploy job: promotion requires environment identity, permission and a
+# pinned digest, which the reader must configure for a real target.

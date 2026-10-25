@@ -154,5 +154,13 @@
   "P11.C08.L01.Q01": "Giá trị hiệu lực khi nâng cấp chart",
   "P11.C08.L02.Q01": "Lần theo lỗi qua Gateway và backend",
   "P04.C01.L01.Q01": "Blob, tree và commit khi đổi tên tệp",
-  "P10.C03.L01.Q01": "Giá trị biến hiệu lực trên từng máy"
+  "P10.C03.L01.Q01": "Giá trị biến hiệu lực trên từng máy",
+  "P15.C04.L01.Q01": "Từ yêu cầu tới năng lực",
+  "P15.C04.L02.Q01": "Hợp đồng giữa build và runtime",
+  "P15.C04.L03.Q01": "Bỏ công cụ không mất năng lực",
+  "P15.C04.L04.Q01": "Kiểm chứng đường tạo và đọc đơn",
+  "P15.C04.L05.Q01": "Từ deploy tới request",
+  "P15.C04.L06.Q01": "Quyền tối thiểu và quyết định phục hồi",
+  "P15.C04.L07.Q01": "Đổi stack theo hình dạng dự án",
+  "P15.C04.L08.Q01": "Bảo vệ thiết kế dự án mới"
 }

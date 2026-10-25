@@ -1,6 +1,6 @@
 # Cẩm nang ngành DevOps
 
-`Cam_nang_devops.pdf` là bản PDF chính của giáo trình. Bản thảo xuất bản nằm trong `manuscript/`, theo cây 15 Phần, 58 Chương và 178 Bài. `Cam_nang_devops.candidate.pdf` là tệp dựng trước khi chốt bản chính; hồ sơ kiểm tra cụ thể nằm trong `FINAL_CANDIDATE_QA.md`.
+`Cam_nang_devops.pdf` là bản PDF chính của giáo trình. Bản thảo xuất bản nằm trong `manuscript/`, theo cây 15 Phần, 59 Chương và 186 Bài. `Cam_nang_devops.candidate.pdf` là tệp dựng trước khi chốt bản chính; hồ sơ kiểm tra của chương tích hợp mới nằm trong `qa/P15_C04_QA.md`. `FINAL_CANDIDATE_QA.md` ghi lại một đợt kiểm tra trước đó.
 
 ## Quy tắc xuất bản
 
@@ -18,4 +18,4 @@ Chạy `python -X utf8 -m giaotrinh.scripts.build` từ gốc repo. Cần Python
 
 ## Trạng thái bản chính
 
-PDF chính gồm 15 Phần, 58 Chương, 178 Bài và lời giải cuối sách. Bản chính được sao chép từ đúng candidate đã qua kiểm thử, kiểm tra cấu trúc và rà ảnh render toàn bộ trang. Báo cáo QA ghi rõ những kiểm chứng đã chạy và giới hạn thực nghiệm; sự tồn tại của PDF không thay thế việc đối chiếu độc lập từng khẳng định khoa học.
+PDF chính gồm 15 Phần, 59 Chương, 186 Bài và lời giải cuối sách. Chương P15.C04 bổ sung tám bài về tích hợp chuỗi công cụ và ví dụ `orders-api` trong `examples/orders_toolchain/`. Bản chính chỉ được sao chép từ candidate sau khi kiểm tra cấu trúc và những trang bị ảnh hưởng; báo cáo QA ghi rõ phạm vi rà ảnh và giới hạn thực nghiệm. Sự tồn tại của PDF không thay thế việc đối chiếu độc lập từng khẳng định khoa học.

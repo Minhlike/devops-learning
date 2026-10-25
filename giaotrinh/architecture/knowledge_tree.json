@@ -1820,6 +1820,7 @@
               "legacy_claim_ids": [
                 "CLM-ea54a2dace4146ac",
                 "CLM-5d3e11d80c334ba4",
+                "CLM-29d13b86f7b1445e",
                 "CLM-7b0d1af6adf98fd4"
               ],
               "source_ids_to_recheck": [
@@ -1887,12 +1888,9 @@
                 "chapters/08-python-go-tu-dong-hoa.md#8.3"
               ],
               "legacy_claim_ids": [
-                "CLM-b1a2f6e5ea1619d6",
-                "CLM-29d13b86f7b1445e"
+                "CLM-b1a2f6e5ea1619d6"
               ],
               "source_ids_to_recheck": [
-                "GO1",
-                "P2",
                 "TA1"
               ],
               "source_research_needed": true
@@ -1957,8 +1955,6 @@
           ],
           "source_ids_to_recheck": [
             "CU1",
-            "GO1",
-            "P2",
             "TA1"
           ],
           "source_research_needed": true,
@@ -6045,7 +6041,8 @@
           ],
           "status": "planned_new",
           "prepares_for": [
-            "P15.C01"
+            "P15.C01",
+            "P15.C04"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6436,7 +6433,8 @@
           "status": "planned_new",
           "prepares_for": [
             "P14.C04",
-            "P15.C03"
+            "P15.C03",
+            "P15.C04"
           ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
@@ -6819,12 +6817,189 @@
           ],
           "legacy_chapters": [],
           "status": "planned_new",
-          "prepares_for": [],
+          "prepares_for": [
+            "P15.C04"
+          ],
           "source_ids_to_recheck": [],
           "source_research_needed": true,
           "learning_outcomes": [
             "Chứng minh toàn hành trình từ commit đến phục hồi bằng artifact và phép đo.",
             "Nộp evidence ledger, kết quả âm/dương, giới hạn và quyết định vận hành."
+          ]
+        },
+        {
+          "id": "P15.C04",
+          "part": "P15",
+          "title": "Tích hợp hệ sinh thái DevOps và tư duy thiết kế chuỗi công cụ",
+          "objective": "Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.",
+          "mental_model": "Đường thay đổi, request, dữ liệu và telemetry có identity, quyền, owner và đường lỗi riêng; stack là quyết định theo rủi ro.",
+          "required": [
+            "P15.C03.L04",
+            "P14.C03.L03",
+            "P13.C03.L03"
+          ],
+          "helpful": [],
+          "extension": [],
+          "boundary": "Không lặp capstone hoặc biến chương thành danh mục sản phẩm; ví dụ một host không được gọi là production.",
+          "misconception": "Nối được nhiều công cụ đồng nghĩa hệ thống phục vụ đúng và phục hồi được.",
+          "teaching_strategy": "Dùng orders-api cục bộ rồi đổi sang bốn dự án có hợp đồng khác nhau.",
+          "assessment": "Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi.",
+          "lessons": [
+            {
+              "id": "P15.C04.L01",
+              "parent": "P15.C04",
+              "title": "Từ yêu cầu đến năng lực",
+              "core": "khảo sát sản phẩm, dữ liệu, SLO, đội ngũ",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C03.L04",
+                  "P14.C03.L03",
+                  "P13.C03.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L02",
+              "parent": "P15.C04",
+              "title": "Hợp đồng tích hợp",
+              "core": "luồng thay đổi, request, quyền, identity và failure",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L01"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L03",
+              "parent": "P15.C04",
+              "title": "Lựa chọn công cụ",
+              "core": "tiêu chí và phương án bỏ bớt",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L02"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L04",
+              "parent": "P15.C04",
+              "title": "Chuỗi tham chiếu",
+              "core": "orders-api cục bộ, CI, image, volume, smoke",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L03"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L05",
+              "parent": "P15.C04",
+              "title": "Từ deploy tới người dùng",
+              "core": "revision, request và record",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L04"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L06",
+              "parent": "P15.C04",
+              "title": "Bảo vệ và phục hồi",
+              "core": "least privilege, telemetry, restore và quyết định dừng",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L05"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L07",
+              "parent": "P15.C04",
+              "title": "Đổi hình dạng dự án",
+              "core": "static, monolith, microservices, batch",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L06"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            },
+            {
+              "id": "P15.C04.L08",
+              "parent": "P15.C04",
+              "title": "Tự thiết kế",
+              "core": "mười hai lượt, hồ sơ tối thiểu và bảo vệ quyết định",
+              "status": "planned_new",
+              "prerequisites": {
+                "required": [
+                  "P15.C04.L07"
+                ],
+                "helpful": [],
+                "extension": []
+              },
+              "legacy_sections": [],
+              "legacy_claim_ids": [],
+              "source_ids_to_recheck": [],
+              "source_research_needed": true
+            }
+          ],
+          "legacy_chapters": [],
+          "status": "planned_new",
+          "prepares_for": [],
+          "source_ids_to_recheck": [],
+          "source_research_needed": true,
+          "learning_outcomes": [
+            "Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.",
+            "Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi."
           ]
         }
       ]
@@ -8129,6 +8304,56 @@
     {
       "from": "P15.C03.L03",
       "to": "P15.C03.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C03.L04",
+      "to": "P15.C04.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P14.C03.L03",
+      "to": "P15.C04.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P13.C03.L03",
+      "to": "P15.C04.L01",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L01",
+      "to": "P15.C04.L02",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L02",
+      "to": "P15.C04.L03",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L03",
+      "to": "P15.C04.L04",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L04",
+      "to": "P15.C04.L05",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L05",
+      "to": "P15.C04.L06",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L06",
+      "to": "P15.C04.L07",
+      "kind": "required"
+    },
+    {
+      "from": "P15.C04.L07",
+      "to": "P15.C04.L08",
       "kind": "required"
     }
   ],

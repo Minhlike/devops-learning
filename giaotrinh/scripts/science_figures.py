@@ -39,6 +39,10 @@ FIGURES = {
     "V46": ("Hình IV.1.3 — Ref là tên cục bộ có thể dời; quan hệ parent thuộc commit.", 225),
     "V47": ("Hình IV.2.2 — Fast-forward dời ref; nhánh phân kỳ cần hợp ba phía và giải conflict.", 242),
     "V48": ("Hình IV.2.3 — Revert thêm commit đảo tác động; reset dời ref và tùy mode đổi index, worktree.", 238),
+    "V49": ("Hình XV.4.1 — Hai đường khảo sát: thay đổi tạo bản chạy; request kiểm giá trị và dữ liệu.", 220),
+    "V50": ("Hình XV.4.2 — Hợp đồng toolchain: control, request và telemetry có hướng và quyền khác nhau.", 226),
+    "V51": ("Hình XV.4.3 — Bốn dự án, bốn chuỗi tối thiểu: mỗi chuỗi bảo vệ rủi ro chi phối riêng.", 236),
+    "V52": ("Hình XV.4.4 — Từ yêu cầu tới stack tối thiểu và bằng chứng; tín hiệu vận hành đưa thiết kế quay lại.", 220),
 }
 
 
@@ -413,6 +417,77 @@ class MechanismFigure(Flowable):
             for x, value in zip(xs, row): self.text(x, y, value, 7.8)
             self.line(12, y - 9, 459, y - 9)
         self.text(15, y0 + 14, "Thiếu identity, restore hoặc hậu trạng thái dữ liệu → DỪNG; SKIP có lý do.", 7.8)
+
+    def draw_V49(self, y0):
+        self.text(15, y0 + 194, "ĐƯỜNG THAY ĐỔI — ai cho phép byte nào chạy?", 9, True)
+        for x, label, sub in ((15, "Commit", "source C"), (128, "Kiểm thử", "gate"),
+                              (241, "Artifact", "digest H"), (354, "Runtime", "revision D")):
+            self.box(x, y0 + 139, 101, 38, label, sub, fill=x == 241)
+        for x in (116, 229, 342):
+            self.line(x, y0 + 158, x + 12, y0 + 158, arrow=True)
+        self.line(12, y0 + 121, 459, y0 + 121)
+        self.text(15, y0 + 105, "ĐƯỜNG REQUEST — người dùng nhận kết quả gì?", 9, True)
+        for x, label, sub in ((15, "Client", "request q"), (128, "Edge", "DNS / TLS"),
+                              (241, "API", "instance i"), (354, "Dữ liệu", "record r")):
+            self.box(x, y0 + 48, 101, 38, label, sub, fill=x == 354)
+        for x in (116, 229, 342):
+            self.line(x, y0 + 67, x + 12, y0 + 67, arrow=True)
+        self.text(15, y0 + 17, "Nối D → i → q để biết bản nào phục vụ; commit C không phải request q.", 8)
+
+    def draw_V50(self, y0):
+        self.text(15, y0 + 201, "MẶT PHẲNG ĐIỀU KHIỂN: commit / policy / quyền deploy", 9, True)
+        self.box(14, y0 + 155, 103, 33, "CI", "test + build")
+        self.box(183, y0 + 155, 103, 33, "Registry", "digest H", fill=True)
+        self.box(353, y0 + 155, 103, 33, "Deployer", "revision D")
+        self.line(117, y0 + 171, 183, y0 + 171, arrow=True)
+        self.line(286, y0 + 171, 353, y0 + 171, arrow=True)
+        self.text(15, y0 + 136, "MẶT PHẲNG DỮ LIỆU: request / transaction", 9, True)
+        self.box(14, y0 + 91, 103, 29, "Client")
+        self.box(183, y0 + 91, 103, 29, "API")
+        self.box(353, y0 + 91, 103, 29, "DB")
+        self.line(117, y0 + 105, 183, y0 + 105, arrow=True)
+        self.line(286, y0 + 105, 353, y0 + 105, arrow=True)
+        self.line(12, y0 + 74, 459, y0 + 74)
+        self.text(15, y0 + 55, "ĐƯỜNG QUAN SÁT: runtime → log / metric → owner → quyết định", 9, True)
+        self.box(15, y0 + 15, 126, 27, "Runtime")
+        self.box(174, y0 + 15, 126, 27, "Telemetry")
+        self.box(333, y0 + 15, 126, 27, "Người trực")
+        self.line(141, y0 + 28, 174, y0 + 28, arrow=True)
+        self.line(300, y0 + 28, 333, y0 + 28, arrow=True)
+
+    def draw_V51(self, y0):
+        self.text(15, y0 + 210, "CÙNG MỘT PHƯƠNG PHÁP, KHÁC NHAU Ở RỦI RO CHI PHỐI", 9, True)
+        rows = (
+            ("Website tĩnh", "commit → asset → CDN", "cache / domain"),
+            ("Monolith", "commit → API → DB", "schema / restore"),
+            ("Nhiều dịch vụ", "commit → contract → services", "version skew"),
+            ("Batch / event", "input → job → checkpoint", "retry / trùng"),
+        )
+        for i, (kind, flow, risk) in enumerate(rows):
+            y = y0 + 174 - 40 * i
+            self.box(15, y - 7, 108, 29, kind, fill=i % 2 == 0)
+            self.box(143, y - 7, 181, 29, flow)
+            self.box(344, y - 7, 111, 29, risk)
+            self.line(123, y + 7, 143, y + 7, arrow=True)
+            self.line(324, y + 7, 344, y + 7, arrow=True)
+        self.text(15, y0 + 15, "Thêm công cụ chỉ khi năng lực thiếu hoặc rủi ro đo được buộc đổi.", 8)
+
+    def draw_V52(self, y0):
+        self.text(15, y0 + 192, "QUY TRÌNH QUYẾT ĐỊNH CÓ THỂ QUAY LẠI", 9, True)
+        cells = ((15, 132, "Yêu cầu", "người dùng / dữ liệu"),
+                 (173, 132, "Năng lực", "build / bảo vệ / phục hồi"),
+                 (331, 132, "Stack", "công cụ tối thiểu"),
+                 (15, 49, "Hợp đồng", "input / quyền / lỗi"),
+                 (173, 49, "Bằng chứng", "digest / request / record"),
+                 (331, 49, "Tín hiệu đổi", "SLO / chi phí / tổ chức"))
+        for x, y, name, sub in cells:
+            self.box(x, y0 + y, 125, 42, name, sub, fill=name == "Bằng chứng")
+        for x in (140, 298):
+            self.line(x, y0 + 153, x + 33, y0 + 153, arrow=True)
+            self.line(x, y0 + 70, x + 33, y0 + 70, arrow=True)
+        self.line(393, y0 + 132, 393, y0 + 91, arrow=True)
+        self.line(78, y0 + 132, 78, y0 + 91, arrow=True)
+        self.text(15, y0 + 15, "Tín hiệu mới bác giả định → quay lại yêu cầu; không bảo vệ stack cũ bằng quán tính.", 8)
 
     def draw_V23(self, y0):
         self.text(15, y0 + 206, "ĐƯỜNG ĐIỀU KHIỂN", 9, True)

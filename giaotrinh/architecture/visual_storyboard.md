@@ -1,6 +1,6 @@
 # Bản đồ trực quan hóa cho A2
 
-**Quy tắc chọn:** chỉ trực quan hóa khi vị trí, thứ tự, trạng thái, quan hệ nhân quả hoặc số liệu khó đọc hơn trong văn xuôi. Đây là 43 ứng viên: 29 sơ đồ kỹ thuật/luồng/trạng thái, 7 biểu đồ định lượng từ dữ liệu, 4 bảng hoặc bảng kết hợp sơ đồ, 3 minh họa mở Phần có thể bỏ. Đây là danh sách có hợp đồng kiểm chứng, **không phải quota**. `P0` cần trước khi di chuyển khối tương ứng; `P1` cần trước khi nghiệm thu Phần; `P2` là phương án nghệ thuật/đào sâu có thể bỏ nếu không giúp hiểu. Hình kỹ thuật xuất SVG/vector có source chỉnh được; đồ thị từ dữ liệu phải lưu dữ liệu và mã dựng; ảnh thực chỉ từ thí nghiệm được phép có metadata; nghệ thuật không được mang claim kỹ thuật. Không dùng ASCII art làm hình xuất bản. Các `source_map`/URL chỉ ở hồ sơ A2, không vào PDF.
+**Quy tắc chọn:** chỉ trực quan hóa khi vị trí, thứ tự, trạng thái, quan hệ nhân quả hoặc số liệu khó đọc hơn trong văn xuôi. Đây là 52 ứng viên kỹ thuật và nghệ thuật có thể chọn theo giá trị sư phạm. Đây là danh sách có hợp đồng kiểm chứng, **không phải quota**. `P0` cần trước khi di chuyển khối tương ứng; `P1` cần trước khi nghiệm thu Phần; `P2` là phương án nghệ thuật/đào sâu có thể bỏ nếu không giúp hiểu. Hình kỹ thuật xuất SVG/vector có source chỉnh được; đồ thị từ dữ liệu phải lưu dữ liệu và mã dựng; ảnh thực chỉ từ thí nghiệm được phép có metadata; nghệ thuật không được mang claim kỹ thuật. Không dùng ASCII art làm hình xuất bản. Các `source_map`/URL chỉ ở hồ sơ A2, không vào PDF.
 
 ## Máy, Linux và mạng
 
@@ -236,6 +236,26 @@
 - **Hỏi / dạng:** thay đổi đã đủ chứng cứ để phục vụ và phục hồi chưa? Ma trận bước–artifact–phép kiểm–kết quả–stop rule, nối bằng một request ID.
 - **Bắt buộc:** commit/digest, triển khai dịch vụ có dữ liệu, request path, IAM/secret, metric/log/trace, failure injection cục bộ, stop/rollback, restore dữ liệu, SLI/SLO và SKIP có lý do. Mỗi hàng dẫn tới tệp/log/dataset tái lập; không điền PASS cho thử nghiệm chưa chạy.
 - **Kiểm / sai lệch:** `capstone_contract.md`, test/dataset A2 sẽ tạo và Reviewer kiểm; sai nếu một sơ đồ production hoặc status xanh được xem là đủ evidence. **Medium:** bảng vector dùng mã evidence ID; hồ sơ kiểm ngoài PDF, không chèn URL nguồn vào sách. **P0:** hợp đồng đầu ra, không phải hình trang trí.
+
+### V49 · `P15.C04.L01` · Hai đường khảo sát dự án
+- **Hỏi / dạng:** người thiết kế phân biệt đường thay đổi với đường request và điểm nối hai đường ở đâu? Hai làn có identity C/H/D và q/i/r.
+- **Bắt buộc:** commit/test/artifact/runtime khác client/edge/API/data; nối revision với instance và request trước khi kết luận bản được thử đang phục vụ.
+- **Kiểm / sai lệch:** `P15.C04.L01` và `L05`; sai nếu commit ID được dùng như request ID. **Tài sản:** vector gốc trong `scripts/science_figures.py`, không phụ thuộc giấy phép bên ngoài.
+
+### V50 · `P15.C04.L02` · Ba mặt phẳng của chuỗi công cụ
+- **Hỏi / dạng:** ai quyết định, ai phục vụ request và tín hiệu quay về ai? Ba dải tách quyền.
+- **Bắt buộc:** CI/registry/deployer ở control path; client/API/DB ở data path; runtime/telemetry/người trực ở feedback path. Mũi tên không hàm ý triển khai tự động từ workflow mẫu.
+- **Kiểm / sai lệch:** `P15.C04.L02`, `examples/orders_toolchain/ci.yml`; sai nếu coi registry là runtime hoặc metric là gate nghiệp vụ. **Tài sản:** vector gốc.
+
+### V51 · `P15.C04.L07` · Bốn hình dạng dự án
+- **Hỏi / dạng:** cùng phương pháp nhưng năng lực ưu tiên thay đổi thế nào giữa static, monolith, microservices và batch? Bốn hàng rủi ro.
+- **Bắt buộc:** static/cache-domain, monolith/schema-restore, nhiều dịch vụ/version skew, batch/retry-checkpoint; không vẽ cùng một Kubernetes stack ở cả bốn hàng.
+- **Kiểm / sai lệch:** `P15.C04.L07`; sai nếu readiness HTTP được đặt làm cổng duy nhất cho batch. **Tài sản:** vector gốc.
+
+### V52 · `P15.C04.L08` · Quyết định có thể quay lại
+- **Hỏi / dạng:** khi số liệu mới bác giả định, quay lại lớp nào? Sáu ô từ yêu cầu tới tín hiệu thay đổi.
+- **Bắt buộc:** yêu cầu → năng lực → stack; hợp đồng → bằng chứng → tín hiệu đổi, vòng quay về khảo sát. Không gợi một stack cố định là đáp án vĩnh viễn.
+- **Kiểm / sai lệch:** `P15.C04.L08`; sai nếu chọn công cụ trước yêu cầu hoặc thiếu bằng chứng hậu điều kiện. **Tài sản:** vector gốc.
 
 ## Trang mở Phần và hình mang tính khái niệm
 

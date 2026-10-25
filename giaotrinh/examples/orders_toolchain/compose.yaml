@@ -1,0 +1,18 @@
+services:
+  api:
+    build: .
+    image: orders-api:local
+    environment:
+      APP_REVISION: ${APP_REVISION:-local}
+      FAIL_READINESS: ${FAIL_READINESS:-0}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - orders-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  orders-data:

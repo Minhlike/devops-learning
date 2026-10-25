@@ -16,6 +16,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).resolve().parent
 
+
+def legacy_example_files() -> set[str]:
+    """Freeze the migrated 23-example ledger; P15.C04 has a separate inventory."""
+    return {str(path.relative_to(ROOT)).replace("\\", "/")
+            for path in (ROOT / "examples").rglob("*")
+            if path.is_file() and "orders_toolchain" not in path.parts
+            and path.name != "capstone_orders.py"}
+
 # Part records: ID, title, governing question, mental model, true prerequisites,
 # boundary, exit capability, misconception, transfer to later parts.
 PARTS = [
@@ -149,6 +157,7 @@ add("P14", "Cloud/Kubernetes runtime hardening", "Đặt ranh giới quyền và
 add("P15", "Thiết kế một dịch vụ production", "Bảo vệ đường request, dữ liệu và control plane trong một kiến trúc.", "Mỗi thành phần có owner, failure domain, SLO, trust boundary và phương án giảm tác động.", "P13.C03.L03 P14.C04.L03 P11.C08.L03", "Không dạy lại cú pháp Terraform/Helm.", "Một sơ đồ thành phần đẹp tự chứng minh hệ thống chịu lỗi.", "Thiết kế rồi đi qua ba sự cố đối nghịch: mất AZ, cert lỗi, deploy hỏng.", "Lập bảng tradeoff với bằng chứng cho từng control.", "Yêu cầu~traffic, dữ liệu, compliance, budget; Kiến trúc~edge, compute, data, network và control plane; Đánh giá~failure domain, runbook, ownership, test plan", "", "planned_new")
 add("P15", "Mở rộng và tối ưu chi phí có ràng buộc", "Chọn năng lực đủ SLO trong giới hạn tiền và vận hành.", "Capacity, autoscale lag, redundancy và telemetry/egress/storage retention đều tiêu ngân sách.", "P15.C01.L03 P13.C04.L03 P08.C04.L03", "Không bịa bảng giá; dùng biến và công thức có Region/time.", "Giảm chi phí bằng cách tắt backup hoặc giảm replica luôn tối ưu.", "So ba phương án từ số liệu workload, nêu dữ liệu giá cần cập nhật.", "Tính điểm hòa vốn và rủi ro mất SLO/DR.", "Mô hình tải~peak, headroom, burst, queue; Mô hình tiền~compute, storage, data transfer, observability; Quyết định~cost per outcome, stop rule, kiểm số liệu giá", "", "planned_new")
 add("P15", "Capstone: thay đổi, sự cố và phục hồi", "Chứng minh toàn hành trình từ commit đến phục hồi bằng artifact và phép đo.", "Một change record nối source, build, IaC, rollout, telemetry, incident và dữ liệu.", "P15.C02.L03 P13.C02.L03 P14.C03.L03", "Không coi mô phỏng là production certification.", "Mọi test xanh loại bỏ nhu cầu quan sát người dùng.", "Đưa cùng một dịch vụ qua rollout, failure injection giới hạn, restore và review.", "Nộp evidence ledger, kết quả âm/dương, giới hạn và quyết định vận hành.", "Chuẩn bị~source/digest, policy, state, backup, SLO; Thực thi~deploy, metric/log/trace, stop/rollback; Bảo vệ~restore, security check, postmortem và chi phí; Kiểm toán~evidence ledger, phép kiểm âm/dương, SKIP, stop rule và quyết định vận hành", "", "planned_new")
+add("P15", "Tích hợp hệ sinh thái DevOps và tư duy thiết kế chuỗi công cụ", "Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.", "Đường thay đổi, request, dữ liệu và telemetry có identity, quyền, owner và đường lỗi riêng; stack là quyết định theo rủi ro.", "P15.C03.L04 P14.C03.L03 P13.C03.L03", "Không lặp capstone hoặc biến chương thành danh mục sản phẩm; ví dụ một host không được gọi là production.", "Nối được nhiều công cụ đồng nghĩa hệ thống phục vụ đúng và phục hồi được.", "Dùng orders-api cục bộ rồi đổi sang bốn dự án có hợp đồng khác nhau.", "Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi.", "Từ yêu cầu đến năng lực~khảo sát sản phẩm, dữ liệu, SLO, đội ngũ; Hợp đồng tích hợp~luồng thay đổi, request, quyền, identity và failure; Lựa chọn công cụ~tiêu chí và phương án bỏ bớt; Chuỗi tham chiếu~orders-api cục bộ, CI, image, volume, smoke; Từ deploy tới người dùng~revision, request và record; Bảo vệ và phục hồi~least privilege, telemetry, restore và quyết định dừng; Đổi hình dạng dự án~static, monolith, microservices, batch; Tự thiết kế~mười hai lượt, hồ sơ tối thiểu và bảo vệ quyết định", "", "planned_new")
 
 # Optional edges are deliberately sparse. They are not hidden requirements.
 OPTIONAL_LINKS = {
@@ -248,12 +257,12 @@ PRESERVE = {
 # source_map claim order, frozen by SOURCE_MAP_SHA256. Each choice produces one
 # primary owner; a reused idea can have a secondary cross-reference, not a
 # second owner. Every split section with claims must be declared explicitly.
-SOURCE_MAP_SHA256 = "3a9e4f26eb3138c54568c79eab0e9bf778641847ab1c274db40108fb144dd27c"
+SOURCE_MAP_SHA256 = "edb62e137d275473d1790885f56b7fa42941089db2892ec62cf4a00b3d7ba819"
 CLAIM_OWNER_CHOICES = {
     "1.3": "0", "2.1": "1", "2.2": "1", "2.3": "0 0", "2.4": "1", "2.5": "0 0 0",
     "3.2": "1 0", "3.3": "1 1 1 0 0", "4.2": "0 1 0", "4.3": "0 1 1 0 0", "4.5": "0",
     "5.3": "0 1 3 0 2 2", "7.4": "0", "7.5": "0 1 1 1",
-    "8.2": "0 0", "8.3": "0 1 0 1 2", "8.4": "0", "8.5": "0 1",
+    "8.2": "0 0", "8.3": "0 1 0 1 1", "8.4": "0", "8.5": "0 1",
     "9.1": "0 1 1", "9.2": "0 1", "9.3": "1 0 0 0 0 2", "9.4": "0 1 2",
     "10.1": "1 1 1 0 0 0 0 0", "10.3": "0 1", "10.4": "0 0",
     "11.1": "1 0 2 1", "11.2": "0 2 2 2", "11.3": "0 0 1 1", "11.4": "1 1",
@@ -326,7 +335,7 @@ UNANCHORED_PARAGRAPH_CHOICES = {
     "1.3": "2:0 3:0", "1.6": "1:1 2:1 3:0",
     "2.1": "1:1 2:0 3:0", "2.2": "1:1 3:1", "2.3": "3:0", "2.4": "2:0 3:0", "2.5": "1:0 2:0",
     "3.2": "3:1 4:1", "3.3": "5:1 6:1", "4.2": "3:1", "4.5": "1:0 2:0 4:0 5:1",
-    "5.3": "2:0", "7.4": "2:1", "7.5": "1:0 6:1", "8.3": "1:0 7:2", "8.4": "1:0",
+    "5.3": "2:0", "7.4": "2:1", "7.5": "1:0 6:1", "8.3": "1:0 7:1", "8.4": "1:0",
     "9.2": "1:0 2:1", "9.4": "1:0 4:2", "10.1": "3:0 5:1", "10.3": "2:1",
     "10.4": "1:0 2:0 3:0 6:0", "11.2": "3:2", "11.3": "2:0", "11.4": "1:1",
     "12.4": "1:2 4:0", "13.1": "4:2", "13.4": "2:1 3:0", "14.1": "3:0", "14.3": "4:0",
@@ -427,7 +436,7 @@ def make_ownership(claims: list[dict]) -> list[dict]:
                 "secondary_lesson_ids": "", "reuse_purpose": "",
                 "review_status": "reviewed_draft"})
     expected_claims = {(c["chapter"], c["section"], c["anchor"]) for c in claims}
-    all_examples = {str(p.relative_to(ROOT)).replace("\\", "/") for p in (ROOT / "examples").rglob("*") if p.is_file()}
+    all_examples = legacy_example_files()
     if claim_keys != expected_claims or example_seen != all_examples or example_seen != set(EXAMPLE_OWNER):
         raise ValueError("Ownership does not cover every claim and example")
     if len(exercise_seen) != 79:
@@ -591,7 +600,7 @@ def make_migration(claims: list[dict]) -> list[dict]:
                 "cross_references_to_rewrite": f"answers.md#{qid}; old exercise ID {qid}",
                 "evidence_status": "reviewed_draft; preserve question-answer pair",
             })
-    all_examples = {str(p.relative_to(ROOT)).replace("\\", "/") for p in (ROOT / "examples").rglob("*") if p.is_file()}
+    all_examples = legacy_example_files()
     if embedded_examples != all_examples:
         raise ValueError(f"Unmapped example files: {sorted(all_examples - embedded_examples)}")
     if covered_claims != len(claims):

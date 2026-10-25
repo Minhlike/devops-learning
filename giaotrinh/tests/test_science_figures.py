@@ -42,8 +42,12 @@ class ScienceFigureContract(unittest.TestCase):
             "V46": ("Hình IV.1.3", "origin/main", "tag v1.4"),
             "V47": ("Hình IV.2.2", "stage 1", "stage 3"),
             "V48": ("Hình IV.2.3", "revert mới", "mixed"),
+            "V49": ("Hình XV.4.1", "ĐƯỜNG THAY ĐỔI", "ĐƯỜNG REQUEST"),
+            "V50": ("Hình XV.4.2", "MẶT PHẲNG ĐIỀU KHIỂN", "ĐƯỜNG QUAN SÁT"),
+            "V51": ("Hình XV.4.3", "Website tĩnh", "Batch / event"),
+            "V52": ("Hình XV.4.4", "Yêu cầu", "Bằng chứng"),
         }
-        self.assertEqual(len(build.FIGURES), 19)
+        self.assertEqual(len(build.FIGURES), 23)
         with pymupdf.open(build.OUTPUT) as doc:
             for figure_id, (caption, *terms) in concepts.items():
                 with self.subTest(figure=figure_id):

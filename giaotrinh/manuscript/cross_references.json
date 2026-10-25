@@ -100,6 +100,9 @@
     ],
     "lesson:P02.C03.L03": [
       "P01.C01.L03"
+    ],
+    "lesson:P15.C04.L01": [
+      "P15.C03"
     ]
   },
   "legacy_rewrites": {

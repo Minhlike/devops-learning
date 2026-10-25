@@ -66,7 +66,8 @@
     "P14.C04": "Gia cố môi trường đám mây và Kubernetes",
     "P15.C01": "Thiết kế một dịch vụ vận hành thực tế",
     "P15.C02": "Mở rộng và tối ưu chi phí có ràng buộc",
-    "P15.C03": "Bài tổng hợp: thay đổi, sự cố và phục hồi"
+    "P15.C03": "Bài tổng hợp: thay đổi, sự cố và phục hồi",
+    "P15.C04": "Kết nối công cụ DevOps và thiết kế chuỗi vận hành"
   },
   "lessons": {
     "P01.C02.L02": "Tạo và thay thế tiến trình",
@@ -160,6 +161,14 @@
     "P14.C03.L03": "Triển khai sản phẩm",
     "P14.C04.L01": "Kiểm soát lúc tiếp nhận",
     "P14.C04.L02": "Gia cố lúc chạy",
-    "P14.C04.L03": "Mạng và đám mây"
+    "P14.C04.L03": "Mạng và đám mây",
+    "P15.C04.L01": "Từ yêu cầu đến năng lực",
+    "P15.C04.L02": "Hợp đồng tích hợp",
+    "P15.C04.L03": "Lựa chọn công cụ",
+    "P15.C04.L04": "Chuỗi tham chiếu",
+    "P15.C04.L05": "Từ deploy tới người dùng",
+    "P15.C04.L06": "Bảo vệ và phục hồi",
+    "P15.C04.L07": "Đổi hình dạng dự án",
+    "P15.C04.L08": "Tự thiết kế"
   }
 }

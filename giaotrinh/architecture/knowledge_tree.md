@@ -5,11 +5,11 @@
 **Chủ chứng cứ:** `evidence_ownership.csv` gán một primary lesson cho từng claim/ví dụ/cặp đề–đáp án; `legacy_content_units.csv` gán chủ đoạn ở mục split; `legacy_migration.csv` ghi liên kết cũ–mới. Nguồn liệt kê trong JSON chỉ đến từ claim thuộc bài, không là xác nhận ngữ nghĩa mới.
 **Phạm vi đã chốt:** Go là CLI DevOps nhỏ; UDP/IPv6/MTU ở mức chẩn đoán nền; AWS-first với nguyên lý cloud-neutral; capstone theo `capstone_contract.md` có bản local không phí.
 
-Tổng: 15 Phần, 58 Chương, 178 Bài/Mục. Cấu trúc phản ánh ranh giới cơ chế và tiên quyết, không phải quota.
+Tổng: 15 Phần, 59 Chương, 186 Bài/Mục. Cấu trúc phản ánh ranh giới cơ chế và tiên quyết, không phải quota.
 
 ## Đồ thị tiên quyết đọc nhanh
 
-Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh hữu ích và 8 đường đào sâu. Chỉ cạnh bắt buộc tạo trật tự học; mọi cạnh đi từ bài xuất hiện trước tới bài xuất hiện sau. Các chuỗi minh họa dưới đây có thể bỏ qua nút trung gian; cạnh chính xác nằm trong JSON.
+Bản đầy đủ ở `knowledge_tree.json`: 254 cạnh bắt buộc, 8 cạnh hữu ích và 8 đường đào sâu. Chỉ cạnh bắt buộc tạo trật tự học; mọi cạnh đi từ bài xuất hiện trước tới bài xuất hiện sau. Các chuỗi minh họa dưới đây có thể bỏ qua nút trung gian; cạnh chính xác nằm trong JSON.
 
 - `P01.C02.L03` (process/FD) → `P07.C01.L01` (namespace) → `P07.C03.L01` (container là lần chạy).
 - `P03.C02.L03` (đường TCP/NAT) → `P08.C02.L01` (VPC route) → `P11.C04.L02` (Service dataplane áp dụng mạng gốc).
@@ -313,7 +313,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Cây bài:**
   - `P05.C02.L01` **Chọn ngôn ngữ** [reviewed_draft; 2 mục cũ; 1 claim] — Bash đủ dùng vs Python/Go CLI nhỏ, module/dependency
   - `P05.C02.L02` **Subprocess** [reviewed_draft; 2 mục cũ; 4 claim] — argv, env, status, Python exception/Go error, startup readiness, test nhánh
-  - `P05.C02.L03` **Timeout** [reviewed_draft; 2 mục cũ; 3 claim] — communicate, context cancellation/CommandContext, child/grandchild và cleanup
+  - `P05.C02.L03` **Timeout** [reviewed_draft; 2 mục cũ; 4 claim] — communicate, context cancellation/CommandContext, child/grandchild và cleanup
 
 ### P05.C03 — Workflow an toàn và chạy lại [mixed]
 
@@ -327,7 +327,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Nối tới:** P06.C01, P10.C02.
 - **Nguồn cũ:** Ch07, Ch08.
 - **Cây bài:**
-  - `P05.C03.L01` **Hợp đồng bước** [needs_extension; 2 mục cũ; 2 claim] — input, output, error class, secret
+  - `P05.C03.L01` **Hợp đồng bước** [needs_extension; 2 mục cũ; 1 claim] — input, output, error class, secret
   - `P05.C03.L02` **Retry** [needs_extension; 1 mục cũ; 0 claim] — idempotency, deduplication, backoff, concurrency
   - `P05.C03.L03` **Phục hồi** [needs_extension; 2 mục cũ; 3 claim] — durable marker, compensation, cleanup và chứng minh hậu điều kiện
 
@@ -952,7 +952,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Multi-AZ hoặc PVC Bound chứng minh restore được.
 - **Cách dạy:** Diễn tập mất AZ và xóa object, kiểm manifest dữ liệu trước/sau.
 - **Đánh giá:** Đề xuất RPO/RTO thực tế và phép thử restore.
-- **Nối tới:** P15.C01.
+- **Nối tới:** P15.C01, P15.C04.
 - **Nguồn cũ:** Ch11, Ch12, Ch13, Ch16.
 - **Cây bài:**
   - `P13.C03.L01` **Mục tiêu** [planned_new; 0 mục cũ; 0 claim] — RPO, RTO, failure domain
@@ -1026,7 +1026,7 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Scanner xanh hoặc chữ ký hợp lệ chứng minh image không có lỗi.
 - **Cách dạy:** Kiểm một artifact có dependency đổi ngầm và tag bị dịch.
 - **Đánh giá:** Chỉ ra chuỗi bằng chứng và điểm còn chưa xác minh.
-- **Nối tới:** P14.C04, P15.C03.
+- **Nối tới:** P14.C04, P15.C03, P15.C04.
 - **Nguồn cũ:** Ch09, Ch11.
 - **Cây bài:**
   - `P14.C03.L01` **Nguồn** [planned_new; 0 mục cũ; 0 claim] — dependency pin, SBOM, license/vulnerability
@@ -1100,10 +1100,31 @@ Bản đầy đủ ở `knowledge_tree.json`: 244 cạnh bắt buộc, 8 cạnh 
 - **Ngộ nhận:** Mọi test xanh loại bỏ nhu cầu quan sát người dùng.
 - **Cách dạy:** Đưa cùng một dịch vụ qua rollout, failure injection giới hạn, restore và review.
 - **Đánh giá:** Nộp evidence ledger, kết quả âm/dương, giới hạn và quyết định vận hành.
-- **Nối tới:** Tổng hợp cuối sách.
+- **Nối tới:** P15.C04.
 - **Nguồn cũ:** Cần biên soạn mới.
 - **Cây bài:**
   - `P15.C03.L01` **Chuẩn bị** [planned_new; 0 mục cũ; 0 claim] — source/digest, policy, state, backup, SLO
   - `P15.C03.L02` **Thực thi** [planned_new; 0 mục cũ; 0 claim] — deploy, metric/log/trace, stop/rollback
   - `P15.C03.L03` **Bảo vệ** [planned_new; 0 mục cũ; 0 claim] — restore, security check, postmortem và chi phí
   - `P15.C03.L04` **Kiểm toán** [planned_new; 0 mục cũ; 0 claim] — evidence ledger, phép kiểm âm/dương, SKIP, stop rule và quyết định vận hành
+
+### P15.C04 — Tích hợp hệ sinh thái DevOps và tư duy thiết kế chuỗi công cụ [planned_new]
+
+- **Đích học:** Từ yêu cầu của một dự án mới chọn năng lực, thiết kế hợp đồng tích hợp và kiểm được hậu điều kiện.
+- **Mô hình nối bài:** Đường thay đổi, request, dữ liệu và telemetry có identity, quyền, owner và đường lỗi riêng; stack là quyết định theo rủi ro.
+- **Tiên quyết bắt buộc:** P15.C03.L04, P14.C03.L03, P13.C03.L03.
+- **Ranh giới:** Không lặp capstone hoặc biến chương thành danh mục sản phẩm; ví dụ một host không được gọi là production.
+- **Ngộ nhận:** Nối được nhiều công cụ đồng nghĩa hệ thống phục vụ đúng và phục hồi được.
+- **Cách dạy:** Dùng orders-api cục bộ rồi đổi sang bốn dự án có hợp đồng khác nhau.
+- **Đánh giá:** Bảo vệ một stack tối thiểu và nêu phép kiểm, quyền, chi phí và trigger thay đổi.
+- **Nối tới:** Tổng hợp cuối sách.
+- **Nguồn cũ:** Cần biên soạn mới.
+- **Cây bài:**
+  - `P15.C04.L01` **Từ yêu cầu đến năng lực** [planned_new; 0 mục cũ; 0 claim] — khảo sát sản phẩm, dữ liệu, SLO, đội ngũ
+  - `P15.C04.L02` **Hợp đồng tích hợp** [planned_new; 0 mục cũ; 0 claim] — luồng thay đổi, request, quyền, identity và failure
+  - `P15.C04.L03` **Lựa chọn công cụ** [planned_new; 0 mục cũ; 0 claim] — tiêu chí và phương án bỏ bớt
+  - `P15.C04.L04` **Chuỗi tham chiếu** [planned_new; 0 mục cũ; 0 claim] — orders-api cục bộ, CI, image, volume, smoke
+  - `P15.C04.L05` **Từ deploy tới người dùng** [planned_new; 0 mục cũ; 0 claim] — revision, request và record
+  - `P15.C04.L06` **Bảo vệ và phục hồi** [planned_new; 0 mục cũ; 0 claim] — least privilege, telemetry, restore và quyết định dừng
+  - `P15.C04.L07` **Đổi hình dạng dự án** [planned_new; 0 mục cũ; 0 claim] — static, monolith, microservices, batch
+  - `P15.C04.L08` **Tự thiết kế** [planned_new; 0 mục cũ; 0 claim] — mười hai lượt, hồ sơ tối thiểu và bảo vệ quyết định

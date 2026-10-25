@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "scope": "P15.C04 only; source metadata is excluded from the PDF renderer",
+  "checked_on": "2026-10-25",
+  "sources": {
+    "TC-01": {"title": "Python 3.12 http.server", "url": "https://docs.python.org/3.12/library/http.server.html", "version": "Python 3.12", "evidence": "official API documentation", "scope": "ThreadingHTTPServer and production warning"},
+    "TC-02": {"title": "Python 3.12 sqlite3", "url": "https://docs.python.org/3.12/library/sqlite3.html", "version": "Python 3.12", "evidence": "official API documentation", "scope": "connections and commit behavior"},
+    "TC-03": {"title": "SQLite write-ahead log", "url": "https://www.sqlite.org/wal.html", "version": "SQLite documentation accessed 2026-10-25", "evidence": "official technical documentation", "scope": "single-host limit and one writer, as contrast to distributed database"},
+    "TC-04": {"title": "Docker Compose services", "url": "https://docs.docker.com/reference/compose-file/services/", "version": "Compose Specification accessed 2026-10-25", "evidence": "official reference", "scope": "healthcheck, volume and service configuration"},
+    "TC-05": {"title": "Docker Compose startup order", "url": "https://docs.docker.com/compose/how-tos/startup-order/", "version": "Docker documentation accessed 2026-10-25", "evidence": "official how-to", "scope": "service_healthy readiness of a dependency, not business correctness"},
+    "TC-06": {"title": "GitHub Actions workflow syntax", "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax", "version": "GitHub documentation accessed 2026-10-25", "evidence": "official reference", "scope": "job needs and GITHUB_TOKEN permission scoping"},
+    "TC-07": {"title": "GitHub publishing Docker images", "url": "https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images", "version": "GitHub documentation accessed 2026-10-25", "evidence": "official tutorial", "scope": "registry publication and digest output"},
+    "TC-08": {"title": "Docker image digests", "url": "https://docs.docker.com/dhi/explore/security-concepts/digests/", "version": "Docker documentation accessed 2026-10-25", "evidence": "official explanation", "scope": "manifest list digest versus platform image digest"},
+    "TC-09": {"title": "GitHub OIDC reference", "url": "https://docs.github.com/en/actions/reference/security/oidc", "version": "GitHub documentation accessed 2026-10-25", "evidence": "official reference", "scope": "OIDC claims and short-lived federation preconditions"}
+  },
+  "claims": [
+    {"lesson": "P15.C04.L02", "anchor": "Tag thuận cho con người nhưng có thể trỏ sang byte khác", "sources": ["TC-07", "TC-08"], "verification": "semantic match: tag reference versus digest identity"},
+    {"lesson": "P15.C04.L04", "anchor": "Job ấy phụ thuộc `verify`", "sources": ["TC-06"], "verification": "semantic match: needs requires successful job"},
+    {"lesson": "P15.C04.L04", "anchor": "chỉ có `packages:write`", "sources": ["TC-06", "TC-07"], "verification": "semantic match: job permission for package publication"},
+    {"lesson": "P15.C04.L04", "anchor": "SQLite là lựa chọn một host", "sources": ["TC-02", "TC-03"], "verification": "scope: example architecture choice; source supports DB constraints"},
+    {"lesson": "P15.C04.L04", "anchor": "Compose tạo image", "sources": ["TC-04"], "verification": "scope: build and volume configuration in example"},
+    {"lesson": "P15.C04.L05", "anchor": "`/readyz` chỉ chạy `SELECT 1`", "sources": ["TC-01", "TC-02"], "verification": "verified against included app.py; docs support API behavior only"},
+    {"lesson": "P15.C04.L06", "anchor": "OIDC cho phép một nhà cung cấp xác minh identity", "sources": ["TC-09"], "verification": "scope: GitHub Actions OIDC with properly configured relying party"}
+  ],
+  "figures": {"V49": "original vector diagram, authored for this chapter", "V50": "original vector diagram, authored for this chapter", "V51": "original vector diagram, authored for this chapter", "V52": "original vector diagram, authored for this chapter"}
+}
