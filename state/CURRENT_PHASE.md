@@ -1,12 +1,13 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 11 — DevSecOps & Security Hardening (Phase 10 đã hoàn tất).
-- **Current Status:** S53 — CI/CD Security **COMPLETED — 9,75/10** ngày 26/10/2026. Tiếp theo: S54 — Kubernetes Security Basics.
-- **Tiến độ:** **53/66 buổi (80,3%)**.
-- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**; S47 **COMPLETED — 9.8/10**; S48 **COMPLETED — 10/10**; S49 **COMPLETED — 10/10**; S50 **COMPLETED — 9/10**; S51 **COMPLETED — 10/10**; S52 **COMPLETED — 9,5/10**; S53 **COMPLETED — 9,75/10**.
+- **Current Phase:** PHASE 12 — Capstone Projects & Job Readiness (Phase 10 và Phase 11 đã hoàn tất).
+- **Current Status:** S56 — Production-Grade DevOps Capstone **IN PROGRESS — CURRENT SESSION, Checkpoint 1: Infrastructure Baseline**; đang chờ output kiểm kê. Chưa nghiệm thu.
+- **Tiến độ:** **55/66 buổi (83,3%)**.
+- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**; S47 **COMPLETED — 9.8/10**; S48 **COMPLETED — 10/10**; S49 **COMPLETED — 10/10**; S50 **COMPLETED — 9/10**; S51 **COMPLETED — 10/10**; S52 **COMPLETED — 9,5/10**; S53 **COMPLETED — 9,75/10**; S54 **COMPLETED — 10/10**; S55 **COMPLETED — 9,75/10**.
+- **Trạng thái Phase:** Phase 11 — DevSecOps & Security Hardening **COMPLETED — 5/5**; Phase 12 **IN PROGRESS**.
 - **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind.
 - **Giới hạn xác minh S53:** GitHub Actions chưa chạy; pip-audit dùng `--no-deps`; còn 3 cảnh báo Bandit LOW; Gitleaks chưa quét Git history. Chi tiết tại `state/LEARNING_LOG.md`.
-- **Current Week:** Cập nhật đến S53 (26/10/2026)
+- **Current Week:** Cập nhật đến S56 (26/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -782,3 +783,12 @@
 - **S52:** COMPLETED — 9,5/10 (26/10/2026). Terraform/Checkov; kiểm soát Security Group, S3, IAM; baseline gate 9 PASS/0 FAIL; giữ rõ giới hạn không triển khai AWS thật và không sửa toàn bộ cảnh báo ngoài baseline.
 - **S53:** COMPLETED — 9,75/10 (26/10/2026). CI/CD security với permissions tối thiểu, Bandit, pip-audit và Gitleaks; ghi rõ workflow chưa chạy trên GitHub và các giới hạn scan.
 - **Tiếp theo:** S54 — Kubernetes Security Basics (RBAC, ServiceAccount, SecurityContext, NetworkPolicy).
+
+## [2026-10-26] Hoàn tất S54–S55 và khởi động S56
+
+- **Tiến độ:** 55/66 buổi (83,3%). Phase 11 COMPLETED — 5/5; Phase 12 IN PROGRESS.
+- **S54:** COMPLETED — 10/10 — PASS (7/7 trắc nghiệm, 3/3 tự luận). RBAC, xác thực ServiceAccount, SecurityContext và NetworkPolicy được kiểm chứng trong namespace lab riêng. Không khẳng định production cluster đã harden toàn diện; chưa có bằng chứng cleanup tài nguyên lab.
+- **S55:** COMPLETED — 9,75/10 — PASS (7/7 trắc nghiệm, 2,75/3 tự luận). Xác minh image digest, CycloneDX SBOM, OCI attestation/SLSA provenance và chữ ký image Podinfo bằng Cosign. Chưa xác minh độc lập chữ ký/danh tính provenance; chưa có admission policy; không kết luận image/build an toàn tuyệt đối.
+- **S56:** IN PROGRESS — CURRENT SESSION, Checkpoint 1: Infrastructure Baseline. Đã giao `nproc`, `free -h`, `df -h /`, `sudo k3s kubectl get deploy,sts -A`; chưa nhận output, chưa nghiệm thu và chưa triển khai ứng dụng capstone bổ sung.
+- **Định hướng S56:** Tận dụng Flask + PostgreSQL S17; tests/CI/security gates S18; K3s, GitOps, Prometheus, Grafana, Loki, Alerting, health checks, rollback, backup và runbooks. Tối ưu VM đơn node; không tuyên bố HA thực tế.
+- **Chuyển tiếp:** Tiếp tục checkpoint sau khi đọc output thật; không tự điền thông số hạ tầng. S57–S66 chưa học.

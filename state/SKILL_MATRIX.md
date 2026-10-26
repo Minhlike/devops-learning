@@ -13,6 +13,9 @@
 | DevSecOps | Container & Dependency Security (S51) | Hoàn thành buổi học | 2026-10-25 | Trivy 0.76.1, Grype, Podinfo/CVE scan; Security Gate exit 2; 10/10 |
 | DevSecOps | IaC Security (S52) | Hoàn thành buổi học | 2026-10-26 | Terraform 1.17.0, Checkov 3.3.30, SG/S3/IAM controls; baseline gate 9 PASS/0 FAIL; 9,5/10 |
 | DevSecOps | CI/CD Security (S53) | Hoàn thành buổi học | 2026-10-26 | Bandit, pip-audit, Gitleaks; combined gate exit 0; documented coverage limits; 9,75/10 |
+| Kubernetes Security | Kubernetes Security Basics (S54) | Hoàn thành buổi học | 2026-10-26 | RBAC least privilege, ServiceAccount API authorization, hardened SecurityContext, NetworkPolicy allow/deny verification; 10/10 PASS; lab namespace only |
+| Software Supply Chain Security | Image digest, CycloneDX SBOM, SLSA provenance & signature verification (S55) | Hoàn thành buổi học | 2026-10-26 | Trivy/Skopeo/Cosign; signature verification PASS; provenance-signature and admission-policy limitations documented; 9,75/10 PASS |
+| DevOps Capstone | Production-Grade DevOps Capstone (S56) | Đang học — Checkpoint 1 chờ output | 2026-10-26 | Infrastructure Baseline đã khởi động; inventory commands issued, output chưa nhận; chưa nghiệm thu |
 | OS & Computer | Hardware & OS Basics | Làm được độc lập | 2026-07-31 | Diagnostic test + Cài đặt WSL2 Ubuntu 24.04 thành công |
 | OS & Computer | Filesystem Mounting (`/mnt/d`) | Làm được độc lập | 2026-07-31 | Lab 1: Truy cập `/mnt/d/Devops`, chạy `pwd`, `ls -la` |
 | OS & Computer | Case Sensitivity (ext4 vs NTFS) | Làm được độc lập | 2026-07-31 | Failure Injection 1: Thử `cat` file hoa/thường trên ext4 và NTFS |
