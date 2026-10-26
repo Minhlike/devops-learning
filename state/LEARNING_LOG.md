@@ -1275,4 +1275,26 @@
 - **Secret scan:** Gitleaks 8.16.0 phát hiện một token giả và trả exit 1; sau khi xóa trả exit 0. Combined Gitleaks + Bandit + pip-audit gate trả `CICD_GATE_EXIT=0`.
 - **Đánh giá:** 7/7 MCQ, tự luận 2,75/3; tổng 9,75/10.
 - **Giới hạn:** Workflow GitHub Actions chưa chạy thực tế và required checks chưa xác minh; pip-audit chưa quét dependency tree đầy đủ; ba cảnh báo Bandit LOW còn tồn tại; Gitleaks chỉ quét working files, chưa quét Git history. YAML workflow mới được kiểm tra cục bộ; không tạo CI result giả.
-- **Chuyển tiếp:** Hoàn thành 53/66 (80,3%); Phase 10 COMPLETED, Phase 11 IN PROGRESS; S54 — Kubernetes Security Basics là NEXT.
+- **Chuyển tiếp tại thời điểm ghi nhận:** Hoàn thành 53/66 (80,3%); Phase 10 COMPLETED, Phase 11 IN PROGRESS; kế hoạch tiếp theo khi đó là S54.
+
+## [2026-10-26] Session 54: Kubernetes Security Basics
+- **Trạng thái:** COMPLETED — **10/10 — PASS** (7/7 trắc nghiệm, 3/3 tự luận).
+- **RBAC:** Trong namespace `s54-rbac-lab`, ServiceAccount `pod-reader` được Role `pod-viewer` và RoleBinding cấp `get/list/watch` trên Pods. `list pods` đổi từ no sang yes sau binding; `get secrets` và `delete pods` vẫn no; quyền list Pods tại `staging`/`monitoring` đều no.
+- **ServiceAccount:** Pod `s54-identity-test` gọi Kubernetes API; `LIST_PODS_HTTP=200`, `GET_SECRET_HTTP=403`, xác minh xác thực và thực thi RBAC.
+- **SecurityContext:** Pod `s54-hardened` 1/1 Running; UID/GID 10001/10001, `ROOTFS_WRITE=DENIED`, `SA_TOKEN=NOT_MOUNTED`, `CapEff=0000000000000000`, `NoNewPrivs=1`, `Seccomp=2`. Cấu hình gồm non-root, không privilege escalation, read-only rootfs, drop ALL capabilities, RuntimeDefault seccomp và không tự mount token.
+- **NetworkPolicy:** HTTP baseline 200; default deny trả HTTP 000/exit 7; allow TCP/80 theo nhãn đã duyệt trả HTTP 200/exit 0; client không có nhãn trả HTTP 000/exit 7.
+- **Giới hạn:** Chỉ xác minh namespace lab; không khẳng định production cluster đã harden toàn diện. Chưa có bằng chứng cleanup tài nguyên lab.
+
+## [2026-10-26] Session 55: Software Supply Chain Security
+- **Trạng thái:** COMPLETED — **9,75/10 — PASS** (7/7 trắc nghiệm, 2,75/3 tự luận).
+- **Image digest/SBOM:** Hai Pod chạy `ghcr.io/stefanprodan/podinfo:6.15.0` có cùng imageID `sha256:ec73780a8425f59ea49f5bc8cdff0d598805a224fbaa1f86c67a244f250fa9da`. Trivy 0.76.1 tạo CycloneDX 1.7 cho Alpine 3.24.1 với 123 components, `SBOM_EXIT=0`; đây là kê khai thành phần, lệnh không bật vulnerability scanning.
+- **OCI provenance:** Skopeo đọc index amd64/arm64 và hai attestation manifest. AMD64 manifest `sha256:72611294759dc6b304d1f3efa2d4b1de212ce422866244f31bc29f731e3b2079`; attestation gồm SPDX SBOM và SLSA Provenance v1. `BLOB_INTEGRITY=PASS`; BuildKit, GitHub Actions run `33408245072`, source revision `dd507173b7b75b2312a36cabe0de5f09c1ce69c8`, 3 dependencies.
+- **Image signing:** Cosign APT 2.6.2 không tìm artifact bằng `cosign tree`; tải Cosign v3.1.4 từ release chính thức, `COSIGN_BINARY_VERIFY_EXIT=0`, `IMAGE_SIGNATURE_VERIFY_EXIT=0`. Đã xác minh chữ ký image, danh tính release workflow tag 6.15.0, OIDC issuer, certificate chain và transparency log offline.
+- **Giới hạn:** Chưa xác minh độc lập chữ ký/danh tính provenance; không kết luận build đã audit toàn diện hoặc image không có CVE/backdoor/zero-day; chưa có admission policy yêu cầu verify chữ ký. Không đưa binary, image layer, SBOM hay provenance local vào GitHub.
+
+## [2026-10-26] Khởi động Session 56: Production-Grade DevOps Capstone
+- **Trạng thái:** IN PROGRESS — CURRENT SESSION, Checkpoint 1: Infrastructure Baseline. Chưa nghiệm thu; hoàn thành vẫn là **55/66 (83,3%)**.
+- **Định hướng capstone:** Tận dụng Flask + PostgreSQL từ S17; unit tests, CI/CD và Security Gates từ S18; ứng dụng trên K3s; GitOps; Prometheus, Grafana, Loki, Alerting; health checks, rollback, backup và runbooks. Thiết kế cho VM đơn node, không tuyên bố High Availability thực tế.
+- **Đã giao lệnh kiểm kê, chưa nhận output:** `nproc`, `free -h`, `df -h /`, `sudo k3s kubectl get deploy,sts -A`.
+- **Ranh giới bằng chứng:** Không tự điền CPU/RAM/disk/workload; không xác nhận Checkpoint 1 đã xong; chưa có bài nghiệm thu S56 và chưa triển khai ứng dụng capstone bổ sung. S57–S66 chưa học.
+- **Chuyển tiếp:** Phase 11 COMPLETED — 5/5; Phase 12 IN PROGRESS; tiếp tục Checkpoint 1 S56 sau khi đọc output kiểm kê.

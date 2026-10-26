@@ -1,10 +1,10 @@
 # NEXT SESSION PLAN
 
-- **Buổi tiếp theo:** S54 — Kubernetes Security Basics.
-- **Trạng thái gần nhất:** S53 — CI/CD Security **COMPLETED — 9,75/10** ngày 26/10/2026.
-- **Tiến độ:** 53/66 buổi (80,3%). Phase 10 COMPLETED; Phase 11 IN PROGRESS.
-- **Kết quả đã nghiệm thu:** S49 10/10; S50 9/10; S51 10/10; S52 9,5/10; S53 9,75/10.
-- **Roadmap chính thức:** S51 Container & Dependency Security; S52 IaC Security; S53 CI/CD Security; S54 Kubernetes Security Basics; S55 Software Supply Chain Security.
+- **Buổi hiện tại:** S56 — Production-Grade DevOps Capstone, IN PROGRESS — Checkpoint 1: Infrastructure Baseline; chờ output kiểm kê.
+- **Buổi hoàn thành gần nhất:** S55 — Software Supply Chain Security **COMPLETED — 9,75/10 — PASS** ngày 26/10/2026.
+- **Tiến độ:** 55/66 buổi (83,3%). Phase 10 COMPLETED; Phase 11 COMPLETED (5/5); Phase 12 IN PROGRESS.
+- **Kết quả đã nghiệm thu:** S49 10/10; S50 9/10; S51 10/10; S52 9,5/10; S53 9,75/10; S54 10/10; S55 9,75/10.
+- **Roadmap chính thức:** Phase 11 S51–S55 COMPLETED; Phase 12 S56–S60 Production-Grade DevOps Capstone, hiện tại là S56.
 
 ## Tổng kết S49–S53
 
@@ -22,12 +22,27 @@
 - Gitleaks chỉ quét working files trong lab, chưa kiểm tra Git history.
 - YAML workflow mới được kiểm tra cấu trúc cục bộ; không tạo kết quả CI giả.
 
-## Chuẩn bị S54 — Kubernetes Security Basics
+## Bàn giao S54 — Kubernetes Security Basics
 
-- Theo roadmap: RBAC, ServiceAccount, SecurityContext và NetworkPolicy.
-- Giải thích lý thuyết, cơ chế và cú pháp trước từng phần thực hành; phân biệt Windows, WSL và Ubuntu Server.
-- Kiểm tra context/namespace và trạng thái hiện tại trước thao tác; làm theo checkpoint nhỏ và xác minh output thật.
-- Chỉ một bài nghiệm thu cuối buổi gồm 7 câu trắc nghiệm và 2 câu tự luận trong phạm vi nội dung đã học.
-- Không đưa credentials, private key, kubeconfig quản trị hoặc Kubernetes Secret thật vào Git; không thay đổi tài nguyên đang chạy ngoài phạm vi đã thống nhất.
+- **Kết quả:** COMPLETED — 10/10 — PASS (7/7 trắc nghiệm, 3/3 tự luận), ngày 26/10/2026.
+- **RBAC:** Trong namespace `s54-rbac-lab`, `pod-reader` ServiceAccount nhận quyền `get/list/watch` trên Pods qua `pod-viewer` Role và RoleBinding. Trước binding `list pods=no`, sau binding `yes`; `get secrets=no`, `delete pods=no`; quyền list ở `staging` và `monitoring` đều `no`.
+- **ServiceAccount:** Pod `s54-identity-test` gọi Kubernetes API trực tiếp; `LIST_PODS_HTTP=200`, `GET_SECRET_HTTP=403`.
+- **SecurityContext:** Pod `s54-hardened` 1/1 Running; UID/GID 10001/10001, root filesystem ghi bị từ chối, token không mount, `CapEff=0`, `NoNewPrivs=1`, Seccomp 2.
+- **NetworkPolicy:** Baseline HTTP 200; default deny làm HTTP 000/exit 7; selective allow TCP/80 cho nhãn được duyệt phục hồi HTTP 200/exit 0; client không có nhãn tiếp tục HTTP 000/exit 7.
+- **Giới hạn:** Thử nghiệm trong namespace lab riêng; không khẳng định production cluster đã harden toàn diện. Chưa có bằng chứng cleanup tài nguyên lab.
 
-**S55:** Software Supply Chain Security — UPCOMING (SBOM, provenance, digest, image signing).
+## Bàn giao S55 — Software Supply Chain Security
+
+- **Kết quả:** COMPLETED — 9,75/10 — PASS (7/7 trắc nghiệm, 2,75/3 tự luận), ngày 26/10/2026.
+- **Digest/SBOM:** Hai Pod chạy `ghcr.io/stefanprodan/podinfo:6.15.0` có cùng imageID `sha256:ec73780a8425f59ea49f5bc8cdff0d598805a224fbaa1f86c67a244f250fa9da`. Trivy 0.76.1 tạo CycloneDX 1.7 cho Alpine 3.24.1, 123 components, exit 0; lệnh SBOM không bật vulnerability scan.
+- **Provenance:** Skopeo đọc OCI index amd64/arm64 cùng hai attestation; AMD64 manifest `sha256:72611294759dc6b304d1f3efa2d4b1de212ce422866244f31bc29f731e3b2079`. Attestation có SPDX SBOM và SLSA Provenance v1; blob integrity PASS; provenance ghi BuildKit/GitHub Actions run `33408245072`, source Podinfo revision `dd507173b7b75b2312a36cabe0de5f09c1ce69c8`, 3 dependencies.
+- **Image signing:** Cosign APT 2.6.2 không tìm artifact bằng `cosign tree`; Cosign v3.1.4 chính thức được binary-verify (exit 0), xác minh chữ ký Podinfo (exit 0), signer identity release workflow của tag 6.15.0 và issuer GitHub Actions. Certificate chain và transparency log được xác minh offline.
+- **Giới hạn:** Chưa xác minh độc lập chữ ký/danh tính phát hành của provenance; không kết luận toàn bộ build đã audit hoặc image không có CVE/backdoor/zero-day; chưa có admission policy bắt buộc verify signature. Không đưa binary, layer, SBOM hay provenance local lên GitHub.
+
+## S56 — Production-Grade DevOps Capstone (CURRENT SESSION)
+
+- **Trạng thái:** IN PROGRESS — Checkpoint 1: Infrastructure Baseline; chưa có output và chưa nghiệm thu. Giữ tiến độ ở 55/66 (83,3%); S57–S66 chưa học.
+- **Định hướng:** Tái sử dụng Flask + PostgreSQL từ S17; kế thừa unit test, CI/CD và Security Gates từ S18; triển khai ứng dụng trên K3s và GitOps; tích hợp Prometheus, Grafana, Loki, Alerting; thiết kế health checks, rollback, backup và runbooks. Tối ưu cho VM đơn node, không tuyên bố HA thực tế.
+- **Đã giao kiểm kê, đang chờ output:** `nproc`, `free -h`, `df -h /`, `sudo k3s kubectl get deploy,sts -A`.
+- **Checkpoint tiếp theo:** Đọc output thật để xác lập baseline tài nguyên và workload trước khi chọn quy mô thiết kế. Không tự điền CPU/RAM/disk/workload hoặc xác nhận checkpoint hoàn tất.
+- **Khung Phase 12 giữ nguyên:** S56–S60 Production-Grade DevOps Capstone; S61–S63 Multi-Environment Infrastructure, Disaster Recovery, High Availability Simulation; S64–S66 Portfolio Review, Technical Interview Preparation, CV & Career Coaching.

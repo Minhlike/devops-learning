@@ -104,14 +104,15 @@ flowchart LR
 >
 > **Kết quả nghiệm thu S48:** 7/7 MCQ, tự luận 3/3; tổng 10/10 — PASS. Không thi lại.
 
-### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — IN PROGRESS
+### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — COMPLETED (5/5)
 - **S51:** Container & Dependency Security (CVE, Severity, SCA, Trivy, container scanning, base image risk, patch strategy) — **COMPLETED — 10/10** (25/10/2026)
 - **S52:** IaC Security (Terraform, Checkov, S3, Security Groups, IAM) — **COMPLETED — 9,5/10** (26/10/2026)
 - **S53:** CI/CD Security (Secrets, SAST, dependency scanning, security gates) — **COMPLETED — 9,75/10** (26/10/2026)
-- **S54:** Kubernetes Security Basics (RBAC, ServiceAccount, SecurityContext, NetworkPolicy) — **NEXT**
-- **S55:** Software Supply Chain Security (SBOM, provenance, digest, image signing) — **UPCOMING**
+- **S54:** Kubernetes Security Basics (RBAC, ServiceAccount, SecurityContext, NetworkPolicy) — **COMPLETED — 10/10 — PASS** (26/10/2026)
+- **S55:** Software Supply Chain Security (SBOM, provenance, digest, image signing) — **COMPLETED — 9,75/10 — PASS** (26/10/2026)
 
-### Phase 12 — Capstone Projects & Job Readiness (S56 – S66) — UPCOMING
+### Phase 12 — Capstone Projects & Job Readiness (S56 – S66) — IN PROGRESS
 - **S56 – S60:** Production-Grade DevOps Capstone (End-to-End GitOps, Kubernetes Cluster, CI/CD, Observability stack)
+- **S56:** Production-Grade DevOps Capstone — **IN PROGRESS; CURRENT SESSION, Checkpoint 1 — Infrastructure Baseline, đang chờ output kiểm kê**. Chưa nghiệm thu và chưa tăng tiến độ lên 56/66.
 - **S61 – S63:** Multi-Environment Infrastructure & Disaster Recovery / High Availability Simulation
 - **S64 – S66:** Portfolio Review, Technical Interview Preparation, CV & Career Coaching (DevOps Fresher/Junior)

@@ -97,13 +97,15 @@
 
 ---
 
-## 7. Giai đoạn 11 — DevSecOps & Security Hardening (S51 – S55)
+## 7. Giai đoạn 11 — DevSecOps & Security Hardening (S51 – S55) — COMPLETED (5/5)
 
 - **S51:** Container & Dependency Security — **COMPLETED — 10/10** (25/10/2026); Trivy 0.76.1, Grype, Podinfo scanning, CVE/Severity/SCA, base image risk và patch strategy. Grype/Distroless/Security Gate là nội dung bổ sung; không thay tên/phạm vi chính thức.
 - **S52:** IaC Security — **COMPLETED — 9,5/10** (26/10/2026); Terraform 1.17.0, Checkov 3.3.30, Security Groups, S3, IAM.
 - **S53:** CI/CD Security — **COMPLETED — 9,75/10** (26/10/2026); workflow permissions, pull_request risks, Bandit, pip-audit, Gitleaks và security gates.
-- **S54:** Kubernetes Security Basics — **NEXT**; RBAC, ServiceAccount, SecurityContext, NetworkPolicy.
-- **S55:** Software Supply Chain Security — **UPCOMING**; SBOM, provenance, digest, image signing.
+- **S54:** Kubernetes Security Basics — **COMPLETED — 10/10 — PASS** (26/10/2026); RBAC, ServiceAccount, SecurityContext và NetworkPolicy. Lab giới hạn trong namespace riêng; không kết luận production cluster đã được harden toàn diện; chưa có bằng chứng cleanup tài nguyên lab.
+- **S55:** Software Supply Chain Security — **COMPLETED — 9,75/10 — PASS** (26/10/2026); image digest, CycloneDX SBOM, OCI attestation/provenance và xác minh chữ ký Podinfo bằng Cosign. Không kết luận image không có CVE/backdoor/zero-day hoặc toàn bộ quy trình build đã được kiểm toán; chưa có admission policy xác minh chữ ký.
 
 ## 8. Giai đoạn 12 — Capstone Projects & Job Readiness (S56 – S66)
-- **S56 – S66:** Capstone Projects & Job Readiness
+- **S56 – S60:** Production-Grade DevOps Capstone — S56 đang IN PROGRESS tại Checkpoint 1 — Infrastructure Baseline; đã giao kiểm kê nhưng chưa nhận output, chưa nghiệm thu.
+- **S61 – S63:** Multi-Environment Infrastructure, Disaster Recovery và High Availability Simulation — UPCOMING.
+- **S64 – S66:** Portfolio Review, Technical Interview Preparation, CV & Career Coaching — UPCOMING.
