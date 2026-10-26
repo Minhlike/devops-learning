@@ -1239,3 +1239,40 @@
 - **Cleanup:** Prometheus `/api/v1/rules?type=alert` trả `[]`; Alertmanager configuration check `CLEAN`; webhook listener đã dừng. Giữ Alertmanager, services và PVC.
 - **Đánh giá:** 7/7 trắc nghiệm; câu 8 tự luận 1.5/1.5; câu 9 1.5/1.5; tổng **10/10 — PASS**.
 - **Cấu hình trong repo:** `labs/s48-alerting/`. File baseline/notification/webhook listener nguyên bản trên Ubuntu Server không truy cập được do SSH timeout; không tạo bản thay thế giả.
+
+## [2026-10-25] Session 49: SLI, SLO & Error Budget
+- **Trạng thái:** COMPLETED — **10/10**.
+- **Metric và truy vấn:** Dùng Prometheus cùng HTTP metrics của Podinfo để thực hành SLI, SLO, Error Budget và Burn Rate. HTTP 2xx SLI đạt 100% trong cửa sổ quan sát 30 phút; HTTP RPS 5 phút khoảng `0.2337`; Burn Rate 5 phút bằng `0`.
+- **Giới hạn diễn giải:** SLO 99,9% là mục tiêu giả định. Không suy diễn đạt SLO 30 ngày từ cửa sổ quan sát ngắn hoặc retention Prometheus 8 giờ.
+
+## [2026-10-25] Session 50: Incident Response & Runbooks
+- **Trạng thái:** COMPLETED — **9/10**.
+- **Thực hành:** Incident Response, Triage, Severity, Mitigation, Recovery, Runbooks và Blameless Postmortem. Kiểm tra Deployment, Service, EndpointSlice, Prometheus và Loki.
+- **Xác minh workload:** Hai endpoint Podinfo `ready=true`, HTTP 200; quan sát Deployment revisions 3 và 4.
+- **Giới hạn:** Không tạo hoặc ghi nhận incident/postmortem thực tế khi chưa có bằng chứng.
+
+## [2026-10-25] Session 51: Container & Dependency Security
+- **Trạng thái:** COMPLETED — **10/10**.
+- **Phạm vi chính thức:** CVE, Severity, SCA, Trivy, container scanning, base image risk và patch strategy.
+- **Thực hành bổ sung:** Trivy 0.76.1, Grype và Podinfo image scanning; phân tích vulnerability matches/CVE và Severity. Grype Security Gate `grype --only-fixed --fail-on critical` trả `CI_GATE_EXIT=2`.
+- **Giới hạn:** Không thay đổi Deployment đang chạy. Grype, Distroless và Security Gate là nội dung bổ sung, không thay tên hoặc phạm vi chính thức S51.
+
+## [2026-10-26] Session 52: IaC Security
+- **Trạng thái:** COMPLETED — **9,5/10**.
+- **Môi trường/công cụ:** Ubuntu Server `lab-server`; Terraform 1.17.0; Checkov 3.3.30.
+- **Security Groups:** Phát hiện SSH ingress `0.0.0.0/0`, giới hạn về CIDR `/32`; Checkov PASS.
+- **S3:** Sửa public-read ACL và bật Block Public Access; 5/5 PASS. S3 Versioning `CKV_AWS_21` PASS.
+- **IAM:** Thay `Action="*"`, `Resource="*"` bằng `s3:GetObject` trên bucket cụ thể; 9/9 PASS.
+- **Kết quả scan/gate:** Full scan 24 PASS, 7 FAIL trước khi sửa Versioning; các cảnh báo ngoài baseline chưa được nghiệm thu là đã sửa. Baseline Security Gate 9 PASS/0 FAIL; negative test `NEGATIVE_GATE_EXIT=1`; recovery test `RECOVERY_GATE_EXIT=0`.
+- **Đánh giá:** 7/7 MCQ, tự luận 2,5/3; tổng 9,5/10.
+- **Giới hạn:** Không ghi nhận triển khai AWS thật hoặc đã khắc phục toàn bộ cảnh báo Checkov.
+
+## [2026-10-26] Session 53: CI/CD Security
+- **Trạng thái:** COMPLETED — **9,75/10**.
+- **Workflow mẫu:** Thay `permissions: write-all` bằng `contents: read`; phân biệt rủi ro `pull_request` và `pull_request_target`.
+- **SAST:** Bandit 1.9.4 phát hiện Command Injection B602 HIGH; sửa bằng `subprocess.run([...], check=True)` không dùng shell. Full SAST còn 3 LOW, 0 MEDIUM, 0 HIGH; `SAST_GATE_EXIT=0`.
+- **Dependency scan:** pip-audit 2.10.1 phát hiện 10 lượt vulnerability với `requests==2.19.1`; nâng lên `2.34.2`, direct scan không còn phát hiện. Lệnh scan dùng `--no-deps`.
+- **Secret scan:** Gitleaks 8.16.0 phát hiện một token giả và trả exit 1; sau khi xóa trả exit 0. Combined Gitleaks + Bandit + pip-audit gate trả `CICD_GATE_EXIT=0`.
+- **Đánh giá:** 7/7 MCQ, tự luận 2,75/3; tổng 9,75/10.
+- **Giới hạn:** Workflow GitHub Actions chưa chạy thực tế và required checks chưa xác minh; pip-audit chưa quét dependency tree đầy đủ; ba cảnh báo Bandit LOW còn tồn tại; Gitleaks chỉ quét working files, chưa quét Git history. YAML workflow mới được kiểm tra cục bộ; không tạo CI result giả.
+- **Chuyển tiếp:** Hoàn thành 53/66 (80,3%); Phase 10 COMPLETED, Phase 11 IN PROGRESS; S54 — Kubernetes Security Basics là NEXT.

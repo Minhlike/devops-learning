@@ -92,12 +92,18 @@
 | **S46** | Grafana Monitoring & Practical Dashboards | **COMPLETED — 9.8/10** | [`labs/s46-grafana/`](../labs/s46-grafana/) | Ubuntu Server 26.04.1, K3s, Podinfo, Prometheus SD, Grafana; dashboard 4 panels | 7/7 MCQ, essay 2.8/3; nghiệm thu 24/10/2026; không thi lại |
 | **S47** | Logging & Centralized Logs | **COMPLETED — 9.8/10** | [`labs/s47-centralized-logging/`](../labs/s47-centralized-logging/) | Loki Monolithic, Fluent Bit DaemonSet, LogQL, Grafana Loki datasource | API trả về 4 log Podinfo; Grafana Explore xác nhận; local-path single-node, buffer không persistent |
 | **S48** | Alerting & Notifications | **COMPLETED — 10/10** | [`labs/s48-alerting/`](../labs/s48-alerting/) | Prometheus rules, Alertmanager lifecycle/routing/grouping/silence/inhibition, webhook | Pending → Firing; suppressed/inhibited; webhook HTTP 200; rules và thử nghiệm đã cleanup |
-| **S49** | SLI, SLO & Error Budget | **NEXT — THEORY INTRODUCED** | Kế hoạch tại [`state/NEXT_SESSION.md`](../state/NEXT_SESSION.md) | SLI, SLO 99.9%, Error Budget, Burn Rate | Chưa có lab, truy vấn metric thực tế hoặc nghiệm thu |
-| **S50** | Incident Response & Runbooks | **UPCOMING** | Lộ trình chuẩn | Runbooks, quy trình điều tra & Blameless Postmortem | Mốc kết thúc Phase 10 |
+| **S49** | SLI, SLO & Error Budget | **COMPLETED — 10/10** | Ghi nhận tại [`state/LEARNING_LOG.md`](../state/LEARNING_LOG.md) | HTTP 2xx SLI, SLO, Error Budget, Burn Rate | 30 phút đạt 100%; RPS 5 phút ≈0,2337; burn rate 5 phút = 0; mục tiêu SLO 99,9% giả định, không suy rộng 30 ngày |
+| **S50** | Incident Response & Runbooks | **COMPLETED — 9/10** | Ghi nhận tại [`state/LEARNING_LOG.md`](../state/LEARNING_LOG.md) | Triage, severity, mitigation, recovery, runbooks, postmortem | Hai Podinfo endpoint `ready=true`/HTTP 200; kiểm tra revisions 3 và 4; không ghi nhận incident/postmortem thực tế giả |
 
 ---
 
-## 7. Giai đoạn 11 & 12 — Lộ trình Kế tiếp (S51 – S66)
+## 7. Giai đoạn 11 — DevSecOps & Security Hardening (S51 – S55)
 
-- **S51 – S55:** DevSecOps (Trivy, RBAC, PSS/PSA, HashiCorp Vault)
+- **S51:** Container & Dependency Security — **COMPLETED — 10/10** (25/10/2026); Trivy 0.76.1, Grype, Podinfo scanning, CVE/Severity/SCA, base image risk và patch strategy. Grype/Distroless/Security Gate là nội dung bổ sung; không thay tên/phạm vi chính thức.
+- **S52:** IaC Security — **COMPLETED — 9,5/10** (26/10/2026); Terraform 1.17.0, Checkov 3.3.30, Security Groups, S3, IAM.
+- **S53:** CI/CD Security — **COMPLETED — 9,75/10** (26/10/2026); workflow permissions, pull_request risks, Bandit, pip-audit, Gitleaks và security gates.
+- **S54:** Kubernetes Security Basics — **NEXT**; RBAC, ServiceAccount, SecurityContext, NetworkPolicy.
+- **S55:** Software Supply Chain Security — **UPCOMING**; SBOM, provenance, digest, image signing.
+
+## 8. Giai đoạn 12 — Capstone Projects & Job Readiness (S56 – S66)
 - **S56 – S66:** Capstone Projects & Job Readiness
