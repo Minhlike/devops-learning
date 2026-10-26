@@ -1,10 +1,12 @@
 # CURRENT LEARNING PHASE
 
-- **Current Phase:** PHASE 10 — Observability & Site Reliability Engineering (SRE)
-- **Current Status:** S48 — Alerting **COMPLETED — 10/10 — PASS** ngày 24/10/2026; 7/7 trắc nghiệm, tự luận 3/3; không thi lại. Tiếp theo: S49 — SLI, SLO & Error Budget (đã giới thiệu lý thuyết; chưa có lab hoặc nghiệm thu).
-- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**; S47 **COMPLETED — 9.8/10**; S48 **COMPLETED — 10/10**.
-- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind. Các tồn đọng không chặn S49.
-- **Current Week:** Tuần 12 (Nghiệm thu S47–S48 ngày 24/10/2026)
+- **Current Phase:** PHASE 11 — DevSecOps & Security Hardening (Phase 10 đã hoàn tất).
+- **Current Status:** S53 — CI/CD Security **COMPLETED — 9,75/10** ngày 26/10/2026. Tiếp theo: S54 — Kubernetes Security Basics.
+- **Tiến độ:** **53/66 buổi (80,3%)**.
+- **Kết quả gần nhất:** S43 **COMPLETED — 9.3/10**; S44 **COMPLETED — 9.6/10**; S45 **COMPLETED — 9.7/10**; S46 **COMPLETED — 9.8/10**; S47 **COMPLETED — 9.8/10**; S48 **COMPLETED — 10/10**; S49 **COMPLETED — 10/10**; S50 **COMPLETED — 9/10**; S51 **COMPLETED — 10/10**; S52 **COMPLETED — 9,5/10**; S53 **COMPLETED — 9,75/10**.
+- **Tồn đọng độc lập:** S40 HPA CPU `<unknown>/50%` chưa xác định root cause; S42 Gateway External LoadBalancer `AddressNotAssigned` trong Kind.
+- **Giới hạn xác minh S53:** GitHub Actions chưa chạy; pip-audit dùng `--no-deps`; còn 3 cảnh báo Bandit LOW; Gitleaks chưa quét Git history. Chi tiết tại `state/LEARNING_LOG.md`.
+- **Current Week:** Cập nhật đến S53 (26/10/2026)
 - **Completed Outputs:**
   1. **Buổi 13 — Python Fundamentals for DevOps Automation:**
      - Sử dụng `pathlib` với `exists()`, `is_file()`, `read_text()`, `glob()` xử lý đường dẫn an toàn.
@@ -768,5 +770,15 @@
 - **S47:** COMPLETED — 9.8/10 — PASS; Loki 19.2.0/3.7.9 Monolithic PVC 2Gi và Fluent Bit 0.58.3/5.1.3 DaemonSet. Loki API trả 4 log Podinfo; Grafana Explore và `count_over_time` đã xác minh. Giới hạn: local-path single-node, chưa HA/backup, Fluent Bit buffer không persistent.
 - **S48:** COMPLETED — 10/10 — PASS; Alertmanager StatefulSet 1/1, Pod 2/2, PVC 256Mi; Prometheus discovery endpoint active. Đã thực hành Pending → Firing, routing/grouping, silence, inhibition và webhook HTTP 200. Sau cleanup rules trả `[]`, Alertmanager config CLEAN, listener dừng; dịch vụ/PVC được giữ.
 - **Nghiệm thu:** S47 7/7 MCQ và 2.8/3 essay; S48 7/7 MCQ và 3/3 essay. Không thi lại.
-- **Chuyển tiếp:** S49 SLI/SLO/Error Budget là NEXT; đã giới thiệu lý thuyết và ví dụ SLO 99.9%, chưa có lab, metric query, Error Budget/Burn Rate calculation hoặc assessment.
+- **Bàn giao tại thời điểm ghi nhận:** S49 khi đó được lên kế hoạch tiếp; sau đó đã COMPLETED — 10/10 ngày 25/10/2026.
 - **Cấu hình:** S47 và phần cấu hình truy xuất được của S48 tại `labs/s47-centralized-logging/` và `labs/s48-alerting/`. Ubuntu SSH bị timeout nên không lưu file listener, notification endpoint hoặc baseline không có trong workspace.
+
+## [2026-10-26] Hoàn tất S49–S53 và bàn giao S54
+
+- **Tiến độ:** 53/66 buổi (80,3%). Phase 10 COMPLETED; Phase 11 IN PROGRESS.
+- **S49:** COMPLETED — 10/10 (25/10/2026). HTTP 2xx SLI 100%/30 phút; RPS 5 phút khoảng 0,2337; Burn Rate 5 phút bằng 0. SLO 99,9% giả định; không suy rộng thành kết quả 30 ngày.
+- **S50:** COMPLETED — 9/10 (25/10/2026). Triage, Severity, Mitigation, Recovery, Runbooks; hai endpoint Podinfo ready và HTTP 200; revisions 3/4. Không tạo incident/postmortem không có bằng chứng.
+- **S51:** COMPLETED — 10/10 (25/10/2026). Roadmap chính thức là Container & Dependency Security; Trivy/Grype và Security Gate được lưu là thực hành, không đổi tên buổi.
+- **S52:** COMPLETED — 9,5/10 (26/10/2026). Terraform/Checkov; kiểm soát Security Group, S3, IAM; baseline gate 9 PASS/0 FAIL; giữ rõ giới hạn không triển khai AWS thật và không sửa toàn bộ cảnh báo ngoài baseline.
+- **S53:** COMPLETED — 9,75/10 (26/10/2026). CI/CD security với permissions tối thiểu, Bandit, pip-audit và Gitleaks; ghi rõ workflow chưa chạy trên GitHub và các giới hạn scan.
+- **Tiếp theo:** S54 — Kubernetes Security Basics (RBAC, ServiceAccount, SecurityContext, NetworkPolicy).

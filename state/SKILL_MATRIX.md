@@ -8,6 +8,11 @@
 | Observability | Grafana Data Source, Dashboard & Panels (S46) | Hoàn thành buổi học | 2026-10-24 | Dashboard 4 panel; assessment 9.8/10 PASS; 7/7 MCQ, essays 2.8/3; labs/s46-grafana/README.md |
 | Observability | Centralized Logging with Loki, Fluent Bit & LogQL (S47) | Hoàn thành buổi học | 2026-10-24 | Loki API trả 4 log Podinfo; Grafana Explore xác minh; assessment 9.8/10 PASS; labs/s47-centralized-logging/ |
 | Observability | Prometheus Alerting & Alertmanager (S48) | Hoàn thành buổi học | 2026-10-24 | Pending/Firing, routing, grouping, silence, inhibition, webhook HTTP 200; assessment 10/10 PASS; labs/s48-alerting/ |
+| SRE | SLI, SLO & Error Budget (S49) | Hoàn thành buổi học | 2026-10-25 | HTTP 2xx SLI 100%/30 phút; RPS 5 phút ≈0,2337; burn rate 5 phút = 0; 10/10 |
+| SRE | Incident Response & Runbooks (S50) | Hoàn thành buổi học | 2026-10-25 | Triage, severity, mitigation/recovery; Podinfo endpoints 200; revisions 3/4; 9/10 |
+| DevSecOps | Container & Dependency Security (S51) | Hoàn thành buổi học | 2026-10-25 | Trivy 0.76.1, Grype, Podinfo/CVE scan; Security Gate exit 2; 10/10 |
+| DevSecOps | IaC Security (S52) | Hoàn thành buổi học | 2026-10-26 | Terraform 1.17.0, Checkov 3.3.30, SG/S3/IAM controls; baseline gate 9 PASS/0 FAIL; 9,5/10 |
+| DevSecOps | CI/CD Security (S53) | Hoàn thành buổi học | 2026-10-26 | Bandit, pip-audit, Gitleaks; combined gate exit 0; documented coverage limits; 9,75/10 |
 | OS & Computer | Hardware & OS Basics | Làm được độc lập | 2026-07-31 | Diagnostic test + Cài đặt WSL2 Ubuntu 24.04 thành công |
 | OS & Computer | Filesystem Mounting (`/mnt/d`) | Làm được độc lập | 2026-07-31 | Lab 1: Truy cập `/mnt/d/Devops`, chạy `pwd`, `ls -la` |
 | OS & Computer | Case Sensitivity (ext4 vs NTFS) | Làm được độc lập | 2026-07-31 | Failure Injection 1: Thử `cat` file hoa/thường trên ext4 và NTFS |

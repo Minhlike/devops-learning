@@ -88,15 +88,15 @@ flowchart LR
 - **S43:** Helm Fundamentals (Charts, Values, Templates, Release Lifecycle & Helm Upgrades) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,3/10)** (19/10/2026)
 - **S44:** Kubernetes Troubleshooting & Cluster Defense (Cluster & Workload Recovery Simulation) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,6/10)** (21/10/2026)
 
-> **Mốc quan trọng (Milestone):** Đã hoàn tất 100% Giai đoạn 9 (Kubernetes & Helm). Phase 10 đã hoàn thành S45–S48; S49 là buổi tiếp theo.
+> **Mốc quan trọng (Milestone):** Phase 9 — Kubernetes & Helm và Phase 10 — Observability & SRE đã hoàn tất.
 
-### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — CURRENT PHASE
+### Phase 10 — Observability & Site Reliability Engineering (S45 – S50) — COMPLETED
 - **S45:** Prometheus Fundamentals & Metrics (Metrics collection, PromQL, Exporters, Pull model) — **COMPLETED — LEARNING & ASSESSMENT PASS (9,7/10)** (21/10/2026)
 - **S46:** Grafana Monitoring & Practical Dashboards — **COMPLETED — 9.8/10** (24/10/2026)
 - **S47:** Logging & Centralized Logs (Log aggregation, Fluent Bit/Loki, LogQL, Log shipping) — **COMPLETED — 9.8/10 — PASS** (24/10/2026)
 - **S48:** Alerting (Alertmanager, Alerting rules, Routing, Grouping, Inhibit rules, Notification channels) — **COMPLETED — 10/10 — PASS** (24/10/2026)
-- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **NEXT / THEORY INTRODUCED**; chưa có lab hoặc nghiệm thu.
-- **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem) — **UPCOMING**
+- **S49:** SLI, SLO & Error Budget (Service Level Indicators/Objectives, Error Budget calculation, Burn rate) — **COMPLETED — 10/10** (25/10/2026)
+- **S50:** Incident Response & Runbooks (Incident Lifecycle, Troubleshooting runbooks, Blameless Postmortem) — **COMPLETED — 9/10** (25/10/2026)
 
 > **Kết quả nghiệm thu S46:** 7/7 MCQ (7 điểm), tự luận 2.8/3; tổng 9.8/10 — PASS. Không thi lại. Thực nghiệm chủ động gây lỗi ứng dụng/No Data được bỏ theo yêu cầu, không phải điều kiện nghiệm thu.
 >
@@ -104,12 +104,12 @@ flowchart LR
 >
 > **Kết quả nghiệm thu S48:** 7/7 MCQ, tự luận 3/3; tổng 10/10 — PASS. Không thi lại.
 
-### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — UPCOMING
-- **S51:** Container & Image Security Scanning (Trivy, Grype, Base image hardening, Distroless)
-- **S52:** Kubernetes Security & Hardening (RBAC, ServiceAccounts, Least privilege, NetworkPolicies)
-- **S53:** Pod Security Standards & Admission Controllers (PSS/PSA, OPA/Kyverno enforcement)
-- **S54:** Secrets Management in Kubernetes (HashiCorp Vault / External Secrets Operator)
-- **S55:** CI/CD Security Pipeline Integration (SAST, DAST, Secret scanning, Dependency check)
+### Phase 11 — DevSecOps & Security Hardening (S51 – S55) — IN PROGRESS
+- **S51:** Container & Dependency Security (CVE, Severity, SCA, Trivy, container scanning, base image risk, patch strategy) — **COMPLETED — 10/10** (25/10/2026)
+- **S52:** IaC Security (Terraform, Checkov, S3, Security Groups, IAM) — **COMPLETED — 9,5/10** (26/10/2026)
+- **S53:** CI/CD Security (Secrets, SAST, dependency scanning, security gates) — **COMPLETED — 9,75/10** (26/10/2026)
+- **S54:** Kubernetes Security Basics (RBAC, ServiceAccount, SecurityContext, NetworkPolicy) — **NEXT**
+- **S55:** Software Supply Chain Security (SBOM, provenance, digest, image signing) — **UPCOMING**
 
 ### Phase 12 — Capstone Projects & Job Readiness (S56 – S66) — UPCOMING
 - **S56 – S60:** Production-Grade DevOps Capstone (End-to-End GitOps, Kubernetes Cluster, CI/CD, Observability stack)
