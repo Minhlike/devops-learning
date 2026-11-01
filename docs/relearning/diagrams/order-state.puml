@@ -1,0 +1,10 @@
+@startuml
+title Order target lifecycle v1 (DESIGNED)
+[*] --> Created : transaction commit
+Created --> Confirmed : validation / inventory accepted
+Created --> Cancelled : cancellation accepted
+Confirmed --> Fulfilled : durable fulfillment confirmation
+Confirmed --> Cancelled : policy allows before fulfillment
+Fulfilled --> [*]
+Cancelled --> [*]
+@enduml

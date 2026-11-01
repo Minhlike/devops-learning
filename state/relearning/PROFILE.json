@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "track": "relearning",
+  "legacy_profile": "state/STUDENT_PROFILE.md",
+  "workspace": "D:/Devops",
+  "constraints": [
+    "Không tự thay đổi hạ tầng",
+    "Không tạo cloud trả phí trong refactor",
+    "Một stack nhỏ mỗi lần",
+    "Đọc output thật"
+  ],
+  "style": [
+    "Một khái niệm mỗi bước",
+    "Thường 1–2 lệnh",
+    "Independent lab không có lời giải"
+  ],
+  "goals": [
+    "DevOps thực chiến",
+    "Chứng chỉ: chỉ map sau khi kiểm blueprint"
+  ]
+}

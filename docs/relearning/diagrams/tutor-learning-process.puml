@@ -1,0 +1,48 @@
+@startuml
+title Tutor learning workflow v1
+|AI Tutor|
+start
+:Load current checkpoint and evidence;
+if (Prerequisites and authored content available?) then (yes)
+repeat
+:Teach one model;
+|Student|
+:Predict and explain;
+|AI Tutor|
+:Give guided task, usually 1-2 commands;
+|Student|
+:Run and submit real output;
+|Evaluator|
+:Verify scope of output;
+repeat while (Need bounded remediation and student agrees?) is (yes) not (no)
+if (Guided evidence sufficient?) then (yes)
+|AI Tutor|
+:Assign independent variant without solution;
+|Student|
+:Work independently;
+|Evaluator|
+:Verify submitted artifact and reasoning;
+if (Required evidence sufficient?) then (yes)
+|Evidence Store|
+:Apply authorized proposal, validate, commit;
+:Schedule review;
+else (no)
+|AI Tutor|
+:Record gap, offer targeted remediation or pause;
+endif
+else (no)
+|AI Tutor|
+:Explain gap; offer remediation or pause;
+endif
+else (no)
+:Stop and report blocked prerequisite;
+endif
+|Student|
+if (Pause requested?) then (yes)
+|Evidence Store|
+:Save resume_state and verified checkpoint;
+|AI Tutor|
+:Resume later from saved state, retain valid evidence;
+endif
+stop
+@enduml

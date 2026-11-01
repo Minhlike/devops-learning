@@ -1,0 +1,122 @@
+[
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:109",
+    "manifest": "state/relearning/LEGACY_BASELINE.json",
+    "line": 109,
+    "referenced_path": "labs/s39-kubernetes-config/pod-secret-env.yaml",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:110",
+    "manifest": "state/relearning/LEGACY_BASELINE.json",
+    "line": 110,
+    "referenced_path": "labs/s39-kubernetes-config/pod-secret-volume.yaml",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:112",
+    "manifest": "state/relearning/LEGACY_BASELINE.json",
+    "line": 112,
+    "referenced_path": "labs/s39-kubernetes-config/secret-app.yaml",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:156",
+    "manifest": "state/relearning/LEGACY_BASELINE.json",
+    "line": 156,
+    "referenced_path": "labs/s02-linux-filesystem/storage/uploads/access.log",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:86",
+    "manifest": "state/relearning/LEGACY_BASELINE.json",
+    "line": 86,
+    "referenced_path": "labs/s35-ansible-multihost/s35_key",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:87",
+    "manifest": "state/relearning/LEGACY_BASELINE.json",
+    "line": 87,
+    "referenced_path": "labs/s35-ansible-multihost/s35_key.pub",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:109",
+    "manifest": "state/relearning/LEGACY_INITIAL_BASELINE.json",
+    "line": 109,
+    "referenced_path": "labs/s39-kubernetes-config/pod-secret-env.yaml",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:110",
+    "manifest": "state/relearning/LEGACY_INITIAL_BASELINE.json",
+    "line": 110,
+    "referenced_path": "labs/s39-kubernetes-config/pod-secret-volume.yaml",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:112",
+    "manifest": "state/relearning/LEGACY_INITIAL_BASELINE.json",
+    "line": 112,
+    "referenced_path": "labs/s39-kubernetes-config/secret-app.yaml",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:156",
+    "manifest": "state/relearning/LEGACY_INITIAL_BASELINE.json",
+    "line": 156,
+    "referenced_path": "labs/s02-linux-filesystem/storage/uploads/access.log",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:86",
+    "manifest": "state/relearning/LEGACY_INITIAL_BASELINE.json",
+    "line": 86,
+    "referenced_path": "labs/s35-ansible-multihost/s35_key",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  },
+  {
+    "fingerprint": "817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:87",
+    "manifest": "state/relearning/LEGACY_INITIAL_BASELINE.json",
+    "line": 87,
+    "referenced_path": "labs/s35-ansible-multihost/s35_key.pub",
+    "classification": "false_positive_checksum",
+    "rule": "generic-api-key",
+    "checksum_algorithm": "sha256",
+    "checksum_matches_local": true
+  }
+]

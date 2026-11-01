@@ -1,0 +1,1266 @@
+{
+  "schema_version": 1,
+  "track": "relearning",
+  "lessons": {
+    "R-S14-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S14-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S15-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S15-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S16-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S16-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S17-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S17-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S18-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S18-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S19-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S19-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S20-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S20-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S21-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S21-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S22-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S22-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S23-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S23-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S24-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S24-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S25-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S25-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S26-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S26-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S27-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S27-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S28-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S28-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S29-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S29-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S30-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S30-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S31-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S31-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S32-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S32-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S33-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S33-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S34-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S34-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S35-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S35-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S36-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S36-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S37-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S37-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S38-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S38-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S39-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S39-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S40-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S40-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S41-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S41-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S42-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S42-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S43-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S43-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S44-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S44-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S45-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S45-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S46-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S46-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S47-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S47-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S48-C01": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    },
+    "R-S48-C02": {
+      "status": "not_started",
+      "guided_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "independent_lab": {
+        "status": "not_started",
+        "evidence_ids": []
+      },
+      "operational_check": {
+        "status": "not_required",
+        "evidence_ids": []
+      },
+      "learning_gaps": [],
+      "last_verified_at": null,
+      "next_review_at": null
+    }
+  }
+}

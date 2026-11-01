@@ -1,0 +1,30 @@
+[
+  {
+    "file": "gitleaks.zip",
+    "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_windows_x64.zip",
+    "algorithm": "sha256",
+    "digest": "3f1a35578631dbfe633cc5b49e6c906e55ff14a4bfd7336a10fb27fe33b6dcd2",
+    "verified": true
+  },
+  {
+    "file": "plantuml.jar",
+    "url": "https://github.com/plantuml/plantuml/releases/download/v1.2026.9/plantuml.jar",
+    "algorithm": "sha256",
+    "digest": "aa4a1d06f8911c4b842beff4828dd955be431692b631a312d04c0e9fab9581de",
+    "verified": true
+  },
+  {
+    "file": "go.zip",
+    "url": "https://go.dev/dl/go1.27.3.windows-amd64.zip",
+    "algorithm": "sha256",
+    "digest": "f26081f438319757f8a1b46d7d0b2c5ec7583d4038e485e0aa725cfde7885fff",
+    "verified": true
+  },
+  {
+    "file": "maven.zip",
+    "url": "https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.11/apache-maven-3.9.11-bin.zip",
+    "algorithm": "sha512",
+    "digest": "03e2d65d4483a3396980629f260e25cac0d8b6f7f2791e4dc20bc83f9514db8d0f05b0479e699a5f34679250c49c8e52e961262ded468a20de0be254d8207076",
+    "verified": true
+  }
+]

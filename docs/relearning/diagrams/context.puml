@@ -1,0 +1,7 @@
+@startuml
+!include <C4/C4_Context>
+title OrderOps target context v1 (DESIGNED)
+Person(customer, "Customer")
+System(orderops, "OrderOps", "Orders, processing and authorized reporting")
+Rel(customer, orderops, "Creates and reads orders", "HTTPS")
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+!include <C4/C4_Component>
+title Java target components v1 (DESIGNED)
+Container_Boundary(api,"order-api") {
+Component(controller,"OrderController","Spring MVC","DTO validation, request ID")
+Component(service,"OrderService","Java","Transaction and business invariants")
+Component(repo,"OrderRepository","JDBC","Parameterized SQL")
+}
+ContainerDb(db,"PostgreSQL","SQL","Orders + outbox")
+Rel(controller,service,"Create/read")
+Rel(service,repo,"Persist order + event atomically")
+Rel(repo,db,"SQL")
+@enduml

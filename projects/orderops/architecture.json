@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "maturity": "DESIGNED",
+  "components": [
+    {
+      "id": "order-api",
+      "language": "Java",
+      "implementation": "health checkpoint"
+    },
+    {
+      "id": "reporting",
+      "language": "Python",
+      "implementation": "CSV summarizer"
+    },
+    {
+      "id": "event-worker",
+      "language": "Go",
+      "implementation": "in-memory lifecycle checkpoint"
+    },
+    {
+      "id": "database",
+      "language": "SQL",
+      "implementation": "contract only"
+    }
+  ],
+  "diagrams": [
+    "docs/relearning/diagrams/context.puml",
+    "docs/relearning/diagrams/containers.puml",
+    "docs/relearning/diagrams/components.puml",
+    "docs/relearning/diagrams/create-order.puml",
+    "docs/relearning/diagrams/order-state.puml",
+    "docs/relearning/diagrams/vm-deployment.puml",
+    "docs/relearning/diagrams/kubernetes-deployment.puml",
+    "docs/relearning/diagrams/data-model.puml",
+    "docs/relearning/diagrams/cicd.puml",
+    "docs/relearning/diagrams/observability.puml"
+  ]
+}

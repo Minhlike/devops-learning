@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Relearning progress v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "track",
+    "lessons"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "track": {
+      "const": "relearning"
+    },
+    "lessons": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "status",
+          "guided_lab",
+          "independent_lab",
+          "operational_check",
+          "learning_gaps",
+          "last_verified_at",
+          "next_review_at"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "not_started",
+              "theory",
+              "model_understood",
+              "guided_lab",
+              "guided_passed",
+              "independent_lab",
+              "independent_passed",
+              "operational_check",
+              "acceptance",
+              "needs_remediation",
+              "mastered",
+              "paused"
+            ]
+          },
+          "guided_lab": {
+            "$ref": "#/$defs/checkpoint"
+          },
+          "independent_lab": {
+            "$ref": "#/$defs/checkpoint"
+          },
+          "operational_check": {
+            "$ref": "#/$defs/checkpoint"
+          },
+          "learning_gaps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_verified_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "next_review_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "checkpoint": {
+      "type": "object",
+      "required": [
+        "status",
+        "evidence_ids"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not_started",
+            "in_progress",
+            "passed",
+            "not_required"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

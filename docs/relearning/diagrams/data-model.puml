@@ -1,0 +1,34 @@
+@startuml
+title Target ERD v1 (DESIGNED)
+entity products {
+*id : UUID <<PK>>
+--
+price : decimal
+currency : char(3)
+}
+entity orders {
+*id : UUID <<PK>>
+--
+idempotency_key : text <<UNIQUE>>
+status : text
+}
+entity order_items {
+*order_id : UUID <<FK>>
+*product_id : UUID <<FK>>
+--
+quantity : integer
+}
+entity order_outbox {
+*event_id : UUID <<PK>>
+--
+order_id : UUID <<FK>>
+lease_until : timestamptz
+}
+entity processed_events {
+*event_id : UUID <<PK,FK>>
+}
+orders ||--|{ order_items
+products ||--o{ order_items
+orders ||--o{ order_outbox
+order_outbox ||--o| processed_events
+@enduml

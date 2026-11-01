@@ -1,0 +1,23 @@
+@startuml
+title Create order target v1 (DESIGNED)
+actor Customer
+participant "Java API" as API
+database PostgreSQL as DB
+participant "Go worker" as W
+Customer -> API: POST /orders (idempotency key)
+API -> DB: BEGIN; check key; insert order + outbox
+alt transaction fails
+DB --> API: error / rollback
+API --> Customer: 4xx or 503, no success claim
+else committed
+DB --> API: committed order ID
+API --> Customer: 201 (or replay 200)
+W -> DB: claim event lease
+DB --> W: event_id + order_id
+W -> DB: durable idempotent effect + ack
+note over W,DB
+Crash after effect can cause redelivery;
+no exactly-once claim
+end note
+end
+@enduml

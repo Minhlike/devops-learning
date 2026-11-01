@@ -1,0 +1,28 @@
+@startuml
+title Tutor read-only versus writer handoff v1
+actor Student
+participant "ChatGPT Tutor" as Tutor
+participant "Curriculum Reader" as Reader
+participant "Assessment Engine" as Assessment
+participant "State Validator" as Validator
+database "Evidence Store / Git" as Store
+Tutor -> Reader : Read current state, catalog and authored lesson
+Reader -> Store : Read by commit SHA
+Store --> Tutor : Verified checkpoint and pending gaps
+Tutor -> Student : Guided task, then independent variant
+Student --> Tutor : Output / artifact references
+Tutor -> Assessment : Assess evidence within its actual scope
+Assessment --> Tutor : Gaps / acceptance proposal
+alt Tutor has no write capability
+Tutor --> Student : Structured proposal + base SHA; not saved
+else authorized writer available
+Tutor -> Validator : Check transition, hashes and prerequisites
+Validator --> Tutor : Accept or precise errors
+Tutor -> Store : Commit only accepted update
+Store --> Student : New commit SHA (proof of persistence)
+end
+note over Tutor,Store
+Interrupted session resumes verified checkpoints;
+never infer persistence from conversation.
+end note
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+title Telemetry target v1 (DESIGNED)
+component "Java / Go / Python" as app
+component "Metric endpoint/exporter" as metric
+component "Structured logs" as log
+component Prometheus as prom
+component "Log collector/backend" as logs
+component Grafana as graf
+component Alertmanager as alert
+actor Operator
+app --> metric : counters / histogram
+app --> log : request/event/snapshot ID
+prom --> metric : scrape
+log --> logs : collect with retention policy
+graf --> prom : query
+graf --> logs : query
+prom --> alert : firing/resolved
+alert --> Operator : route actionable alert
+@enduml
