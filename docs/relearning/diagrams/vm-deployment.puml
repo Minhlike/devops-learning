@@ -11,6 +11,8 @@ artifact "Python scheduled report (optional)" as report
 api --> db : SQL
 worker --> db : outbox
 report --> db : read-only snapshot
-note bottom of VM : One host is a shared failure domain.
+note bottom of VM
+One host is a shared failure domain.
 Backup must leave this host.
+end note
 @enduml

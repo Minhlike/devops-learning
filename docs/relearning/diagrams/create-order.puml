@@ -15,7 +15,9 @@ API --> Customer: 201 (or replay 200)
 W -> DB: claim event lease
 DB --> W: event_id + order_id
 W -> DB: durable idempotent effect + ack
-note over W,DB: Crash after effect can cause redelivery;
+note over W,DB
+Crash after effect can cause redelivery;
 no exactly-once claim
+end note
 end
 @enduml

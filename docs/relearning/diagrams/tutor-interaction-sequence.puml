@@ -21,6 +21,8 @@ Validator --> Tutor : Accept or precise errors
 Tutor -> Store : Commit only accepted update
 Store --> Student : New commit SHA (proof of persistence)
 end
-note over Tutor,Store : Interrupted session resumes verified checkpoints;
+note over Tutor,Store
+Interrupted session resumes verified checkpoints;
 never infer persistence from conversation.
+end note
 @enduml
