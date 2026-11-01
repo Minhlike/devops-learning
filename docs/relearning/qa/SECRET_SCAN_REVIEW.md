@@ -18,7 +18,7 @@ Kiểm SSH: private key gốc và bản sao byte trong tmp/relearning-preservati
 
 ## Khắc phục hẹp
 
-`.gitleaksignore` chỉ có 12 fingerprint `commit:file:rule:line` chính xác từ log, không có allowlist path, rule hay regex tổng quát. Giữ nguyên nội dung hai manifest và đủ 274 checksum trong từng tệp; không cần thay định dạng hoặc nới validator. Secret thật ở tệp nguồn, phát hiện khác hoặc commit mới không được miễn theo ngoại lệ này.
+Bản sửa ban đầu của `.gitleaksignore` có 12 fingerprint `commit:file:rule:line` chính xác từ log, không có allowlist path, rule hay regex tổng quát. Giữ nguyên nội dung hai manifest và đủ 274 checksum trong từng tệp; không cần thay định dạng hoặc nới validator. Secret thật ở tệp nguồn, phát hiện khác hoặc commit mới không được miễn theo ngoại lệ này.
 
 Tái hiện bằng binary 8.24.3 đã xác minh checksum: bỏ tạm ignore rồi quét đúng commit range của CI gốc cho 12 phát hiện/exit2; bật ignore cho 0 phát hiện/exit0. Fixture âm trong Git repo tạm bên dưới D:/Devops tạo chuỗi ngẫu nhiên không phải credential tại cùng manifest path và dòng86 nhưng commit mới: Gitleaks vẫn phát hiện generic-api-key, exit2. Fixture/log/report thô chỉ ở tmp, không commit. Phạm vi scan tái hiện là lịch sử PR; không tuyên bố toàn bộ mọi ref của repository đã sạch.
 
@@ -32,3 +32,7 @@ Tái hiện bằng binary 8.24.3 đã xác minh checksum: bỏ tạm ignore rồ
 - NOT RUN: Docker lab, PostgreSQL integration, private/public SSH comparison do ACL; không tác động VMware/WSL/Kubernetes/AWS.
 
 CI gốc đã thất bại giữ nguyên trong lịch sử. CI mới được yêu cầu chạy riêng trên commit sửa; kết quả phải đối chiếu run/head SHA thực tế, không suy từ local PASS. Workflow CI/CD đã bị chủ repo tắt trước task; chỉ bật tạm để dispatch kiểm thử với rollback=false rồi trả về disabled. Các job push/deploy yêu cầu push main sẽ không chạy trong dispatch này. Không merge PR.
+
+## Phát hiện bổ sung khi CI quét mọi nhánh
+
+Run41328665737 tại commit5fd48f2: ba Python job PASS, secret-scan FAIL với 2 phát hiện ở commit giáo trình cũ53d5d8f, evidence.json dòng19 và36. workflow_dispatch không có log-opts diff nên quét lịch sử rộng, khác range PR ở run gốc. Hai field idempotency_key là order-prefixed UUID4 do smoke.py tự sinh để kiểm retry, không phải bearer token/API credential; đã đối chiếu producer code và contract. Không hiển thị giá trị. Chúng được ghi riêng ở additional-gitleaks-findings.json và thêm đúng2 fingerprint lịch sử, tổng14 ngoại lệ. Không sửa hồ sơ giáo trình, không tắt rule/path và không giới hạn scan để che lỗi. Run FAIL này giữ nguyên lịch sử; cần một CI mới chứng minh quét rộng thành công.

@@ -1,4 +1,4 @@
-# Reviewed SHA-256 metadata false positives only; see docs/relearning/qa/SECRET_SCAN_REVIEW.md
+# Reviewed checksum metadata and generated business identifier false positives only; see docs/relearning/qa/SECRET_SCAN_REVIEW.md
 # Exact historical commit:file:rule:line fingerprints. No paths/rules disabled.
 817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:109
 817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_BASELINE.json:generic-api-key:110
@@ -12,3 +12,6 @@
 817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:156
 817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:86
 817ad0da74e5fac644c713f7e591815ac4ce2135:state/relearning/LEGACY_INITIAL_BASELINE.json:generic-api-key:87
+# Additional full-history review: generated business idempotency identifiers, not credentials.
+53d5d8f2d63bbf1e4de797861c5bea18623020d5:giaotrinh/qa/p16_runs/p16-20261025-083937-1825/evidence.json:generic-api-key:19
+53d5d8f2d63bbf1e4de797861c5bea18623020d5:giaotrinh/qa/p16_runs/p16-20261025-083937-1825/evidence.json:generic-api-key:36

@@ -1,0 +1,18 @@
+[
+  {
+    "fingerprint": "53d5d8f2d63bbf1e4de797861c5bea18623020d5:giaotrinh/qa/p16_runs/p16-20261025-083937-1825/evidence.json:generic-api-key:19",
+    "classification": "false_positive_business_identifier",
+    "source_commit": "53d5d8f2d63bbf1e4de797861c5bea18623020d5",
+    "referenced_path": "giaotrinh/qa/p16_runs/p16-20261025-083937-1825/evidence.json",
+    "line": 19,
+    "evidence": "smoke.py generates order-prefixed UUID4; no authentication/authorization semantics"
+  },
+  {
+    "fingerprint": "53d5d8f2d63bbf1e4de797861c5bea18623020d5:giaotrinh/qa/p16_runs/p16-20261025-083937-1825/evidence.json:generic-api-key:36",
+    "classification": "false_positive_business_identifier",
+    "source_commit": "53d5d8f2d63bbf1e4de797861c5bea18623020d5",
+    "referenced_path": "giaotrinh/qa/p16_runs/p16-20261025-083937-1825/evidence.json",
+    "line": 36,
+    "evidence": "smoke.py generates order-prefixed UUID4; no authentication/authorization semantics"
+  }
+]
