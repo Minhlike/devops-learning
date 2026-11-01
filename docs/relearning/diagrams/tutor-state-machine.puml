@@ -1,0 +1,44 @@
+@startuml
+title Relearning lesson lifecycle v1
+[*] --> not_started
+not_started --> theory
+theory --> model_understood
+theory --> needs_remediation
+model_understood --> guided_lab
+guided_lab --> guided_passed
+guided_lab --> needs_remediation
+guided_passed --> independent_lab
+independent_lab --> independent_passed
+independent_lab --> needs_remediation
+independent_passed --> operational_check
+independent_passed --> acceptance
+operational_check --> acceptance
+operational_check --> needs_remediation
+acceptance --> mastered
+acceptance --> needs_remediation
+needs_remediation --> theory
+needs_remediation --> guided_lab
+needs_remediation --> independent_lab
+not_started --> paused : pause / remember not_started
+theory --> paused : pause / remember theory
+model_understood --> paused : pause / remember model_understood
+guided_lab --> paused : pause / remember guided_lab
+guided_passed --> paused : pause / remember guided_passed
+independent_lab --> paused : pause / remember independent_lab
+independent_passed --> paused : pause / remember independent_passed
+operational_check --> paused : pause / remember operational_check
+acceptance --> paused : pause / remember acceptance
+needs_remediation --> paused : pause / remember needs_remediation
+mastered --> paused : pause / remember mastered
+paused --> not_started : resume [saved_state = not_started]
+paused --> theory : resume [saved_state = theory]
+paused --> model_understood : resume [saved_state = model_understood]
+paused --> guided_lab : resume [saved_state = guided_lab]
+paused --> guided_passed : resume [saved_state = guided_passed]
+paused --> independent_lab : resume [saved_state = independent_lab]
+paused --> independent_passed : resume [saved_state = independent_passed]
+paused --> operational_check : resume [saved_state = operational_check]
+paused --> acceptance : resume [saved_state = acceptance]
+paused --> needs_remediation : resume [saved_state = needs_remediation]
+paused --> mastered : resume [saved_state = mastered]
+@enduml

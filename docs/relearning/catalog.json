@@ -1,0 +1,2670 @@
+{
+  "schema_version": 1,
+  "track": "relearning",
+  "lessons": [
+    {
+      "id": "R-S14-C01",
+      "legacy_session": "S14",
+      "title": "Image bất biến và container là lần chạy",
+      "technology": "Docker",
+      "prerequisites": [],
+      "maturity": "AUTHORED",
+      "content": "docs/relearning/lessons/R-S14-C01.md",
+      "guided_lab": "relearning-labs/R-S14-C01/GUIDED.md",
+      "independent_lab": "relearning-labs/R-S14-C01/INDEPENDENT.md",
+      "competency": "Giải thích và kiểm chứng image bất biến và container là lần chạy trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S14-C02",
+      "legacy_session": "S14",
+      "title": "PID 1 và vòng đời process",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S14-C01"
+      ],
+      "maturity": "AUTHORED",
+      "content": "docs/relearning/lessons/R-S14-C02.md",
+      "guided_lab": "relearning-labs/R-S14-C02/GUIDED.md",
+      "independent_lab": "relearning-labs/R-S14-C02/INDEPENDENT.md",
+      "competency": "Giải thích và kiểm chứng pid 1 và vòng đời process trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/reference/cli/docker/container/stop/",
+          "section": "Stop container: signal and timeout",
+          "version": "Docker Engine Linux; check installed version",
+          "purpose": "Distinguish graceful termination and forced kill"
+        },
+        {
+          "url": "https://docs.docker.com/reference/builder/#entrypoint",
+          "section": "ENTRYPOINT exec and shell form",
+          "version": "Dockerfile reference rolling, checked 2026-11-01",
+          "purpose": "Trace signal delivery to the main process"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S15-C01",
+      "legacy_session": "S15",
+      "title": "Writable layer và volume",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S14-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng writable layer và volume trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S15-C02",
+      "legacy_session": "S15",
+      "title": "DNS dịch vụ và port publishing",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S15-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng dns dịch vụ và port publishing trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S16-C01",
+      "legacy_session": "S16",
+      "title": "Health không phải restart policy",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S15-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng health không phải restart policy trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S16-C02",
+      "legacy_session": "S16",
+      "title": "CPU quota, memory và graceful shutdown",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S16-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng cpu quota, memory và graceful shutdown trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S17-C01",
+      "legacy_session": "S17",
+      "title": "Build context, cache và multi-stage",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S16-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng build context, cache và multi-stage trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S17-C02",
+      "legacy_session": "S17",
+      "title": "Registry digest và artifact promotion",
+      "technology": "Docker",
+      "prerequisites": [
+        "R-S17-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng registry digest và artifact promotion trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.docker.com/engine/containers/run/",
+          "section": "Running containers",
+          "version": "Engine API/CLI; verify installed version",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S18-C01",
+      "legacy_session": "S18",
+      "title": "Job cô lập và cổng test ba codebase",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S17-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng job cô lập và cổng test ba codebase trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S18-C02",
+      "legacy_session": "S18",
+      "title": "Chuyển cùng artifact giữa jobs",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S18-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng chuyển cùng artifact giữa jobs trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S19-C01",
+      "legacy_session": "S19",
+      "title": "Quyền workflow và pull request không tin cậy",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S18-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng quyền workflow và pull request không tin cậy trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S19-C02",
+      "legacy_session": "S19",
+      "title": "Required checks và dependency gate",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S19-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng required checks và dependency gate trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S20-C01",
+      "legacy_session": "S20",
+      "title": "Environment approval và quyền deploy",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S19-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng environment approval và quyền deploy trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S20-C02",
+      "legacy_session": "S20",
+      "title": "Rollback binary và tương thích schema",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S20-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng rollback binary và tương thích schema trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S21-C01",
+      "legacy_session": "S21",
+      "title": "Dependency và secret scanning",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S20-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng dependency và secret scanning trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S21-C02",
+      "legacy_session": "S21",
+      "title": "Release record và provenance",
+      "technology": "GitHub",
+      "prerequisites": [
+        "R-S21-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng release record và provenance trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+          "section": "Jobs, needs, permissions",
+          "version": "GitHub Actions rolling docs",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S22-C01",
+      "legacy_session": "S22",
+      "title": "Principal, role và explicit deny",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S21-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng principal, role và explicit deny trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S22-C02",
+      "legacy_session": "S22",
+      "title": "STS session và kiểm danh tính",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S22-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng sts session và kiểm danh tính trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S23-C01",
+      "legacy_session": "S23",
+      "title": "Subnet, route và đường phản hồi",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S22-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng subnet, route và đường phản hồi trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S23-C02",
+      "legacy_session": "S23",
+      "title": "EC2 bootstrap và ranh giới Security Group",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S23-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng ec2 bootstrap và ranh giới security group trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S24-C01",
+      "legacy_session": "S24",
+      "title": "S3 object khác EBS block",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S23-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng s3 object khác ebs block trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S24-C02",
+      "legacy_session": "S24",
+      "title": "Snapshot, backup và restore thử",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S24-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng snapshot, backup và restore thử trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S25-C01",
+      "legacy_session": "S25",
+      "title": "RDS connection và pool của Java",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S24-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng rds connection và pool của java trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S25-C02",
+      "legacy_session": "S25",
+      "title": "Transaction boundary và migration",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S25-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng transaction boundary và migration trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S26-C01",
+      "legacy_session": "S26",
+      "title": "Load balancer và target readiness",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S25-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng load balancer và target readiness trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S26-C02",
+      "legacy_session": "S26",
+      "title": "Autoscaling khác database capacity",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S26-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng autoscaling khác database capacity trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S27-C01",
+      "legacy_session": "S27",
+      "title": "DNS cache và TTL khi đổi dịch vụ",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S26-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng dns cache và ttl khi đổi dịch vụ trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S27-C02",
+      "legacy_session": "S27",
+      "title": "TLS termination và đường tới upstream",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S27-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng tls termination và đường tới upstream trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S28-C01",
+      "legacy_session": "S28",
+      "title": "Metric, log và retention có giá",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S27-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng metric, log và retention có giá trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S28-C02",
+      "legacy_session": "S28",
+      "title": "Alarm có owner và giới hạn chi phí",
+      "technology": "AWS",
+      "prerequisites": [
+        "R-S28-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng alarm có owner và giới hạn chi phí trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+          "section": "Pillars and design principles",
+          "version": "AWS service/Region must be checked before lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S29-C01",
+      "legacy_session": "S29",
+      "title": "Configuration, state và hạ tầng thật",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S28-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng configuration, state và hạ tầng thật trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S29-C02",
+      "legacy_session": "S29",
+      "title": "Provider graph và partial apply",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S29-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng provider graph và partial apply trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S30-C01",
+      "legacy_session": "S30",
+      "title": "Reference suy diễn dependency",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S29-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng reference suy diễn dependency trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S30-C02",
+      "legacy_session": "S30",
+      "title": "Network module và output contract",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S30-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng network module và output contract trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S31-C01",
+      "legacy_session": "S31",
+      "title": "Remote backend, lock và backup state",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S30-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng remote backend, lock và backup state trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S31-C02",
+      "legacy_session": "S31",
+      "title": "Module interface và scope quyền",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S31-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng module interface và scope quyền trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S32-C01",
+      "legacy_session": "S32",
+      "title": "Resource address và for_each",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S31-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng resource address và for_each trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S32-C02",
+      "legacy_session": "S32",
+      "title": "Import, moved và replacement có dữ liệu",
+      "technology": "Terraform",
+      "prerequisites": [
+        "R-S32-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng import, moved và replacement có dữ liệu trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://developer.hashicorp.com/terraform/language",
+          "section": "State, resources, expressions",
+          "version": "Terraform version pinned by future lab lock",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S33-C01",
+      "legacy_session": "S33",
+      "title": "Inventory, connection và module",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S32-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng inventory, connection và module trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S33-C02",
+      "legacy_session": "S33",
+      "title": "Idempotency và trạng thái changed",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S33-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng idempotency và trạng thái changed trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S34-C01",
+      "legacy_session": "S34",
+      "title": "Role interface và variable scope",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S33-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng role interface và variable scope trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S34-C02",
+      "legacy_session": "S34",
+      "title": "Handler notification và restart có điều kiện",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S34-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng handler notification và restart có điều kiện trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S35-C01",
+      "legacy_session": "S35",
+      "title": "Inventory groups và giới hạn blast radius",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S34-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng inventory groups và giới hạn blast radius trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S35-C02",
+      "legacy_session": "S35",
+      "title": "Serial deployment và partial failure",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S35-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng serial deployment và partial failure trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S36-C01",
+      "legacy_session": "S36",
+      "title": "Vault encryption và quyền giải mã",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S35-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng vault encryption và quyền giải mã trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S36-C02",
+      "legacy_session": "S36",
+      "title": "Tags, check mode và bằng chứng hội tụ",
+      "technology": "Ansible",
+      "prerequisites": [
+        "R-S36-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng tags, check mode và bằng chứng hội tụ trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://docs.ansible.com/ansible-core/2.19/",
+          "section": "Playbooks, handlers, check mode",
+          "version": "ansible-core 2.19 design target",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S37-C01",
+      "legacy_session": "S37",
+      "title": "API, etcd và reconciliation",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S36-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng api, etcd và reconciliation trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S37-C02",
+      "legacy_session": "S37",
+      "title": "Kubelet, scheduler và container runtime",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S37-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng kubelet, scheduler và container runtime trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S38-C01",
+      "legacy_session": "S38",
+      "title": "Service selector và EndpointSlice",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S37-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng service selector và endpointslice trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S38-C02",
+      "legacy_session": "S38",
+      "title": "CNI, DNS và NetworkPolicy",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S38-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng cni, dns và networkpolicy trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S39-C01",
+      "legacy_session": "S39",
+      "title": "ConfigMap và vòng đời cấu hình",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S38-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng configmap và vòng đời cấu hình trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S39-C02",
+      "legacy_session": "S39",
+      "title": "Startup, readiness và liveness",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S39-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng startup, readiness và liveness trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S40-C01",
+      "legacy_session": "S40",
+      "title": "Request, limit và scheduling",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S39-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng request, limit và scheduling trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S40-C02",
+      "legacy_session": "S40",
+      "title": "CPU utilization, metrics và HPA",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S40-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng cpu utilization, metrics và hpa trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S41-C01",
+      "legacy_session": "S41",
+      "title": "PVC, PV và storage ownership",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S40-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng pvc, pv và storage ownership trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S41-C02",
+      "legacy_session": "S41",
+      "title": "Stateful workload và restore dữ liệu",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S41-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng stateful workload và restore dữ liệu trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S42-C01",
+      "legacy_session": "S42",
+      "title": "Gateway listener, route và backend",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S41-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng gateway listener, route và backend trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S42-C02",
+      "legacy_session": "S42",
+      "title": "Kind LoadBalancer và giới hạn môi trường",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S42-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng kind loadbalancer và giới hạn môi trường trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S43-C01",
+      "legacy_session": "S43",
+      "title": "Chart template và values contract",
+      "technology": "Helm",
+      "prerequisites": [
+        "R-S42-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng chart template và values contract trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://helm.sh/docs/",
+          "section": "Charts and releases",
+          "version": "Verify Helm major before authored lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S43-C02",
+      "legacy_session": "S43",
+      "title": "Upgrade, diff và rollback có điều kiện",
+      "technology": "Helm",
+      "prerequisites": [
+        "R-S43-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng upgrade, diff và rollback có điều kiện trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://helm.sh/docs/",
+          "section": "Charts and releases",
+          "version": "Verify Helm major before authored lab",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S44-C01",
+      "legacy_session": "S44",
+      "title": "Điều tra Pending, pull và probe",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S43-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng điều tra pending, pull và probe trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S44-C02",
+      "legacy_session": "S44",
+      "title": "Recovery có stop rule và hậu điều kiện",
+      "technology": "Kubernetes",
+      "prerequisites": [
+        "R-S44-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng recovery có stop rule và hậu điều kiện trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://kubernetes.io/docs/concepts/",
+          "section": "Workloads, networking, storage",
+          "version": "Design target v1.35; verify APIs on actual cluster",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S45-C01",
+      "legacy_session": "S45",
+      "title": "Counter, rate và reset",
+      "technology": "Prometheus",
+      "prerequisites": [
+        "R-S44-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng counter, rate và reset trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://prometheus.io/docs/prometheus/latest/querying/basics/",
+          "section": "Expression language data types",
+          "version": "Version selected at lab authoring",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S45-C02",
+      "legacy_session": "S45",
+      "title": "Scrape target và cardinality",
+      "technology": "Prometheus",
+      "prerequisites": [
+        "R-S45-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng scrape target và cardinality trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://prometheus.io/docs/prometheus/latest/querying/basics/",
+          "section": "Expression language data types",
+          "version": "Version selected at lab authoring",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S46-C01",
+      "legacy_session": "S46",
+      "title": "Query, unit và cửa sổ dashboard",
+      "technology": "Grafana",
+      "prerequisites": [
+        "R-S45-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng query, unit và cửa sổ dashboard trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://grafana.com/docs/grafana/latest/panels-visualizations/",
+          "section": "Panels and visualizations",
+          "version": "Version selected at lab authoring",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S46-C02",
+      "legacy_session": "S46",
+      "title": "Phân biệt No Data với dữ liệu bằng không",
+      "technology": "Grafana",
+      "prerequisites": [
+        "R-S46-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng phân biệt no data với dữ liệu bằng không trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://grafana.com/docs/grafana/latest/panels-visualizations/",
+          "section": "Panels and visualizations",
+          "version": "Version selected at lab authoring",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S47-C01",
+      "legacy_session": "S47",
+      "title": "Request ID qua Java và worker",
+      "technology": "Logging",
+      "prerequisites": [
+        "R-S46-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng request id qua java và worker trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://opentelemetry.io/docs/concepts/signals/logs/",
+          "section": "Log correlation",
+          "version": "OpenTelemetry concepts; backend selected later",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S47-C02",
+      "legacy_session": "S47",
+      "title": "Log pipeline, retention và dữ liệu nhạy cảm",
+      "technology": "Logging",
+      "prerequisites": [
+        "R-S47-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng log pipeline, retention và dữ liệu nhạy cảm trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://opentelemetry.io/docs/concepts/signals/logs/",
+          "section": "Log correlation",
+          "version": "OpenTelemetry concepts; backend selected later",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S48-C01",
+      "legacy_session": "S48",
+      "title": "Pending, firing và alert evaluation",
+      "technology": "Prometheus",
+      "prerequisites": [
+        "R-S47-C02"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng pending, firing và alert evaluation trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://prometheus.io/docs/prometheus/latest/querying/basics/",
+          "section": "Expression language data types",
+          "version": "Version selected at lab authoring",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    },
+    {
+      "id": "R-S48-C02",
+      "legacy_session": "S48",
+      "title": "Routing, silence và kiểm kênh thông báo",
+      "technology": "Prometheus",
+      "prerequisites": [
+        "R-S48-C01"
+      ],
+      "maturity": "DESIGNED",
+      "content": null,
+      "guided_lab": null,
+      "independent_lab": null,
+      "competency": "Giải thích và kiểm chứng routing, silence và kiểm kênh thông báo trong OrderOps",
+      "evidence_required": [
+        "concept",
+        "guided",
+        "independent"
+      ],
+      "operational_required": false,
+      "official_docs": [
+        {
+          "url": "https://prometheus.io/docs/prometheus/latest/querying/basics/",
+          "section": "Expression language data types",
+          "version": "Version selected at lab authoring",
+          "purpose": "Đọc cơ chế, đối chiếu hành vi và giới hạn theo phiên bản"
+        }
+      ],
+      "levels": [
+        "Foundation",
+        "Applied",
+        "Troubleshooting",
+        "Advanced Extension"
+      ],
+      "certification": {
+        "status": "NOT_MAPPED",
+        "reason": "Chưa kiểm exam blueprint; không suy readiness thi từ lesson"
+      }
+    }
+  ]
+}

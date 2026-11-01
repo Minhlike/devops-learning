@@ -1,0 +1,16 @@
+@startuml
+title VM / Compose option v1 (DESIGNED, single-host)
+node VM {
+node "Compose network" {
+artifact "Java API" as api
+artifact "Go worker (optional)" as worker
+artifact "PostgreSQL" as db
+}
+artifact "Python scheduled report (optional)" as report
+}
+api --> db : SQL
+worker --> db : outbox
+report --> db : read-only snapshot
+note bottom of VM : One host is a shared failure domain.
+Backup must leave this host.
+@enduml

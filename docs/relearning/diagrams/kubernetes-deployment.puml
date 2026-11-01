@@ -1,0 +1,18 @@
+@startuml
+title Kubernetes option v1 (DESIGNED)
+node Cluster {
+node "Control plane" as cp
+node "Worker node(s)" {
+artifact "Deployment Java API" as api
+artifact "Deployment Go worker" as worker
+artifact "CronJob Python report" as report
+artifact "Service" as svc
+}
+}
+database "Managed PostgreSQL" as db
+cp ..> api : reconcile desired state
+svc --> api : ready endpoints
+api --> db : SQL
+worker --> db : outbox
+report --> db : read-only
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+title Release target v1 (DESIGNED)
+start
+:Resolve commit and build inputs;
+:Test Java / Python / Go;
+if (Required tests pass?) then (yes)
+:Build artifacts once;
+:Scan and record digests;
+:Promote same digests to staging;
+:Business smoke and schema check;
+if (Evidence and approval sufficient?) then (yes)
+:Deploy production pinned digests;
+:Observe and verify data;
+else (no)
+:Stop; preserve evidence;
+endif
+else (no)
+:Stop before publish;
+endif
+stop
+@enduml

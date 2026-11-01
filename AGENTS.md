@@ -1,3 +1,5 @@
+> **Chọn track trước khi dạy:** `legacy` dùng tài liệu hiện có; `relearning` dùng [docs/relearning/TEACHER_START_HERE.md](docs/relearning/TEACHER_START_HERE.md), TUTOR_PROTOCOL và state/relearning. Quy tắc thi 9 câu và startup hạ tầng bên dưới chỉ thuộc legacy. Refactor V2 không bắt đầu lớp, không cập nhật điểm legacy.
+
 # AGENTS.md — AI Agent Operating Manual & Architecture Map
 
 > **Vai trò:** Bản đồ điều hướng và quy tắc vận hành bắt buộc dành cho mọi AI Coding Assistant / Agent tiếp quản repository `devops-learning`.

@@ -1,3 +1,5 @@
+> **Track relearning V2:** Đọc [TEACHER_START_HERE](docs/relearning/TEACHER_START_HERE.md) để học lại S14–S48 với OrderOps Java/Python/Go. Trạng thái riêng ở `state/relearning/`; legacy 55/66 và S56 vẫn giữ nguyên. Pha hiện tại là cải tổ, chưa bắt đầu giảng dạy.
+
 # DevOps Engineering Learning System
 
 Hệ thống quản lý học tập, thực hành và lưu trữ mã nguồn thực chiến DevOps từ cơ bản đến nâng cao (Linux, Networking, Docker, CI/CD, AWS Cloud, Terraform IaC, Ansible Automation, Kubernetes Orchestration, Observability & DevSecOps).

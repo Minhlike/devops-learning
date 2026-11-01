@@ -1,0 +1,15 @@
+@startuml
+!include <C4/C4_Container>
+title OrderOps target containers v1 (DESIGNED)
+Person(user,"Customer")
+System_Boundary(sys,"OrderOps") {
+Container(api,"order-api","Java Spring Boot","Owns orders and outbox")
+Container(worker,"event-worker","Go","Claims events and records effects")
+Container(report,"reporting","Python","Reads authorized snapshots")
+ContainerDb(db,"Data store","PostgreSQL18","Orders, outbox, processed events")
+}
+Rel(user,api,"POST/GET orders","HTTPS")
+Rel(api,db,"Transaction orders + outbox","SQL")
+Rel(worker,db,"Claim / durable effect / ack","SQL")
+Rel(report,db,"Read-only snapshot export (future adapter)","SQL")
+@enduml
